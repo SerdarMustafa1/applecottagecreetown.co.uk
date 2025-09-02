@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const bookPrompt = document.getElementById('bookPrompt');
   const closeBtn = modal.querySelector('.modal-close');
   const noBookBtn = document.getElementById('noBook');
+  const captchaQuestion = document.getElementById('captchaQuestion');
+  const captchaAnswer = document.getElementById('captchaAnswer');
 
   // GA4 helper (no-op if GA not loaded)
   const track = (eventName, params = {}) => {
@@ -14,6 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } catch (_) {}
   };
+
+  // Consent handled by Silktide; GA4 loaded in head with Consent Mode defaults
 
   function openModal() {
     modal.classList.remove('hidden');
@@ -56,8 +60,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // No local cookie banner logic (Silktide handles UI and storage)
+
+  // Simple math captcha
+  const a = Math.floor(2 + Math.random() * 8);
+  const b = Math.floor(1 + Math.random() * 7);
+  const answer = a + b;
+  if (captchaQuestion) captchaQuestion.textContent = `What is ${a} + ${b}?`;
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    // Abort if honeypot filled
+    if (form.company && form.company.value) {
+      return; // silently drop
+    }
+    // Validate captcha
+    if (!captchaAnswer || String(answer) !== String(captchaAnswer.value).trim()) {
+      alert('Please answer the security question correctly.');
+      return;
+    }
     const data = {
       firstName: form.firstName.value,
       lastName: form.lastName.value,

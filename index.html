@@ -6,14 +6,77 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>Apple Cottage – Creetown</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- Google tag (gtag.js) -->
+  <!-- Silktide Consent Manager -->
+  <link rel="stylesheet" id="silktide-consent-manager-css" href="cookie-banner/silktide-consent-manager.css">
+  <script src="cookie-banner/silktide-consent-manager.js"></script>
+  <!-- Google tag (gtag.js) with Consent Mode defaults -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LHB9R5TLL1"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag(){dataLayer.push(arguments);} 
+    // Default to denied until user consents via Silktide
+    gtag('consent', 'default', {
+      analytics_storage: 'denied'
+    });
     gtag('js', new Date());
-
     gtag('config', 'G-LHB9R5TLL1');
+  </script>
+  <script>
+    // Silktide setup
+    window.silktideCookieBannerManager = window.silktideCookieBannerManager || {};
+    if (typeof silktideCookieBannerManager.updateCookieBannerConfig === 'function') {
+      silktideCookieBannerManager.updateCookieBannerConfig({
+        background: { showBackground: true },
+        cookieIcon: { position: 'bottomRight' },
+        cookieTypes: [
+          {
+            id: 'necessary',
+            name: 'Necessary',
+            description: '<p>These cookies are necessary for the website to function properly and cannot be switched off. They help with things like logging in and setting your privacy preferences.</p>',
+            required: true,
+            onAccept: function() {
+              // No action needed for necessary
+            }
+          },
+          {
+            id: 'analytics',
+            name: 'Analytics',
+            description: '<p>These cookies help us improve the site by tracking which pages are most popular and how visitors move around the site.</p>',
+            required: false,
+            onAccept: function() {
+              if (typeof gtag === 'function') {
+                gtag('consent', 'update', { analytics_storage: 'granted' });
+              }
+              if (window.dataLayer) {
+                window.dataLayer.push({ event: 'consent_accepted_analytics' });
+              }
+            },
+            onReject: function() {
+              if (typeof gtag === 'function') {
+                gtag('consent', 'update', { analytics_storage: 'denied' });
+              }
+            }
+          }
+        ],
+        text: {
+          banner: {
+            description: '<p>We use cookies on our site to enhance your user experience, provide personalized content, and analyze our traffic. <a href="https://applecottagecreetown.co.uk/cookie-policy" target="_blank" rel="noopener">Cookie Policy.</a></p>',
+            acceptAllButtonText: 'Accept all',
+            acceptAllButtonAccessibleLabel: 'Accept all cookies',
+            rejectNonEssentialButtonText: 'Reject non-essential',
+            rejectNonEssentialButtonAccessibleLabel: 'Reject non-essential',
+            preferencesButtonText: 'Preferences',
+            preferencesButtonAccessibleLabel: 'Toggle preferences'
+          },
+          preferences: {
+            title: 'Customize your cookie preferences',
+            description: "<p>We respect your right to privacy. You can choose not to allow some types of cookies. Your cookie preferences will apply across our website.</p>",
+            creditLinkText: 'Get this banner for free',
+            creditLinkAccessibleLabel: 'Get this banner for free'
+          }
+        }
+      });
+    }
   </script>
 </head>
 <body>
@@ -131,6 +194,7 @@
     <p>&copy; 2025 Apple Cottage, Silver Street, Creetown. All rights reserved.</p>
   </footer>
 
+
   <!-- Home Report Modal -->
   <div id="homeReportModal" class="modal hidden">
     <div class="modal-content">
@@ -138,6 +202,8 @@
       <div id="homeReportFormContainer">
         <h2>Request the Home Report</h2>
         <form id="homeReportForm">
+          <!-- Honeypot to block bots -->
+          <input type="text" id="company" name="company" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <div class="form-group">
             <label for="firstName">First Name</label>
             <input type="text" id="firstName" name="firstName" required />
@@ -157,6 +223,13 @@
           <div class="form-group">
             <label for="hear">How did you hear about us?</label>
             <input type="text" id="hear" name="hear" />
+          </div>
+          <div class="form-group">
+            <label for="captchaAnswer">Security Check</label>
+            <div class="captcha-row">
+              <span id="captchaQuestion">What is 1 + 1?</span>
+              <input type="text" id="captchaAnswer" name="captchaAnswer" inputmode="numeric" pattern="[0-9]*" placeholder="Answer" required />
+            </div>
           </div>
           <button type="submit" class="btn" style="width:100%;">Download Report</button>
         </form>
