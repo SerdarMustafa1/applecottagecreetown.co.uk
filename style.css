@@ -221,3 +221,60 @@ footer {
   margin-bottom: 0.5rem;
   line-height: 1.5;
 }
+
+/* Utility */
+.hidden {
+  display: none !important;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal.hidden { display: none !important; }
+.modal-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 520px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+.modal-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Form */
+.form-group { margin-bottom: 1rem; text-align: left; }
+.form-group label { display: block; margin-bottom: 0.35rem; font-weight: 600; }
+.form-group input, .form-group textarea {
+  width: 100%;
+  padding: 0.55rem 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font: inherit;
+}
+.captcha-row { display: flex; gap: 0.5rem; align-items: center; }
+.captcha-row input[type="text"] { max-width: 140px; }
+
+/* Honeypot hidden field */
+.hp-field {
+  position: absolute !important;
+  left: -10000px !important;
+  top: auto !important;
+  width: 1px !important; height: 1px !important;
+  overflow: hidden !important;
+}
