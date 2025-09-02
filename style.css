@@ -134,12 +134,19 @@ section {
   gap: 1rem;
 }
 
+.gallery figure { margin: 0; }
 .gallery img {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
   display: block;
   border-radius: 8px;
+}
+.gallery figcaption {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 0.4rem;
+  text-align: center;
 }
 
 /* Running costs table */
@@ -241,6 +248,21 @@ footer {
   border-radius: 8px;
   box-shadow: 0 10px 40px rgba(0,0,0,0.4);
 }
+.lightbox-prev, .lightbox-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  border: none;
+  font-size: 1.8rem;
+  line-height: 1;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.lightbox-prev { left: 1rem; }
+.lightbox-next { right: 1rem; }
 .lightbox-close {
   position: absolute;
   top: 1rem;

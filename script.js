@@ -79,13 +79,33 @@ document.addEventListener('DOMContentLoaded', () => {
   const lbImg = document.getElementById('lightboxImg');
   const lbCap = document.getElementById('lightboxCaption');
   const lbClose = document.querySelector('.lightbox-close');
-  const openLightbox = (imgEl) => {
+  const lbPrev = document.querySelector('.lightbox-prev');
+  const lbNext = document.querySelector('.lightbox-next');
+
+  const galleryImgs = Array.from(document.querySelectorAll('.gallery img'));
+  let currentIndex = -1;
+  const getCaption = (imgEl) => {
+    const fig = imgEl.closest('figure');
+    const fc = fig ? fig.querySelector('figcaption') : null;
+    return (fc && fc.textContent.trim()) || imgEl.alt || '';
+  };
+  const showAt = (idx) => {
     if (!lb || !lbImg) return;
+    if (idx < 0) idx = galleryImgs.length - 1;
+    if (idx >= galleryImgs.length) idx = 0;
+    currentIndex = idx;
+    const imgEl = galleryImgs[currentIndex];
     lbImg.src = imgEl.src;
     lbImg.alt = imgEl.alt || '';
-    if (lbCap) lbCap.textContent = imgEl.alt || '';
+    if (lbCap) lbCap.textContent = getCaption(imgEl);
+  };
+  const openLightbox = (idxOrImg) => {
+    const idx = typeof idxOrImg === 'number' ? idxOrImg : galleryImgs.indexOf(idxOrImg);
+    if (idx < 0) return;
+    showAt(idx);
     lb.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
+    const imgEl = galleryImgs[idx];
     track('lightbox_open', { src: imgEl.src, alt: imgEl.alt || '' });
   };
   const closeLightbox = () => {
@@ -93,13 +113,23 @@ document.addEventListener('DOMContentLoaded', () => {
     lb.classList.add('hidden');
     document.body.style.overflow = '';
   };
-  document.querySelectorAll('.gallery img').forEach(img => {
+  const nextImg = () => showAt(currentIndex + 1);
+  const prevImg = () => showAt(currentIndex - 1);
+
+  galleryImgs.forEach((img, i) => {
     img.style.cursor = 'zoom-in';
-    img.addEventListener('click', () => openLightbox(img));
+    img.addEventListener('click', () => openLightbox(i));
   });
   if (lbClose) lbClose.addEventListener('click', closeLightbox);
+  if (lbPrev) lbPrev.addEventListener('click', prevImg);
+  if (lbNext) lbNext.addEventListener('click', nextImg);
   if (lb) lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
-  window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+  window.addEventListener('keydown', (e) => {
+    if (lb && lb.classList.contains('hidden')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') nextImg();
+    if (e.key === 'ArrowLeft') prevImg();
+  });
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
