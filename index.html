@@ -15,7 +15,7 @@
       <p>Energy‑smart three‑bed home with annex, EV charging & landscaped gardens</p>
       <div class="cta-buttons">
         <a href="#contact" class="btn">Book a Viewing</a>
-        <a href="#contact" class="btn">Request Home Report</a>
+        <a href="#" class="btn request-report-btn">Request Home Report</a>
       </div>
     </div>
   </header>
@@ -113,7 +113,7 @@
       <p>Formal offers must be made through your solicitor. Closing date to be set following initial viewings.</p>
       <div class="cta-buttons" style="margin-top:2rem;">
         <a href="#" class="btn">Book Viewing</a>
-        <a href="#" class="btn">Request Home Report</a>
+        <a href="#" class="btn request-report-btn">Request Home Report</a>
       </div>
     </div>
   </section>
@@ -121,6 +121,50 @@
   <footer>
     <p>&copy; 2025 Apple Cottage, Silver Street, Creetown. All rights reserved.</p>
   </footer>
-  
+
+  <!-- Home Report Modal -->
+  <div id="homeReportModal" class="modal hidden">
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Close">&times;</button>
+      <div id="homeReportFormContainer">
+        <h2>Request the Home Report</h2>
+        <form id="homeReportForm">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" required />
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required />
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" required />
+          </div>
+          <div class="form-group">
+            <label for="hear">How did you hear about us?</label>
+            <input type="text" id="hear" name="hear" />
+          </div>
+          <button type="submit" class="btn" style="width:100%;">Download Report</button>
+        </form>
+      </div>
+      <div id="bookPrompt" class="hidden">
+        <h2>Download Ready</h2>
+        <p>Your download should start automatically.</p>
+        <p>Would you like to book a viewing?</p>
+        <div class="cta-buttons" style="justify-content:center;">
+          <a href="https://tidycal.com/sidmustafa/apple-cottage-viewing" class="btn">Yes</a>
+          <button type="button" id="noBook" class="btn">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+
 </body>
 </html>
