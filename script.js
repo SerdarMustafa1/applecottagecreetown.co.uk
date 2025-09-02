@@ -74,6 +74,33 @@ document.addEventListener('DOMContentLoaded', () => {
   const answer = a + b;
   if (captchaQuestion) captchaQuestion.textContent = `What is ${a} + ${b}?`;
 
+  // Lightbox for gallery images
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightboxImg');
+  const lbCap = document.getElementById('lightboxCaption');
+  const lbClose = document.querySelector('.lightbox-close');
+  const openLightbox = (imgEl) => {
+    if (!lb || !lbImg) return;
+    lbImg.src = imgEl.src;
+    lbImg.alt = imgEl.alt || '';
+    if (lbCap) lbCap.textContent = imgEl.alt || '';
+    lb.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    track('lightbox_open', { src: imgEl.src, alt: imgEl.alt || '' });
+  };
+  const closeLightbox = () => {
+    if (!lb) return;
+    lb.classList.add('hidden');
+    document.body.style.overflow = '';
+  };
+  document.querySelectorAll('.gallery img').forEach(img => {
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', () => openLightbox(img));
+  });
+  if (lbClose) lbClose.addEventListener('click', closeLightbox);
+  if (lb) lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
+  window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     // Abort if honeypot filled
