@@ -160,21 +160,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       if (!res.ok) throw new Error('Network response was not ok');
 
-      // Trigger PDF download
-      const link = document.createElement('a');
-      link.href = 'home_report.pdf';
-      link.download = 'Apple-Cottage-Home-Report.pdf';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      // Track successful lead + download
+      // Track successful lead + request (no immediate download)
       track('generate_lead', { form_id: 'home_report' });
-      track('file_download', {
-        file_name: 'Apple-Cottage-Home-Report.pdf',
-        file_extension: 'pdf',
-        link_url: 'home_report.pdf'
-      });
+      track('home_report_requested', { delivery: 'email_within_24h' });
 
       formContainer.classList.add('hidden');
       bookPrompt.classList.remove('hidden');
