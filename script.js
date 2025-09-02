@@ -202,8 +202,16 @@ document.addEventListener('DOMContentLoaded', () => {
       if (url) window.open(url, '_blank', 'noopener');
     });
   });
-  if (copyBtn && navigator.clipboard) {
+  if (copyBtn) {
     copyBtn.addEventListener('click', async () => {
-      try { await navigator.clipboard.writeText(window.location.href); alert('Link copied'); } catch (_) {}
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(window.location.href);
+        } else {
+          const ta = document.createElement('textarea');
+          ta.value = window.location.href; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+        }
+        alert('Link copied');
+      } catch (_) {}
     });
   }
