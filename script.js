@@ -8,10 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const captchaQuestion = document.getElementById('captchaQuestion');
   const captchaAnswer = document.getElementById('captchaAnswer');
 
-  // GA4 helper (no-op if GA not loaded)
+  // Analytics helper: prefer dataLayer events for GTM; fallback to gtag
   const track = (eventName, params = {}) => {
     try {
-      if (typeof window.gtag === 'function') {
+      if (window.dataLayer && Array.isArray(window.dataLayer)) {
+        window.dataLayer.push(Object.assign({ event: eventName }, params));
+      } else if (typeof window.gtag === 'function') {
         window.gtag('event', eventName, params);
       }
     } catch (_) {}
