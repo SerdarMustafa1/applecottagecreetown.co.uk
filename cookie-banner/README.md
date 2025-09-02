@@ -1,10 +1,10 @@
 Silktide Consent Manager assets
-===============================
+================================
 
-Place the official Silktide Consent Manager distribution files in this folder and keep these filenames:
+Place the official Silktide Consent Manager distribution files in this folder and keep the filenames used in `index.html`:
 
-- silktide-consent-manager.css
-- silktide-consent-manager.js
+- `cookie-banner/silktide-consent-manager.css`
+- `cookie-banner/silktide-consent-manager.js`
 
-Docs: https://silktide.com/consent-manager/
+Download from Silktide and avoid renaming so the link/script tags continue to work. No code in this repo modifies those vendor files.
 
