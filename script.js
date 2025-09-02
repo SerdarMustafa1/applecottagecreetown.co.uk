@@ -6,6 +6,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeBtn = modal.querySelector('.modal-close');
   const noBookBtn = document.getElementById('noBook');
 
+  // GA4 helper (no-op if GA not loaded)
+  const track = (eventName, params = {}) => {
+    try {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', eventName, params);
+      }
+    } catch (_) {}
+  };
+
   function openModal() {
     modal.classList.remove('hidden');
   }
@@ -21,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       openModal();
+      track('request_report_click', { location: 'cta' });
     });
   });
 
@@ -31,6 +41,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
   noBookBtn.addEventListener('click', closeModal);
+  noBookBtn.addEventListener('click', () => {
+    track('decline_viewing_prompt', { source: 'home_report_modal' });
+  });
+
+  // Track clicks to TidyCal (outbound)
+  document.querySelectorAll('a[href^="https://tidycal.com"]').forEach(a => {
+    a.addEventListener('click', () => {
+      track('book_viewing_click', {
+        link_url: a.href,
+        outbound: true,
+        transport_type: 'beacon'
+      });
+    });
+  });
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -60,9 +84,18 @@ document.addEventListener('DOMContentLoaded', () => {
       link.click();
       document.body.removeChild(link);
 
+      // Track successful lead + download
+      track('generate_lead', { form_id: 'home_report' });
+      track('file_download', {
+        file_name: 'Apple-Cottage-Home-Report.pdf',
+        file_extension: 'pdf',
+        link_url: 'home_report.pdf'
+      });
+
       formContainer.classList.add('hidden');
       bookPrompt.classList.remove('hidden');
     } catch (err) {
+      track('lead_submit_error', { form_id: 'home_report' });
       alert('There was a problem submitting the form. Please try again later.');
     }
   });
