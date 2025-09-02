@@ -242,3 +242,25 @@ footer {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+/* Cookie banner styles removed (using Silktide assets) */
+
+/* Simple captcha row */
+.captcha-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.captcha-row input[type="text"] {
+  max-width: 140px;
+}
+
+/* Honeypot hidden field */
+.hp-field {
+  position: absolute !important;
+  left: -10000px !important;
+  top: auto !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+}
