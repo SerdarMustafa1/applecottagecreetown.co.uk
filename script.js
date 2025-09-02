@@ -21,6 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Consent handled by Silktide; GA4 loaded in head with Consent Mode defaults
 
+  // Ensure modal elements start hidden (defensive)
+  if (modal && !modal.classList.contains('hidden')) modal.classList.add('hidden');
+  if (bookPrompt && !bookPrompt.classList.contains('hidden')) bookPrompt.classList.add('hidden');
+
   function openModal() {
     modal.classList.remove('hidden');
   }
