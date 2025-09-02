@@ -141,30 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Register Interest form
-  const regForm = document.getElementById('registerForm');
-  const regThanks = document.getElementById('registerThanks');
-  if (regForm) {
-    regForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const payload = {
-        name: regForm.name.value,
-        email: regForm.email.value,
-        phone: regForm.phone.value,
-        message: regForm.message.value
-      };
-      try {
-        const res = await fetch('https://formsubmit.co/ajax/serdar@mustafa-family.com', {
-          method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(payload)
-        });
-        if (!res.ok) throw new Error('Bad response');
-        track('generate_lead', { form_id: 'register_interest' });
-        if (regThanks) regThanks.classList.remove('hidden');
-        regForm.reset();
-      } catch (_) {
-        alert('Sorry, we could not send your message just now. Please try again.');
-      }
-    });
-  }
+  // Register Interest form removed per request
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -207,3 +184,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+
+  // Social sharing buttons
+  const shareBtns = document.querySelectorAll('.js-share');
+  const copyBtn = document.querySelector('.js-copy');
+  const pageUrl = encodeURIComponent(window.location.href);
+  const pageTitle = encodeURIComponent('Apple Cottage, Creetown');
+  shareBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const p = btn.getAttribute('data-platform');
+      let url = '';
+      if (p === 'facebook') url = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+      if (p === 'x') url = `https://twitter.com/intent/tweet?url=${pageUrl}&text=${pageTitle}`;
+      if (p === 'whatsapp') url = `https://api.whatsapp.com/send?text=${pageTitle}%20${pageUrl}`;
+      if (p === 'email') url = `mailto:?subject=${pageTitle}&body=${pageUrl}`;
+      if (url) window.open(url, '_blank', 'noopener');
+    });
+  });
+  if (copyBtn && navigator.clipboard) {
+    copyBtn.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(window.location.href); alert('Link copied'); } catch (_) {}
+    });
+  }

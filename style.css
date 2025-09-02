@@ -139,12 +139,12 @@ section {
 /* Gallery */
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 260px));
   gap: 1rem;
   justify-content: center;
 }
 
-.gallery figure { margin: 0; }
+.gallery figure { margin: 0; width: 260px; }
 .gallery img {
   width: 100%;
   aspect-ratio: 4 / 3;
@@ -421,3 +421,9 @@ footer {
 @media (max-width: 768px) {
   .sticky-cta { display: flex; }
 }
+
+
+/* Share bar */
+.share-bar { display: flex; gap: 0.5rem; justify-content: center; margin-top: 0.75rem; }
+.share-btn { background: #ffffff33; color: #fff; border: 1px solid #ffffff55; padding: 0.35rem 0.6rem; border-radius: 4px; font-weight: 600; }
+.share-btn:hover { background: #ffffff55; }
