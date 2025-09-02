@@ -131,6 +131,41 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'ArrowLeft') prevImg();
   });
 
+  // Sticky CTA -> open report modal
+  document.querySelectorAll('.js-open-report').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal();
+      track('request_report_click', { location: 'sticky_cta' });
+    });
+  });
+
+  // Register Interest form
+  const regForm = document.getElementById('registerForm');
+  const regThanks = document.getElementById('registerThanks');
+  if (regForm) {
+    regForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        name: regForm.name.value,
+        email: regForm.email.value,
+        phone: regForm.phone.value,
+        message: regForm.message.value
+      };
+      try {
+        const res = await fetch('https://formsubmit.co/ajax/serdar@mustafa-family.com', {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error('Bad response');
+        track('generate_lead', { form_id: 'register_interest' });
+        if (regThanks) regThanks.classList.remove('hidden');
+        regForm.reset();
+      } catch (_) {
+        alert('Sorry, we could not send your message just now. Please try again.');
+      }
+    });
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     // Abort if honeypot filled
