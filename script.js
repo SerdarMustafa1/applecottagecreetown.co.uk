@@ -5,9 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const bookPrompt = document.getElementById('bookPrompt');
   const closeBtn = modal.querySelector('.modal-close');
   const noBookBtn = document.getElementById('noBook');
-  const banner = document.getElementById('cookieBanner');
-  const cookieAccept = document.getElementById('cookieAccept');
-  const cookieReject = document.getElementById('cookieReject');
   const captchaQuestion = document.getElementById('captchaQuestion');
   const captchaAnswer = document.getElementById('captchaAnswer');
 
@@ -20,20 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (_) {}
   };
 
-  // Consent management
-  const getConsent = () => localStorage.getItem('cookieConsent');
-  const setConsent = (value) => localStorage.setItem('cookieConsent', value);
-  const loadGA = () => {
-    if (window.gtag) return; // already loaded
-    const s = document.createElement('script');
-    s.async = true;
-    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-LHB9R5TLL1';
-    document.head.appendChild(s);
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function(){ dataLayer.push(arguments); };
-    window.gtag('js', new Date());
-    window.gtag('config', 'G-LHB9R5TLL1');
-  };
+  // Consent handled by Silktide; GA4 loaded in head with Consent Mode defaults
 
   function openModal() {
     modal.classList.remove('hidden');
@@ -76,22 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Show cookie banner if no decision yet
-  const consent = getConsent();
-  if (!consent) {
-    banner.classList.remove('hidden');
-  } else if (consent === 'accepted') {
-    loadGA();
-  }
-  cookieAccept?.addEventListener('click', () => {
-    setConsent('accepted');
-    banner.classList.add('hidden');
-    loadGA();
-  });
-  cookieReject?.addEventListener('click', () => {
-    setConsent('rejected');
-    banner.classList.add('hidden');
-  });
+  // No local cookie banner logic (Silktide handles UI and storage)
 
   // Simple math captcha
   const a = Math.floor(2 + Math.random() * 8);
