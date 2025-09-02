@@ -9,18 +9,29 @@
   <!-- Silktide Consent Manager -->
   <link rel="stylesheet" id="silktide-consent-manager-css" href="cookie-banner/silktide-consent-manager.css">
   <script src="cookie-banner/silktide-consent-manager.js"></script>
-  <!-- Google tag (gtag.js) with Consent Mode defaults -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LHB9R5TLL1"></script>
+  <!-- Consent Mode v2 defaults + GTM -->
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);} 
-    // Default to denied until user consents via Silktide
+    function gtag(){ dataLayer.push(arguments); }
+    // Consent Mode v2 defaults (deny by default, wait for banner update)
     gtag('consent', 'default', {
-      analytics_storage: 'denied'
+      'ad_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied',
+      'analytics_storage': 'denied',
+      'wait_for_update': 500
     });
-    gtag('js', new Date());
-    gtag('config', 'G-LHB9R5TLL1');
+    // Optional privacy-hardening
+    gtag('set', 'ads_data_redaction', true);
+    gtag('set', 'url_passthrough', true);
   </script>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+  <!-- End Google Tag Manager -->
   <script>
     // Silktide setup
     window.silktideCookieBannerManager = window.silktideCookieBannerManager || {};
@@ -44,20 +55,21 @@
             description: '<p>These cookies help us improve the site by tracking which pages are most popular and how visitors move around the site.</p>',
             required: false,
             onAccept: function() {
-              if (typeof gtag === 'function') {
-                gtag('consent', 'update', { analytics_storage: 'granted' });
-              }
-              if (window.dataLayer) {
-                window.dataLayer.push({ event: 'consent_accepted_analytics' });
-              }
+              gtag('consent', 'update', {
+                'analytics_storage': 'granted'
+              });
+              if (window.dataLayer) dataLayer.push({ event: 'consent_accepted_analytics' });
             },
             onReject: function() {
-              if (typeof gtag === 'function') {
-                gtag('consent', 'update', { analytics_storage: 'denied' });
-              }
+              gtag('consent', 'update', {
+                'analytics_storage': 'denied',
+                'ad_storage': 'denied',
+                'ad_user_data': 'denied',
+                'ad_personalization': 'denied'
+              });
             }
-          }
-        ],
+        }
+      ],
         text: {
           banner: {
             description: '<p>We use cookies on our site to enhance your user experience, provide personalized content, and analyze our traffic. <a href="https://applecottagecreetown.co.uk/cookie-policy" target="_blank" rel="noopener">Cookie Policy.</a></p>',
@@ -80,6 +92,10 @@
   </script>
 </head>
 <body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
   <!-- Hero section -->
   <header style="background-image: url('house_day.jpg');">
     <div class="hero-content">
