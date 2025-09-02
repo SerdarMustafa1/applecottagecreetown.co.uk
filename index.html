@@ -6,6 +6,44 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>Apple Cottage – Creetown</title>
   <link rel="stylesheet" href="style.css" />
+  <!-- Silktide Consent Manager (local asset paths) -->
+  <link rel="stylesheet" id="silktide-consent-manager-css" href="cookie-banner/silktide-consent-manager.css">
+  <script src="cookie-banner/silktide-consent-manager.js"></script>
+  <!-- Google tag (gtag.js) with Consent Mode defaults -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LHB9R5TLL1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    // Default deny until consent granted by Silktide
+    gtag('consent', 'default', { analytics_storage: 'denied' });
+    gtag('js', new Date());
+    gtag('config', 'G-LHB9R5TLL1');
+  </script>
+  <script>
+    // Configure Silktide (if loaded)
+    window.silktideCookieBannerManager = window.silktideCookieBannerManager || {};
+    if (typeof silktideCookieBannerManager.updateCookieBannerConfig === 'function') {
+      silktideCookieBannerManager.updateCookieBannerConfig({
+        background: { showBackground: true },
+        cookieIcon: { position: 'bottomRight' },
+        cookieTypes: [
+          { id: 'necessary', name: 'Necessary', required: true, description: '<p>These cookies are required for core site functionality.</p>' },
+          { id: 'analytics', name: 'Analytics', required: false, description: '<p>Helps us measure traffic and usage.</p>',
+            onAccept: function(){ if (typeof gtag==='function') gtag('consent','update',{analytics_storage:'granted'}); },
+            onReject: function(){ if (typeof gtag==='function') gtag('consent','update',{analytics_storage:'denied'}); }
+          }
+        ],
+        text: {
+          banner: {
+            description: '<p>We use cookies to improve your experience and analyze traffic. <a href="/cookie-policy" target="_blank" rel="noopener">Cookie Policy</a>.</p>',
+            acceptAllButtonText: 'Accept all',
+            rejectNonEssentialButtonText: 'Reject non-essential',
+            preferencesButtonText: 'Preferences'
+          }
+        }
+      });
+    }
+  </script>
 </head>
 <body>
   <!-- Hero section -->
@@ -14,8 +52,8 @@
       <h1>Apple Cottage, Creetown</h1>
       <p>Energy‑smart three‑bed home with annex, EV charging & landscaped gardens</p>
       <div class="cta-buttons">
-        <a href="#contact" class="btn">Book a Viewing</a>
-        <a href="#contact" class="btn">Request Home Report</a>
+        <a href="https://tidycal.com/sidmustafa/apple-cottage-viewing" class="btn" target="_blank" rel="noopener">Book a Viewing</a>
+        <a href="#" class="btn request-report-btn">Request Home Report</a>
       </div>
     </div>
   </header>
@@ -112,8 +150,8 @@
       <p><strong>Phone:</strong> <a href="tel:+447931071401">07931&nbsp;071&nbsp;401</a></p>
       <p>Formal offers must be made through your solicitor. Closing date to be set following initial viewings.</p>
       <div class="cta-buttons" style="margin-top:2rem;">
-        <a href="#" class="btn">Book Viewing</a>
-        <a href="#" class="btn">Request Home Report</a>
+        <a href="https://tidycal.com/sidmustafa/apple-cottage-viewing" class="btn" target="_blank" rel="noopener">Book Viewing</a>
+        <a href="#" class="btn request-report-btn">Request Home Report</a>
       </div>
     </div>
   </section>
@@ -121,6 +159,59 @@
   <footer>
     <p>&copy; 2025 Apple Cottage, Silver Street, Creetown. All rights reserved.</p>
   </footer>
+  
+  <!-- Home Report Modal -->
+  <div id="homeReportModal" class="modal hidden" aria-hidden="true" role="dialog">
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Close">&times;</button>
+      <div id="homeReportFormContainer">
+        <h2>Request the Home Report</h2>
+        <form id="homeReportForm" novalidate>
+          <!-- Honeypot to block bots -->
+          <input type="text" id="company" name="company" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" required />
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required />
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" required />
+          </div>
+          <div class="form-group">
+            <label for="hear">How did you hear about us?</label>
+            <input type="text" id="hear" name="hear" />
+          </div>
+          <div class="form-group">
+            <label for="captchaAnswer">Security Check</label>
+            <div class="captcha-row">
+              <span id="captchaQuestion">What is 1 + 1?</span>
+              <input type="text" id="captchaAnswer" name="captchaAnswer" inputmode="numeric" pattern="[0-9]*" placeholder="Answer" required />
+            </div>
+          </div>
+          <button type="submit" class="btn" style="width:100%;">Download Report</button>
+        </form>
+      </div>
+      <div id="bookPrompt" class="hidden">
+        <h2>Download Ready</h2>
+        <p>Your download is ready.</p>
+        <div class="cta-buttons" style="justify-content:center;">
+          <a id="downloadReportBtn" href="home_report.pdf" class="btn" download>Download Home Report</a>
+          <a href="https://tidycal.com/sidmustafa/apple-cottage-viewing" class="btn" target="_blank" rel="noopener">Book a Viewing</a>
+          <button type="button" id="noBook" class="btn">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
   
 </body>
 </html>
