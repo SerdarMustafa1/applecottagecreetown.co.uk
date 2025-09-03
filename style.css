@@ -412,6 +412,25 @@ footer {
 /* Notice (planning & warrant) */
 .notice { padding: 1rem; border: 1px solid currentColor; border-radius: .5rem; margin-block: 1rem; }
 
+/* Key Metrics */
+.metrics {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+.metric-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  text-align: center;
+}
+.metric-value { font-size: 1.5rem; font-weight: 800; color: #222; }
+.metric-sub { font-size: .95rem; color: #555; margin-top: .25rem; }
+.metric-note { font-size: .85rem; color: #666; margin-top: .35rem; }
+
 /* Register Interest form */
 .register-form {
   max-width: 800px; margin: 0 auto; text-align: center;
