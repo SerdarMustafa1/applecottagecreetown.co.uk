@@ -409,6 +409,9 @@ footer {
   border-radius: 6px;
 }
 
+/* Notice (planning & warrant) */
+.notice { padding: 1rem; border: 1px solid currentColor; border-radius: .5rem; margin-block: 1rem; }
+
 /* Register Interest form */
 .register-form {
   max-width: 800px; margin: 0 auto; text-align: center;
