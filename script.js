@@ -109,16 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const observeSection = (d) => {
       const imgs = Array.from(d.querySelectorAll('img[data-src]'));
-      imgs.forEach((img, i) => {
-        if (i < 2) { // prioritize first couple in each section
-          enqueue(img, true);
-        } else if (supportsIO && io) {
-          io.observe(img);
-        } else {
-          // Fallback: no IO support, enqueue directly (will be throttled by pump)
-          enqueue(img);
-        }
-      });
+      // Eagerly queue all in opened section; throttling handled by pump()
+      imgs.forEach((img, i) => enqueue(img, i < 2));
       updateCounts();
     };
 
@@ -129,6 +121,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Kick off for initially open sections
     accordion.querySelectorAll('details[open]').forEach(d => observeSection(d));
+    // Safety: after a short delay, ensure at least first image of each section is queued
+    setTimeout(() => {
+      accordion.querySelectorAll('details').forEach(d => {
+        const first = d.querySelector('img[data-src]');
+        if (first && !first.getAttribute('src')) enqueue(first, true);
+      });
+    }, 600);
   }
 
   function closeModal() {
