@@ -171,10 +171,17 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify(data)
       });
       if (!res.ok) throw new Error('Network response was not ok');
-
-      // Track successful lead + request (no immediate download)
+      // Track successful lead + download
       track('generate_lead', { form_id: 'home_report' });
-      track('home_report_requested', { delivery: 'email_within_24h' });
+      track('home_report_download', { file: 'HR-Apple-Cottage.pdf' });
+
+      // Trigger PDF download
+      const link = document.createElement('a');
+      link.href = 'HR-Apple-Cottage.pdf';
+      link.download = 'HR-Apple-Cottage.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
       formContainer.classList.add('hidden');
       bookPrompt.classList.remove('hidden');
@@ -184,8 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
-
-
   // Social sharing buttons
   const shareBtns = document.querySelectorAll('.js-share');
   const copyBtn = document.querySelector('.js-copy');
