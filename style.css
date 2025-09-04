@@ -472,6 +472,8 @@ footer {
 .img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0; transition: opacity .25s ease-out; }
 .img-wrap.loaded img { opacity: 1; }
 .img-wrap.loading::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,0.03), rgba(0,0,0,0.06), rgba(0,0,0,0.03)); background-size: 200% 100%; animation: shimmer 1.2s infinite; }
+.img-wrap.loading::after { content: ""; position: absolute; top: 50%; left: 50%; width: 28px; height: 28px; margin: -14px 0 0 -14px; border-radius: 50%; border: 3px solid rgba(0,0,0,0.18); border-top-color: rgba(0,0,0,0.45); animation: spin .6s linear infinite; }
 @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+@keyframes spin { to { transform: rotate(360deg); } }
 .gallery-grid figure.placeholder .img-wrap { display: flex; align-items:center; justify-content:center; color: #6b7280; background: repeating-linear-gradient(45deg, #f3f4f6, #f3f4f6 10px, #e5e7eb 10px, #e5e7eb 20px); }
 .gallery-grid figure.placeholder .img-wrap::after { content: 'Coming soon'; font-weight: 700; letter-spacing: .02em; }

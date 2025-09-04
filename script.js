@@ -29,25 +29,43 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.classList.remove('hidden');
   }
 
-  // Gallery performance & UX: hydrate images on section open, show counts, fade-in on load
+  // Gallery performance & UX: progressive load with IntersectionObserver, concurrency cap, counts, and spinners
   const accordion = document.querySelector('.gallery-accordion');
   if (accordion) {
+    const MAX_CONCURRENT = 3;
+    let loadingCount = 0;
+    const queue = [];
+
     const updateCounts = () => {
       accordion.querySelectorAll('details').forEach(d => {
-        const imgs = d.querySelectorAll('img[data-src], img[src]');
+        const imgs = Array.from(d.querySelectorAll('img[data-src], img[src]'));
+        const total = imgs.length;
+        const loaded = imgs.filter(img => img.getAttribute('src') && img.complete).length;
         const countEl = d.querySelector('summary .count');
-        if (countEl) countEl.textContent = imgs.length ? `(${imgs.length})` : '';
+        if (!countEl) return;
+        if (!total) { countEl.textContent = ''; return; }
+        countEl.textContent = loaded < total ? `(${loaded}/${total} loading…)` : `(${total})`;
       });
     };
 
-    const hydrate = (root) => {
-      root.querySelectorAll('img[data-src]').forEach(img => {
-        if (!img.getAttribute('src')) {
-          const wrap = img.closest('.img-wrap');
-          if (wrap) wrap.classList.add('loading');
-          img.src = img.dataset.src;
-        }
-      });
+    const pump = () => {
+      while (loadingCount < MAX_CONCURRENT && queue.length) {
+        const img = queue.shift();
+        if (img.getAttribute('src')) continue;
+        const wrap = img.closest('.img-wrap');
+        if (wrap) wrap.classList.add('loading');
+        if (img.dataset.priority === 'high') img.setAttribute('fetchpriority', 'high'); else img.setAttribute('fetchpriority', 'low');
+        img.src = img.dataset.src;
+        loadingCount++;
+      }
+    };
+
+    const enqueue = (img, high = false) => {
+      if (img.__queued) return;
+      img.__queued = true;
+      if (high) img.dataset.priority = 'high';
+      high ? queue.unshift(img) : queue.push(img);
+      pump();
     };
 
     const onImgLoad = (e) => {
@@ -56,24 +74,47 @@ document.addEventListener('DOMContentLoaded', () => {
         wrap.classList.remove('loading');
         wrap.classList.add('loaded');
       }
+      loadingCount = Math.max(0, loadingCount - 1);
+      updateCounts();
+      pump();
     };
 
+    // attach load/error handlers
     accordion.querySelectorAll('img').forEach(img => {
       img.addEventListener('load', onImgLoad, { once: true });
+      img.addEventListener('error', onImgLoad, { once: true });
     });
 
-    accordion.querySelectorAll('details').forEach(d => {
-      d.addEventListener('toggle', () => {
-        if (d.open) {
-          hydrate(d);
-          updateCounts();
+    // IO observes images within opened sections; preloads slightly before
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const img = entry.target;
+        if (entry.isIntersecting) {
+          io.unobserve(img);
+          enqueue(img);
         }
       });
+    }, { root: null, rootMargin: '200px 0px', threshold: 0.01 });
+
+    const observeSection = (d) => {
+      const imgs = Array.from(d.querySelectorAll('img[data-src]'));
+      imgs.forEach((img, i) => {
+        if (i < 2) { // prioritize first couple in each section
+          enqueue(img, true);
+        } else {
+          io.observe(img);
+        }
+      });
+      updateCounts();
+    };
+
+    // Observe when sections are opened
+    accordion.querySelectorAll('details').forEach(d => {
+      d.addEventListener('toggle', () => { if (d.open) observeSection(d); });
     });
 
-    // Hydrate initially open sections and compute counts
-    accordion.querySelectorAll('details[open]').forEach(d => hydrate(d));
-    updateCounts();
+    // Kick off for initially open sections
+    accordion.querySelectorAll('details[open]').forEach(d => observeSection(d));
   }
 
   function closeModal() {
