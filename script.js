@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
       hear: form.hear.value
     };
     try {
-      const res = await fetch('https://formsubmit.co/ajax/serdar@mustafa-family.com', {
+      const res = await fetch('https://formsubmit.co/ajax/56ed50dfa1ad28cde3aeb234e8fbaff1', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
