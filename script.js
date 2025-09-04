@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const MAX_CONCURRENT = 3;
     let loadingCount = 0;
     const queue = [];
+    const supportsIO = typeof window.IntersectionObserver === 'function';
 
     const updateCounts = () => {
       accordion.querySelectorAll('details').forEach(d => {
@@ -92,24 +93,30 @@ document.addEventListener('DOMContentLoaded', () => {
       img.addEventListener('error', onImgLoad, { once: true });
     });
 
-    // IO observes images within opened sections; preloads slightly before
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const img = entry.target;
-        if (entry.isIntersecting) {
-          io.unobserve(img);
-          enqueue(img);
-        }
-      });
-    }, { root: null, rootMargin: '200px 0px', threshold: 0.01 });
+    let io = null;
+    if (supportsIO) {
+      // IO observes images within opened sections; preloads slightly before
+      io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const img = entry.target;
+          if (entry.isIntersecting) {
+            io.unobserve(img);
+            enqueue(img);
+          }
+        });
+      }, { root: null, rootMargin: '200px 0px', threshold: 0.01 });
+    }
 
     const observeSection = (d) => {
       const imgs = Array.from(d.querySelectorAll('img[data-src]'));
       imgs.forEach((img, i) => {
         if (i < 2) { // prioritize first couple in each section
           enqueue(img, true);
-        } else {
+        } else if (supportsIO && io) {
           io.observe(img);
+        } else {
+          // Fallback: no IO support, enqueue directly (will be throttled by pump)
+          enqueue(img);
         }
       });
       updateCounts();
