@@ -29,6 +29,53 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.classList.remove('hidden');
   }
 
+  // Gallery performance & UX: hydrate images on section open, show counts, fade-in on load
+  const accordion = document.querySelector('.gallery-accordion');
+  if (accordion) {
+    const updateCounts = () => {
+      accordion.querySelectorAll('details').forEach(d => {
+        const imgs = d.querySelectorAll('img[data-src], img[src]');
+        const countEl = d.querySelector('summary .count');
+        if (countEl) countEl.textContent = imgs.length ? `(${imgs.length})` : '';
+      });
+    };
+
+    const hydrate = (root) => {
+      root.querySelectorAll('img[data-src]').forEach(img => {
+        if (!img.getAttribute('src')) {
+          const wrap = img.closest('.img-wrap');
+          if (wrap) wrap.classList.add('loading');
+          img.src = img.dataset.src;
+        }
+      });
+    };
+
+    const onImgLoad = (e) => {
+      const wrap = e.target.closest('.img-wrap');
+      if (wrap) {
+        wrap.classList.remove('loading');
+        wrap.classList.add('loaded');
+      }
+    };
+
+    accordion.querySelectorAll('img').forEach(img => {
+      img.addEventListener('load', onImgLoad, { once: true });
+    });
+
+    accordion.querySelectorAll('details').forEach(d => {
+      d.addEventListener('toggle', () => {
+        if (d.open) {
+          hydrate(d);
+          updateCounts();
+        }
+      });
+    });
+
+    // Hydrate initially open sections and compute counts
+    accordion.querySelectorAll('details[open]').forEach(d => hydrate(d));
+    updateCounts();
+  }
+
   function closeModal() {
     modal.classList.add('hidden');
     form.reset();
@@ -118,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   galleryImgs.forEach((img, i) => {
     img.style.cursor = 'zoom-in';
-    img.addEventListener('click', () => openLightbox(i));
+    img.addEventListener('click', () => { if (!img.src) return; openLightbox(i); });
   });
   if (lbClose) lbClose.addEventListener('click', closeLightbox);
   if (lbPrev) lbPrev.addEventListener('click', prevImg);
