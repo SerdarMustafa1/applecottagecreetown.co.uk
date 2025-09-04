@@ -55,6 +55,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const wrap = img.closest('.img-wrap');
         if (wrap) wrap.classList.add('loading');
         if (img.dataset.priority === 'high') img.setAttribute('fetchpriority', 'high'); else img.setAttribute('fetchpriority', 'low');
+        // Hydrate <picture> sources if present
+        const pic = img.closest('picture');
+        if (pic) {
+          pic.querySelectorAll('source[data-srcset]').forEach(source => {
+            if (!source.getAttribute('srcset')) source.setAttribute('srcset', source.dataset.srcset);
+          });
+        }
         img.src = img.dataset.src;
         loadingCount++;
       }
@@ -183,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (idx >= galleryImgs.length) idx = 0;
     currentIndex = idx;
     const imgEl = galleryImgs[currentIndex];
-    lbImg.src = imgEl.src;
+    lbImg.src = imgEl.currentSrc || imgEl.src;
     lbImg.alt = imgEl.alt || '';
     if (lbCap) lbCap.textContent = getCaption(imgEl);
   };
