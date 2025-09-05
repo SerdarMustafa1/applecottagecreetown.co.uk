@@ -179,6 +179,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // VR viewer play buttons -> start underlying <video> so A‑Frame updates the sphere
+  document.querySelectorAll('.vr-play').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id = btn.getAttribute('data-target');
+      const v = document.getElementById(id);
+      if (!v) return;
+      // ensure sources are set then play
+      const changed = (function hydrateVideoOnce(video){
+        let changed = false;
+        video.querySelectorAll('source[data-src]').forEach(s => { if (!s.src && s.dataset.src) { s.src = s.dataset.src; changed = true; } });
+        if (changed) { try { video.load(); } catch (_) {} }
+        return changed;
+      })(v);
+      try { await v.play(); } catch (_) {}
+      btn.style.display = 'none';
+    });
+  });
+
   function closeModal() {
     modal.classList.add('hidden');
     form.reset();
