@@ -44,7 +44,7 @@ def resize_and_save(src: Path, out_base: Path, width: int):
                 resized.save(avif_path, format='AVIF', quality=48)
 
 def process_folder(folder: Path, hero_names: List[str]):
-    for img in folder.glob('*.jpg'):
+    for img in list(folder.glob('*.jpg')) + list(folder.glob('*.jpeg')) + list(folder.glob('*.png')):
         base = img.with_suffix('')
         widths = HERO_WIDTHS if img.stem in hero_names else GALLERY_WIDTHS
         for w in widths:
