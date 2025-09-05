@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://applecottagecreetown.co.uk/sitemap.xml

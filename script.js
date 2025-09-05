@@ -27,6 +27,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function openModal() {
     modal.classList.remove('hidden');
+    try {
+      // Save last focused element to restore later
+      openModal.lastFocus = document.activeElement;
+    } catch (_) {}
+    // Focus first input for accessibility
+    const first = form && form.querySelector('#firstName');
+    if (first) first.focus();
   }
 
   // Gallery performance & UX: progressive load with IntersectionObserver, concurrency cap, counts, and spinners
@@ -135,6 +142,10 @@ document.addEventListener('DOMContentLoaded', () => {
     form.reset();
     formContainer.classList.remove('hidden');
     bookPrompt.classList.add('hidden');
+    // Restore focus to opener if possible
+    if (openModal.lastFocus && typeof openModal.lastFocus.focus === 'function') {
+      try { openModal.lastFocus.focus(); } catch (_) {}
+    }
   }
 
   document.querySelectorAll('.request-report-btn').forEach(btn => {
@@ -226,10 +237,17 @@ document.addEventListener('DOMContentLoaded', () => {
   if (lbNext) lbNext.addEventListener('click', nextImg);
   if (lb) lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
   window.addEventListener('keydown', (e) => {
-    if (lb && lb.classList.contains('hidden')) return;
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowRight') nextImg();
-    if (e.key === 'ArrowLeft') prevImg();
+    // Close modal on Escape
+    if (!modal.classList.contains('hidden') && e.key === 'Escape') {
+      closeModal();
+      return;
+    }
+    // Lightbox navigation
+    if (lb && !lb.classList.contains('hidden')) {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') nextImg();
+      if (e.key === 'ArrowLeft') prevImg();
+    }
   });
 
   // Sticky CTA -> open report modal

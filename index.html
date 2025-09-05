@@ -7,10 +7,21 @@
   <title>Apple Cottage – Creetown | For Sale</title>
   <meta name="description" content="Apple Cottage, Creetown — sold with Full Planning Permission &amp; Building Warrant (ref 22/1073, granted 16 Aug 2023) for a two-storey rear extension; approved drawings available." />
   <meta property="og:title" content="Apple Cottage – Creetown | For Sale" />
+  <meta property="og:description" content="Apple Cottage, Creetown — sold with Full Planning Permission & Building Warrant for a two-storey rear extension; approved drawings available." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://applecottagecreetown.co.uk/assets/images/exterior/exteriormain.jpg" />
+  <meta property="og:url" content="https://applecottagecreetown.co.uk/" />
+  <meta property="og:site_name" content="Apple Cottage, Creetown" />
+  <meta property="og:locale" content="en_GB" />
   <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:title" content="Apple Cottage – Creetown | For Sale" />
+  <meta property="twitter:description" content="Energy-smart three-bed home with annex, EV charging & landscaped gardens. Planning Permission & Building Warrant granted." />
   <meta property="twitter:image" content="https://applecottagecreetown.co.uk/assets/images/exterior/exteriormain.jpg" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://applecottagecreetown.co.uk/" />
+  <link rel="preload" as="image" href="assets/images/exterior/exteriormain.avif" type="image/avif"/>
+  <link rel="preload" as="image" href="assets/images/exterior/exteriormain.webp" type="image/webp"/>
+  <link rel="preload" as="image" href="assets/images/exterior/exteriormain.jpg" type="image/jpeg"/>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -116,6 +127,7 @@
   </script>
 </head>
 <body>
+  <a href="#main" class="skip-link">Skip to main content</a>
   <!-- No GTM noscript needed when using Google tag -->
   <!-- Hero section -->
   <header style="background-image: url('assets/images/exterior/exteriormain.jpg');">
@@ -141,6 +153,7 @@
     </div>
   </header>
 
+  <main id="main" role="main">
   <!-- Property highlights -->
   <section id="highlights">
     <h2 class="section-title">Property at a Glance</h2>
@@ -411,8 +424,8 @@
         <li><strong>EV charger:</strong> Ohme Home Pro smart charger on the driveway (<a href="https://www.ohme-ev.com/" target="_blank" rel="noopener">ohme‑ev.com</a>).</li>
         <li><strong>Connectivity:</strong> high‑speed broadband available. Ofcom checker shows regular fixed‑line services in the area (<a href="https://checker.ofcom.org.uk/en-gb/broadband-coverage#pc=dg87hu&uprn=137056796" target="_blank" rel="noopener">check availability</a>). Recent speed test ~190&nbsp;Mb/s down, 23&nbsp;Mb/s up.</li>
       </ul>
-      <img src="assets/images/misc/speedtest.jpg" alt="Starlink Internet speed test" style="margin-top: 1rem; border-radius: 8px; max-width: 300px;" />
-      <img src="assets/images/misc/ofcom.png" alt="Ofcom Internet speed test" style="margin-top: 1rem; border-radius: 8px; max-width: 300px;" />
+      <img src="assets/images/misc/speedtest.jpg" alt="Starlink Internet speed test" loading="lazy" decoding="async" style="margin-top: 1rem; border-radius: 8px; max-width: 300px;" />
+      <img src="assets/images/misc/ofcom.png" alt="Ofcom Internet speed test" loading="lazy" decoding="async" style="margin-top: 1rem; border-radius: 8px; max-width: 300px;" />
     </div>
   </section>
 
@@ -528,16 +541,17 @@
     </div>
   </section>
 
+  </main>
   <footer>
     <p>&copy; 2025 Apple Cottage, Silver Street, Creetown. All rights reserved.</p>
   </footer>
 
   <!-- Home Report Modal -->
-  <div id="homeReportModal" class="modal hidden">
+  <div id="homeReportModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="homeReportTitle">
     <div class="modal-content">
       <button class="modal-close" aria-label="Close">&times;</button>
       <div id="homeReportFormContainer">
-        <h2>Request the Home Report</h2>
+        <h2 id="homeReportTitle">Request the Home Report</h2>
         <form id="homeReportForm" action="https://formsubmit.co/56ed50dfa1ad28cde3aeb234e8fbaff1" method="POST">
           <input type="hidden" name="_subject" value="Apple Cottage — Home Report Request" />
           <input type="hidden" name="_template" value="table" />
@@ -546,29 +560,29 @@
           <input type="text" id="company" name="company" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <div class="form-group">
             <label for="firstName">First Name</label>
-            <input type="text" id="firstName" name="firstName" required />
+            <input type="text" id="firstName" name="firstName" required autocomplete="given-name" />
           </div>
           <div class="form-group">
             <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" name="lastName" required />
+            <input type="text" id="lastName" name="lastName" required autocomplete="family-name" />
           </div>
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" required />
+            <input type="email" id="email" name="email" required autocomplete="email" />
           </div>
           <div class="form-group">
             <label for="phone">Phone</label>
-            <input type="tel" id="phone" name="phone" required />
+            <input type="tel" id="phone" name="phone" required autocomplete="tel" />
           </div>
           <div class="form-group">
             <label for="hear">How did you hear about us?</label>
-            <input type="text" id="hear" name="hear" />
+            <input type="text" id="hear" name="hear" autocomplete="off" />
           </div>
           <div class="form-group">
             <label for="captchaAnswer">Security Check</label>
             <div class="captcha-row">
               <span id="captchaQuestion">What is 1 + 1?</span>
-              <input type="text" id="captchaAnswer" name="captchaAnswer" inputmode="numeric" pattern="[0-9]*" placeholder="Answer" required />
+              <input aria-describedby="captchaQuestion" type="text" id="captchaAnswer" name="captchaAnswer" inputmode="numeric" pattern="[0-9]*" placeholder="Answer" required />
             </div>
           </div>
           <button type="submit" class="btn" style="width:100%;">Download Report</button>
