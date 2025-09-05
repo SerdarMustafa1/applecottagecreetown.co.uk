@@ -149,10 +149,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const lazyVideos = Array.from(document.querySelectorAll('video[data-lazy="true"]'));
   if (lazyVideos.length) {
     const hydrateVideo = (v) => {
+      let changed = false;
       v.querySelectorAll('source[data-src]').forEach(s => {
-        if (!s.src) s.src = s.dataset.src;
+        if (!s.src && s.dataset.src) { s.src = s.dataset.src; changed = true; }
       });
-      try { v.load(); } catch (_) {}
+      if (changed) { try { v.load(); } catch (_) {} }
+      return changed;
     };
     if (typeof window.IntersectionObserver === 'function') {
       const vio = new IntersectionObserver((entries) => {
@@ -167,6 +169,14 @@ document.addEventListener('DOMContentLoaded', () => {
       // Fallback: hydrate immediately
       lazyVideos.forEach(hydrateVideo);
     }
+
+    // Also hydrate on first user interaction or when playback is requested
+    lazyVideos.forEach(v => {
+      const onAttemptPlay = () => { hydrateVideo(v); };
+      v.addEventListener('play', onAttemptPlay, { once: true });
+      v.addEventListener('click', onAttemptPlay, { once: true });
+      v.addEventListener('pointerdown', onAttemptPlay, { once: true });
+    });
   }
 
   function closeModal() {
