@@ -145,6 +145,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 600);
   }
 
+  // Lazy load videos (360 tours) when visible
+  const lazyVideos = Array.from(document.querySelectorAll('video[data-lazy="true"]'));
+  if (lazyVideos.length) {
+    const hydrateVideo = (v) => {
+      v.querySelectorAll('source[data-src]').forEach(s => {
+        if (!s.src) s.src = s.dataset.src;
+      });
+      try { v.load(); } catch (_) {}
+    };
+    if (typeof window.IntersectionObserver === 'function') {
+      const vio = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          hydrateVideo(e.target);
+          vio.unobserve(e.target);
+        });
+      }, { root: null, rootMargin: '200px 0px', threshold: 0.01 });
+      lazyVideos.forEach(v => vio.observe(v));
+    } else {
+      // Fallback: hydrate immediately
+      lazyVideos.forEach(hydrateVideo);
+    }
+  }
+
   function closeModal() {
     modal.classList.add('hidden');
     form.reset();

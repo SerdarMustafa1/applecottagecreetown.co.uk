@@ -2,6 +2,7 @@
 import os
 from pathlib import Path
 from typing import List
+import re
 
 from PIL import Image
 try:
@@ -43,8 +44,24 @@ def resize_and_save(src: Path, out_base: Path, width: int):
             if not avif_path.exists():
                 resized.save(avif_path, format='AVIF', quality=48)
 
+WIDTH_RE = re.compile(r"-(480|800|1200)(?:$|\.)")
+MULTI_WIDTH_RE = re.compile(r"-(480|800|1200)-(480|800|1200)")
+
+def is_base_original(p: Path) -> bool:
+    name = p.name
+    # Skip already-sized variants like foo-480.jpg
+    if WIDTH_RE.search(name):
+        return False
+    # Skip misgenerated multi-width variants like foo-480-800.jpg
+    if MULTI_WIDTH_RE.search(name):
+        return False
+    return True
+
 def process_folder(folder: Path, hero_names: List[str]):
-    for img in list(folder.glob('*.jpg')) + list(folder.glob('*.jpeg')) + list(folder.glob('*.png')):
+    candidates = list(folder.glob('*.jpg')) + list(folder.glob('*.jpeg')) + list(folder.glob('*.png'))
+    for img in candidates:
+        if not is_base_original(img):
+            continue
         base = img.with_suffix('')
         widths = HERO_WIDTHS if img.stem in hero_names else GALLERY_WIDTHS
         for w in widths:
