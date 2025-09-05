@@ -13,6 +13,7 @@ except Exception:
 
 ROOT = Path(__file__).resolve().parents[1]
 EXTERIOR = ROOT / 'assets' / 'images' / 'exterior'
+INTERIOR = ROOT / 'assets' / 'images' / 'interior'
 
 # Target widths for gallery images and hero
 GALLERY_WIDTHS = [480, 800, 1200]
@@ -53,8 +54,10 @@ def main():
     hero = ['exteriormain']
     if EXTERIOR.exists():
         process_folder(EXTERIOR, hero)
+    # Also generate responsive sizes for interior images
+    if INTERIOR.exists():
+        process_folder(INTERIOR, [])
     print('[responsive] Done')
 
 if __name__ == '__main__':
     main()
-
