@@ -34,6 +34,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Focus first input for accessibility
     const first = form && form.querySelector('#firstName');
     if (first) first.focus();
+
+    // Enable focus trap inside modal
+    if (openModal.trapCleanup) { try { openModal.trapCleanup(); } catch (_) {} }
+    openModal.trapCleanup = enableFocusTrap(modal);
   }
 
   // Gallery performance & UX: progressive load with IntersectionObserver, concurrency cap, counts, and spinners
@@ -61,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const img = queue.shift();
         if (img.getAttribute('src')) continue;
         const wrap = img.closest('.img-wrap');
-        if (wrap) wrap.classList.add('loading');
+        if (wrap) { wrap.classList.add('loading'); wrap.setAttribute('aria-busy', 'true'); }
         if (img.dataset.priority === 'high') img.setAttribute('fetchpriority', 'high'); else img.setAttribute('fetchpriority', 'low');
         // Hydrate <picture> sources if present
         const pic = img.closest('picture');
@@ -69,6 +73,9 @@ document.addEventListener('DOMContentLoaded', () => {
           pic.querySelectorAll('source[data-srcset]').forEach(source => {
             if (!source.getAttribute('srcset')) source.setAttribute('srcset', source.dataset.srcset);
           });
+        }
+        if (img.dataset.srcset && !img.getAttribute('srcset')) {
+          img.setAttribute('srcset', img.dataset.srcset);
         }
         img.src = img.dataset.src;
         loadingCount++;
@@ -87,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const wrap = e.target.closest('.img-wrap');
       if (wrap) {
         wrap.classList.remove('loading');
+        wrap.setAttribute('aria-busy', 'false');
         wrap.classList.add('loaded');
       }
       loadingCount = Math.max(0, loadingCount - 1);
@@ -146,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (openModal.lastFocus && typeof openModal.lastFocus.focus === 'function') {
       try { openModal.lastFocus.focus(); } catch (_) {}
     }
+    if (openModal.trapCleanup) { try { openModal.trapCleanup(); } catch (_) {} }
   }
 
   document.querySelectorAll('.request-report-btn').forEach(btn => {
@@ -218,12 +227,15 @@ document.addEventListener('DOMContentLoaded', () => {
     lb.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
     const imgEl = galleryImgs[idx];
-    track('lightbox_open', { src: imgEl.src, alt: imgEl.alt || '' });
+    track('lightbox_open', { src: imgEl.currentSrc || imgEl.src, alt: imgEl.alt || '' });
+    if (openLightbox.trapCleanup) { try { openLightbox.trapCleanup(); } catch (_) {} }
+    openLightbox.trapCleanup = enableFocusTrap(lb);
   };
   const closeLightbox = () => {
     if (!lb) return;
     lb.classList.add('hidden');
     document.body.style.overflow = '';
+    if (openLightbox.trapCleanup) { try { openLightbox.trapCleanup(); } catch (_) {} }
   };
   const nextImg = () => showAt(currentIndex + 1);
   const prevImg = () => showAt(currentIndex - 1);
@@ -310,6 +322,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+// Enable a focus trap within a container element; returns a cleanup function
+function enableFocusTrap(container) {
+  const FOCUSABLE = 'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
+  const getFocusable = () => Array.from(container.querySelectorAll(FOCUSABLE)).filter(el => !el.hasAttribute('disabled') && el.tabIndex !== -1);
+  const handler = (e) => {
+    if (e.key !== 'Tab') return;
+    const nodes = getFocusable();
+    if (!nodes.length) return;
+    const first = nodes[0];
+    const last = nodes[nodes.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first || !container.contains(document.activeElement)) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (document.activeElement === last || !container.contains(document.activeElement)) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  };
+  container.addEventListener('keydown', handler);
+  return () => container.removeEventListener('keydown', handler);
+}
   // Social sharing buttons
   const shareBtns = document.querySelectorAll('.js-share');
   const copyBtn = document.querySelector('.js-copy');
