@@ -36,23 +36,30 @@ async function ensureOutputs(base, input) {
   if (!exists(input)) return;
   // MP4 (H.264 + AAC)
   if (!exists(mp4)) {
+    const crf = process.env.MP4_CRF || '18'; // lower = better
+    const preset = process.env.MP4_PRESET || 'medium';
     await convert(input, mp4, [
-      '-c:v libx264',
-      '-preset veryfast',
-      '-crf 22',
+      `-c:v libx264`,
+      `-preset ${preset}`,
+      `-crf ${crf}`,
       '-pix_fmt yuv420p',
       '-movflags +faststart',
+      '-g 60',
       '-c:a aac',
       '-b:a 128k'
     ]);
   }
   // WebM (VP9 + Opus)
   if (!exists(webm)) {
+    const crf = process.env.WEBM_CRF || '28'; // lower = better
+    const speed = process.env.WEBM_SPEED || '1'; // 0-4; lower = better
     await convert(input, webm, [
       '-c:v libvpx-vp9',
       '-b:v 0',
-      '-crf 32',
+      `-crf ${crf}`,
+      `-speed ${speed}`,
       '-row-mt 1',
+      '-g 60',
       '-c:a libopus',
       '-b:a 96k'
     ]);
@@ -74,4 +81,3 @@ async function ensureOutputs(base, input) {
     process.exit(0);
   }
 })();
-

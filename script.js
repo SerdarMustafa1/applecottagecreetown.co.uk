@@ -227,6 +227,44 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Playback speed control for VR viewers (affects both 360 and flat videos)
+  document.querySelectorAll('.vr-viewer').forEach(viewer => {
+    const speedSel = viewer.querySelector('.vr-speed');
+    const setRate = (rate) => {
+      const vids = viewer.querySelectorAll('video');
+      vids.forEach(v => { try { v.playbackRate = rate; } catch (_) {} });
+    };
+    if (speedSel) {
+      speedSel.addEventListener('change', () => setRate(parseFloat(speedSel.value) || 1));
+      setRate(parseFloat(speedSel.value) || 1);
+    }
+  });
+
+  // Fullscreen control (tries scene first; falls back to native video fullscreen on iOS)
+  document.querySelectorAll('.vr-fullscreen').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const viewer = btn.closest('.vr-viewer');
+      if (!viewer) return;
+      const scene = viewer.querySelector('a-scene');
+      const flat = viewer.querySelector('video.flat-video');
+      // Try element fullscreen (A-Frame canvas)
+      const elem = scene || viewer;
+      const req = elem.requestFullscreen || elem.webkitRequestFullscreen || elem.msRequestFullscreen;
+      if (req) {
+        try { await req.call(elem); return; } catch (_) { /* continue fallback */ }
+      }
+      // iOS: use native video fullscreen
+      if (flat) {
+        // hydrate and show flat
+        flat.querySelectorAll('source[data-src]').forEach(s => { if (!s.src && s.dataset.src) s.src = s.dataset.src; });
+        try { flat.load(); } catch (_) {}
+        flat.style.display = 'block';
+        const vfs = flat.webkitEnterFullscreen || flat.requestFullscreen;
+        if (vfs) { try { vfs.call(flat); } catch (_) {} }
+      }
+    });
+  });
+
   function closeModal() {
     modal.classList.add('hidden');
     form.reset();
