@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Static site for Apple Cottage with 360 video conversion at build time",
   "scripts": {
-    "build": "node scripts/convert_videos.js"
+    "build": "node scripts/convert_videos.js && node scripts/rewrite_media_base.js"
   },
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
@@ -12,4 +12,3 @@
     "fluent-ffmpeg": "^2.1.2"
   }
 }
-
