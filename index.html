@@ -588,6 +588,12 @@
                   <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true" style="position:absolute; inset:0;">
                     <a-videosphere src="#kitchen360" rotation="0 -90 0"></a-videosphere>
                   </a-scene>
+                  <!-- Flat video fallback -->
+                  <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/kitchen-360-poster.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
+                    <source type="video/webm" data-src="assets/videos/interior/kitchen-360.webm" />
+                    <source type="video/mp4" data-src="assets/videos/interior/kitchen-360.mp4" />
+                    <source type="video/quicktime" data-src="assets/videos/interior/kitchen-360.mov" />
+                  </video>
                   <button class="vr-play" data-target="kitchen360" aria-label="Play 360 video" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.6rem 1rem; background:#00000099; color:#fff; border:1px solid #ffffff66; border-radius:6px; font-weight:700; cursor:pointer;">Tap to play 360</button>
                 </div>
                 <figcaption>Kitchen — interactive 360°</figcaption>
@@ -603,6 +609,12 @@
                   <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true" style="position:absolute; inset:0;">
                     <a-videosphere src="#sunroom360" rotation="0 -90 0"></a-videosphere>
                   </a-scene>
+                  <!-- Flat video fallback -->
+                  <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/sunroom-360-poster.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
+                    <source type="video/webm" data-src="assets/videos/interior/sunroom-360.webm" />
+                    <source type="video/mp4" data-src="assets/videos/interior/sunroom-360.mp4" />
+                    <source type="video/quicktime" data-src="assets/videos/interior/sunroom-360.mov" />
+                  </video>
                   <button class="vr-play" data-target="sunroom360" aria-label="Play 360 video" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.6rem 1rem; background:#00000099; color:#fff; border:1px solid #ffffff66; border-radius:6px; font-weight:700; cursor:pointer;">Tap to play 360</button>
                 </div>
                 <figcaption>Sunroom — interactive 360°</figcaption>

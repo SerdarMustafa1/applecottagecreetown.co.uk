@@ -195,8 +195,35 @@ document.addEventListener('DOMContentLoaded', () => {
         if (changed) { try { video.load(); } catch (_) {} }
         return changed;
       })(v);
-      try { await v.play(); } catch (_) {}
-      btn.style.display = 'none';
+      // Try playing; if it fails or doesn't start, fall back to flat video
+      const viewer = btn.closest('.vr-viewer');
+      const flat = viewer ? viewer.querySelector('video.flat-video') : null;
+      const showFlat = () => {
+        if (!flat) return;
+        // hydrate flat video sources
+        flat.querySelectorAll('source[data-src]').forEach(s => { if (!s.src && s.dataset.src) s.src = s.dataset.src; });
+        try { flat.load(); } catch (_) {}
+        // show flat player and hide a-scene
+        const scene = viewer.querySelector('a-scene');
+        if (scene) scene.style.display = 'none';
+        flat.style.display = 'block';
+        try { flat.play(); } catch (_) {}
+      };
+
+      let played = false;
+      try { await v.play(); played = true; } catch (_) {}
+      // If promise resolved but nothing renders soon, still switch to flat
+      setTimeout(() => {
+        const stalled = v.readyState < 2 || v.currentTime === 0;
+        if (!played || stalled) {
+          showFlat();
+        } else {
+          // success: keep A‑Frame and hide button
+          btn.style.display = 'none';
+        }
+      }, 1200);
+      // Also on error events, show flat
+      v.addEventListener('error', showFlat, { once: true });
     });
   });
 
