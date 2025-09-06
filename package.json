@@ -1,0 +1,15 @@
+{
+  "name": "apple-cottage-site",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Static site for Apple Cottage with 360 video conversion at build time",
+  "scripts": {
+    "build": "node scripts/convert_videos.js"
+  },
+  "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@ffprobe-installer/ffprobe": "^2.1.2",
+    "fluent-ffmpeg": "^2.1.2"
+  }
+}
+

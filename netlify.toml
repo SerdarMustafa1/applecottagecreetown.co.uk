@@ -1,5 +1,6 @@
 [build]
   publish = "."
+  command = "npm install && npm run build || true"
 
 # Optional: basic security headers
 [[headers]]
@@ -9,4 +10,3 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "no-referrer-when-downgrade"
     Permissions-Policy = "geolocation=(), microphone=(), camera=()"
-
