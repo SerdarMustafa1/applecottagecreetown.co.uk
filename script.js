@@ -185,6 +185,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const id = btn.getAttribute('data-target');
       const v = document.getElementById(id);
       if (!v) return;
+      // Hide poster image if present
+      const posterImg = btn.closest('.vr-viewer')?.querySelector('.vr-poster');
+      if (posterImg) posterImg.style.display = 'none';
       // ensure sources are set then play
       const changed = (function hydrateVideoOnce(video){
         let changed = false;
