@@ -49,10 +49,27 @@ async function ensureOutputs(base, input) {
       '-b:a 128k'
     ]);
   }
-  // WebM (VP9 + Opus)
+  // WebM (VP9 + Opus) — 2‑pass for better quality at size
   if (!exists(webm)) {
-    const crf = process.env.WEBM_CRF || '28'; // lower = better
-    const speed = process.env.WEBM_SPEED || '1'; // 0-4; lower = better
+    const crf = process.env.WEBM_CRF || '24'; // lower = better
+    const speed = process.env.WEBM_SPEED || '0'; // slower = better
+    const passlog = path.join(VID_DIR, `.ffpass-${base}`);
+    // pass 1 -> null output
+    await convert(input, 'NUL' /* unused */, [
+      '-c:v libvpx-vp9',
+      '-b:v 0',
+      `-crf ${crf}`,
+      `-speed ${speed}`,
+      '-row-mt 1',
+      '-g 60',
+      '-an',
+      '-pass 1',
+      `-passlogfile ${passlog}`,
+      '-f webm',
+      '-y',
+      'NUL'
+    ].filter(Boolean)).catch(()=>{});
+    // pass 2 -> file
     await convert(input, webm, [
       '-c:v libvpx-vp9',
       '-b:v 0',
@@ -61,8 +78,11 @@ async function ensureOutputs(base, input) {
       '-row-mt 1',
       '-g 60',
       '-c:a libopus',
-      '-b:a 96k'
+      '-b:a 128k',
+      '-pass 2',
+      `-passlogfile ${passlog}`
     ]);
+    try { fs.unlinkSync(`${passlog}-0.log`); } catch {}
   }
 }
 
