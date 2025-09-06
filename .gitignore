@@ -1,0 +1,7 @@
+.DS_Store
+assets/.DS_Store
+assets/images/.DS_Store
+assets/videos/.DS_Store
+assets/videos/interior/.DS_Store
+node_modules/
+package-lock.json
