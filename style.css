@@ -340,6 +340,17 @@ footer {
   display: none !important;
 }
 
+/* Announcement banner */
+.announce {
+  position: fixed; left: 0; right: 0; top: 0;
+  background: #111827; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  gap: .75rem; padding: .6rem .8rem; z-index: 3000;
+  box-shadow: 0 2px 12px rgba(0,0,0,.2);
+}
+.announce .btn-sm { padding: .35rem .6rem; font-size: .9rem; }
+.btn-ghost { background: transparent; border: 1px solid #ffffff55; color: #fff; }
+
 /* Modal */
 .modal {
   position: fixed;

@@ -21,7 +21,7 @@ except Exception:
 ROOT = Path(__file__).resolve().parents[1]
 IMG_DIR = ROOT / 'assets' / 'images'
 
-VALID_EXTS = {'.jpg', '.jpeg', '.png'}
+VALID_EXTS = {'.jpg', '.jpeg', '.png', '.heic'}
 
 def convert_one(path: Path):
     if path.suffix.lower() not in VALID_EXTS:
@@ -67,4 +67,3 @@ def main():
 
 if __name__ == '__main__':
     sys.exit(main())
-

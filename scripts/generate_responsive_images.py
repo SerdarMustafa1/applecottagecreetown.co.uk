@@ -58,7 +58,8 @@ def is_base_original(p: Path) -> bool:
     return True
 
 def process_folder(folder: Path, hero_names: List[str]):
-    candidates = list(folder.glob('*.jpg')) + list(folder.glob('*.jpeg')) + list(folder.glob('*.png'))
+    candidates = (list(folder.glob('*.jpg')) + list(folder.glob('*.jpeg')) +
+                  list(folder.glob('*.png')) + list(folder.glob('*.heic')))
     for img in candidates:
         if not is_base_original(img):
             continue

@@ -12,10 +12,18 @@ ffmpeg.setFfmpegPath(ffmpegPath);
 ffmpeg.setFfprobePath(ffprobePath);
 
 const VID_DIR = path.join(__dirname, '..', 'assets', 'videos', 'interior');
-const targets = [
-  { base: 'kitchen-360', sources: ['kitchen-360.mov', 'kitchen-360.mp4'] },
-  { base: 'sunroom-360', sources: ['sunroom-360.mov', 'sunroom-360.mp4'] }
-];
+function discoverTargets() {
+  const entries = fs.readdirSync(VID_DIR);
+  const bases = new Set();
+  for (const fn of entries) {
+    const m = fn.match(/^(.+-360)\.(mov|mp4|webm)$/i);
+    if (m) bases.add(m[1]);
+  }
+  return Array.from(bases).map(base => ({
+    base,
+    sources: [`${base}.mov`, `${base}.mp4`]
+  }));
+}
 
 function exists(p) { try { fs.accessSync(p); return true; } catch { return false; } }
 
@@ -89,6 +97,7 @@ async function ensureOutputs(base, input) {
 (async () => {
   try {
     if (!exists(VID_DIR)) { console.log('[videos] directory not found, skipping'); return; }
+    const targets = discoverTargets();
     for (const t of targets) {
       const input = t.sources.map(s => path.join(VID_DIR, s)).find(exists);
       if (!input) { console.log(`[videos] no source for ${t.base}, skipping`); continue; }

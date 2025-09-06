@@ -208,7 +208,15 @@
     </script>
   </head>
   <body>
-    <a href="#main" class="skip-link">Skip to main content</a>
+  <a href="#main" class="skip-link">Skip to main content</a>
+  <!-- New content announcement banner -->
+  <div id="newContentBanner" class="announce hidden" role="status" aria-live="polite">
+    <span>Fresh images and 360° videos just added.</span>
+    <div class="announce-actions">
+      <a href="#gallery" class="btn btn-sm">See Updates</a>
+      <button type="button" id="dismissAnnounce" class="btn btn-sm btn-ghost" aria-label="Dismiss">Dismiss</button>
+    </div>
+  </div>
     <!-- No GTM noscript needed when using Google tag -->
     <!-- Hero section -->
     <header>
@@ -639,6 +647,66 @@
                 </div>
                 <figcaption>Sunroom — interactive 360°</figcaption>
               </figure>
+              <figure>
+                <div class="img-wrap vr-viewer" style="aspect-ratio:16/9; position:relative;">
+                  <img class="vr-poster" src="assets/images/interior/bathroom-360-1-800.jpg" alt="Bathroom 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <video id="bathroom360" muted playsinline preload="none" data-lazy="true" style="display:none">
+                    <source type="video/webm" data-src="assets/videos/interior/bathroom-360.webm" />
+                    <source type="video/mp4" data-src="assets/videos/interior/bathroom-360.mp4" />
+                    <source type="video/quicktime" data-src="assets/videos/interior/bathroom-360.mov" />
+                  </video>
+                  <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0;">
+                    <a-videosphere src="#bathroom360" rotation="0 -90 0" material="shader: flat"></a-videosphere>
+                  </a-scene>
+                  <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/bathroom-360-1-800.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
+                    <source type="video/webm" data-src="assets/videos/interior/bathroom-360.webm" />
+                    <source type="video/mp4" data-src="assets/videos/interior/bathroom-360.mp4" />
+                    <source type="video/quicktime" data-src="assets/videos/interior/bathroom-360.mov" />
+                  </video>
+                  <button class="vr-play" data-target="bathroom360" aria-label="Play 360 video" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.6rem 1rem; background:#00000099; color:#fff; border:1px solid #ffffff66; border-radius:6px; font-weight:700; cursor:pointer;">Tap to play 360</button>
+                </div>
+                <figcaption>Bathroom — interactive 360°</figcaption>
+              </figure>
+              <figure>
+                <div class="img-wrap vr-viewer" style="aspect-ratio:16/9; position:relative;">
+                  <img class="vr-poster" src="assets/images/interior/landing-360-1-800.jpg" alt="Landing 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <video id="landing360" muted playsinline preload="none" data-lazy="true" style="display:none">
+                    <source type="video/webm" data-src="assets/videos/interior/landing-360.webm" />
+                    <source type="video/mp4" data-src="assets/videos/interior/landing-360.mp4" />
+                    <source type="video/quicktime" data-src="assets/videos/interior/landing-360.mov" />
+                  </video>
+                  <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0;">
+                    <a-videosphere src="#landing360" rotation="0 -90 0" material="shader: flat"></a-videosphere>
+                  </a-scene>
+                  <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/landing-360-1-800.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
+                    <source type="video/webm" data-src="assets/videos/interior/landing-360.webm" />
+                    <source type="video/mp4" data-src="assets/videos/interior/landing-360.mp4" />
+                    <source type="video/quicktime" data-src="assets/videos/interior/landing-360.mov" />
+                  </video>
+                  <button class="vr-play" data-target="landing360" aria-label="Play 360 video" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.6rem 1rem; background:#00000099; color:#fff; border:1px solid #ffffff66; border-radius:6px; font-weight:700; cursor:pointer;">Tap to play 360</button>
+                </div>
+                <figcaption>Landing — interactive 360°</figcaption>
+              </figure>
+              <figure>
+                <div class="img-wrap vr-viewer" style="aspect-ratio:16/9; position:relative;">
+                  <img class="vr-poster" src="assets/images/interior/bedroom-2-360-1-800.jpg" alt="Bedroom 2 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <video id="bedroom2360" muted playsinline preload="none" data-lazy="true" style="display:none">
+                    <source type="video/webm" data-src="assets/videos/interior/bedroom-2-360.webm" />
+                    <source type="video/mp4" data-src="assets/videos/interior/bedroom-2-360.mp4" />
+                    <source type="video/quicktime" data-src="assets/videos/interior/bedroom-2-360.mov" />
+                  </video>
+                  <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0;">
+                    <a-videosphere src="#bedroom2360" rotation="0 -90 0" material="shader: flat"></a-videosphere>
+                  </a-scene>
+                  <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/bedroom-2-360-1-800.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
+                    <source type="video/webm" data-src="assets/videos/interior/bedroom-2-360.webm" />
+                    <source type="video/mp4" data-src="assets/videos/interior/bedroom-2-360.mp4" />
+                    <source type="video/quicktime" data-src="assets/videos/interior/bedroom-2-360.mov" />
+                  </video>
+                  <button class="vr-play" data-target="bedroom2360" aria-label="Play 360 video" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.6rem 1rem; background:#00000099; color:#fff; border:1px solid #ffffff66; border-radius:6px; font-weight:700; cursor:pointer;">Tap to play 360</button>
+                </div>
+                <figcaption>Bedroom 2 — interactive 360°</figcaption>
+              </figure>
             </div>
           </details>
 
@@ -1028,45 +1096,46 @@
               <span class="count" aria-live="polite"></span>
             </summary>
             <div class="gallery gallery-grid">
+              <!-- 360 PHOTO VIEWERS to avoid equirectangular distortion -->
               <figure>
-                <div class="img-wrap">
-                  <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/bathroom-360-1-480.avif 480w, assets/images/interior/bathroom-360-1-800.avif 800w, assets/images/interior/bathroom-360-1-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/bathroom-360-1-480.webp 480w, assets/images/interior/bathroom-360-1-800.webp 800w, assets/images/interior/bathroom-360-1-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/bathroom-360-1-800.jpg" data-srcset="assets/images/interior/bathroom-360-1-480.jpg 480w, assets/images/interior/bathroom-360-1-800.jpg 800w, assets/images/interior/bathroom-360-1-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Family bathroom — 360 view" loading="lazy" decoding="async" />
-                  </picture>
+                <div class="img-wrap vr-photo" style="position:relative;">
+                  <img class="vr-poster" src="assets/images/interior/bathroom-360-1-800.jpg" alt="Family bathroom — 360 photo" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0; display:none;">
+                    <a-sky src="assets/images/interior/bathroom-360-1-1200.jpg" rotation="0 -90 0"></a-sky>
+                  </a-scene>
+                  <button class="vr-photo-play" aria-label="View 360 photo" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.6rem 1rem; background:#00000099; color:#fff; border:1px solid #ffffff66; border-radius:6px; font-weight:700; cursor:pointer;">View 360 photo</button>
                 </div>
-                <figcaption>Family bathroom — 360 view</figcaption>
+                <figcaption>Family bathroom — 360 photo</figcaption>
               </figure>
               <figure>
-                <div class="img-wrap">
-                  <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/bedroom-2-360-1-480.avif 480w, assets/images/interior/bedroom-2-360-1-800.avif 800w, assets/images/interior/bedroom-2-360-1-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/bedroom-2-360-1-480.webp 480w, assets/images/interior/bedroom-2-360-1-800.webp 800w, assets/images/interior/bedroom-2-360-1-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/bedroom-2-360-1-800.jpg" data-srcset="assets/images/interior/bedroom-2-360-1-480.jpg 480w, assets/images/interior/bedroom-2-360-1-800.jpg 800w, assets/images/interior/bedroom-2-360-1-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Bedroom 2 — 360 view" loading="lazy" decoding="async" />
-                  </picture>
+                <div class="img-wrap vr-photo" style="position:relative;">
+                  <img class="vr-poster" src="assets/images/interior/bedroom-2-360-1-800.jpg" alt="Bedroom 2 — 360 photo" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0; display:none;">
+                    <a-sky src="assets/images/interior/bedroom-2-360-1-1200.jpg" rotation="0 -90 0"></a-sky>
+                  </a-scene>
+                  <button class="vr-photo-play" aria-label="View 360 photo" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.6rem 1rem; background:#00000099; color:#fff; border:1px solid #ffffff66; border-radius:6px; font-weight:700; cursor:pointer;">View 360 photo</button>
                 </div>
-                <figcaption>Bedroom 2 — 360 view</figcaption>
+                <figcaption>Bedroom 2 — 360 photo</figcaption>
               </figure>
               <figure>
-                <div class="img-wrap">
-                  <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/landing-360-1-480.avif 480w, assets/images/interior/landing-360-1-800.avif 800w, assets/images/interior/landing-360-1-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/landing-360-1-480.webp 480w, assets/images/interior/landing-360-1-800.webp 800w, assets/images/interior/landing-360-1-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/landing-360-1-800.jpg" data-srcset="assets/images/interior/landing-360-1-480.jpg 480w, assets/images/interior/landing-360-1-800.jpg 800w, assets/images/interior/landing-360-1-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Landing — 360 view (doors)" loading="lazy" decoding="async" />
-                  </picture>
+                <div class="img-wrap vr-photo" style="position:relative;">
+                  <img class="vr-poster" src="assets/images/interior/landing-360-1-800.jpg" alt="Landing — 360 photo (doors)" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0; display:none;">
+                    <a-sky src="assets/images/interior/landing-360-1-1200.jpg" rotation="0 -90 0"></a-sky>
+                  </a-scene>
+                  <button class="vr-photo-play" aria-label="View 360 photo" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.6rem 1rem; background:#00000099; color:#fff; border:1px solid #ffffff66; border-radius:6px; font-weight:700; cursor:pointer;">View 360 photo</button>
                 </div>
-                <figcaption>Landing — 360 view (doors)</figcaption>
+                <figcaption>Landing — 360 photo (doors)</figcaption>
               </figure>
               <figure>
-                <div class="img-wrap">
-                  <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/landing-360-2-480.avif 480w, assets/images/interior/landing-360-2-800.avif 800w, assets/images/interior/landing-360-2-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/landing-360-2-480.webp 480w, assets/images/interior/landing-360-2-800.webp 800w, assets/images/interior/landing-360-2-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/landing-360-2-800.jpg" data-srcset="assets/images/interior/landing-360-2-480.jpg 480w, assets/images/interior/landing-360-2-800.jpg 800w, assets/images/interior/landing-360-2-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Landing — 360 view (stairs & window)" loading="lazy" decoding="async" />
-                  </picture>
+                <div class="img-wrap vr-photo" style="position:relative;">
+                  <img class="vr-poster" src="assets/images/interior/landing-360-2-800.jpg" alt="Landing — 360 photo (stairs & window)" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0; display:none;">
+                    <a-sky src="assets/images/interior/landing-360-2-1200.jpg" rotation="0 -90 0"></a-sky>
+                  </a-scene>
+                  <button class="vr-photo-play" aria-label="View 360 photo" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.6rem 1rem; background:#00000099; color:#fff; border:1px solid #ffffff66; border-radius:6px; font-weight:700; cursor:pointer;">View 360 photo</button>
                 </div>
-                <figcaption>Landing — 360 view (stairs & window)</figcaption>
+                <figcaption>Landing — 360 photo (stairs & window)</figcaption>
               </figure>
             </div>
           </details>

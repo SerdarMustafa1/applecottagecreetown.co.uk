@@ -265,6 +265,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Simple announcement banner for fresh media
+  (function(){
+    const key = 'newContentNotice:v2';
+    const banner = document.getElementById('newContentBanner');
+    const dismiss = document.getElementById('dismissAnnounce');
+    if (!banner) return;
+    try {
+      const seen = localStorage.getItem(key);
+      if (!seen) { banner.classList.remove('hidden'); }
+      if (dismiss) dismiss.addEventListener('click', () => {
+        banner.classList.add('hidden');
+        try { localStorage.setItem(key, String(Date.now())); } catch(_) {}
+      });
+      // Auto-hide after 10s but still mark seen
+      setTimeout(() => { if (!banner.classList.contains('hidden')) { banner.classList.add('hidden'); try { localStorage.setItem(key, String(Date.now())); } catch(_) {} } }, 10000);
+    } catch(_) {}
+  })();
+
+  // 360 photo viewers: show A‑Frame sky on click
+  document.querySelectorAll('.vr-photo .vr-photo-play').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const viewer = btn.closest('.vr-photo');
+      if (!viewer) return;
+      const poster = viewer.querySelector('.vr-poster');
+      const scene = viewer.querySelector('a-scene');
+      if (poster) poster.style.display = 'none';
+      if (scene) scene.style.display = 'block';
+      btn.style.display = 'none';
+    });
+  });
+
   function closeModal() {
     modal.classList.add('hidden');
     form.reset();
