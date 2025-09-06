@@ -296,6 +296,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Open 360 section if linked via hash
+  (function(){
+    const openTours = () => {
+      if (location.hash === '#tours360') {
+        const d = document.getElementById('tours360');
+        if (d && !d.open) d.open = true;
+        if (d) d.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+    window.addEventListener('hashchange', openTours);
+    openTours();
+    // Also intercept clicks to force open
+    document.querySelectorAll('a[href="#tours360"]').forEach(a => {
+      a.addEventListener('click', () => {
+        const d = document.getElementById('tours360');
+        if (d) d.open = true;
+      });
+    });
+  })();
+
   function closeModal() {
     modal.classList.add('hidden');
     form.reset();

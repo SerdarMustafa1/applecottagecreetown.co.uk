@@ -41,6 +41,8 @@ function convert(input, out, codecArgs) {
 async function ensureOutputs(base, input) {
   const mp4 = path.join(VID_DIR, `${base}.mp4`);
   const webm = path.join(VID_DIR, `${base}.webm`);
+  const postersDir = path.join(__dirname, '..', 'assets', 'images', 'interior');
+  const poster = path.join(postersDir, `${base}-poster.jpg`);
   if (!exists(input)) return;
   // MP4 (H.264 + AAC)
   if (!exists(mp4)) {
@@ -91,6 +93,22 @@ async function ensureOutputs(base, input) {
       `-passlogfile ${passlog}`
     ]);
     try { fs.unlinkSync(`${passlog}-0.log`); } catch {}
+  }
+  // Poster extraction (2s into the video)
+  try {
+    if (!exists(postersDir)) fs.mkdirSync(postersDir, { recursive: true });
+    if (!exists(poster)) {
+      await new Promise((resolve, reject) => {
+        ffmpeg(exists(mp4) ? mp4 : input)
+          .outputOptions(['-ss 2', '-frames:v 1', '-q:v 2'])
+          .on('error', reject)
+          .on('end', resolve)
+          .save(poster);
+      });
+      console.log('[ffmpeg] poster:', path.relative(path.join(__dirname, '..'), poster));
+    }
+  } catch (e) {
+    console.warn('[ffmpeg] poster extract failed for', base, e && e.message ? e.message : e);
   }
 }
 

@@ -332,7 +332,7 @@
 
     <main id="main" role="main">
       <!-- Property highlights -->
-      <section id="highlights">
+  <section id="highlights">
         <h2 class="section-title">Property at a Glance</h2>
         <div class="features">
           <div class="feature-item">
@@ -384,7 +384,35 @@
             </p>
           </div>
         </div>
-      </section>
+  </section>
+
+  <!-- Media Hub -->
+  <section id="media-hub" class="section-dark" aria-labelledby="media-hub-title">
+    <h2 id="media-hub-title" class="section-title">Explore Media</h2>
+    <div class="media-hub">
+      <a class="media-card" href="#tours360">
+        <div class="media-ico">🎥</div>
+        <div class="media-text">
+          <strong>360° Video Tours</strong>
+          <span>Walk through key rooms</span>
+        </div>
+      </a>
+      <a class="media-card" href="#gallery">
+        <div class="media-ico">📷</div>
+        <div class="media-text">
+          <strong>Photo Gallery</strong>
+          <span>See interiors & gardens</span>
+        </div>
+      </a>
+      <a class="media-card" href="#gallery">
+        <div class="media-ico">✨</div>
+        <div class="media-text">
+          <strong>Fresh Updates</strong>
+          <span>New images & videos</span>
+        </div>
+      </a>
+    </div>
+  </section>
 
       <!-- Key Metrics -->
       <section
@@ -649,7 +677,7 @@
               </figure>
               <figure>
                 <div class="img-wrap vr-viewer" style="aspect-ratio:16/9; position:relative;">
-                  <img class="vr-poster" src="assets/images/interior/bathroom-360-1-800.jpg" alt="Bathroom 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <img class="vr-poster" src="assets/images/interior/bathroom-360-poster.jpg" alt="Bathroom 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
                   <video id="bathroom360" muted playsinline preload="none" data-lazy="true" style="display:none">
                     <source type="video/webm" data-src="assets/videos/interior/bathroom-360.webm" />
                     <source type="video/mp4" data-src="assets/videos/interior/bathroom-360.mp4" />
@@ -658,7 +686,7 @@
                   <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0;">
                     <a-videosphere src="#bathroom360" rotation="0 -90 0" material="shader: flat"></a-videosphere>
                   </a-scene>
-                  <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/bathroom-360-1-800.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
+                  <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/bathroom-360-poster.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
                     <source type="video/webm" data-src="assets/videos/interior/bathroom-360.webm" />
                     <source type="video/mp4" data-src="assets/videos/interior/bathroom-360.mp4" />
                     <source type="video/quicktime" data-src="assets/videos/interior/bathroom-360.mov" />
@@ -679,7 +707,7 @@
               </figure>
               <figure>
                 <div class="img-wrap vr-viewer" style="aspect-ratio:16/9; position:relative;">
-                  <img class="vr-poster" src="assets/images/interior/bedroom-2-360-1-800.jpg" alt="Bedroom 2 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <img class="vr-poster" src="assets/images/interior/bedroom-2-360-poster.jpg" alt="Bedroom 2 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
                   <video id="bedroom2360" muted playsinline preload="none" data-lazy="true" style="display:none">
                     <source type="video/webm" data-src="assets/videos/interior/bedroom-2-360.webm" />
                     <source type="video/mp4" data-src="assets/videos/interior/bedroom-2-360.mp4" />
@@ -688,7 +716,7 @@
                   <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0;">
                     <a-videosphere src="#bedroom2360" rotation="0 -90 0" material="shader: flat"></a-videosphere>
                   </a-scene>
-                  <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/bedroom-2-360-1-800.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
+                  <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/bedroom-2-360-poster.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
                     <source type="video/webm" data-src="assets/videos/interior/bedroom-2-360.webm" />
                     <source type="video/mp4" data-src="assets/videos/interior/bedroom-2-360.mp4" />
                     <source type="video/quicktime" data-src="assets/videos/interior/bedroom-2-360.mov" />
@@ -709,7 +737,7 @@
               </figure>
               <figure>
                 <div class="img-wrap vr-viewer" style="aspect-ratio:16/9; position:relative;">
-                  <img class="vr-poster" src="assets/images/interior/bedroom-front-360-1-800.jpg" alt="Front Bedroom 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <img class="vr-poster" src="assets/images/interior/front-bedroom-360-poster.jpg" alt="Front Bedroom 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
                   <video id="frontbedroom360" muted playsinline preload="none" data-lazy="true" style="display:none">
                     <source type="video/webm" data-src="assets/videos/interior/front-bedroom-360.webm" />
                     <source type="video/mp4" data-src="assets/videos/interior/front-bedroom-360.mp4" />
@@ -718,7 +746,7 @@
                   <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0;">
                     <a-videosphere src="#frontbedroom360" rotation="0 -90 0" material="shader: flat"></a-videosphere>
                   </a-scene>
-                  <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/bedroom-front-360-1-800.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
+                  <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/front-bedroom-360-poster.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
                     <source type="video/webm" data-src="assets/videos/interior/front-bedroom-360.webm" />
                     <source type="video/mp4" data-src="assets/videos/interior/front-bedroom-360.mp4" />
                     <source type="video/quicktime" data-src="assets/videos/interior/front-bedroom-360.mov" />
@@ -739,7 +767,7 @@
               </figure>
               <figure>
                 <div class="img-wrap vr-viewer" style="aspect-ratio:16/9; position:relative;">
-                  <img class="vr-poster" src="assets/images/interior/bedroom-rear-360-1-800.jpg" alt="Rear Bedroom 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <img class="vr-poster" src="assets/images/interior/rear-bedroom-360-poster.jpg" alt="Rear Bedroom 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
                   <video id="rearbedroom360" muted playsinline preload="none" data-lazy="true" style="display:none">
                     <source type="video/webm" data-src="assets/videos/interior/rear-bedroom-360.webm" />
                     <source type="video/mp4" data-src="assets/videos/interior/rear-bedroom-360.mp4" />
@@ -748,7 +776,7 @@
                   <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0;">
                     <a-videosphere src="#rearbedroom360" rotation="0 -90 0" material="shader: flat"></a-videosphere>
                   </a-scene>
-                  <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/bedroom-rear-360-1-800.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
+                  <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/rear-bedroom-360-poster.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
                     <source type="video/webm" data-src="assets/videos/interior/rear-bedroom-360.webm" />
                     <source type="video/mp4" data-src="assets/videos/interior/rear-bedroom-360.mp4" />
                     <source type="video/quicktime" data-src="assets/videos/interior/rear-bedroom-360.mov" />
@@ -769,7 +797,7 @@
               </figure>
               <figure>
                 <div class="img-wrap vr-viewer" style="aspect-ratio:16/9; position:relative;">
-                  <img class="vr-poster" src="assets/images/interior/lounge-360-1-800.jpg" alt="Lounge 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <img class="vr-poster" src="assets/images/interior/lounge-360-poster.jpg" alt="Lounge 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
                   <video id="lounge360" muted playsinline preload="none" data-lazy="true" style="display:none">
                     <source type="video/webm" data-src="assets/videos/interior/lounge-360.webm" />
                     <source type="video/mp4" data-src="assets/videos/interior/lounge-360.mp4" />
@@ -778,7 +806,7 @@
                   <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0;">
                     <a-videosphere src="#lounge360" rotation="0 -90 0" material="shader: flat"></a-videosphere>
                   </a-scene>
-                  <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/lounge-360-1-800.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
+                  <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/lounge-360-poster.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
                     <source type="video/webm" data-src="assets/videos/interior/lounge-360.webm" />
                     <source type="video/mp4" data-src="assets/videos/interior/lounge-360.mp4" />
                     <source type="video/quicktime" data-src="assets/videos/interior/lounge-360.mov" />
@@ -799,7 +827,7 @@
               </figure>
               <figure>
                 <div class="img-wrap vr-viewer" style="aspect-ratio:16/9; position:relative;">
-                  <img class="vr-poster" src="assets/images/interior/sunroom-1-800.jpg" alt="Conservatory 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <img class="vr-poster" src="assets/images/interior/conservatory-360-poster.jpg" alt="Conservatory 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
                   <video id="conservatory360" muted playsinline preload="none" data-lazy="true" style="display:none">
                     <source type="video/webm" data-src="assets/videos/interior/conservatory-360.webm" />
                     <source type="video/mp4" data-src="assets/videos/interior/conservatory-360.mp4" />
@@ -808,7 +836,7 @@
                   <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0;">
                     <a-videosphere src="#conservatory360" rotation="0 -90 0" material="shader: flat"></a-videosphere>
                   </a-scene>
-                  <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/sunroom-1-800.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
+                  <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/conservatory-360-poster.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
                     <source type="video/webm" data-src="assets/videos/interior/conservatory-360.webm" />
                     <source type="video/mp4" data-src="assets/videos/interior/conservatory-360.mp4" />
                     <source type="video/quicktime" data-src="assets/videos/interior/conservatory-360.mov" />

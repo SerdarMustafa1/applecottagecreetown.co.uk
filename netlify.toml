@@ -2,6 +2,12 @@
   publish = "."
   command = "npm install && npm run build || true"
 
+[build.environment]
+  MP4_CRF = "16"
+  MP4_PRESET = "slow"
+  WEBM_CRF = "22"
+  WEBM_SPEED = "0"
+
 # Optional: basic security headers
 [[headers]]
   for = "/*"
