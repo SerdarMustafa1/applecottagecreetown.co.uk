@@ -707,6 +707,86 @@
                 </div>
                 <figcaption>Bedroom 2 — interactive 360°</figcaption>
               </figure>
+              <figure>
+                <div class="img-wrap vr-viewer" style="aspect-ratio:16/9; position:relative;">
+                  <img class="vr-poster" src="assets/images/interior/bedroom-front-360-1-800.jpg" alt="Front Bedroom 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <video id="frontbedroom360" muted playsinline preload="none" data-lazy="true" style="display:none">
+                    <source type="video/webm" data-src="assets/videos/interior/front-bedroom-360.webm" />
+                    <source type="video/mp4" data-src="assets/videos/interior/front-bedroom-360.mp4" />
+                    <source type="video/quicktime" data-src="assets/videos/interior/front-bedroom-360.mov" />
+                  </video>
+                  <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0;">
+                    <a-videosphere src="#frontbedroom360" rotation="0 -90 0" material="shader: flat"></a-videosphere>
+                  </a-scene>
+                  <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/bedroom-front-360-1-800.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
+                    <source type="video/webm" data-src="assets/videos/interior/front-bedroom-360.webm" />
+                    <source type="video/mp4" data-src="assets/videos/interior/front-bedroom-360.mp4" />
+                    <source type="video/quicktime" data-src="assets/videos/interior/front-bedroom-360.mov" />
+                  </video>
+                  <button class="vr-play" data-target="frontbedroom360" aria-label="Play 360 video" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.6rem 1rem; background:#00000099; color:#fff; border:1px solid #ffffff66; border-radius:6px; font-weight:700; cursor:pointer;">Tap to play 360</button>
+                </div>
+                <figcaption>Front Bedroom — interactive 360°</figcaption>
+              </figure>
+              <figure>
+                <div class="img-wrap vr-viewer" style="aspect-ratio:16/9; position:relative;">
+                  <img class="vr-poster" src="assets/images/interior/bedroom-rear-360-1-800.jpg" alt="Rear Bedroom 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <video id="rearbedroom360" muted playsinline preload="none" data-lazy="true" style="display:none">
+                    <source type="video/webm" data-src="assets/videos/interior/rear-bedroom-360.webm" />
+                    <source type="video/mp4" data-src="assets/videos/interior/rear-bedroom-360.mp4" />
+                    <source type="video/quicktime" data-src="assets/videos/interior/rear-bedroom-360.mov" />
+                  </video>
+                  <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0;">
+                    <a-videosphere src="#rearbedroom360" rotation="0 -90 0" material="shader: flat"></a-videosphere>
+                  </a-scene>
+                  <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/bedroom-rear-360-1-800.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
+                    <source type="video/webm" data-src="assets/videos/interior/rear-bedroom-360.webm" />
+                    <source type="video/mp4" data-src="assets/videos/interior/rear-bedroom-360.mp4" />
+                    <source type="video/quicktime" data-src="assets/videos/interior/rear-bedroom-360.mov" />
+                  </video>
+                  <button class="vr-play" data-target="rearbedroom360" aria-label="Play 360 video" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.6rem 1rem; background:#00000099; color:#fff; border:1px solid #ffffff66; border-radius:6px; font-weight:700; cursor:pointer;">Tap to play 360</button>
+                </div>
+                <figcaption>Rear Bedroom — interactive 360°</figcaption>
+              </figure>
+              <figure>
+                <div class="img-wrap vr-viewer" style="aspect-ratio:16/9; position:relative;">
+                  <img class="vr-poster" src="assets/images/interior/lounge-360-1-800.jpg" alt="Lounge 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <video id="lounge360" muted playsinline preload="none" data-lazy="true" style="display:none">
+                    <source type="video/webm" data-src="assets/videos/interior/lounge-360.webm" />
+                    <source type="video/mp4" data-src="assets/videos/interior/lounge-360.mp4" />
+                    <source type="video/quicktime" data-src="assets/videos/interior/lounge-360.mov" />
+                  </video>
+                  <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0;">
+                    <a-videosphere src="#lounge360" rotation="0 -90 0" material="shader: flat"></a-videosphere>
+                  </a-scene>
+                  <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/lounge-360-1-800.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
+                    <source type="video/webm" data-src="assets/videos/interior/lounge-360.webm" />
+                    <source type="video/mp4" data-src="assets/videos/interior/lounge-360.mp4" />
+                    <source type="video/quicktime" data-src="assets/videos/interior/lounge-360.mov" />
+                  </video>
+                  <button class="vr-play" data-target="lounge360" aria-label="Play 360 video" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.6rem 1rem; background:#00000099; color:#fff; border:1px solid #ffffff66; border-radius:6px; font-weight:700; cursor:pointer;">Tap to play 360</button>
+                </div>
+                <figcaption>Lounge — interactive 360°</figcaption>
+              </figure>
+              <figure>
+                <div class="img-wrap vr-viewer" style="aspect-ratio:16/9; position:relative;">
+                  <img class="vr-poster" src="assets/images/interior/sunroom-1-800.jpg" alt="Conservatory 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <video id="conservatory360" muted playsinline preload="none" data-lazy="true" style="display:none">
+                    <source type="video/webm" data-src="assets/videos/interior/conservatory-360.webm" />
+                    <source type="video/mp4" data-src="assets/videos/interior/conservatory-360.mp4" />
+                    <source type="video/quicktime" data-src="assets/videos/interior/conservatory-360.mov" />
+                  </video>
+                  <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0;">
+                    <a-videosphere src="#conservatory360" rotation="0 -90 0" material="shader: flat"></a-videosphere>
+                  </a-scene>
+                  <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/sunroom-1-800.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
+                    <source type="video/webm" data-src="assets/videos/interior/conservatory-360.webm" />
+                    <source type="video/mp4" data-src="assets/videos/interior/conservatory-360.mp4" />
+                    <source type="video/quicktime" data-src="assets/videos/interior/conservatory-360.mov" />
+                  </video>
+                  <button class="vr-play" data-target="conservatory360" aria-label="Play 360 video" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.6rem 1rem; background:#00000099; color:#fff; border:1px solid #ffffff66; border-radius:6px; font-weight:700; cursor:pointer;">Tap to play 360</button>
+                </div>
+                <figcaption>Conservatory — interactive 360°</figcaption>
+              </figure>
             </div>
           </details>
 
