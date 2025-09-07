@@ -36,7 +36,15 @@
       content="https://applecottagecreetown.co.uk/assets/images/exterior/exteriormain.jpg"
     />
     <meta name="robots" content="index, follow" />
+    <meta name="author" content="Apple Cottage Sales Team" />
+    <meta name="geo.region" content="GB-DGY" />
+    <meta name="geo.placename" content="Creetown, Dumfries and Galloway" />
+    <meta name="geo.position" content="54.8947;-4.4358" />
+    <meta name="ICBM" content="54.8947, -4.4358" />
     <link rel="canonical" href="https://applecottagecreetown.co.uk/" />
+    <!-- Preload critical resources -->
+    <link rel="preload" href="style.css" as="style" />
+    <link rel="preload" href="script.js" as="script" />
     <link
       rel="preload"
       as="image"
@@ -55,6 +63,7 @@
       href="assets/images/exterior/exteriormain.jpg"
       type="image/jpeg"
     />
+    <!-- Preconnect to external domains -->
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -62,6 +71,11 @@
     <meta name="theme-color" content="#ff6f61" />
     <!-- A‑Frame for interactive 360° playback -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://aframe.io" crossorigin />
+    <link rel="preconnect" href="https://tidycal.com" crossorigin />
+    <link rel="preconnect" href="https://w3w.co" crossorigin />
+    <link rel="preconnect" href="https://s1homes.com" crossorigin />
     <link
       rel="preconnect"
       href="https://www.googletagmanager.com"
@@ -77,13 +91,66 @@
         "@context": "https://schema.org",
         "@type": "SingleFamilyResidence",
         "name": "Apple Cottage",
+        "description": "Energy-smart three-bed home with annex, EV charging & landscaped gardens. Planning Permission & Building Warrant granted.",
+        "url": "https://applecottagecreetown.co.uk/",
+        "image": "https://applecottagecreetown.co.uk/assets/images/exterior/exteriormain.jpg",
         "address": {
           "@type": "PostalAddress",
+          "streetAddress": "Silver Street",
           "addressLocality": "Creetown",
           "addressRegion": "Dumfries and Galloway",
           "postalCode": "DG8 7HU",
           "addressCountry": "GB"
         },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 54.8947,
+          "longitude": -4.4358
+        },
+        "numberOfRooms": 3,
+        "floorSize": {
+          "@type": "QuantitativeValue",
+          "value": 122,
+          "unitCode": "MTK"
+        },
+        "yearBuilt": "Historic",
+        "amenityFeature": [
+          {
+            "@type": "LocationFeatureSpecification",
+            "name": "EV Charging Station",
+            "value": true
+          },
+          {
+            "@type": "LocationFeatureSpecification", 
+            "name": "Solar Panels",
+            "value": true
+          },
+          {
+            "@type": "LocationFeatureSpecification",
+            "name": "Battery Storage",
+            "value": true
+          },
+          {
+            "@type": "LocationFeatureSpecification",
+            "name": "Air Source Heat Pump",
+            "value": true
+          },
+          {
+            "@type": "LocationFeatureSpecification",
+            "name": "Annex",
+            "value": true
+          },
+          {
+            "@type": "LocationFeatureSpecification",
+            "name": "Garden",
+            "value": true
+          },
+          {
+            "@type": "LocationFeatureSpecification",
+            "name": "Parking",
+            "value": "4 cars"
+          }
+        ],
         "additionalProperty": [
           {
             "@type": "PropertyValue",
@@ -99,6 +166,26 @@
             "@type": "PropertyValue",
             "name": "Planning Permission",
             "value": "Granted; decision notice in legal pack"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "EPC Rating",
+            "value": "B"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "Council Tax Band",
+            "value": "D"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "Tenure",
+            "value": "Freehold"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "Chain Free",
+            "value": "Yes"
           }
         ]
       }
@@ -209,17 +296,18 @@
   </head>
   <body>
   <a href="#main" class="skip-link">Skip to main content</a>
+  
   <!-- New content announcement banner -->
-  <div id="newContentBanner" class="announce hidden" role="status" aria-live="polite">
+  <div id="newContentBanner" class="announce hidden" role="status" aria-live="polite" aria-label="New content announcement">
     <span>Fresh images and 360° videos just added.</span>
     <div class="announce-actions">
       <a href="#gallery" class="btn btn-sm">See Updates</a>
-      <button type="button" id="dismissAnnounce" class="btn btn-sm btn-ghost" aria-label="Dismiss">Dismiss</button>
+      <button type="button" id="dismissAnnounce" class="btn btn-sm btn-ghost" aria-label="Dismiss announcement">Dismiss</button>
     </div>
   </div>
     <!-- No GTM noscript needed when using Google tag -->
     <!-- Hero section -->
-    <header>
+    <header role="banner">
       <picture class="hero-bg" aria-hidden="true">
         <source
           type="image/avif"
@@ -280,12 +368,12 @@
           >
           <a href="#" class="btn request-report-btn">Request Home Report</a>
         </div>
-        <div class="share-bar">
+        <div class="share-bar" role="toolbar" aria-label="Share this property">
           <button
             type="button"
             class="share-btn js-share"
             data-platform="facebook"
-            aria-label="Share on Facebook"
+            aria-label="Share this property on Facebook"
           >
             Facebook
           </button>
@@ -293,14 +381,14 @@
             type="button"
             class="share-btn js-share"
             data-platform="x"
-            aria-label="Share on X"
+            aria-label="Share this property on X (formerly Twitter)"
           >
             X
           </button>
           <button
             type="button"
             class="share-btn js-copy"
-            aria-label="Copy link"
+            aria-label="Copy property link to clipboard"
           >
             Copy Link
           </button>
@@ -475,18 +563,14 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source
-                      type="image/avif"
-                      data-srcset="assets/images/exterior/exteriormain-480.avif 480w, assets/images/exterior/exteriormain-800.avif 800w, assets/images/exterior/exteriormain-1200.avif 1200w"
+                    <source type="image/avif"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/exteriormain-480.avif 480w, assets/images/exterior/exteriormain-800.avif 800w, assets/images/exterior/exteriormain-1200.avif 1200w"
                     />
-                    <source
-                      type="image/webp"
-                      data-srcset="assets/images/exterior/exteriormain-480.webp 480w, assets/images/exterior/exteriormain-800.webp 800w, assets/images/exterior/exteriormain-1200.webp 1200w"
+                    <source type="image/webp"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/exteriormain-480.webp 480w, assets/images/exterior/exteriormain-800.webp 800w, assets/images/exterior/exteriormain-1200.webp 1200w"
                     />
-                    <img
-                      data-src="assets/images/exterior/exteriormain-800.jpg"
-                      data-srcset="assets/images/exterior/exteriormain-480.jpg 480w, assets/images/exterior/exteriormain-800.jpg 800w, assets/images/exterior/exteriormain-1200.jpg 1200w"
-                      sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/exterior/exteriormain-800.jpg"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/exterior/exteriormain-480.jpg 480w, assets/images/exterior/exteriormain-800.jpg 800w, assets/images/exterior/exteriormain-1200.jpg 1200w"
                       alt="Front elevation (day)"
                       loading="lazy"
                       decoding="async"
@@ -498,18 +582,14 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source
-                      type="image/avif"
-                      data-srcset="assets/images/exterior/exterior-480.avif 480w, assets/images/exterior/exterior-800.avif 800w, assets/images/exterior/exterior-1200.avif 1200w"
+                    <source type="image/avif"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/exterior-480.avif 480w, assets/images/exterior/exterior-800.avif 800w, assets/images/exterior/exterior-1200.avif 1200w"
                     />
-                    <source
-                      type="image/webp"
-                      data-srcset="assets/images/exterior/exterior-480.webp 480w, assets/images/exterior/exterior-800.webp 800w, assets/images/exterior/exterior-1200.webp 1200w"
+                    <source type="image/webp"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/exterior-480.webp 480w, assets/images/exterior/exterior-800.webp 800w, assets/images/exterior/exterior-1200.webp 1200w"
                     />
-                    <img
-                      data-src="assets/images/exterior/exterior-800.jpg"
-                      data-srcset="assets/images/exterior/exterior-480.jpg 480w, assets/images/exterior/exterior-800.jpg 800w, assets/images/exterior/exterior-1200.jpg 1200w"
-                      sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/exterior/exterior-800.jpg"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/exterior/exterior-480.jpg 480w, assets/images/exterior/exterior-800.jpg 800w, assets/images/exterior/exterior-1200.jpg 1200w"
                       alt="Front elevation angle"
                       loading="lazy"
                       decoding="async"
@@ -521,18 +601,14 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source
-                      type="image/avif"
-                      data-srcset="assets/images/exterior/exterior2-480.avif 480w, assets/images/exterior/exterior2-800.avif 800w, assets/images/exterior/exterior2-1200.avif 1200w"
+                    <source type="image/avif"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/exterior2-480.avif 480w, assets/images/exterior/exterior2-800.avif 800w, assets/images/exterior/exterior2-1200.avif 1200w"
                     />
-                    <source
-                      type="image/webp"
-                      data-srcset="assets/images/exterior/exterior2-480.webp 480w, assets/images/exterior/exterior2-800.webp 800w, assets/images/exterior/exterior2-1200.webp 1200w"
+                    <source type="image/webp"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/exterior2-480.webp 480w, assets/images/exterior/exterior2-800.webp 800w, assets/images/exterior/exterior2-1200.webp 1200w"
                     />
-                    <img
-                      data-src="assets/images/exterior/exterior2-800.jpg"
-                      data-srcset="assets/images/exterior/exterior2-480.jpg 480w, assets/images/exterior/exterior2-800.jpg 800w, assets/images/exterior/exterior2-1200.jpg 1200w"
-                      sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/exterior/exterior2-800.jpg"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/exterior/exterior2-480.jpg 480w, assets/images/exterior/exterior2-800.jpg 800w, assets/images/exterior/exterior2-1200.jpg 1200w"
                       alt="Front and driveway"
                       loading="lazy"
                       decoding="async"
@@ -544,16 +620,13 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source
-                      type="image/avif"
-                      data-srcset="assets/images/exterior/exterior3.avif"
+                    <source type="image/avif"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/exterior3.avif"
                     />
-                    <source
-                      type="image/webp"
-                      data-srcset="assets/images/exterior/exterior3.webp"
+                    <source type="image/webp"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/exterior3.webp"
                     />
-                    <img
-                      data-src="assets/images/exterior/exterior3.jpg"
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/exterior/exterior3.jpg"
                       alt="Front approach"
                       loading="lazy"
                       decoding="async"
@@ -565,16 +638,13 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source
-                      type="image/avif"
-                      data-srcset="assets/images/exterior/exterior4.avif"
+                    <source type="image/avif"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/exterior4.avif"
                     />
-                    <source
-                      type="image/webp"
-                      data-srcset="assets/images/exterior/exterior4.webp"
+                    <source type="image/webp"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/exterior4.webp"
                     />
-                    <img
-                      data-src="assets/images/exterior/exterior4.jpg"
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/exterior/exterior4.jpg"
                       alt="Front elevation wide"
                       loading="lazy"
                       decoding="async"
@@ -586,16 +656,13 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source
-                      type="image/avif"
-                      data-srcset="assets/images/exterior/exterior-front-night.avif"
+                    <source type="image/avif"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/exterior-front-night.avif"
                     />
-                    <source
-                      type="image/webp"
-                      data-srcset="assets/images/exterior/exterior-front-night.webp"
+                    <source type="image/webp"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/exterior-front-night.webp"
                     />
-                    <img
-                      data-src="assets/images/exterior/exterior-front-night.jpg"
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/exterior/exterior-front-night.jpg"
                       alt="Front elevation at night"
                       loading="lazy"
                       decoding="async"
@@ -607,9 +674,9 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/bathroom-360-1-480.avif 480w, assets/images/interior/bathroom-360-1-800.avif 800w, assets/images/interior/bathroom-360-1-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/bathroom-360-1-480.webp 480w, assets/images/interior/bathroom-360-1-800.webp 800w, assets/images/interior/bathroom-360-1-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/bathroom-360-1-800.jpg" data-srcset="assets/images/interior/bathroom-360-1-480.jpg 480w, assets/images/interior/bathroom-360-1-800.jpg 800w, assets/images/interior/bathroom-360-1-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Family bathroom" loading="lazy" decoding="async" />
+                    <source type="image/avif" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/bathroom-360-1-480.avif 480w, assets/images/interior/bathroom-360-1-800.avif 800w, assets/images/interior/bathroom-360-1-1200.avif 1200w" />
+                    <source type="image/webp" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/bathroom-360-1-480.webp 480w, assets/images/interior/bathroom-360-1-800.webp 800w, assets/images/interior/bathroom-360-1-1200.webp 1200w" />
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/bathroom-360-1-800.jpg" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/interior/bathroom-360-1-480.jpg 480w, assets/images/interior/bathroom-360-1-800.jpg 800w, assets/images/interior/bathroom-360-1-1200.jpg 1200w" alt="Family bathroom" loading="lazy" decoding="async" />
                   </picture>
                 </div>
                 <figcaption>Family bathroom</figcaption>
@@ -617,9 +684,9 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/bedroom-front-360-1-480.avif 480w, assets/images/interior/bedroom-front-360-1-800.avif 800w, assets/images/interior/bedroom-front-360-1-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/bedroom-front-360-1-480.webp 480w, assets/images/interior/bedroom-front-360-1-800.webp 800w, assets/images/interior/bedroom-front-360-1-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/bedroom-front-360-1-800.jpg" data-srcset="assets/images/interior/bedroom-front-360-1-480.jpg 480w, assets/images/interior/bedroom-front-360-1-800.jpg 800w, assets/images/interior/bedroom-front-360-1-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Front bedroom" loading="lazy" decoding="async" />
+                    <source type="image/avif" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/bedroom-front-360-1-480.avif 480w, assets/images/interior/bedroom-front-360-1-800.avif 800w, assets/images/interior/bedroom-front-360-1-1200.avif 1200w" />
+                    <source type="image/webp" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/bedroom-front-360-1-480.webp 480w, assets/images/interior/bedroom-front-360-1-800.webp 800w, assets/images/interior/bedroom-front-360-1-1200.webp 1200w" />
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/bedroom-front-360-1-800.jpg" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/interior/bedroom-front-360-1-480.jpg 480w, assets/images/interior/bedroom-front-360-1-800.jpg 800w, assets/images/interior/bedroom-front-360-1-1200.jpg 1200w" alt="Front bedroom" loading="lazy" decoding="async" />
                   </picture>
                 </div>
                 <figcaption>Front bedroom</figcaption>
@@ -627,9 +694,9 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/bedroom-rear-360-1-480.avif 480w, assets/images/interior/bedroom-rear-360-1-800.avif 800w, assets/images/interior/bedroom-rear-360-1-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/bedroom-rear-360-1-480.webp 480w, assets/images/interior/bedroom-rear-360-1-800.webp 800w, assets/images/interior/bedroom-rear-360-1-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/bedroom-rear-360-1-800.jpg" data-srcset="assets/images/interior/bedroom-rear-360-1-480.jpg 480w, assets/images/interior/bedroom-rear-360-1-800.jpg 800w, assets/images/interior/bedroom-rear-360-1-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Rear bedroom" loading="lazy" decoding="async" />
+                    <source type="image/avif" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/bedroom-rear-360-1-480.avif 480w, assets/images/interior/bedroom-rear-360-1-800.avif 800w, assets/images/interior/bedroom-rear-360-1-1200.avif 1200w" />
+                    <source type="image/webp" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/bedroom-rear-360-1-480.webp 480w, assets/images/interior/bedroom-rear-360-1-800.webp 800w, assets/images/interior/bedroom-rear-360-1-1200.webp 1200w" />
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/bedroom-rear-360-1-800.jpg" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/interior/bedroom-rear-360-1-480.jpg 480w, assets/images/interior/bedroom-rear-360-1-800.jpg 800w, assets/images/interior/bedroom-rear-360-1-1200.jpg 1200w" alt="Rear bedroom" loading="lazy" decoding="async" />
                   </picture>
                 </div>
                 <figcaption>Rear bedroom</figcaption>
@@ -637,9 +704,9 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/bedroom-2-360-1-480.avif 480w, assets/images/interior/bedroom-2-360-1-800.avif 800w, assets/images/interior/bedroom-2-360-1-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/bedroom-2-360-1-480.webp 480w, assets/images/interior/bedroom-2-360-1-800.webp 800w, assets/images/interior/bedroom-2-360-1-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/bedroom-2-360-1-800.jpg" data-srcset="assets/images/interior/bedroom-2-360-1-480.jpg 480w, assets/images/interior/bedroom-2-360-1-800.jpg 800w, assets/images/interior/bedroom-2-360-1-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Bedroom 2" loading="lazy" decoding="async" />
+                    <source type="image/avif" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/bedroom-2-360-1-480.avif 480w, assets/images/interior/bedroom-2-360-1-800.avif 800w, assets/images/interior/bedroom-2-360-1-1200.avif 1200w" />
+                    <source type="image/webp" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/bedroom-2-360-1-480.webp 480w, assets/images/interior/bedroom-2-360-1-800.webp 800w, assets/images/interior/bedroom-2-360-1-1200.webp 1200w" />
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/bedroom-2-360-1-800.jpg" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/interior/bedroom-2-360-1-480.jpg 480w, assets/images/interior/bedroom-2-360-1-800.jpg 800w, assets/images/interior/bedroom-2-360-1-1200.jpg 1200w" alt="Bedroom 2" loading="lazy" decoding="async" />
                   </picture>
                 </div>
                 <figcaption>Bedroom 2</figcaption>
@@ -647,9 +714,9 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/landing-360-1-480.avif 480w, assets/images/interior/landing-360-1-800.avif 800w, assets/images/interior/landing-360-1-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/landing-360-1-480.webp 480w, assets/images/interior/landing-360-1-800.webp 800w, assets/images/interior/landing-360-1-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/landing-360-1-800.jpg" data-srcset="assets/images/interior/landing-360-1-480.jpg 480w, assets/images/interior/landing-360-1-800.jpg 800w, assets/images/interior/landing-360-1-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Upstairs landing (doors)" loading="lazy" decoding="async" />
+                    <source type="image/avif" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/landing-360-1-480.avif 480w, assets/images/interior/landing-360-1-800.avif 800w, assets/images/interior/landing-360-1-1200.avif 1200w" />
+                    <source type="image/webp" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/landing-360-1-480.webp 480w, assets/images/interior/landing-360-1-800.webp 800w, assets/images/interior/landing-360-1-1200.webp 1200w" />
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/landing-360-1-800.jpg" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/interior/landing-360-1-480.jpg 480w, assets/images/interior/landing-360-1-800.jpg 800w, assets/images/interior/landing-360-1-1200.jpg 1200w" alt="Upstairs landing (doors)" loading="lazy" decoding="async" />
                   </picture>
                 </div>
                 <figcaption>Upstairs landing (doors)</figcaption>
@@ -657,9 +724,9 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/landing-360-2-480.avif 480w, assets/images/interior/landing-360-2-800.avif 800w, assets/images/interior/landing-360-2-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/landing-360-2-480.webp 480w, assets/images/interior/landing-360-2-800.webp 800w, assets/images/interior/landing-360-2-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/landing-360-2-800.jpg" data-srcset="assets/images/interior/landing-360-2-480.jpg 480w, assets/images/interior/landing-360-2-800.jpg 800w, assets/images/interior/landing-360-2-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Upstairs landing (stairs & window)" loading="lazy" decoding="async" />
+                    <source type="image/avif" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/landing-360-2-480.avif 480w, assets/images/interior/landing-360-2-800.avif 800w, assets/images/interior/landing-360-2-1200.avif 1200w" />
+                    <source type="image/webp" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/landing-360-2-480.webp 480w, assets/images/interior/landing-360-2-800.webp 800w, assets/images/interior/landing-360-2-1200.webp 1200w" />
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/landing-360-2-800.jpg" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/interior/landing-360-2-480.jpg 480w, assets/images/interior/landing-360-2-800.jpg 800w, assets/images/interior/landing-360-2-1200.jpg 1200w" alt="Upstairs landing (stairs & window)" loading="lazy" decoding="async" />
                   </picture>
                 </div>
                 <figcaption>Upstairs landing (stairs & window)</figcaption>
@@ -681,18 +748,18 @@
                 <div class="img-wrap vr-viewer" style="aspect-ratio:16/9; position:relative;">
                   <img class="vr-poster" src="assets/images/interior/kitchen-360-poster.jpg" alt="Kitchen 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
                   <video id="kitchen360" muted playsinline preload="none" data-lazy="true" style="display:none">
-                    <source type="video/mp4" data-src="assets/videos/interior/kitchen-360.mp4" />
-                    <source type="video/quicktime" data-src="assets/videos/interior/kitchen-360.mov" />
-                    <source type="video/webm" data-src="assets/videos/interior/kitchen-360.webm" />
+                    <source type="video/mp4" src="data:video/mp4;base64," data-src="assets/videos/interior/kitchen-360.mp4" />
+                    <source type="video/quicktime" src="data:video/mp4;base64," data-src="assets/videos/interior/kitchen-360.mov" />
+                    <source type="video/webm" src="data:video/mp4;base64," data-src="assets/videos/interior/kitchen-360.webm" />
                   </video>
                   <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0;">
                     <a-videosphere src="#kitchen360" rotation="0 -90 0" material="shader: flat"></a-videosphere>
                   </a-scene>
                   <!-- Flat video fallback -->
                   <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/kitchen-360-poster.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
-                    <source type="video/mp4" data-src="assets/videos/interior/kitchen-360.mp4" />
-                    <source type="video/quicktime" data-src="assets/videos/interior/kitchen-360.mov" />
-                    <source type="video/webm" data-src="assets/videos/interior/kitchen-360.webm" />
+                    <source type="video/mp4" src="data:video/mp4;base64," data-src="assets/videos/interior/kitchen-360.mp4" />
+                    <source type="video/quicktime" src="data:video/mp4;base64," data-src="assets/videos/interior/kitchen-360.mov" />
+                    <source type="video/webm" src="data:video/mp4;base64," data-src="assets/videos/interior/kitchen-360.webm" />
                   </video>
                   <button class="vr-play" data-target="kitchen360" aria-label="Play 360 video" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.6rem 1rem; background:#00000099; color:#fff; border:1px solid #ffffff66; border-radius:6px; font-weight:700; cursor:pointer;">Tap to play 360</button>
                   <div class="vr-controls" style="position:absolute; right:.5rem; top:.5rem; display:flex; gap:.4rem;">
@@ -712,17 +779,17 @@
                 <div class="img-wrap vr-viewer" style="aspect-ratio:16/9; position:relative;">
                   <img class="vr-poster" src="assets/images/interior/bathroom-360-poster.jpg" alt="Bathroom 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
                   <video id="bathroom360" muted playsinline preload="none" data-lazy="true" style="display:none">
-                    <source type="video/mp4" data-src="assets/videos/interior/bathroom-360.mp4" />
-                    <source type="video/quicktime" data-src="assets/videos/interior/bathroom-360.mov" />
-                    <source type="video/webm" data-src="assets/videos/interior/bathroom-360.webm" />
+                    <source type="video/mp4" src="data:video/mp4;base64," data-src="assets/videos/interior/bathroom-360.mp4" />
+                    <source type="video/quicktime" src="data:video/mp4;base64," data-src="assets/videos/interior/bathroom-360.mov" />
+                    <source type="video/webm" src="data:video/mp4;base64," data-src="assets/videos/interior/bathroom-360.webm" />
                   </video>
                   <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0;">
                     <a-videosphere src="#bathroom360" rotation="0 -90 0" material="shader: flat"></a-videosphere>
                   </a-scene>
                   <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/bathroom-360-poster.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
-                    <source type="video/mp4" data-src="assets/videos/interior/bathroom-360.mp4" />
-                    <source type="video/quicktime" data-src="assets/videos/interior/bathroom-360.mov" />
-                    <source type="video/webm" data-src="assets/videos/interior/bathroom-360.webm" />
+                    <source type="video/mp4" src="data:video/mp4;base64," data-src="assets/videos/interior/bathroom-360.mp4" />
+                    <source type="video/quicktime" src="data:video/mp4;base64," data-src="assets/videos/interior/bathroom-360.mov" />
+                    <source type="video/webm" src="data:video/mp4;base64," data-src="assets/videos/interior/bathroom-360.webm" />
                   </video>
                   <button class="vr-play" data-target="bathroom360" aria-label="Play 360 video" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.6rem 1rem; background:#00000099; color:#fff; border:1px solid #ffffff66; border-radius:6px; font-weight:700; cursor:pointer;">Tap to play 360</button>
                   <div class="vr-controls" style="position:absolute; right:.5rem; top:.5rem; display:flex; gap:.4rem;">
@@ -742,17 +809,17 @@
                 <div class="img-wrap vr-viewer" style="aspect-ratio:16/9; position:relative;">
                   <img class="vr-poster" src="assets/images/interior/bedroom-2-360-poster.jpg" alt="Bedroom 2 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
                   <video id="bedroom2360" muted playsinline preload="none" data-lazy="true" style="display:none">
-                    <source type="video/mp4" data-src="assets/videos/interior/bedroom-2-360.mp4" />
-                    <source type="video/quicktime" data-src="assets/videos/interior/bedroom-2-360.mov" />
-                    <source type="video/webm" data-src="assets/videos/interior/bedroom-2-360.webm" />
+                    <source type="video/mp4" src="data:video/mp4;base64," data-src="assets/videos/interior/bedroom-2-360.mp4" />
+                    <source type="video/quicktime" src="data:video/mp4;base64," data-src="assets/videos/interior/bedroom-2-360.mov" />
+                    <source type="video/webm" src="data:video/mp4;base64," data-src="assets/videos/interior/bedroom-2-360.webm" />
                   </video>
                   <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0;">
                     <a-videosphere src="#bedroom2360" rotation="0 -90 0" material="shader: flat"></a-videosphere>
                   </a-scene>
                   <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/bedroom-2-360-poster.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
-                    <source type="video/mp4" data-src="assets/videos/interior/bedroom-2-360.mp4" />
-                    <source type="video/quicktime" data-src="assets/videos/interior/bedroom-2-360.mov" />
-                    <source type="video/webm" data-src="assets/videos/interior/bedroom-2-360.webm" />
+                    <source type="video/mp4" src="data:video/mp4;base64," data-src="assets/videos/interior/bedroom-2-360.mp4" />
+                    <source type="video/quicktime" src="data:video/mp4;base64," data-src="assets/videos/interior/bedroom-2-360.mov" />
+                    <source type="video/webm" src="data:video/mp4;base64," data-src="assets/videos/interior/bedroom-2-360.webm" />
                   </video>
                   <button class="vr-play" data-target="bedroom2360" aria-label="Play 360 video" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.6rem 1rem; background:#00000099; color:#fff; border:1px solid #ffffff66; border-radius:6px; font-weight:700; cursor:pointer;">Tap to play 360</button>
                   <div class="vr-controls" style="position:absolute; right:.5rem; top:.5rem; display:flex; gap:.4rem;">
@@ -772,17 +839,17 @@
                 <div class="img-wrap vr-viewer" style="aspect-ratio:16/9; position:relative;">
                   <img class="vr-poster" src="assets/images/interior/front-bedroom-360-poster.jpg" alt="Front Bedroom 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
                   <video id="frontbedroom360" muted playsinline preload="none" data-lazy="true" style="display:none">
-                    <source type="video/mp4" data-src="assets/videos/interior/front-bedroom-360.mp4" />
-                    <source type="video/quicktime" data-src="assets/videos/interior/front-bedroom-360.mov" />
-                    <source type="video/webm" data-src="assets/videos/interior/front-bedroom-360.webm" />
+                    <source type="video/mp4" src="data:video/mp4;base64," data-src="assets/videos/interior/front-bedroom-360.mp4" />
+                    <source type="video/quicktime" src="data:video/mp4;base64," data-src="assets/videos/interior/front-bedroom-360.mov" />
+                    <source type="video/webm" src="data:video/mp4;base64," data-src="assets/videos/interior/front-bedroom-360.webm" />
                   </video>
                   <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0;">
                     <a-videosphere src="#frontbedroom360" rotation="0 -90 0" material="shader: flat"></a-videosphere>
                   </a-scene>
                   <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/front-bedroom-360-poster.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
-                    <source type="video/mp4" data-src="assets/videos/interior/front-bedroom-360.mp4" />
-                    <source type="video/quicktime" data-src="assets/videos/interior/front-bedroom-360.mov" />
-                    <source type="video/webm" data-src="assets/videos/interior/front-bedroom-360.webm" />
+                    <source type="video/mp4" src="data:video/mp4;base64," data-src="assets/videos/interior/front-bedroom-360.mp4" />
+                    <source type="video/quicktime" src="data:video/mp4;base64," data-src="assets/videos/interior/front-bedroom-360.mov" />
+                    <source type="video/webm" src="data:video/mp4;base64," data-src="assets/videos/interior/front-bedroom-360.webm" />
                   </video>
                   <button class="vr-play" data-target="frontbedroom360" aria-label="Play 360 video" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.6rem 1rem; background:#00000099; color:#fff; border:1px solid #ffffff66; border-radius:6px; font-weight:700; cursor:pointer;">Tap to play 360</button>
                   <div class="vr-controls" style="position:absolute; right:.5rem; top:.5rem; display:flex; gap:.4rem;">
@@ -802,17 +869,17 @@
                 <div class="img-wrap vr-viewer" style="aspect-ratio:16/9; position:relative;">
                   <img class="vr-poster" src="assets/images/interior/rear-bedroom-360-poster.jpg" alt="Rear Bedroom 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
                   <video id="rearbedroom360" muted playsinline preload="none" data-lazy="true" style="display:none">
-                    <source type="video/mp4" data-src="assets/videos/interior/rear-bedroom-360.mp4" />
-                    <source type="video/quicktime" data-src="assets/videos/interior/rear-bedroom-360.mov" />
-                    <source type="video/webm" data-src="assets/videos/interior/rear-bedroom-360.webm" />
+                    <source type="video/mp4" src="data:video/mp4;base64," data-src="assets/videos/interior/rear-bedroom-360.mp4" />
+                    <source type="video/quicktime" src="data:video/mp4;base64," data-src="assets/videos/interior/rear-bedroom-360.mov" />
+                    <source type="video/webm" src="data:video/mp4;base64," data-src="assets/videos/interior/rear-bedroom-360.webm" />
                   </video>
                   <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0;">
                     <a-videosphere src="#rearbedroom360" rotation="0 -90 0" material="shader: flat"></a-videosphere>
                   </a-scene>
                   <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/rear-bedroom-360-poster.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
-                    <source type="video/mp4" data-src="assets/videos/interior/rear-bedroom-360.mp4" />
-                    <source type="video/quicktime" data-src="assets/videos/interior/rear-bedroom-360.mov" />
-                    <source type="video/webm" data-src="assets/videos/interior/rear-bedroom-360.webm" />
+                    <source type="video/mp4" src="data:video/mp4;base64," data-src="assets/videos/interior/rear-bedroom-360.mp4" />
+                    <source type="video/quicktime" src="data:video/mp4;base64," data-src="assets/videos/interior/rear-bedroom-360.mov" />
+                    <source type="video/webm" src="data:video/mp4;base64," data-src="assets/videos/interior/rear-bedroom-360.webm" />
                   </video>
                   <button class="vr-play" data-target="rearbedroom360" aria-label="Play 360 video" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.6rem 1rem; background:#00000099; color:#fff; border:1px solid #ffffff66; border-radius:6px; font-weight:700; cursor:pointer;">Tap to play 360</button>
                   <div class="vr-controls" style="position:absolute; right:.5rem; top:.5rem; display:flex; gap:.4rem;">
@@ -832,17 +899,17 @@
                 <div class="img-wrap vr-viewer" style="aspect-ratio:16/9; position:relative;">
                   <img class="vr-poster" src="assets/images/interior/lounge-360-poster.jpg" alt="Lounge 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
                   <video id="lounge360" muted playsinline preload="none" data-lazy="true" style="display:none">
-                    <source type="video/mp4" data-src="assets/videos/interior/lounge-360.mp4" />
-                    <source type="video/quicktime" data-src="assets/videos/interior/lounge-360.mov" />
-                    <source type="video/webm" data-src="assets/videos/interior/lounge-360.webm" />
+                    <source type="video/mp4" src="data:video/mp4;base64," data-src="assets/videos/interior/lounge-360.mp4" />
+                    <source type="video/quicktime" src="data:video/mp4;base64," data-src="assets/videos/interior/lounge-360.mov" />
+                    <source type="video/webm" src="data:video/mp4;base64," data-src="assets/videos/interior/lounge-360.webm" />
                   </video>
                   <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0;">
                     <a-videosphere src="#lounge360" rotation="0 -90 0" material="shader: flat"></a-videosphere>
                   </a-scene>
                   <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/lounge-360-poster.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
-                    <source type="video/mp4" data-src="assets/videos/interior/lounge-360.mp4" />
-                    <source type="video/quicktime" data-src="assets/videos/interior/lounge-360.mov" />
-                    <source type="video/webm" data-src="assets/videos/interior/lounge-360.webm" />
+                    <source type="video/mp4" src="data:video/mp4;base64," data-src="assets/videos/interior/lounge-360.mp4" />
+                    <source type="video/quicktime" src="data:video/mp4;base64," data-src="assets/videos/interior/lounge-360.mov" />
+                    <source type="video/webm" src="data:video/mp4;base64," data-src="assets/videos/interior/lounge-360.webm" />
                   </video>
                   <button class="vr-play" data-target="lounge360" aria-label="Play 360 video" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.6rem 1rem; background:#00000099; color:#fff; border:1px solid #ffffff66; border-radius:6px; font-weight:700; cursor:pointer;">Tap to play 360</button>
                   <div class="vr-controls" style="position:absolute; right:.5rem; top:.5rem; display:flex; gap:.4rem;">
@@ -862,17 +929,17 @@
                 <div class="img-wrap vr-viewer" style="aspect-ratio:16/9; position:relative;">
                   <img class="vr-poster" src="assets/images/interior/conservatory-360-poster.jpg" alt="Conservatory 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
                   <video id="conservatory360" muted playsinline preload="none" data-lazy="true" style="display:none">
-                    <source type="video/mp4" data-src="assets/videos/interior/conservatory-360.mp4" />
-                    <source type="video/quicktime" data-src="assets/videos/interior/conservatory-360.mov" />
-                    <source type="video/webm" data-src="assets/videos/interior/conservatory-360.webm" />
+                    <source type="video/mp4" src="data:video/mp4;base64," data-src="assets/videos/interior/conservatory-360.mp4" />
+                    <source type="video/quicktime" src="data:video/mp4;base64," data-src="assets/videos/interior/conservatory-360.mov" />
+                    <source type="video/webm" src="data:video/mp4;base64," data-src="assets/videos/interior/conservatory-360.webm" />
                   </video>
                   <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="position:absolute; inset:0;">
                     <a-videosphere src="#conservatory360" rotation="0 -90 0" material="shader: flat"></a-videosphere>
                   </a-scene>
                   <video class="flat-video" controls playsinline preload="metadata" poster="assets/images/interior/conservatory-360-poster.jpg" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; background:#000;">
-                    <source type="video/mp4" data-src="assets/videos/interior/conservatory-360.mp4" />
-                    <source type="video/quicktime" data-src="assets/videos/interior/conservatory-360.mov" />
-                    <source type="video/webm" data-src="assets/videos/interior/conservatory-360.webm" />
+                    <source type="video/mp4" src="data:video/mp4;base64," data-src="assets/videos/interior/conservatory-360.mp4" />
+                    <source type="video/quicktime" src="data:video/mp4;base64," data-src="assets/videos/interior/conservatory-360.mov" />
+                    <source type="video/webm" src="data:video/mp4;base64," data-src="assets/videos/interior/conservatory-360.webm" />
                   </video>
                   <button class="vr-play" data-target="conservatory360" aria-label="Play 360 video" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.6rem 1rem; background:#00000099; color:#fff; border:1px solid #ffffff66; border-radius:6px; font-weight:700; cursor:pointer;">Tap to play 360</button>
                   <div class="vr-controls" style="position:absolute; right:.5rem; top:.5rem; display:flex; gap:.4rem;">
@@ -900,16 +967,13 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source
-                      type="image/avif"
-                      data-srcset="assets/images/exterior/garden-annex.avif"
+                    <source type="image/avif"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/garden-annex.avif"
                     />
-                    <source
-                      type="image/webp"
-                      data-srcset="assets/images/exterior/garden-annex.webp"
+                    <source type="image/webp"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/garden-annex.webp"
                     />
-                    <img
-                      data-src="assets/images/exterior/garden-annex.jpg"
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/exterior/garden-annex.jpg"
                       alt="Garden and annex"
                       loading="lazy"
                       decoding="async"
@@ -921,16 +985,13 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source
-                      type="image/avif"
-                      data-srcset="assets/images/exterior/garden-annex-walkway.avif"
+                    <source type="image/avif"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/garden-annex-walkway.avif"
                     />
-                    <source
-                      type="image/webp"
-                      data-srcset="assets/images/exterior/garden-annex-walkway.webp"
+                    <source type="image/webp"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/garden-annex-walkway.webp"
                     />
-                    <img
-                      data-src="assets/images/exterior/garden-annex-walkway.jpg"
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/exterior/garden-annex-walkway.jpg"
                       alt="Garden and annex walkway"
                       loading="lazy"
                       decoding="async"
@@ -942,16 +1003,13 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source
-                      type="image/avif"
-                      data-srcset="assets/images/exterior/garden-greenhouse-beds.avif"
+                    <source type="image/avif"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/garden-greenhouse-beds.avif"
                     />
-                    <source
-                      type="image/webp"
-                      data-srcset="assets/images/exterior/garden-greenhouse-beds.webp"
+                    <source type="image/webp"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/garden-greenhouse-beds.webp"
                     />
-                    <img
-                      data-src="assets/images/exterior/garden-greenhouse-beds.jpg"
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/exterior/garden-greenhouse-beds.jpg"
                       alt="Garden with greenhouse and fruit beds"
                       loading="lazy"
                       decoding="async"
@@ -963,16 +1021,13 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source
-                      type="image/avif"
-                      data-srcset="assets/images/exterior/garden-raised-beds-bbq.avif"
+                    <source type="image/avif"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/garden-raised-beds-bbq.avif"
                     />
-                    <source
-                      type="image/webp"
-                      data-srcset="assets/images/exterior/garden-raised-beds-bbq.webp"
+                    <source type="image/webp"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/garden-raised-beds-bbq.webp"
                     />
-                    <img
-                      data-src="assets/images/exterior/garden-raised-beds-bbq.jpg"
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/exterior/garden-raised-beds-bbq.jpg"
                       alt="Raised beds and BBQ shelter"
                       loading="lazy"
                       decoding="async"
@@ -984,16 +1039,13 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source
-                      type="image/avif"
-                      data-srcset="assets/images/exterior/patio-covered-seating.avif"
+                    <source type="image/avif"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/patio-covered-seating.avif"
                     />
-                    <source
-                      type="image/webp"
-                      data-srcset="assets/images/exterior/patio-covered-seating.webp"
+                    <source type="image/webp"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/patio-covered-seating.webp"
                     />
-                    <img
-                      data-src="assets/images/exterior/patio-covered-seating.jpg"
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/exterior/patio-covered-seating.jpg"
                       alt="Covered patio and seating area"
                       loading="lazy"
                       decoding="async"
@@ -1005,16 +1057,13 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source
-                      type="image/avif"
-                      data-srcset="assets/images/exterior/greenhouse-dome.avif"
+                    <source type="image/avif"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/greenhouse-dome.avif"
                     />
-                    <source
-                      type="image/webp"
-                      data-srcset="assets/images/exterior/greenhouse-dome.webp"
+                    <source type="image/webp"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/exterior/greenhouse-dome.webp"
                     />
-                    <img
-                      data-src="assets/images/exterior/greenhouse-dome.jpg"
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/exterior/greenhouse-dome.jpg"
                       alt="Illuminated dome in the garden"
                       loading="lazy"
                       decoding="async"
@@ -1035,18 +1084,14 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source
-                      type="image/avif"
-                      data-srcset="assets/images/interior/lounge-1-480.avif 480w, assets/images/interior/lounge-1-800.avif 800w, assets/images/interior/lounge-1-1200.avif 1200w"
+                    <source type="image/avif"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/lounge-1-480.avif 480w, assets/images/interior/lounge-1-800.avif 800w, assets/images/interior/lounge-1-1200.avif 1200w"
                     />
-                    <source
-                      type="image/webp"
-                      data-srcset="assets/images/interior/lounge-1-480.webp 480w, assets/images/interior/lounge-1-800.webp 800w, assets/images/interior/lounge-1-1200.webp 1200w"
+                    <source type="image/webp"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/lounge-1-480.webp 480w, assets/images/interior/lounge-1-800.webp 800w, assets/images/interior/lounge-1-1200.webp 1200w"
                     />
-                    <img
-                      data-src="assets/images/interior/lounge-1-800.jpg"
-                      data-srcset="assets/images/interior/lounge-1-480.jpg 480w, assets/images/interior/lounge-1-800.jpg 800w, assets/images/interior/lounge-1-1200.jpg 1200w"
-                      sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/lounge-1-800.jpg"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/interior/lounge-1-480.jpg 480w, assets/images/interior/lounge-1-800.jpg 800w, assets/images/interior/lounge-1-1200.jpg 1200w"
                       alt="Lounge — main view"
                       loading="lazy"
                       decoding="async"
@@ -1058,18 +1103,14 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source
-                      type="image/avif"
-                      data-srcset="assets/images/interior/lounge-2-480.avif 480w, assets/images/interior/lounge-2-800.avif 800w, assets/images/interior/lounge-2-1200.avif 1200w"
+                    <source type="image/avif"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/lounge-2-480.avif 480w, assets/images/interior/lounge-2-800.avif 800w, assets/images/interior/lounge-2-1200.avif 1200w"
                     />
-                    <source
-                      type="image/webp"
-                      data-srcset="assets/images/interior/lounge-2-480.webp 480w, assets/images/interior/lounge-2-800.webp 800w, assets/images/interior/lounge-2-1200.webp 1200w"
+                    <source type="image/webp"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/lounge-2-480.webp 480w, assets/images/interior/lounge-2-800.webp 800w, assets/images/interior/lounge-2-1200.webp 1200w"
                     />
-                    <img
-                      data-src="assets/images/interior/lounge-2-800.jpg"
-                      data-srcset="assets/images/interior/lounge-2-480.jpg 480w, assets/images/interior/lounge-2-800.jpg 800w, assets/images/interior/lounge-2-1200.jpg 1200w"
-                      sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/lounge-2-800.jpg"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/interior/lounge-2-480.jpg 480w, assets/images/interior/lounge-2-800.jpg 800w, assets/images/interior/lounge-2-1200.jpg 1200w"
                       alt="Lounge — second angle"
                       loading="lazy"
                       decoding="async"
@@ -1082,9 +1123,9 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/kitchen-1-480.avif 480w, assets/images/interior/kitchen-1-800.avif 800w, assets/images/interior/kitchen-1-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/kitchen-1-480.webp 480w, assets/images/interior/kitchen-1-800.webp 800w, assets/images/interior/kitchen-1-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/kitchen-1-800.jpg" data-srcset="assets/images/interior/kitchen-1-480.jpg 480w, assets/images/interior/kitchen-1-800.jpg 800w, assets/images/interior/kitchen-1-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Kitchen — front-on view" loading="lazy" decoding="async" />
+                    <source type="image/avif" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/kitchen-1-480.avif 480w, assets/images/interior/kitchen-1-800.avif 800w, assets/images/interior/kitchen-1-1200.avif 1200w" />
+                    <source type="image/webp" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/kitchen-1-480.webp 480w, assets/images/interior/kitchen-1-800.webp 800w, assets/images/interior/kitchen-1-1200.webp 1200w" />
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/kitchen-1-800.jpg" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/interior/kitchen-1-480.jpg 480w, assets/images/interior/kitchen-1-800.jpg 800w, assets/images/interior/kitchen-1-1200.jpg 1200w" alt="Kitchen — front-on view" loading="lazy" decoding="async" />
                   </picture>
                 </div>
                 <figcaption>Kitchen — front-on view</figcaption>
@@ -1092,9 +1133,9 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/kitchen-2-480.avif 480w, assets/images/interior/kitchen-2-800.avif 800w, assets/images/interior/kitchen-2-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/kitchen-2-480.webp 480w, assets/images/interior/kitchen-2-800.webp 800w, assets/images/interior/kitchen-2-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/kitchen-2-800.jpg" data-srcset="assets/images/interior/kitchen-2-480.jpg 480w, assets/images/interior/kitchen-2-800.jpg 800w, assets/images/interior/kitchen-2-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Kitchen — wide view" loading="lazy" decoding="async" />
+                    <source type="image/avif" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/kitchen-2-480.avif 480w, assets/images/interior/kitchen-2-800.avif 800w, assets/images/interior/kitchen-2-1200.avif 1200w" />
+                    <source type="image/webp" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/kitchen-2-480.webp 480w, assets/images/interior/kitchen-2-800.webp 800w, assets/images/interior/kitchen-2-1200.webp 1200w" />
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/kitchen-2-800.jpg" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/interior/kitchen-2-480.jpg 480w, assets/images/interior/kitchen-2-800.jpg 800w, assets/images/interior/kitchen-2-1200.jpg 1200w" alt="Kitchen — wide view" loading="lazy" decoding="async" />
                   </picture>
                 </div>
                 <figcaption>Kitchen — wide view</figcaption>
@@ -1102,9 +1143,9 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/kitchen-3-480.avif 480w, assets/images/interior/kitchen-3-800.avif 800w, assets/images/interior/kitchen-3-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/kitchen-3-480.webp 480w, assets/images/interior/kitchen-3-800.webp 800w, assets/images/interior/kitchen-3-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/kitchen-3-800.jpg" data-srcset="assets/images/interior/kitchen-3-480.jpg 480w, assets/images/interior/kitchen-3-800.jpg 800w, assets/images/interior/kitchen-3-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Kitchen — fridge and sink angle" loading="lazy" decoding="async" />
+                    <source type="image/avif" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/kitchen-3-480.avif 480w, assets/images/interior/kitchen-3-800.avif 800w, assets/images/interior/kitchen-3-1200.avif 1200w" />
+                    <source type="image/webp" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/kitchen-3-480.webp 480w, assets/images/interior/kitchen-3-800.webp 800w, assets/images/interior/kitchen-3-1200.webp 1200w" />
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/kitchen-3-800.jpg" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/interior/kitchen-3-480.jpg 480w, assets/images/interior/kitchen-3-800.jpg 800w, assets/images/interior/kitchen-3-1200.jpg 1200w" alt="Kitchen — fridge and sink angle" loading="lazy" decoding="async" />
                   </picture>
                 </div>
                 <figcaption>Kitchen — fridge and sink angle</figcaption>
@@ -1112,9 +1153,9 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/kitchen-4-480.avif 480w, assets/images/interior/kitchen-4-800.avif 800w, assets/images/interior/kitchen-4-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/kitchen-4-480.webp 480w, assets/images/interior/kitchen-4-800.webp 800w, assets/images/interior/kitchen-4-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/kitchen-4-800.jpg" data-srcset="assets/images/interior/kitchen-4-480.jpg 480w, assets/images/interior/kitchen-4-800.jpg 800w, assets/images/interior/kitchen-4-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Kitchen — dual fridge area" loading="lazy" decoding="async" />
+                    <source type="image/avif" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/kitchen-4-480.avif 480w, assets/images/interior/kitchen-4-800.avif 800w, assets/images/interior/kitchen-4-1200.avif 1200w" />
+                    <source type="image/webp" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/kitchen-4-480.webp 480w, assets/images/interior/kitchen-4-800.webp 800w, assets/images/interior/kitchen-4-1200.webp 1200w" />
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/kitchen-4-800.jpg" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/interior/kitchen-4-480.jpg 480w, assets/images/interior/kitchen-4-800.jpg 800w, assets/images/interior/kitchen-4-1200.jpg 1200w" alt="Kitchen — dual fridge area" loading="lazy" decoding="async" />
                   </picture>
                 </div>
                 <figcaption>Kitchen — dual fridge area</figcaption>
@@ -1122,9 +1163,9 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/kitchen-5-480.avif 480w, assets/images/interior/kitchen-5-800.avif 800w, assets/images/interior/kitchen-5-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/kitchen-5-480.webp 480w, assets/images/interior/kitchen-5-800.webp 800w, assets/images/interior/kitchen-5-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/kitchen-5-800.jpg" data-srcset="assets/images/interior/kitchen-5-480.jpg 480w, assets/images/interior/kitchen-5-800.jpg 800w, assets/images/interior/kitchen-5-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Kitchen — counter and appliances" loading="lazy" decoding="async" />
+                    <source type="image/avif" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/kitchen-5-480.avif 480w, assets/images/interior/kitchen-5-800.avif 800w, assets/images/interior/kitchen-5-1200.avif 1200w" />
+                    <source type="image/webp" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/kitchen-5-480.webp 480w, assets/images/interior/kitchen-5-800.webp 800w, assets/images/interior/kitchen-5-1200.webp 1200w" />
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/kitchen-5-800.jpg" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/interior/kitchen-5-480.jpg 480w, assets/images/interior/kitchen-5-800.jpg 800w, assets/images/interior/kitchen-5-1200.jpg 1200w" alt="Kitchen — counter and appliances" loading="lazy" decoding="async" />
                   </picture>
                 </div>
                 <figcaption>Kitchen — counter and appliances</figcaption>
@@ -1132,9 +1173,9 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/kitchen-6-480.avif 480w, assets/images/interior/kitchen-6-800.avif 800w, assets/images/interior/kitchen-6-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/kitchen-6-480.webp 480w, assets/images/interior/kitchen-6-800.webp 800w, assets/images/interior/kitchen-6-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/kitchen-6-800.jpg" data-srcset="assets/images/interior/kitchen-6-480.jpg 480w, assets/images/interior/kitchen-6-800.jpg 800w, assets/images/interior/kitchen-6-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Kitchen — additional angle" loading="lazy" decoding="async" />
+                    <source type="image/avif" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/kitchen-6-480.avif 480w, assets/images/interior/kitchen-6-800.avif 800w, assets/images/interior/kitchen-6-1200.avif 1200w" />
+                    <source type="image/webp" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/kitchen-6-480.webp 480w, assets/images/interior/kitchen-6-800.webp 800w, assets/images/interior/kitchen-6-1200.webp 1200w" />
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/kitchen-6-800.jpg" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/interior/kitchen-6-480.jpg 480w, assets/images/interior/kitchen-6-800.jpg 800w, assets/images/interior/kitchen-6-1200.jpg 1200w" alt="Kitchen — additional angle" loading="lazy" decoding="async" />
                   </picture>
                 </div>
                 <figcaption>Kitchen — additional angle</figcaption>
@@ -1142,16 +1183,13 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source
-                      type="image/avif"
-                      data-srcset="assets/images/interior/64B4DF3B-2CF5-4F8B-8B25-391DAA668657_1_105_c.avif"
+                    <source type="image/avif"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/64B4DF3B-2CF5-4F8B-8B25-391DAA668657_1_105_c.avif"
                     />
-                    <source
-                      type="image/webp"
-                      data-srcset="assets/images/interior/64B4DF3B-2CF5-4F8B-8B25-391DAA668657_1_105_c.webp"
+                    <source type="image/webp"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/64B4DF3B-2CF5-4F8B-8B25-391DAA668657_1_105_c.webp"
                     />
-                    <img
-                      data-src="assets/images/interior/64B4DF3B-2CF5-4F8B-8B25-391DAA668657_1_105_c.jpeg"
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/64B4DF3B-2CF5-4F8B-8B25-391DAA668657_1_105_c.jpeg"
                       alt="Sun/Zen room with shelves of plants"
                       loading="lazy"
                       decoding="async"
@@ -1163,16 +1201,13 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source
-                      type="image/avif"
-                      data-srcset="assets/images/interior/0DC5EADA-533A-4F25-A007-DEE8BBC8AAB5_1_105_c.avif"
+                    <source type="image/avif"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/0DC5EADA-533A-4F25-A007-DEE8BBC8AAB5_1_105_c.avif"
                     />
-                    <source
-                      type="image/webp"
-                      data-srcset="assets/images/interior/0DC5EADA-533A-4F25-A007-DEE8BBC8AAB5_1_105_c.webp"
+                    <source type="image/webp"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/0DC5EADA-533A-4F25-A007-DEE8BBC8AAB5_1_105_c.webp"
                     />
-                    <img
-                      data-src="assets/images/interior/0DC5EADA-533A-4F25-A007-DEE8BBC8AAB5_1_105_c.jpeg"
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/0DC5EADA-533A-4F25-A007-DEE8BBC8AAB5_1_105_c.jpeg"
                       alt="Sunroom / ZenRoom seating with plants"
                       loading="lazy"
                       decoding="async"
@@ -1184,16 +1219,13 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source
-                      type="image/avif"
-                      data-srcset="assets/images/interior/B90E9E42-0085-4CDD-846F-B2A0E89E3640_1_105_c.avif"
+                    <source type="image/avif"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/B90E9E42-0085-4CDD-846F-B2A0E89E3640_1_105_c.avif"
                     />
-                    <source
-                      type="image/webp"
-                      data-srcset="assets/images/interior/B90E9E42-0085-4CDD-846F-B2A0E89E3640_1_105_c.webp"
+                    <source type="image/webp"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/B90E9E42-0085-4CDD-846F-B2A0E89E3640_1_105_c.webp"
                     />
-                    <img
-                      data-src="assets/images/interior/B90E9E42-0085-4CDD-846F-B2A0E89E3640_1_105_c.jpeg"
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/B90E9E42-0085-4CDD-846F-B2A0E89E3640_1_105_c.jpeg"
                       alt="Conservatory seating area with armchairs"
                       loading="lazy"
                       decoding="async"
@@ -1205,16 +1237,13 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source
-                      type="image/avif"
-                      data-srcset="assets/images/interior/BFCFCC5A-16A2-46BD-B651-F72EF4116452_1_105_c.avif"
+                    <source type="image/avif"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/BFCFCC5A-16A2-46BD-B651-F72EF4116452_1_105_c.avif"
                     />
-                    <source
-                      type="image/webp"
-                      data-srcset="assets/images/interior/BFCFCC5A-16A2-46BD-B651-F72EF4116452_1_105_c.webp"
+                    <source type="image/webp"
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/BFCFCC5A-16A2-46BD-B651-F72EF4116452_1_105_c.webp"
                     />
-                    <img
-                      data-src="assets/images/interior/BFCFCC5A-16A2-46BD-B651-F72EF4116452_1_105_c.jpeg"
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/BFCFCC5A-16A2-46BD-B651-F72EF4116452_1_105_c.jpeg"
                       alt="Lounge windows looking onto garden"
                       loading="lazy"
                       decoding="async"
@@ -1227,9 +1256,9 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/sunroom-1-480.avif 480w, assets/images/interior/sunroom-1-800.avif 800w, assets/images/interior/sunroom-1-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/sunroom-1-480.webp 480w, assets/images/interior/sunroom-1-800.webp 800w, assets/images/interior/sunroom-1-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/sunroom-1-800.jpg" data-srcset="assets/images/interior/sunroom-1-480.jpg 480w, assets/images/interior/sunroom-1-800.jpg 800w, assets/images/interior/sunroom-1-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Sunroom — garden-facing windows" loading="lazy" decoding="async" />
+                    <source type="image/avif" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/sunroom-1-480.avif 480w, assets/images/interior/sunroom-1-800.avif 800w, assets/images/interior/sunroom-1-1200.avif 1200w" />
+                    <source type="image/webp" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/sunroom-1-480.webp 480w, assets/images/interior/sunroom-1-800.webp 800w, assets/images/interior/sunroom-1-1200.webp 1200w" />
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/sunroom-1-800.jpg" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/interior/sunroom-1-480.jpg 480w, assets/images/interior/sunroom-1-800.jpg 800w, assets/images/interior/sunroom-1-1200.jpg 1200w" alt="Sunroom — garden-facing windows" loading="lazy" decoding="async" />
                   </picture>
                 </div>
                 <figcaption>Sunroom — garden-facing windows</figcaption>
@@ -1237,9 +1266,9 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/sunroom-2-480.avif 480w, assets/images/interior/sunroom-2-800.avif 800w, assets/images/interior/sunroom-2-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/sunroom-2-480.webp 480w, assets/images/interior/sunroom-2-800.webp 800w, assets/images/interior/sunroom-2-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/sunroom-2-800.jpg" data-srcset="assets/images/interior/sunroom-2-480.jpg 480w, assets/images/interior/sunroom-2-800.jpg 800w, assets/images/interior/sunroom-2-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Sunroom — view to kitchen arch" loading="lazy" decoding="async" />
+                    <source type="image/avif" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/sunroom-2-480.avif 480w, assets/images/interior/sunroom-2-800.avif 800w, assets/images/interior/sunroom-2-1200.avif 1200w" />
+                    <source type="image/webp" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/sunroom-2-480.webp 480w, assets/images/interior/sunroom-2-800.webp 800w, assets/images/interior/sunroom-2-1200.webp 1200w" />
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/sunroom-2-800.jpg" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/interior/sunroom-2-480.jpg 480w, assets/images/interior/sunroom-2-800.jpg 800w, assets/images/interior/sunroom-2-1200.jpg 1200w" alt="Sunroom — view to kitchen arch" loading="lazy" decoding="async" />
                   </picture>
                 </div>
                 <figcaption>Sunroom — view to kitchen arch</figcaption>
@@ -1247,9 +1276,9 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/sunroom-3-480.avif 480w, assets/images/interior/sunroom-3-800.avif 800w, assets/images/interior/sunroom-3-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/sunroom-3-480.webp 480w, assets/images/interior/sunroom-3-800.webp 800w, assets/images/interior/sunroom-3-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/sunroom-3-800.jpg" data-srcset="assets/images/interior/sunroom-3-480.jpg 480w, assets/images/interior/sunroom-3-800.jpg 800w, assets/images/interior/sunroom-3-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Sunroom — doors to greenhouse" loading="lazy" decoding="async" />
+                    <source type="image/avif" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/sunroom-3-480.avif 480w, assets/images/interior/sunroom-3-800.avif 800w, assets/images/interior/sunroom-3-1200.avif 1200w" />
+                    <source type="image/webp" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/sunroom-3-480.webp 480w, assets/images/interior/sunroom-3-800.webp 800w, assets/images/interior/sunroom-3-1200.webp 1200w" />
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/sunroom-3-800.jpg" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/interior/sunroom-3-480.jpg 480w, assets/images/interior/sunroom-3-800.jpg 800w, assets/images/interior/sunroom-3-1200.jpg 1200w" alt="Sunroom — doors to greenhouse" loading="lazy" decoding="async" />
                   </picture>
                 </div>
                 <figcaption>Sunroom — doors to greenhouse</figcaption>
@@ -1261,9 +1290,9 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/cloakroom-1-480.avif 480w, assets/images/interior/cloakroom-1-800.avif 800w, assets/images/interior/cloakroom-1-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/cloakroom-1-480.webp 480w, assets/images/interior/cloakroom-1-800.webp 800w, assets/images/interior/cloakroom-1-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/cloakroom-1-800.jpg" data-srcset="assets/images/interior/cloakroom-1-480.jpg 480w, assets/images/interior/cloakroom-1-800.jpg 800w, assets/images/interior/cloakroom-1-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Downstairs WC / Cloakroom with shelving and sink" loading="lazy" decoding="async" />
+                    <source type="image/avif" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/cloakroom-1-480.avif 480w, assets/images/interior/cloakroom-1-800.avif 800w, assets/images/interior/cloakroom-1-1200.avif 1200w" />
+                    <source type="image/webp" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/cloakroom-1-480.webp 480w, assets/images/interior/cloakroom-1-800.webp 800w, assets/images/interior/cloakroom-1-1200.webp 1200w" />
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/cloakroom-1-800.jpg" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/interior/cloakroom-1-480.jpg 480w, assets/images/interior/cloakroom-1-800.jpg 800w, assets/images/interior/cloakroom-1-1200.jpg 1200w" alt="Downstairs WC / Cloakroom with shelving and sink" loading="lazy" decoding="async" />
                   </picture>
                 </div>
                 <figcaption>Downstairs WC / Cloakroom</figcaption>
@@ -1280,9 +1309,9 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/landing-window-480.avif 480w, assets/images/interior/landing-window-800.avif 800w, assets/images/interior/landing-window-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/landing-window-480.webp 480w, assets/images/interior/landing-window-800.webp 800w, assets/images/interior/landing-window-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/landing-window-800.jpg" data-srcset="assets/images/interior/landing-window-480.jpg 480w, assets/images/interior/landing-window-800.jpg 800w, assets/images/interior/landing-window-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Landing with large window" loading="lazy" decoding="async" />
+                    <source type="image/avif" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/landing-window-480.avif 480w, assets/images/interior/landing-window-800.avif 800w, assets/images/interior/landing-window-1200.avif 1200w" />
+                    <source type="image/webp" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/landing-window-480.webp 480w, assets/images/interior/landing-window-800.webp 800w, assets/images/interior/landing-window-1200.webp 1200w" />
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/landing-window-800.jpg" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/interior/landing-window-480.jpg 480w, assets/images/interior/landing-window-800.jpg 800w, assets/images/interior/landing-window-1200.jpg 1200w" alt="Landing with large window" loading="lazy" decoding="async" />
                   </picture>
                 </div>
                 <figcaption>Landing with large window</figcaption>
@@ -1290,9 +1319,9 @@
               <figure>
                 <div class="img-wrap">
                   <picture>
-                    <source type="image/avif" data-srcset="assets/images/interior/bedroom-2-2-480.avif 480w, assets/images/interior/bedroom-2-2-800.avif 800w, assets/images/interior/bedroom-2-2-1200.avif 1200w" />
-                    <source type="image/webp" data-srcset="assets/images/interior/bedroom-2-2-480.webp 480w, assets/images/interior/bedroom-2-2-800.webp 800w, assets/images/interior/bedroom-2-2-1200.webp 1200w" />
-                    <img data-src="assets/images/interior/bedroom-2-2-800.jpg" data-srcset="assets/images/interior/bedroom-2-2-480.jpg 480w, assets/images/interior/bedroom-2-2-800.jpg 800w, assets/images/interior/bedroom-2-2-1200.jpg 1200w" sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" alt="Bedroom 2 — study & bunk area" loading="lazy" decoding="async" />
+                    <source type="image/avif" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/bedroom-2-2-480.avif 480w, assets/images/interior/bedroom-2-2-800.avif 800w, assets/images/interior/bedroom-2-2-1200.avif 1200w" />
+                    <source type="image/webp" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x" data-srcset="assets/images/interior/bedroom-2-2-480.webp 480w, assets/images/interior/bedroom-2-2-800.webp 800w, assets/images/interior/bedroom-2-2-1200.webp 1200w" />
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="assets/images/interior/bedroom-2-2-800.jpg" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-srcset="assets/images/interior/bedroom-2-2-480.jpg 480w, assets/images/interior/bedroom-2-2-800.jpg 800w, assets/images/interior/bedroom-2-2-1200.jpg 1200w" alt="Bedroom 2 — study & bunk area" loading="lazy" decoding="async" />
                   </picture>
                 </div>
                 <figcaption>Bedroom 2 — study & bunk area</figcaption>
@@ -1577,7 +1606,6 @@
         <div class="map-wrap">
           <iframe
             title="Map: Apple Cottage, Creetown"
-            loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
             src="https://www.google.com/maps?q=Apple%20Cottage%2C%20Silver%20Street%2C%20Creetown&output=embed"
           ></iframe>
@@ -1632,10 +1660,16 @@
         </div>
       </section>
     </main>
-    <footer>
+    <footer role="contentinfo">
       <p>
         &copy; 2025 Apple Cottage, Silver Street, Creetown. All rights reserved.
       </p>
+      <!-- Additional footer content for SEO -->
+      <nav aria-label="Legal links" style="margin-top: 0.5rem; font-size: 0.9em;">
+        <a href="mailto:serdar@mustafa-family.com" style="margin-right: 1rem;">Contact</a>
+        <a href="https://tidycal.com/sidmustafa/apple-cottage-viewing" style="margin-right: 1rem;">Book Viewing</a>
+        <a href="https://applecottagecreetown.co.uk/" style="margin-right: 1rem;">Privacy</a>
+      </nav>
     </footer>
 
     <!-- Home Report Modal -->
@@ -1766,7 +1800,7 @@
       <button class="lightbox-close" aria-label="Close">&times;</button>
       <button class="lightbox-prev" aria-label="Previous">&#x2039;</button>
       <button class="lightbox-next" aria-label="Next">&#x203A;</button>
-      <img id="lightboxImg" alt="" />
+      <img id="lightboxImg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" />
       <div id="lightboxCaption"></div>
     </div>
 
