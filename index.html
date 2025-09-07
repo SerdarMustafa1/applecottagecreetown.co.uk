@@ -328,7 +328,7 @@
     </div>
     <!-- No GTM noscript needed when using Google tag -->
     <!-- Hero section -->
-    <header role="banner">
+    <header role="banner" id="top">
       <picture class="hero-bg" aria-hidden="true">
         <source
           type="image/avif"
@@ -386,7 +386,9 @@
             >Book a Viewing</a
           >
           <a href="#" class="btn request-report-btn">Request Home Report</a>
+          <a href="#tours360" class="btn" style="background:#111827">Watch 360 Tours</a>
         </div>
+        <p style="opacity:.9; font-size:.95rem; margin-top:.35rem">Flexible times available. No obligation.</p>
         <div class="share-bar" role="toolbar" aria-label="Share this property">
           <button
             type="button"
@@ -499,7 +501,46 @@
             </p>
           </div>
         </div>
-      </section>
+  </section>
+
+  <!-- Featured Photos strip for quick scan -->
+  <section id="featured" aria-labelledby="featured-title">
+    <h2 id="featured-title" class="section-title">Featured Photos</h2>
+    <div class="featured-strip" role="region" aria-label="Featured photos">
+      <figure>
+        <img src="assets/images/exterior/exteriormain-1600.jpg" alt="Front elevation" loading="lazy" decoding="async" />
+        <h3>Front elevation</h3>
+      </figure>
+      <figure>
+        <img src="assets/images/interior/kitchen-360-poster.jpg" alt="Kitchen" loading="lazy" decoding="async" />
+        <h3>Kitchen</h3>
+      </figure>
+      <figure>
+        <img src="assets/images/interior/lounge-360-poster.jpg" alt="Lounge" loading="lazy" decoding="async" />
+        <h3>Lounge</h3>
+      </figure>
+      <figure>
+        <img src="assets/images/interior/conservatory-360-poster.jpg" alt="Conservatory" loading="lazy" decoding="async" />
+        <h3>Conservatory</h3>
+      </figure>
+      <figure>
+        <img src="assets/images/interior/front-bedroom-360-poster.jpg" alt="Front bedroom" loading="lazy" decoding="async" />
+        <h3>Front bedroom</h3>
+      </figure>
+      <figure>
+        <img src="assets/images/interior/rear-bedroom-360-poster.jpg" alt="Rear bedroom" loading="lazy" decoding="async" />
+        <h3>Rear bedroom</h3>
+      </figure>
+      <figure>
+        <img src="assets/images/interior/bedroom-2-360-poster.jpg" alt="Bedroom 2" loading="lazy" decoding="async" />
+        <h3>Bedroom 2</h3>
+      </figure>
+      <figure>
+        <img src="assets/images/interior/bathroom-360-poster.jpg" alt="Bathroom" loading="lazy" decoding="async" />
+        <h3>Bathroom</h3>
+      </figure>
+    </div>
+  </section>
 
       <!-- Media Hub -->
       <section
@@ -771,23 +812,10 @@
             </summary>
             <div class="gallery gallery-grid">
               <figure>
-                <div
-                  class="img-wrap vr-viewer"
-                  style="aspect-ratio: 16/9; position: relative"
-                >
-                  <img
-                    class="vr-poster"
-                    src="https://d1t6lpjdsu4646.cloudfront.net/images/interior/kitchen-360-poster.jpg"
-                    alt="Kitchen 360 poster"
-                    style="
-                      position: absolute;
-                      inset: 0;
-                      width: 100%;
-                      height: 100%;
-                      object-fit: cover;
-                      border-radius: 8px;
-                    "
-                  />
+                <div class="img-wrap vr-viewer" style="aspect-ratio: 16/9; position: relative">
+                  <img class="vr-poster" src="assets/images/interior/kitchen-360-poster.jpg" alt="Kitchen 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <div class="vr-hint drag hidden">Drag to look around</div>
+                  <div class="vr-hint fallback hidden">Device‑friendly view</div>
                   <video
                     id="kitchen360"
                     muted
@@ -917,23 +945,10 @@
                 </figcaption>
               </figure>
               <figure>
-                <div
-                  class="img-wrap vr-viewer"
-                  style="aspect-ratio: 16/9; position: relative"
-                >
-                  <img
-                    class="vr-poster"
-                    src="https://d1t6lpjdsu4646.cloudfront.net/images/interior/bathroom-360-poster.jpg"
-                    alt="Bathroom 360 poster"
-                    style="
-                      position: absolute;
-                      inset: 0;
-                      width: 100%;
-                      height: 100%;
-                      object-fit: cover;
-                      border-radius: 8px;
-                    "
-                  />
+                <div class="img-wrap vr-viewer" style="aspect-ratio: 16/9; position: relative">
+                  <img class="vr-poster" src="assets/images/interior/bathroom-360-poster.jpg" alt="Bathroom 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <div class="vr-hint drag hidden">Drag to look around</div>
+                  <div class="vr-hint fallback hidden">Device‑friendly view</div>
                   <video
                     id="bathroom360"
                     muted
@@ -1067,19 +1082,9 @@
                   class="img-wrap vr-viewer"
                   style="aspect-ratio: 16/9; position: relative"
                 >
-                  <img
-                    class="vr-poster"
-                    src="https://d1t6lpjdsu4646.cloudfront.net/images/interior/front-bedroom-360-poster.jpg"
-                    alt="Front Bedroom 360 poster"
-                    style="
-                      position: absolute;
-                      inset: 0;
-                      width: 100%;
-                      height: 100%;
-                      object-fit: cover;
-                      border-radius: 8px;
-                    "
-                  />
+                  <img class="vr-poster" src="assets/images/interior/front-bedroom-360-poster.jpg" alt="Front Bedroom 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <div class="vr-hint drag hidden">Drag to look around</div>
+                  <div class="vr-hint fallback hidden">Device‑friendly view</div>
                   <video
                     id="frontbedroom360"
                     muted
@@ -1212,19 +1217,9 @@
                   class="img-wrap vr-viewer"
                   style="aspect-ratio: 16/9; position: relative"
                 >
-                  <img
-                    class="vr-poster"
-                    src="https://d1t6lpjdsu4646.cloudfront.net/images/interior/rear-bedroom-360-poster.jpg"
-                    alt="Back Bedroom 360 poster"
-                    style="
-                      position: absolute;
-                      inset: 0;
-                      width: 100%;
-                      height: 100%;
-                      object-fit: cover;
-                      border-radius: 8px;
-                    "
-                  />
+                  <img class="vr-poster" src="assets/images/interior/rear-bedroom-360-poster.jpg" alt="Rear Bedroom 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <div class="vr-hint drag hidden">Drag to look around</div>
+                  <div class="vr-hint fallback hidden">Device‑friendly view</div>
                   <video
                     id="backbedroom360"
                     muted
@@ -1357,19 +1352,9 @@
                   class="img-wrap vr-viewer"
                   style="aspect-ratio: 16/9; position: relative"
                 >
-                  <img
-                    class="vr-poster"
-                    src="https://d1t6lpjdsu4646.cloudfront.net/images/interior/lounge-360-poster.jpg"
-                    alt="Lounge 360 poster"
-                    style="
-                      position: absolute;
-                      inset: 0;
-                      width: 100%;
-                      height: 100%;
-                      object-fit: cover;
-                      border-radius: 8px;
-                    "
-                  />
+                  <img class="vr-poster" src="assets/images/interior/lounge-360-poster.jpg" alt="Lounge 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <div class="vr-hint drag hidden">Drag to look around</div>
+                  <div class="vr-hint fallback hidden">Device‑friendly view</div>
                   <video
                     id="lounge360"
                     muted
@@ -1502,19 +1487,9 @@
                   class="img-wrap vr-viewer"
                   style="aspect-ratio: 16/9; position: relative"
                 >
-                  <img
-                    class="vr-poster"
-                    src="https://d1t6lpjdsu4646.cloudfront.net/images/interior/conservatory-360-poster.jpg"
-                    alt="Conservatory 360 poster"
-                    style="
-                      position: absolute;
-                      inset: 0;
-                      width: 100%;
-                      height: 100%;
-                      object-fit: cover;
-                      border-radius: 8px;
-                    "
-                  />
+                  <img class="vr-poster" src="assets/images/interior/conservatory-360-poster.jpg" alt="Conservatory 360 poster" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;" />
+                  <div class="vr-hint drag hidden">Drag to look around</div>
+                  <div class="vr-hint fallback hidden">Device‑friendly view</div>
                   <video
                     id="conservatory360"
                     muted

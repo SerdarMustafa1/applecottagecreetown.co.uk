@@ -284,6 +284,32 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // 360 viewer hints and fallback messaging
+  document.querySelectorAll('#tours360 .vr-viewer').forEach((viewer) => {
+    const show = (selector, ms = 2500) => {
+      const el = viewer.querySelector(selector);
+      if (!el) return;
+      el.classList.remove('hidden');
+      setTimeout(() => el.classList.add('hidden'), ms);
+    };
+    const playBtn = viewer.querySelector('.vr-play');
+    if (playBtn) {
+      playBtn.addEventListener('click', () => {
+        setTimeout(() => show('.vr-hint.drag'), 800);
+      });
+    }
+    const flat = viewer.querySelector('video.flat-video');
+    if (flat) {
+      const obs = new MutationObserver(() => {
+        if (getComputedStyle(flat).display !== 'none') {
+          show('.vr-hint.fallback');
+          obs.disconnect();
+        }
+      });
+      obs.observe(flat, { attributes: true, attributeFilter: ['style', 'class'] });
+    }
+  });
+
   // Playback speed control for VR viewers (affects both 360 and flat videos)
   document.querySelectorAll(".vr-viewer").forEach((viewer) => {
     const speedSel = viewer.querySelector(".vr-speed");
