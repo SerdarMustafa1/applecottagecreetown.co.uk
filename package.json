@@ -6,7 +6,11 @@
   "scripts": {
     "build": "node scripts/convert_videos.js && node scripts/rewrite_media_base.js",
     "verify-cdn": "node scripts/verify_cdn.js",
-  "ingest": "node scripts/ingest_media.js",
+    "verify-cdn:nowebm": "VERIFY_SKIP_WEBM=1 node scripts/verify_cdn.js",
+    "ingest": "node scripts/ingest_media.js",
+    "s3:inventory": "node scripts/inventory_and_diff.js",
+    "s3:delete": "node scripts/delete_s3_keys.js",
+    "assets:check-local": "node scripts/check_local_assets.js",
     "test:cdn": "node scripts/verify_cdn.js",
     "test:e2e": "playwright test",
     "test": "npm run test:cdn && npm run test:e2e"
