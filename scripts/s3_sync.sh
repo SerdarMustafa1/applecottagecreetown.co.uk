@@ -9,6 +9,14 @@ fi
 BUCKET_URI="$1"; REGION="$2"; PROFILE="${3:-}"
 AWS=(aws --region "$REGION"); [ -n "$PROFILE" ] && AWS+=(--profile "$PROFILE")
 
+# Validate bucket exists before syncing
+BUCKET_NAME=$(echo "$BUCKET_URI" | sed 's|s3://||')
+echo "Validating bucket $BUCKET_NAME exists..."
+if ! "${AWS[@]}" s3 ls "$BUCKET_URI" >/dev/null 2>&1; then
+  echo "Error: Bucket $BUCKET_NAME does not exist or is not accessible" >&2
+  exit 1
+fi
+
 echo "Syncing images..."
 "${AWS[@]}" s3 sync assets/images "$BUCKET_URI/images" \
   --delete \

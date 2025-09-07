@@ -65,7 +65,8 @@ async function ensureOutputs(base, input) {
     const speed = process.env.WEBM_SPEED || '0'; // slower = better
     const passlog = path.join(VID_DIR, `.ffpass-${base}`);
     // pass 1 -> null output
-    await convert(input, 'NUL' /* unused */, [
+    const nullOutput = process.platform === 'win32' ? 'NUL' : '/dev/null';
+    await convert(input, nullOutput, [
       '-c:v libvpx-vp9',
       '-b:v 0',
       `-crf ${crf}`,
@@ -76,8 +77,7 @@ async function ensureOutputs(base, input) {
       '-pass 1',
       `-passlogfile ${passlog}`,
       '-f webm',
-      '-y',
-      'NUL'
+      '-y'
     ].filter(Boolean)).catch(()=>{});
     // pass 2 -> file
     await convert(input, webm, [

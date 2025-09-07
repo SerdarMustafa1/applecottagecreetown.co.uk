@@ -5,3 +5,9 @@ assets/videos/.DS_Store
 assets/videos/interior/.DS_Store
 node_modules/
 package-lock.json
+
+# Build artifacts from video conversion
+*.mp4
+*.webm
+.ffpass-*
+ffmpeg2pass-*
