@@ -5,7 +5,13 @@
   "description": "Static site for Apple Cottage with 360 video conversion at build time",
   "scripts": {
     "build": "node scripts/convert_videos.js && node scripts/rewrite_media_base.js",
-    "verify-cdn": "node scripts/verify_cdn.js"
+    "verify-cdn": "node scripts/verify_cdn.js",
+    "test:cdn": "node scripts/verify_cdn.js",
+    "test:e2e": "playwright test",
+    "test": "npm run test:cdn && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.46.0"
   },
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",

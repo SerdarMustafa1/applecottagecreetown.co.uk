@@ -185,6 +185,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const id = btn.getAttribute('data-target');
       const v = document.getElementById(id);
       if (!v) return;
+      const viewer = btn.closest('.vr-viewer');
+      const scene = viewer ? viewer.querySelector('a-scene') : null;
       // Hide poster image if present
       const posterImg = btn.closest('.vr-viewer')?.querySelector('.vr-poster');
       if (posterImg) posterImg.style.display = 'none';
@@ -196,33 +198,29 @@ document.addEventListener('DOMContentLoaded', () => {
         return changed;
       })(v);
       // Try playing; if it fails or doesn't start, fall back to flat video
-      const viewer = btn.closest('.vr-viewer');
       const flat = viewer ? viewer.querySelector('video.flat-video') : null;
       const showFlat = () => {
         if (!flat) return;
-        // hydrate flat video sources
         flat.querySelectorAll('source[data-src]').forEach(s => { if (!s.src && s.dataset.src) s.src = s.dataset.src; });
         try { flat.load(); } catch (_) {}
-        // show flat player and hide a-scene
-        const scene = viewer.querySelector('a-scene');
         if (scene) scene.style.display = 'none';
         flat.style.display = 'block';
         try { flat.play(); } catch (_) {}
       };
 
+      // Make scene visible just before attempting to play
+      if (scene) scene.style.display = 'block';
+
       let played = false;
-      try { await v.play(); played = true; } catch (_) {}
-      // If promise resolved but nothing renders soon, still switch to flat
+      try { await v.play(); played = true; } catch (_) { /* will fallback below */ }
       setTimeout(() => {
         const stalled = v.readyState < 2 || v.currentTime === 0;
         if (!played || stalled) {
           showFlat();
         } else {
-          // success: keep A‑Frame and hide button
           btn.style.display = 'none';
         }
       }, 1200);
-      // Also on error events, show flat
       v.addEventListener('error', showFlat, { once: true });
     });
   });
