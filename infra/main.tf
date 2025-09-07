@@ -63,11 +63,11 @@ resource "aws_cloudfront_distribution" "cdn" {
   }
 
   default_cache_behavior {
-    allowed_methods  = ["GET", "HEAD"]
-    cached_methods   = ["GET", "HEAD"]
-    target_origin_id = aws_s3_bucket.media.id
+    allowed_methods        = ["GET", "HEAD"]
+    cached_methods         = ["GET", "HEAD"]
+    target_origin_id       = aws_s3_bucket.media.id
     viewer_protocol_policy = "redirect-to-https"
-    compress = true
+    compress               = true
     forwarded_values {
       query_string = false
       headers      = []
@@ -111,6 +111,6 @@ resource "aws_s3_bucket_policy" "allow_cf" {
   policy = data.aws_iam_policy_document.cf_access.json
 }
 
-output "bucket_name"        { value = aws_s3_bucket.media.bucket }
-output "bucket_arn"         { value = aws_s3_bucket.media.arn }
-output "cloudfront_domain"  { value = aws_cloudfront_distribution.cdn.domain_name }
+output "bucket_name" { value = aws_s3_bucket.media.bucket }
+output "bucket_arn" { value = aws_s3_bucket.media.arn }
+output "cloudfront_domain" { value = aws_cloudfront_distribution.cdn.domain_name }
