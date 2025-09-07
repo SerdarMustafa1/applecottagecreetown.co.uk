@@ -8,3 +8,19 @@ package-lock.json
 
 assets/images/
 assets/videos/
+
+# Ignore Terraform local state
+infra/.terraform/
+infra/terraform.tfstate
+infra/terraform.tfstate.backup
+*.tfstate
+*.tfstate.backup
+crash.log
+
+# Ignore Terraform local state
+infra/.terraform/
+infra/terraform.tfstate
+infra/terraform.tfstate.backup
+*.tfstate
+*.tfstate.backup
+crash.log
