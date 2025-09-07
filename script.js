@@ -490,33 +490,52 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('There was a problem submitting the form. Please try again later.');
     }
   });
-});
 
-// Enable a focus trap within a container element; returns a cleanup function
-function enableFocusTrap(container) {
-  const FOCUSABLE = 'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
-  const getFocusable = () => Array.from(container.querySelectorAll(FOCUSABLE)).filter(el => !el.hasAttribute('disabled') && el.tabIndex !== -1);
-  const handler = (e) => {
-    if (e.key !== 'Tab') return;
-    const nodes = getFocusable();
-    if (!nodes.length) return;
-    const first = nodes[0];
-    const last = nodes[nodes.length - 1];
-    if (e.shiftKey) {
-      if (document.activeElement === first || !container.contains(document.activeElement)) {
-        e.preventDefault();
-        last.focus();
-      }
-    } else {
-      if (document.activeElement === last || !container.contains(document.activeElement)) {
-        e.preventDefault();
-        first.focus();
-      }
-    }
-  };
-  container.addEventListener('keydown', handler);
-  return () => container.removeEventListener('keydown', handler);
-}
+  // Panoramas: fetch manifest and render a grid of 360 photo viewers
+  (async function renderPanos(){
+    try {
+      const wrap = document.querySelector('#panoramas .pano-grid');
+      if (!wrap) return;
+      const res = await fetch('data/panos.json', { cache: 'no-cache' });
+      if (!res.ok) return;
+      const data = await res.json();
+      const items = Array.isArray(data.items) ? data.items : [];
+      items.forEach((p) => {
+        const fig = document.createElement('figure');
+        fig.innerHTML = `
+          <div class="img-wrap vr-photo" style="aspect-ratio:2/1; position:relative;">
+            <picture>
+              <source type="image/webp" srcset="${p.srcWebp}">
+              <img class="vr-poster" src="${p.srcJpg}" alt="${p.title || 'Panorama'}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px;"/>
+            </picture>
+            <a-scene embedded vr-mode-ui="enabled: false" loading-screen="enabled: false" renderer="antialias: true; precision: high" style="display:none; position:absolute; inset:0;">
+              <a-sky src="${p.srcJpg}" rotation="0 -90 0"></a-sky>
+            </a-scene>
+            <button class="vr-photo-play" aria-label="View panorama" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:.6rem 1rem; background:#00000099; color:#fff; border:1px solid #ffffff66; border-radius:6px; font-weight:700; cursor:pointer;">View 360</button>
+          </div>
+          <figcaption>${p.title || 'Panorama'}</figcaption>
+        `;
+        wrap.appendChild(fig);
+      });
+
+      // Wire up play buttons for newly added viewers
+      document.querySelectorAll('#panoramas .vr-photo .vr-photo-play').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const viewer = btn.closest('.vr-photo');
+          if (!viewer) return;
+          const poster = viewer.querySelector('.vr-poster');
+          const scene = viewer.querySelector('a-scene');
+          if (poster) poster.style.display = 'none';
+          if (scene) scene.style.display = 'block';
+          btn.style.display = 'none';
+        });
+      });
+      // Update count
+      const countEl = document.querySelector('#panoramas summary .count');
+      if (countEl) countEl.textContent = items.length ? `(${items.length})` : '';
+    } catch(_) {}
+  })();
+
   // Social sharing buttons
   const shareBtns = document.querySelectorAll('.js-share');
   const copyBtn = document.querySelector('.js-copy');
@@ -546,3 +565,30 @@ function enableFocusTrap(container) {
       } catch (_) {}
     });
   }
+});
+
+// Enable a focus trap within a container element; returns a cleanup function
+function enableFocusTrap(container) {
+  const FOCUSABLE = 'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
+  const getFocusable = () => Array.from(container.querySelectorAll(FOCUSABLE)).filter(el => !el.hasAttribute('disabled') && el.tabIndex !== -1);
+  const handler = (e) => {
+    if (e.key !== 'Tab') return;
+    const nodes = getFocusable();
+    if (!nodes.length) return;
+    const first = nodes[0];
+    const last = nodes[nodes.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first || !container.contains(document.activeElement)) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (document.activeElement === last || !container.contains(document.activeElement)) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  };
+  container.addEventListener('keydown', handler);
+  return () => container.removeEventListener('keydown', handler);
+}

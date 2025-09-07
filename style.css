@@ -363,6 +363,10 @@ footer {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+#panoramas .pano-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
 }
 .modal.hidden { display: none !important; }
 .modal-content {

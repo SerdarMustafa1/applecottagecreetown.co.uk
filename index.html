@@ -302,6 +302,7 @@
           "
           sizes="100vw"
           alt=""
+          fetchpriority="high"
         />
       </picture>
       <div class="hero-content">
@@ -519,6 +520,15 @@
       <!-- Gallery -->
       <section id="gallery" class="section-dark">
         <h2 class="section-title">Gallery</h2>
+        <details id="panoramas">
+          <summary>
+            Panoramic Photos
+            <span class="count" aria-live="polite"></span>
+          </summary>
+          <div class="gallery gallery-grid pano-grid">
+            <!-- Pano items will be injected from data/panos.json by script.js -->
+          </div>
+        </details>
         <div class="accordion gallery-accordion">
           <details open>
             <summary>
