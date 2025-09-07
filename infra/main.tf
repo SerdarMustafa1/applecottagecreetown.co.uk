@@ -78,9 +78,15 @@ resource "aws_cloudfront_distribution" "cdn" {
     max_ttl     = 31536000
   }
 
-  restrictions { geo_restriction { restriction_type = "none" } }
+  restrictions {
+    geo_restriction {
+      restriction_type = "none"
+    }
+  }
 
-  viewer_certificate { cloudfront_default_certificate = true }
+  viewer_certificate {
+    cloudfront_default_certificate = true
+  }
 }
 
 # S3 bucket policy to allow CloudFront OAC access
@@ -88,7 +94,10 @@ data "aws_iam_policy_document" "cf_access" {
   statement {
     actions   = ["s3:GetObject"]
     resources = ["${aws_s3_bucket.media.arn}/*"]
-    principals { type = "Service" identifiers = ["cloudfront.amazonaws.com"] }
+    principals {
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
+    }
     condition {
       test     = "StringEquals"
       variable = "AWS:SourceArn"
