@@ -1,53 +1,108 @@
-const fs = require('fs');
-const path = require('path');
-const https = require('https');
+const fs = require("fs");
+const path = require("path");
+const https = require("https");
 
 const base = process.env.MEDIA_BASE_URL;
 if (!base) {
-  console.error('[verify-cdn] MEDIA_BASE_URL not set');
+  console.error("[verify-cdn] MEDIA_BASE_URL not set");
   process.exit(2);
 }
 
-const IMG_DIR = path.join(__dirname, '..', 'assets', 'images');
-const VID_DIR = path.join(__dirname, '..', 'assets', 'videos');
-const urls = [];
+// Optional filters via env vars
+// VERIFY_SKIP_WEBM=1 -> ignore .webm files
+// VERIFY_SKIP_PATHS="/images/exterior/,/images/interior/" -> comma-separated substrings to exclude
+const SKIP_WEBM = /^1|true$/i.test(String(process.env.VERIFY_SKIP_WEBM || ""));
+const SKIP_PATHS = String(process.env.VERIFY_SKIP_PATHS || "")
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
 
-function collect(dir, prefix) {
-  if (!fs.existsSync(dir)) return;
-  for (const root of walk(dir)) {
-    const rel = path.relative(dir, root).replace(/\\/g, '/');
-    const u = `${base.replace(/\/$/, '')}/${prefix}/${rel}`;
-    urls.push(u);
+// Build the URL list from index.html (handles both local assets/ paths and
+// already-rewritten CDN URLs).
+const indexPath = path.join(__dirname, "..", "index.html");
+const html = fs.readFileSync(indexPath, "utf8");
+
+// Extract candidate URLs from src, href (preload), poster, srcset, data-src, data-srcset
+const attrRe = /(src|href|poster|data-src)=("|')(.*?)\2/gi;
+const srcsetRe = /(srcset|data-srcset)=("|')(.*?)\2/gi;
+
+function normalize(u) {
+  if (!u) return null;
+  if (/^https?:\/\//i.test(u)) return u; // already absolute
+  if (/^assets\//.test(u)) {
+    // Map assets/images -> CDN/images, assets/videos -> CDN/videos
+    return u
+      .replace(/^assets\/images\//, base.replace(/\/$/, "") + "/images/")
+      .replace(/^assets\/videos\//, base.replace(/\/$/, "") + "/videos/");
+  }
+  return null; // ignore other local links
+}
+
+const urls = new Set();
+
+// Simple attrs
+let m;
+while ((m = attrRe.exec(html))) {
+  const u = normalize(m[3]);
+  if (u) urls.add(u);
+}
+// srcset lists
+while ((m = srcsetRe.exec(html))) {
+  const list = m[3].split(",");
+  for (const part of list) {
+    const url = part.trim().split(" ")[0];
+    const u = normalize(url);
+    if (u) urls.add(u);
   }
 }
 
-function* walk(dir) {
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
-  for (const e of entries) {
-    const p = path.join(dir, e.name);
-    if (e.isDirectory()) yield* walk(p);
-    else if (/\.(avif|webp|jpg|jpeg|png|svg|mp4|webm|mov)$/i.test(e.name)) yield p;
-  }
+let final = Array.from(urls).filter((u) =>
+  /\.(avif|webp|jpe?g|png|svg|mp4|webm|mov)$/i.test(u)
+);
+
+// Apply filters
+if (SKIP_WEBM) {
+  final = final.filter((u) => !/\.webm$/i.test(u));
 }
+if (SKIP_PATHS.length) {
+  final = final.filter((u) => !SKIP_PATHS.some((s) => u.includes(s)));
+}
+console.log(`[verify-cdn] checking ${final.length} assets at ${base}`);
 
-collect(IMG_DIR, 'images');
-collect(VID_DIR, 'videos');
-
-console.log(`[verify-cdn] checking ${urls.length} assets at ${base}`);
-
-let failures = 0; let done = 0; const max = 16; let active = 0; let i = 0;
+let failures = 0;
+let done = 0;
+const max = 16;
+let active = 0;
+let i = 0;
 function head(u) {
-  return new Promise(resolve => {
-    const req = https.request(u, { method: 'HEAD' }, res => { resolve(res.statusCode); }).on('error', () => resolve(0));
+  return new Promise((resolve) => {
+    const req = https
+      .request(u, { method: "HEAD" }, (res) => {
+        resolve(res.statusCode);
+      })
+      .on("error", () => resolve(0));
     req.end();
   });
 }
 function pump() {
-  while (active < max && i < urls.length) {
-    const u = urls[i++]; active++;
-    head(u).then(code => {
-      if (code < 200 || code >= 400) { failures++; console.error('[missing]', code, u); }
-    }).finally(() => { active--; done++; if (done % 50 === 0) console.log(`[verify-cdn] ${done}/${urls.length}`); if (i < urls.length) pump(); else if (!active) finish(); });
+  while (active < max && i < final.length) {
+    const u = final[i++];
+    active++;
+    head(u)
+      .then((code) => {
+        if (code < 200 || code >= 400) {
+          failures++;
+          console.error("[missing]", code, u);
+        }
+      })
+      .finally(() => {
+        active--;
+        done++;
+        if (done % 50 === 0)
+          console.log(`[verify-cdn] ${done}/${final.length}`);
+        if (i < final.length) pump();
+        else if (!active) finish();
+      });
   }
 }
 function finish() {
@@ -55,6 +110,8 @@ function finish() {
   process.exit(failures ? 1 : 0);
 }
 
-if (!urls.length) { console.log('[verify-cdn] nothing to verify'); process.exit(0); }
+if (!final.length) {
+  console.log("[verify-cdn] nothing to verify");
+  process.exit(0);
+}
 pump();
-
