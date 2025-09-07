@@ -24,3 +24,11 @@ infra/terraform.tfstate.backup
 *.tfstate
 *.tfstate.backup
 crash.log
+
+# Terraform local state (ignore)
+infra/.terraform/
+infra/terraform.tfstate
+infra/terraform.tfstate.backup
+*.tfstate
+*.tfstate.backup
+crash.log
