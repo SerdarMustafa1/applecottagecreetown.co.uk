@@ -5,3 +5,6 @@ assets/videos/.DS_Store
 assets/videos/interior/.DS_Store
 node_modules/
 package-lock.json
+
+assets/images/
+assets/videos/
