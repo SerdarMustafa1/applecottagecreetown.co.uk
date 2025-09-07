@@ -35,6 +35,9 @@ img {
   height: auto;
 }
 
+/* Strong visible focus for keyboard users */
+:focus-visible { outline: 3px solid #ff6f61; outline-offset: 2px; }
+
 header {
   position: relative;
   width: 100%;
