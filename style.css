@@ -743,6 +743,65 @@ footer {
   line-height: 1.4;
 }
 
+/* Title Plan */
+.title-plan-section {
+  max-width: 800px;
+  margin: 3rem auto 0;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.title-plan-heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+}
+
+.title-plan-figure {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  margin: 0;
+}
+
+.title-plan-figure:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+  border-color: #cbd5e1;
+}
+
+.title-plan-figure img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+}
+
+.title-plan-figure figcaption {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .title-plan-section {
+    margin-top: 2rem;
+  }
+  
+  .title-plan-heading {
+    font-size: 1.3rem;
+  }
+  
+  .title-plan-figure {
+    padding: 1rem;
+  }
+}
+
 /* Register Interest form */
 .register-form {
   max-width: 800px; margin: 0 auto; text-align: center;
