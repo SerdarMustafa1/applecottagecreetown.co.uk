@@ -638,7 +638,7 @@ footer {
   margin: 1rem auto; 
 }
 
-.chip { 
+.chip {
   background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
   border: 1px solid #e5e7eb;
   border-radius: 20px;
@@ -656,14 +656,6 @@ footer {
   border-color: #d1d5db;
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0,0,0,0.12);
-}
-
-.chip a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.chip a:hover {
   color: #ff6f61;
 }
 .map-wrap { max-width: 920px; margin: 0 auto; }
