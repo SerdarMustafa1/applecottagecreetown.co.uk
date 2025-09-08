@@ -50,3 +50,5 @@ infra/terraform.tfstate.backup
 *.tfstate
 *.tfstate.backup
 crash.log
+test-results/
+.http-server.pid
