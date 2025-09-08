@@ -386,7 +386,7 @@
             >Book a Viewing</a
           >
           <a href="#" class="btn request-report-btn">Request Home Report</a>
-          <a href="#tours360" class="btn" style="background: #111827"
+          <a href="#tours360" class="btn btn-secondary"
             >Watch 360 Tours</a
           >
         </div>
@@ -510,7 +510,7 @@
       <!-- Featured Photos strip for quick scan -->
       <section id="featured" aria-labelledby="featured-title">
         <h2 id="featured-title" class="section-title">Featured Photos</h2>
-        <div class="featured-strip" role="region" aria-label="Featured photos">
+        <div class="featured-strip gallery" role="region" aria-label="Featured photos">
           <figure>
             <img
               src="https://d1t6lpjdsu4646.cloudfront.net/images/new/street-left-1200.jpg"
@@ -646,6 +646,23 @@
           </div>
         </div>
         <!-- Title plan image temporarily removed until available on CDN -->
+      </section>
+
+      <!-- Strategic CTA Section -->
+      <section class="cta-section">
+        <div class="cta-container">
+          <h2>Ready to View This Beautiful Home?</h2>
+          <p>Discover the perfect blend of modern comfort and countryside charm. Book your viewing today.</p>
+          <div class="cta-buttons">
+            <a href="https://tidycal.com/sidmustafa/apple-cottage-viewing" class="btn btn-primary" target="_blank" rel="noopener">
+              📅 Book a Viewing
+            </a>
+            <a href="#" class="btn btn-secondary request-report-btn">
+              📄 Request Home Report
+            </a>
+          </div>
+          <p class="cta-note">Flexible viewing times available • No obligation • Virtual tours also available</p>
+        </div>
       </section>
 
       <!-- Gallery -->
@@ -1888,18 +1905,59 @@
       <!-- Location & Lifestyle section -->
       <section id="location" class="section-dark">
         <h2 class="section-title">Location & Lifestyle</h2>
-        <p style="max-width: 800px; margin: 0 auto 1.5rem">
-          Apple Cottage lies on Silver Street in the village of Creetown
-          (DG8&nbsp;7HU). Nestled between the rugged hills of Cairnsmore of
-          Fleet and the tidal estuary of Wigtown Bay, Creetown offers a peaceful
-          rural setting with a strong community. The local primary school,
-          community centre and village shop are all within easy walking
-          distance, while the A75 provides fast access to Newton Stewart, the
-          Galloway Forest Park and the wider Dumfries &amp; Galloway coastline.
-          Trails, beaches and woodland walks are on your doorstep – making this
-          an ideal base for families, outdoor enthusiasts and those seeking a
-          healthy work–life balance.
-        </p>
+        <div class="location-content">
+          <div class="location-description">
+            <p>
+              Apple Cottage lies on Silver Street in the village of Creetown
+              (DG8&nbsp;7HU). Nestled between the rugged hills of Cairnsmore of
+              Fleet and the tidal estuary of Wigtown Bay, Creetown offers a peaceful
+              rural setting with a strong community.
+            </p>
+            <p>
+              The local primary school, community centre and village shop are all within easy walking
+              distance, while the A75 provides fast access to Newton Stewart, the
+              Galloway Forest Park and the wider Dumfries &amp; Galloway coastline.
+              Trails, beaches and woodland walks are on your doorstep – making this
+              an ideal base for families, outdoor enthusiasts and those seeking a
+              healthy work–life balance.
+            </p>
+          </div>
+          
+          <div class="location-highlights">
+            <h3>Local Highlights</h3>
+            <div class="highlights-grid">
+              <div class="highlight-item">
+                <div class="highlight-icon">🏫</div>
+                <div class="highlight-text">
+                  <h4>Creetown Primary School</h4>
+                  <p>Walking distance</p>
+                </div>
+              </div>
+              <div class="highlight-item">
+                <div class="highlight-icon">🛒</div>
+                <div class="highlight-text">
+                  <h4>Village Shop & Community Centre</h4>
+                  <p>Local amenities nearby</p>
+                </div>
+              </div>
+              <div class="highlight-item">
+                <div class="highlight-icon">🌲</div>
+                <div class="highlight-text">
+                  <h4>Galloway Forest Park</h4>
+                  <p>Outdoor recreation</p>
+                </div>
+              </div>
+              <div class="highlight-item">
+                <div class="highlight-icon">🏖️</div>
+                <div class="highlight-text">
+                  <h4>Wigtown Bay</h4>
+                  <p>Coastal walks & wildlife</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
         <!-- Location gallery temporarily removed until assets are available on CDN -->
         <div class="chips" aria-label="Distances">
           <span class="chip">A75 — 2 min</span>
