@@ -10,7 +10,7 @@ body {
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   line-height: 1.6;
   color: #333;
-  background-color: #f5f5f5;
+  background-color: #ffffff;
 }
 
 /* Skip link for keyboard users */
@@ -43,7 +43,7 @@ html { scroll-behavior: smooth; }
 header {
   position: relative;
   width: 100%;
-  height: 70vh;
+  height: 80vh;
   color: white;
   display: flex;
   align-items: center;
@@ -97,21 +97,29 @@ header .hero-content {
 }
 
 header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  font-weight: 700;
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  font-weight: 800;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  line-height: 1.2;
 }
 
 header p {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
+  font-size: 1.3rem;
+  margin-bottom: 2.5rem;
+  opacity: 0.95;
+  line-height: 1.5;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .cta-buttons {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1rem;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .price-tag {
@@ -136,22 +144,25 @@ header p {
 .btn {
   background-color: #ff6f61;
   color: white;
-  padding: 0.8rem 1.5rem;
-  border-radius: 5px;
-  font-weight: 600;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: 700;
   border: none;
   transition: all 0.3s ease;
   text-decoration: none;
   display: inline-block;
   cursor: pointer;
   font-family: inherit;
-  font-size: inherit;
+  font-size: 1.1rem;
+  min-width: 180px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(255, 111, 97, 0.3);
 }
 
 .btn:hover {
   background-color: #e65b50;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 111, 97, 0.4);
 }
 
 .btn-secondary {
@@ -165,7 +176,7 @@ header p {
 
 /* Section styling */
 section {
-  padding: 4rem 2rem;
+  padding: 5rem 2rem;
   background-color: white;
 }
 
@@ -175,67 +186,111 @@ section {
 
 .section-title {
   text-align: center;
-  margin-bottom: 2rem;
-  font-size: 2rem;
-  font-weight: 600;
-  color: #444;
+  margin-bottom: 3rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1f2937;
 }
 
 /* Features list */
 .features {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  gap: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .feature-item {
-  flex: 1 1 250px;
-  background-color: #f9f9f9;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 }
 
 .feature-item h3 {
-  margin-bottom: 0.5rem;
-  font-size: 1.2rem;
-  color: #ff6f61;
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+  color: #1f2937;
+  font-weight: 600;
 }
 
 /* Gallery */
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 260px));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 280px));
+  gap: 1.5rem;
   justify-content: center;
+  padding: 0 1rem;
 }
 
-.gallery figure { margin: 0; width: 260px; }
+.gallery figure { 
+  margin: 0; 
+  width: 280px; 
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.gallery figure:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
 .gallery img {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
   display: block;
-  border-radius: 8px;
+  transition: transform 0.3s ease;
 }
-.gallery figcaption { font-size: 0.9rem; color: #555; margin-top: 0.4rem; text-align: center; }
+
+.gallery figure:hover img {
+  transform: scale(1.05);
+}
+
+.gallery figcaption { 
+  font-size: 0.95rem; 
+  color: #374151; 
+  margin: 1rem; 
+  text-align: center;
+  font-weight: 500;
+}
 .caption-sub { display:block; color:#6b7280; font-size:.85rem; margin-top:.15rem; }
 
 /* Running costs table */
 .stats {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   text-align: left;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
 }
 
 .stats ul {
-  list-style-type: disc;
-  padding-left: 1.5rem;
+  list-style-type: none;
+  padding-left: 0;
 }
 
 .stats li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  border-left: 4px solid #ff6f61;
 }
 
 /* Contact section */
@@ -248,18 +303,27 @@ section {
 }
 
 footer {
-  background-color: #333;
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
   color: white;
   text-align: center;
-  padding: 1rem 0;
+  padding: 2rem 1rem;
+  margin-top: 4rem;
 }
 
 @media (max-width: 768px) {
   header h1 {
-    font-size: 2rem;
+    font-size: 2.2rem;
   }
   header p {
+    font-size: 1.1rem;
+  }
+  .cta-buttons {
+    gap: 1rem;
+  }
+  .btn {
+    padding: 0.9rem 1.8rem;
     font-size: 1rem;
+    min-width: 160px;
   }
 }
 
@@ -677,6 +741,65 @@ footer {
   color: #6b7280; 
   margin-top: 0.5rem; 
   line-height: 1.4;
+}
+
+/* Title Plan */
+.title-plan-section {
+  max-width: 800px;
+  margin: 3rem auto 0;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.title-plan-heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+}
+
+.title-plan-figure {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  margin: 0;
+}
+
+.title-plan-figure:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+  border-color: #cbd5e1;
+}
+
+.title-plan-figure img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+}
+
+.title-plan-figure figcaption {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .title-plan-section {
+    margin-top: 2rem;
+  }
+  
+  .title-plan-heading {
+    font-size: 1.3rem;
+  }
+  
+  .title-plan-figure {
+    padding: 1rem;
+  }
 }
 
 /* Register Interest form */
