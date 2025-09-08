@@ -1,3 +1,13 @@
+# Local 360 sources and generated outputs
+360-source/
+dist/
+
+# macOS
+.DS_Store
+
+# Local 360 posters/videos if temporarily present under assets
+assets/images/interior/*-360-poster.jpg
+assets/videos/interior/*-360.mp4
 .DS_Store
 assets/.DS_Store
 assets/images/.DS_Store
