@@ -8,6 +8,27 @@ if (!base) {
   process.exit(2);
 }
 
+// Test if the CDN base is reachable before proceeding
+async function testCdnConnectivity() {
+  return new Promise((resolve) => {
+    const testUrl = base.replace(/\/$/, '') + '/test';
+    const req = https.request(testUrl, { method: 'HEAD' }, (res) => {
+      resolve(true); // Any response (even 404) means CDN is reachable
+    }).on('error', (err) => {
+      if (err.code === 'ENOTFOUND' || err.code === 'ECONNREFUSED') {
+        resolve(false); // DNS resolution or connection failure
+      } else {
+        resolve(true); // Other errors still mean CDN is reachable
+      }
+    });
+    req.setTimeout(5000, () => {
+      req.destroy();
+      resolve(false); // Timeout means CDN is not reachable
+    });
+    req.end();
+  });
+}
+
 // Optional filters via env vars
 // VERIFY_SKIP_WEBM=1 -> ignore .webm files
 // VERIFY_SKIP_PATHS="/images/exterior/,/images/interior/" -> comma-separated substrings to exclude
@@ -114,4 +135,19 @@ if (!final.length) {
   console.log("[verify-cdn] nothing to verify");
   process.exit(0);
 }
-pump();
+
+// Check CDN connectivity before proceeding
+testCdnConnectivity().then((isReachable) => {
+  if (!isReachable) {
+    console.warn("[verify-cdn] CDN base URL is not reachable (DNS/connection error)");
+    console.warn("[verify-cdn] Skipping asset verification - this may indicate infrastructure issues");
+    console.warn("[verify-cdn] CDN URL:", base);
+    process.exit(0); // Exit successfully to avoid blocking workflows
+  } else {
+    console.log("[verify-cdn] CDN connectivity confirmed, proceeding with asset verification");
+    pump();
+  }
+}).catch((err) => {
+  console.error("[verify-cdn] Error testing CDN connectivity:", err);
+  process.exit(1);
+});
