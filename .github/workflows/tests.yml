@@ -1,6 +1,7 @@
 name: Tests (CDN + E2E)
 
 on:
+  workflow_call:
   pull_request:
     branches: [main]
   push:
@@ -11,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -20,7 +21,7 @@ jobs:
         continue-on-error: true
         id: playwright-install
         run: npx playwright install --with-deps
-      - name: Run CDN verification (skip webm and some responsive sizes)
+      - name: Run CDN verification (skip webm and known temporary gaps)
         env:
           MEDIA_BASE_URL: ${{ secrets.MEDIA_BASE_URL }}
           VERIFY_SKIP_WEBM: "1"
