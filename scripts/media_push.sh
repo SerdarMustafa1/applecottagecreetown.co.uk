@@ -18,6 +18,7 @@ SKIP_POSTER="no"
 BASENAMES=(
   kitchen-360
   bathroom-360
+  bedroom-2-360
   rear-bedroom-360
   front-bedroom-360
   lounge-360
