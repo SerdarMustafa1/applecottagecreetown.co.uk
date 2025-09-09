@@ -687,7 +687,7 @@
           </figure>
           <figure>
             <img
-              src="https://d1t6lpjdsu4646.cloudfront.net/images/interior/kitchen-360-poster.jpg"
+              src="360-source/kitchen-360-poster.jpg"
               alt="Kitchen"
               loading="lazy"
               decoding="async"
@@ -696,7 +696,7 @@
           </figure>
           <figure>
             <img
-              src="https://d1t6lpjdsu4646.cloudfront.net/images/interior/lounge-360-poster.jpg"
+              src="360-source/lounge-360-poster.jpg"
               alt="Lounge"
               loading="lazy"
               decoding="async"
@@ -705,7 +705,7 @@
           </figure>
           <figure>
             <img
-              src="https://d1t6lpjdsu4646.cloudfront.net/images/interior/conservatory-360-poster.jpg"
+              src="360-source/conservatory-360-poster.jpg"
               alt="Conservatory"
               loading="lazy"
               decoding="async"
@@ -714,7 +714,7 @@
           </figure>
           <figure>
             <img
-              src="https://d1t6lpjdsu4646.cloudfront.net/images/interior/front-bedroom-360-poster.jpg"
+              src="360-source/front-bedroom-360-poster.jpg"
               alt="Front bedroom"
               loading="lazy"
               decoding="async"
@@ -723,7 +723,7 @@
           </figure>
           <figure>
             <img
-              src="https://d1t6lpjdsu4646.cloudfront.net/images/interior/rear-bedroom-360-poster.jpg"
+              src="360-source/rear-bedroom-360-poster.jpg"
               alt="Rear bedroom"
               loading="lazy"
               decoding="async"
@@ -733,7 +733,7 @@
 
           <figure>
             <img
-              src="https://d1t6lpjdsu4646.cloudfront.net/images/interior/bathroom-360-poster.jpg"
+              src="360-source/bathroom-360-poster.jpg"
               alt="Bathroom"
               loading="lazy"
               decoding="async"
@@ -784,15 +784,6 @@
       <!-- Gallery -->
       <section id="gallery" class="section-dark">
         <h2 class="section-title">Gallery</h2>
-        <details id="panoramas">
-          <summary>
-            Panoramic Photos
-            <span class="count" aria-live="polite"></span>
-          </summary>
-          <div class="gallery gallery-grid pano-grid">
-            <!-- Pano items will be injected from data/panos.json by script.js -->
-          </div>
-        </details>
         <div class="accordion gallery-accordion">
           <details open>
             <summary>
@@ -987,7 +978,7 @@
                 >
                   <img
                     class="vr-poster"
-                    src="https://d1t6lpjdsu4646.cloudfront.net/images/interior/kitchen-360-poster.jpg"
+                    src="360-source/kitchen-360-poster.jpg"
                     alt="Kitchen 360 poster"
                     style="
                       position: absolute;
@@ -1013,11 +1004,11 @@
                   >
                     <source
                       type="video/mp4"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/kitchen-360.mp4"
+                      data-src="360-source/kitchen-360.mp4"
                     />
                     <source
                       type="video/webm"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/kitchen-360.webm"
+                      data-src="360-source/kitchen-360.webm"
                     />
                   </video>
                   <a-scene
@@ -1040,7 +1031,7 @@
                     playsinline
                     preload="metadata"
                     crossorigin="anonymous"
-                    poster="https://d1t6lpjdsu4646.cloudfront.net/images/interior/kitchen-360-poster.jpg"
+                    poster="360-source/kitchen-360-poster.jpg"
                     style="
                       display: none;
                       position: absolute;
@@ -1054,11 +1045,11 @@
                   >
                     <source
                       type="video/mp4"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/kitchen-360.mp4"
+                      data-src="360-source/kitchen-360.mp4"
                     />
                     <source
                       type="video/webm"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/kitchen-360.webm"
+                      data-src="360-source/kitchen-360.webm"
                     />
                   </video>
                   <button
@@ -1070,16 +1061,21 @@
                       left: 50%;
                       top: 50%;
                       transform: translate(-50%, -50%);
-                      padding: 0.6rem 1rem;
-                      background: #00000099;
+                      padding: 1rem 2rem;
+                      background: linear-gradient(135deg, #ff6f61, #e55a50);
                       color: #fff;
-                      border: 1px solid #ffffff66;
-                      border-radius: 6px;
+                      border: none;
+                      border-radius: 12px;
                       font-weight: 700;
                       cursor: pointer;
+                      font-size: 1.1rem;
+                      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+                      transition: all 0.3s ease;
                     "
+                    onmouseover="this.style.transform='translate(-50%, -50%) translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(0, 0, 0, 0.4)';"
+                    onmouseout="this.style.transform='translate(-50%, -50%)'; this.style.boxShadow='0 4px 20px rgba(0, 0, 0, 0.3)';"
                   >
-                    Tap to play 360
+                    🎬 Play 360° Tour
                   </button>
                   <div
                     class="vr-controls"
@@ -1137,7 +1133,7 @@
                 >
                   <img
                     class="vr-poster"
-                    src="https://d1t6lpjdsu4646.cloudfront.net/images/interior/bathroom-360-poster.jpg"
+                    src="360-source/bathroom-360-poster.jpg"
                     alt="Bathroom 360 poster"
                     style="
                       position: absolute;
@@ -1163,11 +1159,11 @@
                   >
                     <source
                       type="video/mp4"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/bathroom-360.mp4"
+                      data-src="360-source/bathroom-360.mp4"
                     />
                     <source
                       type="video/webm"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/bathroom-360.webm"
+                      data-src="360-source/bathroom-360.webm"
                     />
                   </video>
                   <a-scene
@@ -1189,7 +1185,7 @@
                     playsinline
                     preload="metadata"
                     crossorigin="anonymous"
-                    poster="https://d1t6lpjdsu4646.cloudfront.net/images/interior/bathroom-360-poster.jpg"
+                    poster="360-source/bathroom-360-poster.jpg"
                     style="
                       display: none;
                       position: absolute;
@@ -1203,11 +1199,11 @@
                   >
                     <source
                       type="video/mp4"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/bathroom-360.mp4"
+                      data-src="360-source/bathroom-360.mp4"
                     />
                     <source
                       type="video/webm"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/bathroom-360.webm"
+                      data-src="360-source/bathroom-360.webm"
                     />
                   </video>
                   <button
@@ -1287,7 +1283,7 @@
                 >
                   <img
                     class="vr-poster"
-                    src="https://d1t6lpjdsu4646.cloudfront.net/images/interior/front-bedroom-360-poster.jpg"
+                    src="360-source/front-bedroom-360-poster.jpg"
                     alt="Front Bedroom 360 poster"
                     style="
                       position: absolute;
@@ -1313,11 +1309,11 @@
                   >
                     <source
                       type="video/mp4"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/front-bedroom-360.mp4"
+                      data-src="360-source/front-bedroom-360.mp4"
                     />
                     <source
                       type="video/webm"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/front-bedroom-360.webm"
+                      data-src="360-source/front-bedroom-360.webm"
                     />
                   </video>
                   <a-scene
@@ -1339,7 +1335,7 @@
                     playsinline
                     preload="metadata"
                     crossorigin="anonymous"
-                    poster="https://d1t6lpjdsu4646.cloudfront.net/images/interior/front-bedroom-360-poster.jpg"
+                    poster="360-source/front-bedroom-360-poster.jpg"
                     style="
                       display: none;
                       position: absolute;
@@ -1353,11 +1349,11 @@
                   >
                     <source
                       type="video/mp4"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/front-bedroom-360.mp4"
+                      data-src="360-source/front-bedroom-360.mp4"
                     />
                     <source
                       type="video/webm"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/front-bedroom-360.webm"
+                      data-src="360-source/front-bedroom-360.webm"
                     />
                   </video>
                   <button
@@ -1436,7 +1432,7 @@
                 >
                   <img
                     class="vr-poster"
-                    src="https://d1t6lpjdsu4646.cloudfront.net/images/interior/rear-bedroom-360-poster.jpg"
+                    src="360-source/rear-bedroom-360-poster.jpg"
                     alt="Rear Bedroom 360 poster"
                     style="
                       position: absolute;
@@ -1462,11 +1458,11 @@
                   >
                     <source
                       type="video/mp4"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/rear-bedroom-360.mp4"
+                      data-src="360-source/rear-bedroom-360.mp4"
                     />
                     <source
                       type="video/webm"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/rear-bedroom-360.webm"
+                      data-src="360-source/rear-bedroom-360.webm"
                     />
                   </video>
                   <a-scene
@@ -1488,7 +1484,7 @@
                     playsinline
                     preload="metadata"
                     crossorigin="anonymous"
-                    poster="https://d1t6lpjdsu4646.cloudfront.net/images/interior/rear-bedroom-360-poster.jpg"
+                    poster="360-source/rear-bedroom-360-poster.jpg"
                     style="
                       display: none;
                       position: absolute;
@@ -1502,11 +1498,11 @@
                   >
                     <source
                       type="video/mp4"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/rear-bedroom-360.mp4"
+                      data-src="360-source/rear-bedroom-360.mp4"
                     />
                     <source
                       type="video/webm"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/rear-bedroom-360.webm"
+                      data-src="360-source/rear-bedroom-360.webm"
                     />
                   </video>
                   <button
@@ -1585,7 +1581,7 @@
                 >
                   <img
                     class="vr-poster"
-                    src="https://d1t6lpjdsu4646.cloudfront.net/images/interior/lounge-360-poster.jpg"
+                    src="360-source/lounge-360-poster.jpg"
                     alt="Lounge 360 poster"
                     style="
                       position: absolute;
@@ -1611,11 +1607,11 @@
                   >
                     <source
                       type="video/mp4"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/lounge-360.mp4"
+                      data-src="360-source/lounge-360.mp4"
                     />
                     <source
                       type="video/webm"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/lounge-360.webm"
+                      data-src="360-source/lounge-360.webm"
                     />
                   </video>
                   <a-scene
@@ -1637,7 +1633,7 @@
                     playsinline
                     preload="metadata"
                     crossorigin="anonymous"
-                    poster="https://d1t6lpjdsu4646.cloudfront.net/images/interior/lounge-360-poster.jpg"
+                    poster="360-source/lounge-360-poster.jpg"
                     style="
                       display: none;
                       position: absolute;
@@ -1651,11 +1647,11 @@
                   >
                     <source
                       type="video/mp4"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/lounge-360.mp4"
+                      data-src="360-source/lounge-360.mp4"
                     />
                     <source
                       type="video/webm"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/lounge-360.webm"
+                      data-src="360-source/lounge-360.webm"
                     />
                   </video>
                   <button
@@ -1734,7 +1730,7 @@
                 >
                   <img
                     class="vr-poster"
-                    src="https://d1t6lpjdsu4646.cloudfront.net/images/interior/conservatory-360-poster.jpg"
+                    src="360-source/conservatory-360-poster.jpg"
                     alt="Conservatory 360 poster"
                     style="
                       position: absolute;
@@ -1760,11 +1756,11 @@
                   >
                     <source
                       type="video/mp4"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/conservatory-360.mp4"
+                      data-src="360-source/conservatory-360.mp4"
                     />
                     <source
                       type="video/webm"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/conservatory-360.webm"
+                      data-src="360-source/conservatory-360.webm"
                     />
                   </video>
                   <a-scene
@@ -1786,7 +1782,7 @@
                     playsinline
                     preload="metadata"
                     crossorigin="anonymous"
-                    poster="https://d1t6lpjdsu4646.cloudfront.net/images/interior/conservatory-360-poster.jpg"
+                    poster="360-source/conservatory-360-poster.jpg"
                     style="
                       display: none;
                       position: absolute;
@@ -1800,11 +1796,11 @@
                   >
                     <source
                       type="video/mp4"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/conservatory-360.mp4"
+                      data-src="360-source/conservatory-360.mp4"
                     />
                     <source
                       type="video/webm"
-                      data-src="https://d1t6lpjdsu4646.cloudfront.net/videos/interior/conservatory-360.webm"
+                      data-src="360-source/conservatory-360.webm"
                     />
                   </video>
                   <button
@@ -2145,7 +2141,7 @@
         </div>
       </section>
 
-      <- Fix text alignment and margin defaults for custom Floor Plans Test Section -->
+      <!-- Floor Plans Section - Fixed text alignment and margin defaults -->
           <ul>
             <li>
               <strong>EPC rating:</strong> B – modern insulation and efficient
