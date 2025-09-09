@@ -19,6 +19,12 @@ package-lock.json
 assets/images/
 assets/videos/
 
+# Large floor plan and model assets (served from CDN)
+assets/floorplans-local/
+assets/models-local/
+assets/floorplans/
+assets/models/
+
 # Terraform local state (do not commit)
 infra/.terraform/
 infra/terraform.tfstate
@@ -26,28 +32,6 @@ infra/terraform.tfstate.backup
 *.tfstate
 *.tfstate.backup
 crash.log
-
-# Ignore Terraform local state
-infra/.terraform/
-infra/terraform.tfstate
-infra/terraform.tfstate.backup
-*.tfstate
-*.tfstate.backup
-crash.log
-
-# Ignore Terraform local state
-infra/.terraform/
-infra/terraform.tfstate
-infra/terraform.tfstate.backup
-*.tfstate
-*.tfstate.backup
-crash.log
-
-# Terraform local state (ignore)
-infra/.terraform/
-infra/terraform.tfstate
-infra/terraform.tfstate.backup
-*.tfstate
 *.tfstate.backup
 crash.log
 test-results/

@@ -963,3 +963,358 @@ function enableFocusTrap(container) {
   container.addEventListener("keydown", handler);
   return () => container.removeEventListener("keydown", handler);
 }
+
+/* =================================================================
+   FLOOR PLANS FUNCTIONALITY
+   ================================================================= */
+
+// Floor Plans Tab Navigation
+function initializeFloorPlans() {
+  const tabs = document.querySelectorAll('.floorplan-tab');
+  const panels = document.querySelectorAll('.floorplan-panel');
+  
+  // Tab switching functionality
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const targetId = tab.dataset.target;
+      switchFloorPlanTab(targetId);
+      
+      // Track floor plan interaction
+      track('floorplan_viewed', {
+        plan_type: targetId,
+        property_id: 'apple-cottage-creetown'
+      });
+    });
+    
+    // Keyboard navigation
+    tab.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        const currentIndex = Array.from(tabs).indexOf(tab);
+        let nextIndex;
+        
+        if (e.key === 'ArrowLeft') {
+          nextIndex = currentIndex > 0 ? currentIndex - 1 : tabs.length - 1;
+        } else {
+          nextIndex = currentIndex < tabs.length - 1 ? currentIndex + 1 : 0;
+        }
+        
+        tabs[nextIndex].focus();
+        tabs[nextIndex].click();
+      }
+    });
+  });
+}
+
+function switchFloorPlanTab(targetId) {
+  const tabs = document.querySelectorAll('.floorplan-tab');
+  const panels = document.querySelectorAll('.floorplan-panel');
+  
+  // Update tabs
+  tabs.forEach(tab => {
+    const isActive = tab.dataset.target === targetId;
+    tab.classList.toggle('active', isActive);
+    tab.setAttribute('aria-selected', isActive);
+  });
+  
+  // Update panels
+  panels.forEach(panel => {
+    const isActive = panel.id.includes(targetId);
+    panel.classList.toggle('active', isActive);
+    panel.style.display = isActive ? 'block' : 'none';
+    
+    if (isActive) {
+      // Focus the panel for screen readers
+      panel.focus();
+    }
+  });
+}
+
+// Format Toggle Functionality
+function initializeFormatToggle() {
+  const formatButtons = document.querySelectorAll('.format-btn');
+  
+  formatButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const format = button.dataset.format;
+      const container = button.closest('.floorplan-panel');
+      toggleFloorPlanFormat(container, format);
+      
+      // Update button states
+      const siblingButtons = container.querySelectorAll('.format-btn');
+      siblingButtons.forEach(btn => {
+        const isActive = btn.dataset.format === format;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-pressed', isActive);
+      });
+      
+      // Track format change
+      track('floorplan_format_changed', {
+        format: format,
+        plan_type: container.id,
+        property_id: 'apple-cottage-creetown'
+      });
+    });
+  });
+}
+
+function toggleFloorPlanFormat(container, format) {
+  const images = container.querySelectorAll('.floorplan-image');
+  
+  images.forEach(img => {
+    const isTargetFormat = img.dataset.format === format;
+    img.classList.toggle('active', isTargetFormat);
+    img.style.display = isTargetFormat ? 'block' : 'none';
+  });
+}
+
+// Download Functionality
+function initializeDownloads() {
+  const downloadButtons = document.querySelectorAll('.download-btn');
+  
+  downloadButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const planType = button.dataset.plan;
+      handleFloorPlanDownload(planType, button);
+    });
+  });
+}
+
+function handleFloorPlanDownload(planType, button) {
+  // Track download attempt
+  track('floorplan_download_started', {
+    plan_type: planType,
+    property_id: 'apple-cottage-creetown'
+  });
+  
+  // Show loading state
+  const originalText = button.innerHTML;
+  button.innerHTML = '<span class="loading-spinner"></span> Preparing...';
+  button.disabled = true;
+  
+  setTimeout(() => {
+    try {
+      if (planType === 'complete') {
+        // Download complete plan pack PDF from CDN
+        downloadFile('https://d1t6lpjdsu4646.cloudfront.net/floorplans/plan-pack.pdf', 'Apple-Cottage-Floor-Plans-Complete.pdf');
+      } else {
+        // Determine current format and plan
+        const container = button.closest('.floorplan-panel');
+        const activeFormatBtn = container.querySelector('.format-btn.active');
+        const format = activeFormatBtn ? activeFormatBtn.dataset.format : 'svg';
+        const filename = `${planType}.${format}`;
+        const downloadName = `Apple-Cottage-${planType.replace('-', '-').replace(/\b\w/g, l => l.toUpperCase())}-Plan.${format}`;
+        
+        // Download from CDN
+        downloadFile(`https://d1t6lpjdsu4646.cloudfront.net/floorplans/${filename}`, downloadName);
+      }
+      
+      // Track successful download
+      track('floorplan_download_completed', {
+        plan_type: planType,
+        property_id: 'apple-cottage-creetown'
+      });
+      
+    } catch (error) {
+      console.error('Download failed:', error);
+      
+      // Track download error
+      track('floorplan_download_error', {
+        plan_type: planType,
+        error: error.message,
+        property_id: 'apple-cottage-creetown'
+      });
+      
+      // Show error message
+      showDownloadError(button);
+    }
+    
+    // Restore button state
+    setTimeout(() => {
+      button.innerHTML = originalText;
+      button.disabled = false;
+    }, 1000);
+  }, 800);
+}
+
+function downloadFile(url, filename) {
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  link.style.display = 'none';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function showDownloadError(button) {
+  const originalText = button.innerHTML;
+  button.innerHTML = '<span style="color: #dc3545;">⚠ Error</span>';
+  button.style.background = 'linear-gradient(135deg, #dc3545, #e74c3c)';
+  
+  setTimeout(() => {
+    button.innerHTML = originalText;
+    button.style.background = '';
+  }, 3000);
+}
+
+// 3D Model Functionality
+function initialize3DModel() {
+  const modelViewer = document.querySelector('#cottage-model');
+  
+  if (!modelViewer) return;
+  
+  // Handle model loading events
+  modelViewer.addEventListener('load', () => {
+    console.log('3D model loaded successfully');
+    track('3d_model_loaded', {
+      property_id: 'apple-cottage-creetown'
+    });
+  });
+  
+  modelViewer.addEventListener('error', (error) => {
+    console.error('3D model load error:', error);
+    track('3d_model_error', {
+      error: error.message,
+      property_id: 'apple-cottage-creetown'
+    });
+  });
+  
+  // Handle AR button clicks
+  const arButton = document.querySelector('.ar-button');
+  if (arButton) {
+    arButton.addEventListener('click', () => {
+      track('ar_view_attempted', {
+        property_id: 'apple-cottage-creetown',
+        user_agent: navigator.userAgent
+      });
+    });
+  }
+  
+  // Handle model interactions
+  modelViewer.addEventListener('camera-change', debounce(() => {
+    track('3d_model_interacted', {
+      interaction_type: 'camera_change',
+      property_id: 'apple-cottage-creetown'
+    });
+  }, 1000));
+}
+
+// Lazy Loading for Floor Plan Images
+function initializeFloorPlanLazyLoading() {
+  const floorPlanImages = document.querySelectorAll('.floorplan-image[loading="lazy"]');
+  
+  if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          
+          // Preload the image
+          const preloadImage = new Image();
+          preloadImage.onload = () => {
+            img.classList.add('loaded');
+            track('floorplan_image_loaded', {
+              plan_type: img.closest('.floorplan-panel').id,
+              format: img.dataset.format,
+              property_id: 'apple-cottage-creetown'
+            });
+          };
+          preloadImage.src = img.src;
+          
+          imageObserver.unobserve(img);
+        }
+      });
+    }, {
+      rootMargin: '50px 0px',
+      threshold: 0.1
+    });
+    
+    floorPlanImages.forEach(img => imageObserver.observe(img));
+  }
+}
+
+// Keyboard Navigation Support
+function initializeFloorPlanKeyboardNavigation() {
+  const floorPlansSection = document.querySelector('#floorplans');
+  
+  if (!floorPlansSection) return;
+  
+  floorPlansSection.addEventListener('keydown', (e) => {
+    // Handle Escape key to close details
+    if (e.key === 'Escape' && floorPlansSection.hasAttribute('open')) {
+      floorPlansSection.removeAttribute('open');
+      floorPlansSection.querySelector('summary').focus();
+    }
+  });
+}
+
+// Error Handling and Fallbacks
+function handleFloorPlanErrors() {
+  const floorPlanImages = document.querySelectorAll('.floorplan-image');
+  
+  floorPlanImages.forEach(img => {
+    img.addEventListener('error', () => {
+      const fallbackDiv = document.createElement('div');
+      fallbackDiv.className = 'floorplan-error';
+      fallbackDiv.innerHTML = `
+        <div style="padding: 2rem; text-align: center; color: #6c757d; background: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 8px;">
+          <p><strong>Floor plan unavailable</strong></p>
+          <p>Please try refreshing the page or contact us for the floor plan.</p>
+          <button class="btn" onclick="location.reload()">Refresh Page</button>
+        </div>
+      `;
+      
+      img.parentNode.replaceChild(fallbackDiv, img);
+      
+      track('floorplan_image_error', {
+        image_src: img.src,
+        plan_type: img.closest('.floorplan-panel').id,
+        property_id: 'apple-cottage-creetown'
+      });
+    });
+  });
+}
+
+// Initialize all floor plan functionality
+function initializeAllFloorPlanFeatures() {
+  // Wait for DOM to be ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeAllFloorPlanFeatures);
+    return;
+  }
+  
+  try {
+    initializeFloorPlans();
+    initializeFormatToggle();
+    initializeDownloads();
+    initialize3DModel();
+    initializeFloorPlanLazyLoading();
+    initializeFloorPlanKeyboardNavigation();
+    handleFloorPlanErrors();
+    
+    console.log('Floor plans functionality initialized successfully');
+  } catch (error) {
+    console.error('Error initializing floor plans:', error);
+    track('floorplan_initialization_error', {
+      error: error.message,
+      property_id: 'apple-cottage-creetown'
+    });
+  }
+}
+
+// Debounce utility function
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+// Initialize floor plans when script loads
+initializeAllFloorPlanFeatures();
