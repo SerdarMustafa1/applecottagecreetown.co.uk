@@ -2,7 +2,8 @@ const { test, expect } = require('@playwright/test');
 
 test.describe('Floor Plans Functionality', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    const baseURL = process.env.SITE_URL || 'http://localhost:8080';
+    await page.goto(baseURL);
     
     // Open the floor plans section
     await page.getByText('Floor Plans & 3D Model').click();
