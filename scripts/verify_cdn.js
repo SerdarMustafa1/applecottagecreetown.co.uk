@@ -52,9 +52,12 @@ function normalize(u) {
   if (/^https?:\/\//i.test(u)) return u; // already absolute
   if (/^assets\//.test(u)) {
     // Map assets/images -> CDN/images, assets/videos -> CDN/videos
+    // Map assets/floorplans-local -> CDN/floorplans, assets/models-local -> CDN/models
     return u
       .replace(/^assets\/images\//, base.replace(/\/$/, "") + "/images/")
-      .replace(/^assets\/videos\//, base.replace(/\/$/, "") + "/videos/");
+      .replace(/^assets\/videos\//, base.replace(/\/$/, "") + "/videos/")
+      .replace(/^assets\/floorplans-local\//, base.replace(/\/$/, "") + "/floorplans/")
+      .replace(/^assets\/models-local\//, base.replace(/\/$/, "") + "/models/");
   }
   return null; // ignore other local links
 }
