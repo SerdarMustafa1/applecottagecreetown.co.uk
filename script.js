@@ -1095,8 +1095,10 @@ function handleFloorPlanDownload(planType, button) {
   setTimeout(() => {
     try {
       if (planType === 'complete') {
-        // Download complete plan pack PDF from CDN
-        downloadFile('assets/floorplans-local/plan-pack.pdf', 'Apple-Cottage-Floor-Plans-Complete.pdf');
+        // Download complete plan pack PDF from CDN with fallback
+        const cdnUrl = 'https://d1t6lpjdsu4646.cloudfront.net/floorplans/plan-pack.pdf';
+        const fallbackUrl = 'assets/floorplans-local/plan-pack.pdf';
+        downloadFileWithFallback(cdnUrl, fallbackUrl, 'Apple-Cottage-Floor-Plans-Complete.pdf');
       } else {
         // Determine current format and plan
         const container = button.closest('.floorplan-panel');
@@ -1105,8 +1107,10 @@ function handleFloorPlanDownload(planType, button) {
         const filename = `${planType}.${format}`;
         const downloadName = `Apple-Cottage-${planType.replace('-', '-').replace(/\b\w/g, l => l.toUpperCase())}-Plan.${format}`;
         
-        // Download from CDN
-        downloadFile(`assets/floorplans-local/${filename}`, downloadName);
+        // Download from CDN with fallback
+        const cdnUrl = `https://d1t6lpjdsu4646.cloudfront.net/floorplans/${filename}`;
+        const fallbackUrl = `assets/floorplans-local/${filename}`;
+        downloadFileWithFallback(cdnUrl, fallbackUrl, downloadName);
       }
       
       // Track successful download
@@ -1145,6 +1149,24 @@ function downloadFile(url, filename) {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+}
+
+// Download with CDN fallback to local file
+function downloadFileWithFallback(cdnUrl, fallbackUrl, filename) {
+  // Try CDN first
+  fetch(cdnUrl, { method: 'HEAD' })
+    .then(response => {
+      if (response.ok) {
+        downloadFile(cdnUrl, filename);
+      } else {
+        // Fallback to local file
+        downloadFile(fallbackUrl, filename);
+      }
+    })
+    .catch(() => {
+      // If fetch fails, try local file
+      downloadFile(fallbackUrl, filename);
+    });
 }
 
 function showDownloadError(button) {

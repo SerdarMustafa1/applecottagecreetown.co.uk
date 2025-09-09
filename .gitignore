@@ -20,10 +20,13 @@ assets/images/
 assets/videos/
 
 # Large floor plan and model assets (served from CDN)
-assets/floorplans-local/
-assets/models-local/
+# Note: Placeholder files under 1KB are committed for CI/CD
 assets/floorplans/
 assets/models/
+
+# Large 3D model files (served from CDN)
+assets/models-local/*.usdz
+assets/models-local/*.glb
 
 # Terraform local state (do not commit)
 infra/.terraform/

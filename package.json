@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Static site for Apple Cottage with 360 video conversion at build time",
   "scripts": {
-    "build": "node scripts/convert_videos.js && node scripts/rewrite_media_base.js",
+    "build": "node scripts/create_asset_placeholders.js && node scripts/convert_videos.js && node scripts/rewrite_media_base.js",
     "verify-cdn": "node scripts/verify_cdn.js",
     "verify-cdn:nowebm": "VERIFY_SKIP_WEBM=1 node scripts/verify_cdn.js",
     "ingest": "node scripts/ingest_media.js",
