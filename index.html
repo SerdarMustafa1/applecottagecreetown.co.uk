@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apple Cottage Creetown - Holiday Rental</title>
-    <meta name="description" content="Luxury holiday cottage in Creetown, Dumfries and Galloway. Sleeps 4, pet-friendly, near Galloway Forest Park. Book your perfect getaway.">
+    <title>Apple Cottage – Creetown | For Sale</title>
+    <meta name="description" content="Apple Cottage, Creetown — sold with Full Planning Permission & Building Warrant (ref 22/1073, granted 16 Aug 2023) for a two-storey rear extension; approved drawings available.">
     
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Apple Cottage Creetown - Holiday Rental">
-    <meta property="og:description" content="Luxury holiday cottage in Creetown, Dumfries and Galloway. Sleeps 4, pet-friendly, near Galloway Forest Park.">
+    <meta property="og:title" content="Apple Cottage Creetown - For Sale">
+    <meta property="og:description" content="Apple Cottage, Creetown — sold with Full Planning Permission & Building Warrant for a two-storey rear extension.">
     <meta property="og:image" content="assets/images/apple-cottage-hero.jpg">
     <meta property="og:url" content="https://apple-cottage-creetown.co.uk">
     <meta property="og:type" content="website">
@@ -61,6 +61,8 @@
     <meta name="theme-color" content="#ff6f61" />
     <!-- A‑Frame for interactive 360° playback (deferred) -->
     <script defer src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <!-- Video fallback handler -->
+    <script defer src="video-fallback.js"></script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -325,7 +327,12 @@
     <div class="market-banner" id="marketBanner">
       <div class="market-content">
         <div class="market-highlight">
-          <span class="market-icon">📈</span>
+          <span class="market-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="22,7 13.5,15.5 8.5,10.5 2,17"></polyline>
+              <polyline points="16,7 22,7 22,13"></polyline>
+            </svg>
+          </span>
           <div class="market-text">
             <strong>Prime Dumfries & Galloway Location</strong>
             <span>Properties in Creetown sell 23% faster than regional average</span>
@@ -343,27 +350,27 @@
         <source
           type="image/avif"
           srcset="
-            https://d1t6lpjdsu4646.cloudfront.net/images/new/street-left-800.avif   800w,
-            https://d1t6lpjdsu4646.cloudfront.net/images/new/street-left-1200.avif 1200w
+            assets/images/new/street-left-800.avif   800w,
+            assets/images/new/street-left-1200.avif 1200w
           "
           sizes="100vw"
         />
         <source
           type="image/webp"
           srcset="
-            https://d1t6lpjdsu4646.cloudfront.net/images/new/street-left-800.webp   800w,
-            https://d1t6lpjdsu4646.cloudfront.net/images/new/street-left-1200.webp 1200w
+            assets/images/new/street-left-800.webp   800w,
+            assets/images/new/street-left-1200.webp 1200w
           "
           sizes="100vw"
         />
         <img
-          src="https://d1t6lpjdsu4646.cloudfront.net/images/new/street-left-1200.jpg"
+          src="assets/images/new/street-left-1200.jpg"
           srcset="
-            https://d1t6lpjdsu4646.cloudfront.net/images/new/street-left-800.jpg   800w,
-            https://d1t6lpjdsu4646.cloudfront.net/images/new/street-left-1200.jpg 1200w
+            assets/images/new/street-left-800.jpg   800w,
+            assets/images/new/street-left-1200.jpg 1200w
           "
           sizes="100vw"
-          alt=""
+          alt="Apple Cottage front elevation showing the charming stone cottage with gardens"
           fetchpriority="high"
         />
       </picture>
@@ -404,21 +411,36 @@
           <!-- Trust Signals & Urgency -->
           <div class="trust-signals">
             <div class="trust-item">
-              <span class="trust-icon">🏠</span>
+              <span class="trust-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                </svg>
+              </span>
               <div class="trust-content">
                 <strong>Chain Free</strong>
                 <span>Ready to Move</span>
               </div>
             </div>
             <div class="trust-item">
-              <span class="trust-icon">📋</span>
+              <span class="trust-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 12l2 2 4-4"></path>
+                  <path d="M21 12c.552 0 1-.448 1-1V5c0-.552-.448-1-1-1H3c-.552 0-1 .448-1 1v6c0 .552.448 1 1 1h18z"></path>
+                  <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2v-7"></path>
+                </svg>
+              </span>
               <div class="trust-content">
                 <strong>Planning Approved</strong>
                 <span>Extension Ready</span>
               </div>
             </div>
             <div class="trust-item">
-              <span class="trust-icon">⚡</span>
+              <span class="trust-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="13,2 3,14 12,14 11,22 21,10 12,10 13,2"></polygon>
+                </svg>
+              </span>
               <div class="trust-content">
                 <strong>EPC Rating B</strong>
                 <span>Energy Efficient</span>
@@ -543,7 +565,13 @@
           </div>
           
           <div class="feature-item">
-            <div class="feature-icon">💡</div>
+            <div class="feature-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="m12 1 0 3m0 16 0 3m11-11-3 0m-16 0-3 0m15.5-6.5-2.1 2.1m-11.4 11.4-2.1 2.1m2.1-13.5-2.1-2.1m11.4-11.4 2.1-2.1"></path>
+              </svg>
+            </div>
             <h3>Energy Independence</h3>
             <p>
               <strong>EPC B rating</strong> with solar PV, battery storage, and air-source heat pump. 
@@ -553,13 +581,18 @@
           </div>
           
           <div class="feature-item">
-            <div class="feature-icon">🏠</div>
-            <h3>Income Potential</h3>
+            <div class="feature-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9,22 9,12 15,12 15,22"></polyline>
+              </svg>
+            </div>
+            <h3>Additional Space</h3>
             <p>
-              Self-contained annex with WC – perfect for <strong>holiday lets</strong>, 
-              elderly relatives, or home office. Multiple revenue streams possible.
+              Self-contained annex with WC – perfect for extended family, 
+              home office, or creative studio space.
             </p>
-            <div class="feature-benefit">£300+/week rental potential</div>
+            <div class="feature-benefit">Flexible living options</div>
           </div>
           
           <div class="feature-item">
@@ -593,7 +626,12 @@
           </div>
           
           <div class="feature-item">
-            <div class="feature-icon">🏆</div>
+            <div class="feature-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="8" r="7"></circle>
+                <polyline points="8.21,13.89 7,23 12,20 17,23 15.79,13.88"></polyline>
+              </svg>
+            </div>
             <h3>Investment Confidence</h3>
             <p>
               <strong>Chain-free sale</strong> in sought-after Creetown location. 
@@ -702,38 +740,6 @@
             />
             <h3>Bathroom</h3>
           </figure>
-        </div>
-      </section>
-
-      <!-- Media Hub -->
-      <section
-        id="media-hub"
-        class="section-dark"
-        aria-labelledby="media-hub-title"
-      >
-        <h2 id="media-hub-title" class="section-title">Explore Media</h2>
-        <div class="media-hub">
-          <a class="media-card" href="#tours360">
-            <div class="media-ico">🎥</div>
-            <div class="media-text">
-              <strong>360° Video Tours</strong>
-              <span>Walk through key rooms</span>
-            </div>
-          </a>
-          <a class="media-card" href="#gallery">
-            <div class="media-ico">📷</div>
-            <div class="media-text">
-              <strong>Photo Gallery</strong>
-              <span>See interiors & gardens</span>
-            </div>
-          </a>
-          <a class="media-card" href="#gallery">
-            <div class="media-ico">✨</div>
-            <div class="media-text">
-              <strong>Fresh Updates</strong>
-              <span>New images & videos</span>
-            </div>
-          </a>
         </div>
       </section>
 
@@ -1945,14 +1951,14 @@
                   <div class="floorplan-image-container">
                     <img 
                       class="floorplan-image active" 
-                      src="https://d1t6lpjdsu4646.cloudfront.net/floorplans/ground-floor.svg" 
+                      src="assets/floorplans-local/ground-floor.svg" 
                       alt="Ground floor plan showing kitchen, lounge, conservatory, bathroom, and utility room"
                       loading="lazy"
                       data-format="svg"
                     />
                     <img 
                       class="floorplan-image" 
-                      src="https://d1t6lpjdsu4646.cloudfront.net/floorplans/ground-floor.png" 
+                      src="assets/floorplans-local/ground-floor.png" 
                       alt="Ground floor plan showing kitchen, lounge, conservatory, bathroom, and utility room"
                       loading="lazy"
                       data-format="png"
@@ -2007,14 +2013,14 @@
                   <div class="floorplan-image-container">
                     <img 
                       class="floorplan-image active" 
-                      src="https://d1t6lpjdsu4646.cloudfront.net/floorplans/first-floor.svg" 
+                      src="assets/floorplans-local/first-floor.svg" 
                       alt="First floor plan showing front bedroom, rear bedroom, and landing"
                       loading="lazy"
                       data-format="svg"
                     />
                     <img 
                       class="floorplan-image" 
-                      src="https://d1t6lpjdsu4646.cloudfront.net/floorplans/first-floor.png" 
+                      src="assets/floorplans-local/first-floor.png" 
                       alt="First floor plan showing front bedroom, rear bedroom, and landing"
                       loading="lazy"
                       data-format="png"
@@ -2056,9 +2062,9 @@
                 <div class="model-viewer-container">
                   <model-viewer
                     id="cottage-model"
-                    src="https://d1t6lpjdsu4646.cloudfront.net/models/apple-cottage.usdz"
+                    src="assets/models-local/apple-cottage.usdz"
                     alt="3D model of Apple Cottage"
-                    poster="https://d1t6lpjdsu4646.cloudfront.net/models/poster.jpg"
+                    poster="assets/models-local/poster.jpg"
                     shadow-intensity="1"
                     camera-controls
                     auto-rotate
@@ -2089,7 +2095,7 @@
                     </button>
                     <div class="model-fallback" slot="fallback">
                       <p>3D model viewer not supported on this device</p>
-                      <img src="https://d1t6lpjdsu4646.cloudfront.net/models/poster.jpg" alt="3D model preview" style="width: 100%; height: auto;" />
+                      <img src="assets/models-local/poster.jpg" alt="3D model preview" style="width: 100%; height: auto;" />
                     </div>
                   </model-viewer>
                   <div class="model-info">

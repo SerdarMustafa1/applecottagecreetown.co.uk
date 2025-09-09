@@ -1096,7 +1096,7 @@ function handleFloorPlanDownload(planType, button) {
     try {
       if (planType === 'complete') {
         // Download complete plan pack PDF from CDN
-        downloadFile('https://d1t6lpjdsu4646.cloudfront.net/floorplans/plan-pack.pdf', 'Apple-Cottage-Floor-Plans-Complete.pdf');
+        downloadFile('assets/floorplans-local/plan-pack.pdf', 'Apple-Cottage-Floor-Plans-Complete.pdf');
       } else {
         // Determine current format and plan
         const container = button.closest('.floorplan-panel');
@@ -1106,7 +1106,7 @@ function handleFloorPlanDownload(planType, button) {
         const downloadName = `Apple-Cottage-${planType.replace('-', '-').replace(/\b\w/g, l => l.toUpperCase())}-Plan.${format}`;
         
         // Download from CDN
-        downloadFile(`https://d1t6lpjdsu4646.cloudfront.net/floorplans/${filename}`, downloadName);
+        downloadFile(`assets/floorplans-local/${filename}`, downloadName);
       }
       
       // Track successful download
