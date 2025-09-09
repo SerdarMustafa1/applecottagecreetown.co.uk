@@ -155,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       
       lastScrollY = currentScrollY;
-    });
+    }, { passive: true });
   }
 
   // Track key interactions for analytics
@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
         navbar.style.background = 'rgba(255, 255, 255, 0.95)';
         navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
       }
-    });
+    }, { passive: true });
   }
 
   // Existing modal functionality

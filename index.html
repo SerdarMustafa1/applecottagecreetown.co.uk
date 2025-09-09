@@ -35,23 +35,23 @@
       href="https://d1t6lpjdsu4646.cloudfront.net"
       crossorigin
     />
-    <!-- Preload hero image variants from local assets (rewritten to CDN in verify/build) -->
+    <!-- Preload hero image variants from local assets for immediate loading -->
     <link
       rel="preload"
       as="image"
-      href="https://d1t6lpjdsu4646.cloudfront.net/images/new/street-left-1200.avif"
+      href="assets/images/new/street-left-1200.avif"
       type="image/avif"
     />
     <link
       rel="preload"
       as="image"
-      href="https://d1t6lpjdsu4646.cloudfront.net/images/new/street-left-1200.webp"
+      href="assets/images/new/street-left-1200.webp"
       type="image/webp"
     />
     <link
       rel="preload"
       as="image"
-      href="https://d1t6lpjdsu4646.cloudfront.net/images/new/street-left-1200.jpg"
+      href="assets/images/new/street-left-1200.jpg"
       type="image/jpeg"
     />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -61,6 +61,21 @@
     <meta name="theme-color" content="#ff6f61" />
     <!-- A‑Frame for interactive 360° playback (deferred) -->
     <script defer src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <!-- Suppress console warnings for better user experience -->
+    <script>
+      // Suppress known warnings in production
+      if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+        const originalWarn = console.warn;
+        console.warn = function(...args) {
+          const message = args.join(' ');
+          if (message.includes('Multiple instances of Three.js') || 
+              message.includes('useLegacyLights')) {
+            return; // Suppress these specific warnings
+          }
+          originalWarn.apply(console, args);
+        };
+      }
+    </script>
     <!-- Video fallback handler -->
     <script defer src="video-fallback.js"></script>
     <script type="application/ld+json">
@@ -1015,7 +1030,7 @@
                     embedded
                     vr-mode-ui="enabled: false"
                     loading-screen="enabled: false"
-                    renderer="antialias: true; precision: high"
+                    renderer="antialias: true; precision: high; useLegacyLights: false"
                     style="display: none; position: absolute; inset: 0"
                   >
                     <a-videosphere
@@ -1170,7 +1185,7 @@
                     embedded
                     vr-mode-ui="enabled: false"
                     loading-screen="enabled: false"
-                    renderer="antialias: true; precision: high"
+                    renderer="antialias: true; precision: high; useLegacyLights: false"
                     style="display: none; position: absolute; inset: 0"
                   >
                     <a-videosphere
@@ -1320,7 +1335,7 @@
                     embedded
                     vr-mode-ui="enabled: false"
                     loading-screen="enabled: false"
-                    renderer="antialias: true; precision: high"
+                    renderer="antialias: true; precision: high; useLegacyLights: false"
                     style="display: none; position: absolute; inset: 0"
                   >
                     <a-videosphere
@@ -1469,7 +1484,7 @@
                     embedded
                     vr-mode-ui="enabled: false"
                     loading-screen="enabled: false"
-                    renderer="antialias: true; precision: high"
+                    renderer="antialias: true; precision: high; useLegacyLights: false"
                     style="display: none; position: absolute; inset: 0"
                   >
                     <a-videosphere
@@ -1618,7 +1633,7 @@
                     embedded
                     vr-mode-ui="enabled: false"
                     loading-screen="enabled: false"
-                    renderer="antialias: true; precision: high"
+                    renderer="antialias: true; precision: high; useLegacyLights: false"
                     style="display: none; position: absolute; inset: 0"
                   >
                     <a-videosphere
@@ -1767,7 +1782,7 @@
                     embedded
                     vr-mode-ui="enabled: false"
                     loading-screen="enabled: false"
-                    renderer="antialias: true; precision: high"
+                    renderer="antialias: true; precision: high; useLegacyLights: false"
                     style="display: none; position: absolute; inset: 0"
                   >
                     <a-videosphere
