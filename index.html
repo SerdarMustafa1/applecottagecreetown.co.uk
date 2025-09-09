@@ -490,7 +490,11 @@
       <!-- Featured Photos strip for quick scan -->
       <section id="featured" aria-labelledby="featured-title">
         <h2 id="featured-title" class="section-title">Featured Photos</h2>
-        <div class="featured-strip gallery" role="region" aria-label="Featured photos">
+        <div
+          class="featured-strip gallery"
+          role="region"
+          aria-label="Featured photos"
+        >
           <figure>
             <img
               src="https://d1t6lpjdsu4646.cloudfront.net/images/new/street-left-1200.jpg"
@@ -622,9 +626,10 @@
           <div class="metric-card" role="group" aria-label="Outside space">
             <div class="metric-value">Landscaped</div>
             <div class="metric-sub">Garden, covered patio & BBQ</div>
-        <div class="metric-note">4‑car driveway + garage/workshop</div>
+            <div class="metric-note">4‑car driveway + garage/workshop</div>
           </div>
         </div>
+      </section>
       </section>
 
       <!-- Gallery -->
@@ -1796,12 +1801,23 @@
       <!-- EPC section -->
       <section id="epc" class="section-dark">
         <h2 class="section-title">Energy Performance Certificate (EPC)</h2>
-        <div class="gallery" style="max-width:640px; margin:0 auto;">
+        <div class="gallery" style="max-width: 640px; margin: 0 auto">
           <figure>
             <picture>
-              <source type="image/avif" srcset="assets/images/misc/epc-graph.avif" />
-              <source type="image/webp" srcset="assets/images/misc/epc-graph.webp" />
-              <img src="assets/images/misc/epc-graph.png" alt="Energy Performance Certificate rating graph" loading="lazy" decoding="async" />
+              <source
+                type="image/avif"
+                srcset="assets/images/misc/epc-graph.avif"
+              />
+              <source
+                type="image/webp"
+                srcset="assets/images/misc/epc-graph.webp"
+              />
+              <img
+                src="assets/images/misc/epc-graph.png"
+                alt="Energy Performance Certificate rating graph"
+                loading="lazy"
+                decoding="async"
+              />
             </picture>
             <figcaption>EPC rating graph (Current B)</figcaption>
           </figure>
@@ -1812,7 +1828,6 @@
       <section id="facts" class="section-dark">
         <h2 class="section-title">Key Facts</h2>
         <div class="facts">
-          
           <div class="fact"><strong>Tenure:</strong> Freehold</div>
           <div class="fact"><strong>Chain Free:</strong> Yes</div>
           <div class="fact"><strong>Bedrooms:</strong> 3 + separate annex</div>
@@ -1880,6 +1895,40 @@
           an ideal base for families, outdoor enthusiasts and those seeking a
           healthy work–life balance.
         </p>
+        
+        <!-- Location & Lifestyle gallery -->
+        <div class="gallery">
+          <img
+            src="locations/interior-1.jpg"
+            alt="Local area highlights"
+            loading="lazy"
+            decoding="async"
+          />
+          <img
+            src="locations/interior-2.jpg"
+            alt="Community amenities"
+            loading="lazy"
+            decoding="async"
+          />
+          <img
+            src="locations/interior-3.jpg"
+            alt="Natural surroundings"
+            loading="lazy"
+            decoding="async"
+          />
+          <img
+            src="locations/interior-4.jpg"
+            alt="Local attractions"
+            loading="lazy"
+            decoding="async"
+          />
+          <img
+            src="locations/interior-5.jpg"
+            alt="Village charm"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
         <div class="chips" aria-label="Distances">
           <span class="chip">A75 — 2 min</span>
           <span class="chip">Kirroughtree — 5 min</span>
@@ -2111,7 +2160,7 @@
       <div id="lightboxCaption"></div>
     </div>
 
-    <!-- Sticky mobile CTA -->
+    <!-- Sticky mobile CTA
     <div class="sticky-cta">
       <a
         href="https://tidycal.com/sidmustafa/apple-cottage-viewing"
@@ -2121,7 +2170,7 @@
         >Book Viewing</a
       >
       <button type="button" class="btn js-open-report">Request Report</button>
-    </div>
+    </div> -->
     <script src="script.js"></script>
   </body>
 </html>
