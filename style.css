@@ -134,7 +134,8 @@ header p {
 }
 
 .btn {
-  background-color: #1a2a5a; text-decoration: underline;
+  background-color: #1a2a5a;
+  text-decoration: underline;
   color: white;
   padding: 0.8rem 1.5rem;
   border-radius: 5px;
