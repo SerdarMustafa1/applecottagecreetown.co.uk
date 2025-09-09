@@ -7,6 +7,15 @@ test.describe('360° Tours playback', () => {
   test.beforeEach(async ({ page }) => {
     test.skip(!SITE_URL, 'SITE_URL not set');
     await page.goto(SITE_URL + '#tours360');
+    
+    // Handle cookie consent banner if it appears
+    const acceptAllButton = page.locator('#silktide-banner .accept-all');
+    if (await acceptAllButton.isVisible({ timeout: 2000 }).catch(() => false)) {
+      await acceptAllButton.click();
+      // Wait for banner to disappear
+      await page.waitForSelector('#silktide-banner', { state: 'hidden', timeout: 3000 }).catch(() => {});
+    }
+    
     // Ensure section opens (the app auto-opens via script as well)
     await page.waitForSelector('#tours360', { state: 'attached' });
   });
