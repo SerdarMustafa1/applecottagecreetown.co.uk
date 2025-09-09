@@ -1,4 +1,201 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Navigation functionality
+  const navToggle = document.querySelector('.nav-toggle');
+  const navMenu = document.querySelector('.nav-menu');
+
+  if (navToggle && navMenu) {
+    navToggle.addEventListener('click', () => {
+      navToggle.classList.toggle('active');
+      navMenu.classList.toggle('active');
+    });
+
+    // Close mobile menu when clicking on a link
+    navMenu.addEventListener('click', (e) => {
+      if (e.target.tagName === 'A') {
+        navToggle.classList.remove('active');
+        navMenu.classList.remove('active');
+      }
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+        navToggle.classList.remove('active');
+        navMenu.classList.remove('active');
+      }
+    });
+  }
+
+  // Scroll to tours function
+  window.scrollToTours = function() {
+    const toursSection = document.getElementById('tours360') || document.querySelector('[href="#tours360"]');
+    if (toursSection) {
+      toursSection.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
+    }
+  };
+
+  // Scroll to booking function
+  window.scrollToBooking = function() {
+    const bookingBtn = document.querySelector('a[href*="tidycal.com"]');
+    if (bookingBtn) {
+      bookingBtn.click();
+    } else {
+      // Fallback: scroll to contact section
+      const contactSection = document.getElementById('contact');
+      if (contactSection) {
+        contactSection.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        });
+      }
+    }
+  };
+
+  // Open map modal function
+  window.openMapModal = function() {
+    // For now, just open Google Maps in a new tab
+    // In the future, this could open a modal with an embedded map
+    const address = 'Apple Cottage, Silver Street, Creetown, Newton Stewart DG8 7HU';
+    const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(address)}`;
+    window.open(mapsUrl, '_blank');
+  };
+
+  // Enhanced sharing functionality
+  const shareButtons = document.querySelectorAll('.js-share');
+  shareButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const platform = this.dataset.platform;
+      const url = encodeURIComponent(window.location.href);
+      const title = encodeURIComponent('Apple Cottage Creetown - Beautiful property for sale');
+      const description = encodeURIComponent('Energy-smart three-bed home with annex, EV charging & landscaped gardens. Offers over £300,000');
+      
+      let shareUrl = '';
+      
+      switch (platform) {
+        case 'facebook':
+          shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+          break;
+        case 'x':
+          shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
+          break;
+        case 'linkedin':
+          shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+          break;
+        case 'whatsapp':
+          shareUrl = `https://wa.me/?text=${title}%20${url}`;
+          break;
+      }
+      
+      if (shareUrl) {
+        window.open(shareUrl, '_blank', 'width=600,height=400');
+        
+        // Track sharing event
+        track('property_shared', {
+          platform: platform,
+          property_id: 'apple-cottage-creetown'
+        });
+      }
+    });
+  });
+
+  // Copy link functionality
+  const copyButtons = document.querySelectorAll('.js-copy');
+  copyButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        // Show success feedback
+        const originalText = this.innerHTML;
+        this.innerHTML = '<span class="share-icon">✅</span> Copied!';
+        
+        setTimeout(() => {
+          this.innerHTML = originalText;
+        }, 2000);
+        
+        // Track copy event
+        track('property_link_copied', {
+          property_id: 'apple-cottage-creetown'
+        });
+      }).catch(() => {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = window.location.href;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        this.innerHTML = '<span class="share-icon">✅</span> Copied!';
+        setTimeout(() => {
+          this.innerHTML = '<span class="share-icon">🔗</span> Copy Link';
+        }, 2000);
+      });
+    });
+  });
+
+  // Mobile action bar visibility
+  let lastScrollY = window.scrollY;
+  const mobileActionBar = document.getElementById('mobileActionBar');
+  
+  if (mobileActionBar) {
+    window.addEventListener('scroll', () => {
+      const currentScrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      
+      // Show action bar on mobile when scrolling down past hero
+      if (window.innerWidth <= 768) {
+        if (currentScrollY > windowHeight * 0.5) {
+          mobileActionBar.style.transform = 'translateY(0)';
+        } else {
+          mobileActionBar.style.transform = 'translateY(100%)';
+        }
+      }
+      
+      lastScrollY = currentScrollY;
+    });
+  }
+
+  // Track key interactions for analytics
+  const trackInteraction = (element, eventName) => {
+    element.addEventListener('click', () => {
+      track(eventName, {
+        property_id: 'apple-cottage-creetown',
+        timestamp: new Date().toISOString()
+      });
+    });
+  };
+
+  // Track important clicks
+  const viewingButtons = document.querySelectorAll('a[href*="tidycal.com"]');
+  viewingButtons.forEach(btn => trackInteraction(btn, 'viewing_booking_clicked'));
+
+  const phoneLinks = document.querySelectorAll('a[href^="tel:"]');
+  phoneLinks.forEach(link => trackInteraction(link, 'phone_number_clicked'));
+
+  const emailLinks = document.querySelectorAll('a[href^="mailto:"]');
+  emailLinks.forEach(link => trackInteraction(link, 'email_clicked'));
+
+  const tourButtons = document.querySelectorAll('.tour-trigger, .btn-accent');
+  tourButtons.forEach(btn => trackInteraction(btn, 'virtual_tour_clicked'));
+
+  // Navbar scroll effect
+  const navbar = document.querySelector('.navbar');
+  if (navbar) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.15)';
+      } else {
+        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+      }
+    });
+  }
+
+  // Existing modal functionality
   const modal = document.getElementById("homeReportModal");
   const form = document.getElementById("homeReportForm");
   const formContainer = document.getElementById("homeReportFormContainer");
