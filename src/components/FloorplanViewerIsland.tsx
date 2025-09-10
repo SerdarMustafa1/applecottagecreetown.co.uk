@@ -1,5 +1,112 @@
-import React from 'react';
+/* eslint-env browser */
+import React, { useRef, useState, useEffect } from 'react';
 
-export default function FloorplanViewerIsland() {
-  return <div>Floorplan viewer placeholder</div>;
+interface Plan {
+  label: string;
+  src: string;
+}
+
+interface Props {
+  plans: Plan[];
+}
+
+export default function FloorplanViewerIsland({ plans }: Props) {
+  return (
+    <div>
+      {plans.map((plan) => (
+        <ZoomablePlan key={plan.label} plan={plan} />
+      ))}
+    </div>
+  );
+}
+
+function ZoomablePlan({ plan }: { plan: Plan }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? -0.1 : 0.1;
+      setScale((s) => Math.min(Math.max(0.5, s + delta), 4));
+    };
+
+    let initialDistance = 0;
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        initialDistance = Math.hypot(dx, dy);
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const distance = Math.hypot(dx, dy);
+        const factor = distance / initialDistance;
+        setScale((s) => Math.min(Math.max(0.5, s * factor), 4));
+        initialDistance = distance;
+      }
+    };
+
+    container.addEventListener('wheel', handleWheel, { passive: false });
+    container.addEventListener('touchstart', handleTouchStart, { passive: false });
+    container.addEventListener('touchmove', handleTouchMove, { passive: false });
+
+    return () => {
+      container.removeEventListener('wheel', handleWheel);
+      container.removeEventListener('touchstart', handleTouchStart);
+      container.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, []);
+
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = plan.src;
+    let filename = 'floorplan';
+    try {
+      const url = new URL(plan.src, window.location.href);
+      const pathname = url.pathname;
+      const lastSegment = pathname.split('/').filter(Boolean).pop();
+      if (lastSegment) {
+        filename = lastSegment;
+      }
+    } catch (e) {
+      // fallback to 'floorplan'
+    }
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  return (
+    <div className="mb-8">
+      <h3 className="mb-2 font-semibold">{plan.label}</h3>
+      <div
+        ref={containerRef}
+        className="overflow-auto border rounded"
+      >
+        <img
+          src={plan.src}
+          alt={`${plan.label} floor plan`}
+          className="block mx-auto"
+          style={{ transform: `scale(${scale})`, transformOrigin: 'center' }}
+        />
+      </div>
+      <button
+        onClick={handleDownload}
+        className="mt-2 text-sm text-blue-600 underline"
+      >
+        Download
+      </button>
+    </div>
+  );
 }

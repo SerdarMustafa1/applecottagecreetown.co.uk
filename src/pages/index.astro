@@ -5,26 +5,35 @@ import highlights from '../../content/highlights.md';
 import faq from '../../content/faq.md';
 import Hero from '../components/Hero.astro';
 import HighlightCards from '../components/HighlightCards.astro';
+import GalleryIsland from '../components/GalleryIsland.tsx';
+import Floorplans from '../components/Floorplans.astro';
 import ContactFormIsland from '../components/ContactFormIsland.tsx';
 import FAQ from '../components/FAQ.astro';
 import MapEmbed from '../components/MapEmbed.astro';
 import DocumentList from '../components/DocumentList.astro';
 import site from '../../site.config';
-import GalleryIsland from '../components/GalleryIsland.tsx';
+
+
+
 import interior1 from '../../locations/interior-1.jpg';
 import interior2 from '../../locations/interior-2.jpg';
 import interior3 from '../../locations/interior-3.jpg';
 import interior4 from '../../locations/interior-4.jpg';
 import interior5 from '../../locations/interior-5.jpg';
 const images = [interior1, interior2, interior3, interior4, interior5];
----
+
+
 <BaseLayout title={home.frontmatter.title} description={home.frontmatter.description}>
   <Hero />
   <section class="prose mx-auto p-4">
     <home.Content />
+
   </section>
   <HighlightCards items={highlights.frontmatter.items} />
-  <GalleryIsland client:load images={images} />
+  <section class="p-4 max-w-3xl mx-auto">
+    <GalleryIsland client:load />
+  </section>
+  <Floorplans />
   <MapEmbed />
   <section id="contact" class="p-4 max-w-lg mx-auto">
     <h2 class="text-2xl font-semibold mb-4">Book a Viewing</h2>
