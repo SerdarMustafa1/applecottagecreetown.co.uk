@@ -1,6 +1,20 @@
 ---
 title: Property Details
 ---
-- Detached cottage with four bedrooms and two bathrooms
-- Recent renovations include a new roof and energy-efficient windows
-- Air-source heat pump and solar panels with battery storage
+
+## Apple Cottage, Creetown
+
+- 2 bedrooms
+- 1 bathroom
+- Conservatory
+- Kitchen
+- Lounge
+- Private garden
+- Off-street parking
+
+### Features
+
+- Modern kitchen appliances
+- Double glazing
+- Central heating
+- 360° virtual tours available
