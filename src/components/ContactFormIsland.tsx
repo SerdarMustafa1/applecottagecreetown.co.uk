@@ -14,45 +14,33 @@ export default function ContactFormIsland() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4" data-testid="contact-form">
-      <div>
-        <label htmlFor="name" className="block text-sm font-medium">Name</label>
-        <input
-          id="name"
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-          placeholder="Name"
-          required
-          className="mt-1 block w-full border rounded p-2"
-        />
-      </div>
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium">Email</label>
-        <input
-          id="email"
-          name="email"
-          value={form.email}
-          onChange={handleChange}
-          placeholder="Email"
-          type="email"
-          required
-          className="mt-1 block w-full border rounded p-2"
-        />
-      </div>
-      <div>
-        <label htmlFor="message" className="block text-sm font-medium">Message</label>
-        <textarea
-          id="message"
-          name="message"
-          value={form.message}
-          onChange={handleChange}
-          placeholder="Message"
-          required
-          className="mt-1 block w-full border rounded p-2"
-        />
-      </div>
-      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded w-full">
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <input
+        name="name"
+        value={form.name}
+        onChange={handleChange}
+        placeholder="Name"
+        required
+        className="input input-bordered w-full"
+      />
+      <input
+        name="email"
+        value={form.email}
+        onChange={handleChange}
+        placeholder="Email"
+        type="email"
+        required
+        className="input input-bordered w-full"
+      />
+      <textarea
+        name="message"
+        value={form.message}
+        onChange={handleChange}
+        placeholder="Message"
+        required
+        className="textarea textarea-bordered w-full"
+      />
+      <button type="submit" className="btn btn-primary w-full">
         Send
       </button>
       {submitted && <div className="mt-2 text-green-600">Thank you for your message!</div>}
