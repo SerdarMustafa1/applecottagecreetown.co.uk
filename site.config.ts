@@ -10,12 +10,16 @@ export const site = {
   price: '£500,000',
   bedrooms: 4,
   bathrooms: 2,
+<<<<<<< HEAD
   epc: 'B',
   analyticsId: 'GA_MEASUREMENT_ID',
   docs: [
     { label: 'EPC', href: '/docs/epc.pdf' },
     { label: 'Home Report', href: '/docs/home-report.pdf' }
   ]
+=======
+  epc: 'B'
+>>>>>>> 6809f54 (feat: scaffold core site structure)
 };
 
 export default site;

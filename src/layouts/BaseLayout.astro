@@ -3,10 +3,13 @@ import '../styles/globals.css';
 import Seo from '../components/Seo.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+<<<<<<< HEAD
 import site from '../../site.config.ts';
 const { title = site.title, description = site.description } = Astro.props;
 const gaId = site.analyticsId;
 =======
+=======
+>>>>>>> 6809f54 (feat: scaffold core site structure)
 const { title = 'Apple Cottage', description = 'Charming home in Creetown' } = Astro.props;
 >>>>>>> 293ac49 (chore: fix lint and test scripts)
 <!DOCTYPE html>
@@ -17,7 +20,11 @@ const { title = 'Apple Cottage', description = 'Charming home in Creetown' } = A
     <Seo {title} {description} />
     <script src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID" defer></script>
   </head>
-  <body class="min-h-screen antialiased">
-    <slot />
+  <body class="min-h-screen antialiased flex flex-col">
+    <Header />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
   </body>
 </html>

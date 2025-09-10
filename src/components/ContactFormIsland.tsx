@@ -17,7 +17,11 @@ export default function ContactFormIsland() {
       </div>
       <div className="hidden">
         <label htmlFor="company">Company</label>
+<<<<<<< HEAD
         <input id="company" name="company" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" />
+=======
+        <input id="company" name="company" type="text" />
+>>>>>>> 6809f54 (feat: scaffold core site structure)
       </div>
       <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Send</button>
     </form>
