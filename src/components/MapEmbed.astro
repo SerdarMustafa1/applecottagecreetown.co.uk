@@ -1,0 +1,13 @@
+---
+import site from '../../site.config';
+const { coordinates, address } = site;
+const mapSrc = `https://maps.googleapis.com/maps/api/staticmap?center=${coordinates.lat},${coordinates.lng}&zoom=14&size=600x300&key=YOUR_KEY`;
+const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+---
+<section id="location" class="py-8">
+  <h2 class="text-2xl font-bold mb-4">Location</h2>
+  <img src={mapSrc} alt={`Map showing ${address}`} class="mx-auto" />
+  <p class="mt-2 text-center">
+    <a href={mapsHref} class="text-blue-600 underline">View on Google Maps</a>
+  </p>
+</section>
