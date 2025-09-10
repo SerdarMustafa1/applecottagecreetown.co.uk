@@ -1,5 +1,4 @@
 /* eslint-env browser */
-/* eslint-disable no-undef */
 import React, { useRef, useState, useEffect } from 'react';
 
 interface Plan {
