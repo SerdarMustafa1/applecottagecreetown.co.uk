@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import type { ImageMetadata } from 'astro:assets';
+// eslint-disable-next-line import/no-unresolved
 import { Image } from 'astro:assets';
 import LightboxDialog from './LightboxDialog';
 
+// Accept an array of image sources which may be string paths or
+// ImageMetadata objects returned from Astro's asset pipeline.
 interface GalleryIslandProps {
-  images: ImageMetadata[];
+  images: (string | ImageMetadata)[];
 }
 
 export default function GalleryIsland({ images }: GalleryIslandProps) {
@@ -22,12 +25,14 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
 
   return (
     <>
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2" role="list">
         {images.map((img, i) => (
           <button
             key={i}
             onClick={() => openAt(i)}
             className="focus:outline-none"
+            aria-label={`Open image ${i + 1}`}
+            role="listitem"
           >
             <Image src={img} alt={`Gallery image ${i + 1}`} className="w-full h-full object-cover" />
           </button>

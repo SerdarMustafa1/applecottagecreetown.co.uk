@@ -10,7 +10,21 @@ export default [
   importPlugin.flatConfigs.typescript,
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
-    languageOptions: { parser: tsParser },
+    languageOptions: {
+      parser: tsParser,
+      globals: {
+        window: 'readonly',
+        document: 'readonly',
+        URL: 'readonly',
+        HTMLElement: 'readonly',
+        HTMLInputElement: 'readonly',
+        HTMLDivElement: 'readonly',
+        TouchEvent: 'readonly',
+        WheelEvent: 'readonly',
+        KeyboardEvent: 'readonly',
+        HTMLButtonElement: 'readonly',
+      },
+    },
     plugins: {
       'jsx-a11y': jsxA11y
     }
