@@ -1,0 +1,17 @@
+---
+import '../styles/globals.css';
+import Seo from '../components/Seo.astro';
+const { title = 'Apple Cottage', description = 'Charming home in Creetown' } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <Seo {title} {description} />
+    <script src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID" defer></script>
+  </head>
+  <body class="min-h-screen antialiased">
+    <slot />
+  </body>
+</html>
