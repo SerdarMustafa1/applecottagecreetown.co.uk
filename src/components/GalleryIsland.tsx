@@ -32,7 +32,6 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
             onClick={() => openAt(i)}
             className="focus:outline-none"
             aria-label={`Open image ${i + 1}`}
-            role="listitem"
           >
             <Image src={img} alt={`Gallery image ${i + 1}`} className="w-full h-full object-cover" />
           </button>
