@@ -12,6 +12,10 @@ export const site = {
   bathrooms: 2,
   epc: 'B',
   analyticsId: 'GA_MEASUREMENT_ID',
+  floorplans: [
+    { label: 'Ground Floor', src: '/floorplans/ground-floor.png' },
+    { label: 'First Floor', src: '/floorplans/first-floor.png' }
+  ],
   docs: [
     { label: 'EPC', href: '/docs/epc.pdf' },
     { label: 'Home Report', href: '/docs/home-report.pdf' }
