@@ -6,6 +6,42 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+
+    "lint": "pnpm exec eslint src tests/unit",
+    "test": "pnpm exec vitest run tests/unit"
+  },
+  "dependencies": {
+    "@astrojs/netlify": "^4.0.0",
+    "@astrojs/tailwind": "^4.0.0",
+    "astro": "^4.0.0",
+    "lucide-react": "^0.453.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.8.3",
+    "@eslint/js": "^9.34.0",
+    "@playwright/test": "^1.46.0",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.10",
+    "@testing-library/dom": "^9.3.3",
+    "@testing-library/react": "^14.1.2",
+    "@typescript-eslint/parser": "^7.0.0",
+    "autoprefixer": "^10.4.14",
+    "axe-core": "^4.8.3",
+    "eslint": "^9.34.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "jsdom": "^26.1.0",
+    "lighthouse-ci": "^1.13.1",
+    "playwright": "^1.46.0",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.0.0",
+    "vitest": "^1.6.0"
+  },
+  "packageManager": "pnpm@10.13.1"
+
     "lint": "eslint .",
     "test": "vitest"
   },
@@ -36,4 +72,5 @@
     "@playwright/test": "^1.46.0",
     "lighthouse-ci": "^1.13.1"
   }
+
 }
