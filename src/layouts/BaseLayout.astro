@@ -3,28 +3,17 @@ import '../styles/globals.css';
 import Seo from '../components/Seo.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-<<<<<<< HEAD
-<<<<<<< HEAD
-import site from '../../site.config.ts';
-const { title = site.title, description = site.description } = Astro.props;
-const gaId = site.analyticsId;
-=======
-=======
->>>>>>> 6809f54 (feat: scaffold core site structure)
-const { title = 'Apple Cottage', description = 'Charming home in Creetown' } = Astro.props;
->>>>>>> 293ac49 (chore: fix lint and test scripts)
-=======
 import site from '../../site.config.ts';
 const { title = site.title, description = site.description } = Astro.props;
 const gaId = site.analyticsId;
 ---
->>>>>>> 30094af (fix: resolve merge conflicts and add contact section)
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
       <Seo {title} {description} />
+      {gaId && (
         <>
           <script src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} defer></script>
           <script is:inline>
@@ -32,6 +21,7 @@ const gaId = site.analyticsId;
           </script>
         </>
       )}
+  </head>
   <body class="min-h-screen antialiased flex flex-col">
     <Header />
     <main class="flex-1">
