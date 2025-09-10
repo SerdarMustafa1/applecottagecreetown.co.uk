@@ -1,10 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Navigation functionality
   const navToggle = document.querySelector('.nav-toggle');
-  const navMenu = document.querySelector('.nav-menu');
+  const navMenu = document.getElementById('primary-navigation');
 
   if (navToggle && navMenu) {
     navToggle.addEventListener('click', () => {
+      const expanded = navToggle.getAttribute('aria-expanded') === 'true';
+      navToggle.setAttribute('aria-expanded', String(!expanded));
       navToggle.classList.toggle('active');
       navMenu.classList.toggle('active');
     });
@@ -14,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (e.target.tagName === 'A') {
         navToggle.classList.remove('active');
         navMenu.classList.remove('active');
+        navToggle.setAttribute('aria-expanded', 'false');
       }
     });
 
@@ -22,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
         navToggle.classList.remove('active');
         navMenu.classList.remove('active');
+        navToggle.setAttribute('aria-expanded', 'false');
       }
     });
   }
