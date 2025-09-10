@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import home from '../../content/home.md';
+---
+<BaseLayout title={home.frontmatter.title} description={home.frontmatter.description}>
+  <main class="prose mx-auto p-4">
+    <home.Content />
+  </main>
+</BaseLayout>
