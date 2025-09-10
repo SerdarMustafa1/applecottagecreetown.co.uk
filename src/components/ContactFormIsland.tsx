@@ -4,7 +4,7 @@ import siteConfig from '../../site.config';
 export default function ContactFormIsland() {
   const [submitted, setSubmitted] = useState(false);
   const startRef = useRef(Date.now());
-  const timeRef = useRef<any>(null);
+  const timeRef = useRef<HTMLInputElement>(null);
   const { phone, email } = siteConfig.contact;
   const phoneHref = phone.replace(/\s+/g, '');
   const whatsappHref = `https://wa.me/${phone.replace(/\D/g, '')}`;
