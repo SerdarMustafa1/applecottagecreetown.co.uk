@@ -52,9 +52,20 @@ function normalize(u) {
   if (/^https?:\/\//i.test(u)) return u; // already absolute
   if (/^assets\//.test(u)) {
     // Map assets/images -> CDN/images, assets/videos -> CDN/videos
-    return u
+    // Map assets/floorplans-local -> CDN/floorplans, assets/models-local -> CDN/models
+    const result = u
       .replace(/^assets\/images\//, base.replace(/\/$/, "") + "/images/")
-      .replace(/^assets\/videos\//, base.replace(/\/$/, "") + "/videos/");
+      .replace(/^assets\/videos\//, base.replace(/\/$/, "") + "/videos/")
+      .replace(/^assets\/floorplans-local\//, base.replace(/\/$/, "") + "/floorplans/")
+      .replace(/^assets\/models-local\//, base.replace(/\/$/, "") + "/models/");
+    
+    // If the result still starts with assets/, it means we couldn't map it
+    if (result.startsWith('assets/')) {
+      console.warn(`[verify-cdn] Unmapped local asset path: ${u}`);
+      return null;
+    }
+    
+    return result;
   }
   return null; // ignore other local links
 }
@@ -97,12 +108,20 @@ let active = 0;
 let i = 0;
 function head(u) {
   return new Promise((resolve) => {
-    const req = https
-      .request(u, { method: "HEAD" }, (res) => {
-        resolve(res.statusCode);
-      })
-      .on("error", () => resolve(0));
-    req.end();
+    try {
+      const req = https
+        .request(u, { method: "HEAD" }, (res) => {
+          resolve(res.statusCode);
+        })
+        .on("error", (err) => {
+          console.error(`[verify-cdn] Error checking ${u}:`, err.message);
+          resolve(0);
+        });
+      req.end();
+    } catch (err) {
+      console.error(`[verify-cdn] Error creating request for ${u}:`, err.message);
+      resolve(0);
+    }
   });
 }
 function pump() {
