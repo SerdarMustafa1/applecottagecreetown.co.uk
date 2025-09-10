@@ -70,7 +70,18 @@ function ZoomablePlan({ plan }: { plan: Plan }) {
   const handleDownload = () => {
     const link = document.createElement('a');
     link.href = plan.src;
-    link.download = plan.src.split('/').pop() || 'floorplan';
+    let filename = 'floorplan';
+    try {
+      const url = new URL(plan.src, window.location.href);
+      const pathname = url.pathname;
+      const lastSegment = pathname.split('/').filter(Boolean).pop();
+      if (lastSegment) {
+        filename = lastSegment;
+      }
+    } catch (e) {
+      // fallback to 'floorplan'
+    }
+    link.download = filename;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
