@@ -1,5 +1,7 @@
 ---
 import site from '../../site.config';
+import location from '../../content/location.md';
+
 const { coordinates, address } = site;
 const GOOGLE_MAPS_API_KEY = import.meta.env.GOOGLE_MAPS_API_KEY;
 const mapSrc = `https://maps.googleapis.com/maps/api/staticmap?center=${coordinates.lat},${coordinates.lng}&zoom=14&size=600x300&key=${GOOGLE_MAPS_API_KEY}`;
@@ -7,9 +9,16 @@ const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURICom
 ---
 <section id="location" class="py-8">
   <h2 class="text-2xl font-bold mb-4">Location</h2>
-  <img src={mapSrc} alt={`Map showing ${address}`} class="mx-auto" />
-  <p class="mt-2 text-center">
-    <a href={mapsHref} class="text-blue-600 underline">View on Google Maps</a>
-  </p>
-</section>
+  <div class="grid gap-4 md:grid-cols-2">
+    <div>
+      <img src={mapSrc} alt={`Map showing ${address}`} class="mx-auto" />
+      <p class="mt-2 text-center">
+        <a href={mapsHref} target="_blank" rel="noopener noreferrer" aria-label={`Open ${address} in Google Maps (opens in a new tab)`} class="text-blue-600 underline">View on Google Maps</a>
+      </p>
+    </div>
+    <div class="prose mx-auto md:mx-0">
+      {location.frontmatter.title && <h3>{location.frontmatter.title}</h3>}
+      <location.Content />
+    </div>
+  </div>
 </section>
