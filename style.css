@@ -912,6 +912,35 @@ footer {
   flex-shrink: 0;
 }
 
+/* Chips + map */
+.chips { 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 0.75rem; 
+  justify-content: center; 
+  margin: 1rem auto; 
+}
+
+.chip {
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: #222;
+}
+
+.chip:hover {
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  border-color: #d1d5db;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+  color: #ff6f61;
+}
 .map-wrap { max-width: 920px; margin: 0 auto; }
 .map-wrap iframe { width: 100%; height: 360px; border: 0; border-radius: 8px; }
 
@@ -1073,15 +1102,41 @@ footer {
 
 
 /* Share bar */
-.share-bar {
-  display: flex;
+.share-bar { 
+  display: flex; 
+  gap: 0.75rem; 
+  justify-content: center; 
+  margin-top: 1rem; 
   flex-wrap: wrap;
-  gap: 0.75rem;
-  justify-content: center;
-  margin-top: 1rem;
 }
 
-/* (Share button styles moved further down to keep overrides together.) */
+.share-btn { 
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  color: #222;
+  border: 1px solid #d6d6e7;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.share-btn:hover { 
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.share-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
 
 /* Gallery accordion */
 .gallery-accordion { max-width: 1100px; margin: 0 auto; }
@@ -1565,7 +1620,6 @@ footer {
   flex-wrap: wrap;
 }
 
-
 .share-btn {
   display: flex;
   align-items: center;
@@ -1599,7 +1653,6 @@ footer {
   flex-wrap: wrap;
 }
 
-
 .chip {
   display: flex;
   align-items: center;
@@ -1621,11 +1674,13 @@ footer {
 }
 
 .chip-featured {
-  font-weight: 600;
+  background: linear-gradient(135deg, #ff6f61, #e55a2b);
+  border-color: transparent;
 }
 
 .chip-action {
-  font-weight: 600;
+  background: rgba(44, 85, 48, 0.8);
+  border-color: #4a7c59;
 }
 
 .chip-icon {
