@@ -1,6 +1,6 @@
 ---
 title: "Property Details"
-description: "Learn more about Apple Cottage's features and specifications."
+description: "Explore the features and specifications of Apple Cottage."
 ---
 
 Apple Cottage combines traditional charm with modern comforts. The spacious rooms, updated fixtures, and scenic surroundings make it a delightful place to call home.
