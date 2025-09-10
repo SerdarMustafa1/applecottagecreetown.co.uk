@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { ImageMetadata } from 'astro:assets';
-// eslint-disable-next-line import/no-unresolved
+// eslint-disable-next-line import/no-unresolved -- ESLint cannot resolve Astro's virtual modules
 import { Image } from 'astro:assets';
 import LightboxDialog from './LightboxDialog';
 
