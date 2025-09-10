@@ -11,7 +11,11 @@ export const site = {
   bedrooms: 4,
   bathrooms: 2,
   epc: 'B',
-  analyticsId: 'GA_MEASUREMENT_ID'
+  analyticsId: 'GA_MEASUREMENT_ID',
+  docs: [
+    { label: 'EPC', href: '/docs/epc.pdf' },
+    { label: 'Home Report', href: '/docs/home-report.pdf' }
+  ]
 };
 
 export default site;
