@@ -3,7 +3,7 @@ import site from '../../site.config';
 import location from '../../content/location.md';
 
 const { coordinates, address } = site;
-const GOOGLE_MAPS_API_KEY = import.meta.env.GOOGLE_MAPS_API_KEY;
+const GOOGLE_MAPS_API_KEY = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY;
 const mapSrc = `https://maps.googleapis.com/maps/api/staticmap?center=${coordinates.lat},${coordinates.lng}&zoom=14&size=600x300&key=${GOOGLE_MAPS_API_KEY}`;
 const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 ---
