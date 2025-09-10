@@ -1,15 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import home from '../../content/home.md';
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 6809f54 (feat: scaffold core site structure)
 import highlights from '../../content/highlights.md';
 import faq from '../../content/faq.md';
 import Hero from '../components/Hero.astro';
 import HighlightCards from '../components/HighlightCards.astro';
-<<<<<<< HEAD
 import PropertyDetails from '../components/PropertyDetails.astro';
 import ContactFormIsland from '../components/ContactFormIsland.tsx';
 import FAQ from '../components/FAQ.astro';
@@ -31,21 +26,4 @@ import site from '../../site.config';
   </section>
   <FAQ items={faq.frontmatter.questions} />
   <DocumentList docs={site.docs} />
-=======
-=======
-import FAQ from '../components/FAQ.astro';
->>>>>>> 6809f54 (feat: scaffold core site structure)
----
-<BaseLayout title={home.frontmatter.title} description={home.frontmatter.description}>
-  <Hero />
-  <section class="prose mx-auto p-4">
-    <home.Content />
-<<<<<<< HEAD
-  </main>
->>>>>>> 293ac49 (chore: fix lint and test scripts)
-=======
-  </section>
-  <HighlightCards items={highlights.frontmatter.items} />
-  <FAQ items={faq.frontmatter.questions} />
->>>>>>> 6809f54 (feat: scaffold core site structure)
 </BaseLayout>
