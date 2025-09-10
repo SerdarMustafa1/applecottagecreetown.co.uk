@@ -10,6 +10,7 @@ import ContactFormIsland from '../components/ContactFormIsland.tsx';
 import FAQ from '../components/FAQ.astro';
 import MapEmbed from '../components/MapEmbed.astro';
 import DocumentList from '../components/DocumentList.astro';
+import Floorplans from '../components/Floorplans.astro';
 import site from '../../site.config';
 ---
 <BaseLayout title={home.frontmatter.title} description={home.frontmatter.description}>
@@ -19,6 +20,7 @@ import site from '../../site.config';
   </section>
   <HighlightCards items={highlights.frontmatter.items} />
   <PropertyDetails />
+  <Floorplans />
   <MapEmbed />
   <section id="contact" class="p-4 max-w-lg mx-auto">
     <h2 class="text-2xl font-semibold mb-4">Book a Viewing</h2>
