@@ -5,10 +5,16 @@ This repository contains the rebuilt Apple Cottage website using [Astro](https:/
 ## Development
 
 1. Install dependencies with `pnpm install`.
+<<<<<<< HEAD
 2. Copy `.env.example` to `.env` and set `PUBLIC_GOOGLE_MAPS_KEY`.
 3. Start a dev server with `pnpm dev`.
 4. Run tests with `pnpm test` and lint with `pnpm lint`.
 5. Create a production build with `pnpm build`.
+=======
+2. Start a dev server with `pnpm dev`.
+3. Run tests with `pnpm test` and lint with `pnpm lint`.
+4. Create a production build with `pnpm build`.
+>>>>>>> 293ac49 (chore: fix lint and test scripts)
 
 ## Content
 
