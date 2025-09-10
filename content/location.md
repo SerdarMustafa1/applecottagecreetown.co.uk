@@ -1,6 +1,9 @@
 ---
-title: Location & Amenities
+title: Location
 ---
-- Town centre: 10 minutes' walk
-- Train station: 5 minutes' drive
-- Primary school: 8 minutes' walk
+
+Apple Cottage is located in Creetown, Scotland, close to the Solway Firth and Galloway Forest Park.
+
+- Address: 1 Apple Cottage, Creetown, DG8 7JJ
+- Nearby: Shops, cafes, walking trails, beaches
+- Map: See interactive map below

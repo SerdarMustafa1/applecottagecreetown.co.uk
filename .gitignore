@@ -1,3 +1,4 @@
+.env
 # Local 360 sources and generated outputs
 360-source/
 dist/
