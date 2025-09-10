@@ -78,7 +78,7 @@ function ZoomablePlan({ plan }: { plan: Plan }) {
       if (lastSegment) {
         filename = lastSegment;
       }
-    } catch (e) {
+    } catch {
       // fallback to 'floorplan'
     }
     link.download = filename;
