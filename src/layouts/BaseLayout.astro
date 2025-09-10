@@ -3,15 +3,24 @@ import '../styles/globals.css';
 import Seo from '../components/Seo.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-const { title = 'Apple Cottage', description = 'Charming home in Creetown' } = Astro.props;
+import site from '../../site.config.ts';
+const { title = site.title, description = site.description } = Astro.props;
+const gaId = site.analyticsId;
 ---
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <Seo {title} {description} />
-    <script src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID" defer></script>
+      <Seo {title} {description} />
+      {gaId && (
+        <>
+          <script src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} defer></script>
+          <script is:inline>
+            {`window.dataLayer = window.dataLayer || [];\n             function gtag(){dataLayer.push(arguments);}\n             gtag('js', new Date());\n             gtag('config', '${gaId}');`}
+          </script>
+        </>
+      )}
   </head>
   <body class="min-h-screen antialiased flex flex-col">
     <Header />

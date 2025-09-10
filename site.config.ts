@@ -10,7 +10,8 @@ export const site = {
   price: '£500,000',
   bedrooms: 4,
   bathrooms: 2,
-  epc: 'B'
+  epc: 'B',
+  analyticsId: 'GA_MEASUREMENT_ID'
 };
 
 export default site;
