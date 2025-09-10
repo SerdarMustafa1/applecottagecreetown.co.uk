@@ -11,10 +11,9 @@ import ContactFormIsland from '../components/ContactFormIsland.tsx';
 import FAQ from '../components/FAQ.astro';
 import MapEmbed from '../components/MapEmbed.astro';
 import DocumentList from '../components/DocumentList.astro';
+import FloorplanViewerIsland from '../components/FloorplanViewerIsland.tsx';
+import PropertyDetails from '../components/PropertyDetails.astro';
 import site from '../../site.config';
-
-
-
 import interior1 from '../../locations/interior-1.jpg';
 import interior2 from '../../locations/interior-2.jpg';
 import interior3 from '../../locations/interior-3.jpg';
@@ -30,10 +29,13 @@ const images = [interior1, interior2, interior3, interior4, interior5];
 
   </section>
   <HighlightCards items={highlights.frontmatter.items} />
-  <section class="p-4 max-w-3xl mx-auto">
-    <GalleryIsland client:load />
+
+  <section id="floorplans" class="p-4">
+    <h2 class="text-2xl font-semibold mb-4">Floor Plans</h2>
+    <FloorplanViewerIsland client:load />
   </section>
-  <Floorplans />
+  <PropertyDetails />
+
   <MapEmbed />
   <section id="contact" class="p-4 max-w-lg mx-auto">
     <h2 class="text-2xl font-semibold mb-4">Book a Viewing</h2>
