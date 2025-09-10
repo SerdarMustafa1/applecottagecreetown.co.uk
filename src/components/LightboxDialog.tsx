@@ -1,9 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import type { ImageMetadata } from 'astro:assets';
+// eslint-disable-next-line import/no-unresolved
 import { Image } from 'astro:assets';
 
+// The lightbox dialog receives the same array of image sources
+// passed to the gallery. Each source can be a string or
+// ImageMetadata object.
 interface LightboxProps {
-  images: ImageMetadata[];
+  images: (string | ImageMetadata)[];
   index: number;
   open: boolean;
   onClose: () => void;
@@ -75,6 +79,8 @@ export default function LightboxDialog({
       onTouchEnd={handleTouchEnd}
     >
       <div
+        role="dialog"
+        aria-modal="true"
         className="relative max-w-[90%] max-h-[90%]"
         onClick={(e) => e.stopPropagation()}
       >
