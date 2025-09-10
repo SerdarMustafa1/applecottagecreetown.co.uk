@@ -1,0 +1,10 @@
+---
+import FloorplanViewerIsland from './FloorplanViewerIsland.tsx';
+import site from '../../site.config';
+
+const { floorplans = [] } = site;
+---
+<section id="floorplans" class="p-4 max-w-3xl mx-auto">
+  <h2 class="text-2xl font-semibold mb-4">Floor Plans</h2>
+  <FloorplanViewerIsland plans={floorplans} client:load />
+</section>

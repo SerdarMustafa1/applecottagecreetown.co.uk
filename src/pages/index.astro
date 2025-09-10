@@ -1,30 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import home from '../../content/home.md';
-<<<<<<< HEAD
-
-=======
->>>>>>> codex/rebuild-apple-cottage-website-with-astro
 import highlights from '../../content/highlights.md';
 import faq from '../../content/faq.md';
 import Hero from '../components/Hero.astro';
 import HighlightCards from '../components/HighlightCards.astro';
+import GalleryIsland from '../components/GalleryIsland.tsx';
+import Floorplans from '../components/Floorplans.astro';
 import ContactFormIsland from '../components/ContactFormIsland.tsx';
 import FAQ from '../components/FAQ.astro';
-<<<<<<< HEAD
-
-=======
-import MapEmbed from '../components/MapEmbed.astro';
-import DocumentList from '../components/DocumentList.astro';
-import site from '../../site.config';
----
->>>>>>> codex/rebuild-apple-cottage-website-with-astro
-<BaseLayout title={home.frontmatter.title} description={home.frontmatter.description}>
-  <Hero />
-  <section class="prose mx-auto p-4">
-    <home.Content />
-  </section>
-  <HighlightCards items={highlights.frontmatter.items} />
 import MapEmbed from '../components/MapEmbed.astro';
 import DocumentList from '../components/DocumentList.astro';
 import site from '../../site.config';
@@ -35,6 +19,10 @@ import site from '../../site.config';
     <home.Content />
   </section>
   <HighlightCards items={highlights.frontmatter.items} />
+  <section class="p-4 max-w-3xl mx-auto">
+    <GalleryIsland client:load />
+  </section>
+  <Floorplans />
   <MapEmbed />
   <section id="contact" class="p-4 max-w-lg mx-auto">
     <h2 class="text-2xl font-semibold mb-4">Book a Viewing</h2>
@@ -43,4 +31,3 @@ import site from '../../site.config';
   <FAQ items={faq.frontmatter.questions} />
   <DocumentList docs={site.docs} />
 </BaseLayout>
-  <DocumentList docs={site.docs} />
