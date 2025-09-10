@@ -30,7 +30,7 @@ module.exports = defineConfig({
   use: {
     baseURL: process.env.SITE_URL || 'http://localhost:8080',
     headless: true,
-    networkConditions: network,
+    contextOptions: { networkConditions: network },
   },
   projects,
 });
