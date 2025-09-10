@@ -1,31 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Navigation functionality
-  const navToggle = document.querySelector('.nav-toggle');
-  const navMenu = document.querySelector('.nav-menu');
-
-  if (navToggle && navMenu) {
-    navToggle.addEventListener('click', () => {
-      navToggle.classList.toggle('active');
-      navMenu.classList.toggle('active');
-    });
-
-    // Close mobile menu when clicking on a link
-    navMenu.addEventListener('click', (e) => {
-      if (e.target.tagName === 'A') {
-        navToggle.classList.remove('active');
-        navMenu.classList.remove('active');
-      }
-    });
-
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
-        navToggle.classList.remove('active');
-        navMenu.classList.remove('active');
-      }
-    });
-  }
-
   // Scroll to tours function
   window.scrollToTours = function() {
     const toursSection = document.getElementById('tours360') || document.querySelector('[href="#tours360"]');
@@ -178,22 +151,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const emailLinks = document.querySelectorAll('a[href^="mailto:"]');
   emailLinks.forEach(link => trackInteraction(link, 'email_clicked'));
 
-  const tourButtons = document.querySelectorAll('.tour-trigger, .btn-accent');
+  const tourButtons = document.querySelectorAll('.tour-trigger');
   tourButtons.forEach(btn => trackInteraction(btn, 'virtual_tour_clicked'));
-
-  // Navbar scroll effect
-  const navbar = document.querySelector('.navbar');
-  if (navbar) {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 100) {
-        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.15)';
-      } else {
-        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
-      }
-    }, { passive: true });
-  }
 
   // Existing modal functionality
   const modal = document.getElementById("homeReportModal");
