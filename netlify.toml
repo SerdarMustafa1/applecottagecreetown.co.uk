@@ -1,5 +1,5 @@
 [build]
-  command = "npx -y pnpm@10.13.1 install --frozen-lockfile && npx -y pnpm@10.13.1 build"
+  command = "npm install --no-audit --no-fund && npm run build"
   publish = "dist"
 
 [[headers]]
@@ -9,3 +9,5 @@
 
 [build.environment]
   NODE_VERSION = "22"
+  NETLIFY_USE_NPM = "true"
+  NPM_FLAGS = "--no-audit --no-fund"
