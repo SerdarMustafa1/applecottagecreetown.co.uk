@@ -7,6 +7,10 @@ test.describe('Core user flows', () => {
   test('navigation links lead to correct sections', async ({ page }) => {
     await page.addInitScript(() => localStorage.setItem('silktideCookieBanner_InitialChoice', '1'));
     await page.goto(SITE_URL);
+    // Basic a11y check on header/nav
+    const navA11y = await new AxeBuilder({ page }).include('header').analyze();
+    const navSerious = navA11y.violations.filter(v => ['critical', 'serious'].includes(v.impact));
+    expect(navSerious).toEqual([]);
     await page.getByRole('link', { name: 'Gallery' }).click();
     await expect(page.locator('#gallery')).toBeVisible();
     await page.getByRole('link', { name: 'Floor Plans' }).click();

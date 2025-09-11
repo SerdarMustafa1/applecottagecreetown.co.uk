@@ -15,9 +15,26 @@ This repository contains the rebuilt Apple Cottage website using [Astro](https:/
 
 Site copy is managed in the `content/` directory as Markdown files. Images and other static assets live in `public/`.
 
+Editing content:
+- `content/home.md`: Hero/intro prose and SEO frontmatter (title, description)
+- `content/highlights.md`: Key facts cards via frontmatter list
+- `content/property-details.md`: Main description using Tailwind Prose styles
+- `content/location.md`: Text shown next to the map
+- `content/faq.md`: FAQ entries via frontmatter list
+
+Site-wide settings:
+- `site.config.ts`: address, coordinates, contacts, price, EPC, documents, floorplans, analytics id, og image
+
+Assets:
+- Put images under `public/images/` and floorplans under `public/floorplans/` (keep names stable for CDN caching)
+- Documents (EPC/Home Report) under `public/docs/`
+
 ## Deployment
 
 The site is deployed on Netlify. The build command and caching headers are defined in `netlify.toml`.
 
 - Netlify uses Node 20 and runs `pnpm install --no-frozen-lockfile && pnpm build`.
 - After updating dependencies, regenerate and commit `pnpm-lock.yaml` locally, then switch CI back to frozen installs.
+
+Redirects & caching:
+- `netlify.toml` adds immutable caching for hashed assets. Add redirects here if you need to preserve old URLs.

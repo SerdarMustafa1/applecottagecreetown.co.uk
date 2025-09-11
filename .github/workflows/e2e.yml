@@ -18,11 +18,10 @@ jobs:
       - run: pnpm build
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium webkit
-      - name: Run Playwright tests on dist
-        working-directory: dist
+      - name: Serve and run Playwright tests
         env:
           SITE_URL: http://127.0.0.1:8080
         run: |
-          npx http-server -p 8080 -c-1 . &
+          npx http-server -p 8080 -c-1 dist &
           sleep 2
-          node ../tests/site-flows.e2e.spec.js || npx playwright test -c ../tests/playwright.config.js ../tests/site-flows.e2e.spec.js
+          npx playwright test -c tests/playwright.config.js tests/site-flows.e2e.spec.js
