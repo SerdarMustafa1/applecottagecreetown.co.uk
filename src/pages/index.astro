@@ -1,8 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import home from '../../content/home.md';
-import highlights from '../../content/highlights.md';
-import faq from '../../content/faq.md';
+import * as homeMd from '../../content/home.md';
+import * as highlightsMd from '../../content/highlights.md';
+import * as faqMd from '../../content/faq.md';
 import Hero from '../components/Hero.astro';
 import HighlightCards from '../components/HighlightCards.astro';
 import PropertyDetails from '../components/PropertyDetails.astro';
@@ -13,14 +13,16 @@ import DocumentList from '../components/DocumentList.astro';
 import Floorplans from '../components/Floorplans.astro';
 import Gallery from '../components/Gallery.astro';
 import site from '../../site.config';
+const pageTitle = homeMd?.frontmatter?.title ?? site.title;
+const pageDescription = homeMd?.frontmatter?.description ?? site.description;
 ---
-<BaseLayout title={home.frontmatter.title} description={home.frontmatter.description}>
+<BaseLayout title={pageTitle} description={pageDescription}>
   <Hero />
   <section class="prose mx-auto p-4">
-    <home.Content />
+    {homeMd?.Content && <homeMd.Content />}
   </section>
   <Gallery />
-  <HighlightCards items={highlights.frontmatter.items} />
+  <HighlightCards items={highlightsMd?.frontmatter?.items || []} />
   <PropertyDetails />
   <Floorplans />
   <MapEmbed />
@@ -28,6 +30,6 @@ import site from '../../site.config';
     <h2 class="text-2xl font-semibold mb-4">Book a Viewing</h2>
     <ContactFormIsland client:load />
   </section>
-  <FAQ items={faq.frontmatter.questions} />
+  <FAQ items={faqMd?.frontmatter?.questions || []} />
   <DocumentList docs={site.docs} />
 </BaseLayout>

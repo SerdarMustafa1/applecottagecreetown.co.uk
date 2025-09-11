@@ -1,6 +1,6 @@
 ---
 import site from '../../site.config';
-import location from '../../content/location.md';
+import * as locationMd from '../../content/location.md';
 
 const { coordinates, address } = site;
 const GOOGLE_MAPS_API_KEY = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY;
@@ -10,7 +10,7 @@ const mapSrc = GOOGLE_MAPS_API_KEY
 const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 ---
 <section id="location" class="py-8">
-  <h2 class="text-2xl font-bold mb-4">{location.frontmatter.title || 'Location & Amenities'}</h2>
+  <h2 class="text-2xl font-bold mb-4">{locationMd?.frontmatter?.title || 'Location & Amenities'}</h2>
   <div class="grid gap-6 md:grid-cols-2">
     <div>
       {mapSrc ? (
@@ -32,7 +32,7 @@ const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURICom
       </p>
     </div>
     <div class="prose mx-auto md:mx-0">
-      <location.Content />
+      {locationMd?.Content && <locationMd.Content />}
     </div>
   </div>
 </section>

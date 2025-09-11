@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import type { ImageMetadata } from 'astro:assets';
-// eslint-disable-next-line import/no-unresolved -- ESLint cannot resolve Astro's virtual modules
-import { Image } from 'astro:assets';
 import LightboxDialog from './LightboxDialog';
 
 // Accept an array of image sources which may be string paths or
@@ -33,7 +31,12 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
             className="focus:outline-none"
             aria-label={`Open image ${i + 1}`}
           >
-            <Image src={img} alt={`Gallery image ${i + 1}`} className="w-full h-full object-cover" />
+            <img
+              src={typeof img === 'string' ? img : (img as ImageMetadata).src}
+              alt={`Gallery image ${i + 1}`}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
           </button>
         ))}
       </div>

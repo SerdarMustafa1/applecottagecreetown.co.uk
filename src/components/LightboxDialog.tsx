@@ -1,7 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import type { ImageMetadata } from 'astro:assets';
-// eslint-disable-next-line import/no-unresolved -- ESLint cannot resolve Astro's virtual modules
-import { Image } from 'astro:assets';
 
 // The lightbox dialog receives the same array of image sources
 // passed to the gallery. Each source can be a string or
@@ -85,7 +83,12 @@ export default function LightboxDialog({
         className="relative max-w-[90%] max-h-[90%]"
         onClick={(e) => e.stopPropagation()}
       >
-        <Image src={images[index]} alt={`Image ${index + 1}`} className="max-h-[90vh] w-auto" />
+        <img
+          src={typeof images[index] === 'string' ? (images[index] as string) : (images[index] as ImageMetadata).src}
+          alt={`Image ${index + 1}`}
+          className="max-h-[90vh] w-auto"
+          loading="eager"
+        />
         <button
           ref={closeRef}
           aria-label="Close"
