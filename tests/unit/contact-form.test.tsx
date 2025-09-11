@@ -8,7 +8,7 @@ describe('ContactFormIsland', () => {
   it('renders form and has no a11y violations', async () => {
     const { container } = render(<ContactFormIsland />);
     expect(screen.getByLabelText(/name/i)).toBeTruthy();
-    const results = await axe.run(container, { rules: { 'color-contrast': { enabled: false } } });
+    const results = await axe(container, { rules: { 'color-contrast': { enabled: false } } });
     expect(results.violations).toHaveLength(0);
   });
 });
