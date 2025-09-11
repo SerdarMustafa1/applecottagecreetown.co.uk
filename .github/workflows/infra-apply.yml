@@ -1,0 +1,40 @@
+name: Terraform Apply (infra)
+
+on:
+  workflow_dispatch:
+    inputs:
+      auto_approve:
+        description: 'Auto-approve apply'
+        default: 'false'
+        required: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.5
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION || 'eu-west-1' }}
+      - name: Terraform Init
+        working-directory: infra
+        run: terraform init -input=false
+      - name: Terraform Apply
+        working-directory: infra
+        env:
+          TF_VAR_region: ${{ secrets.AWS_REGION || 'eu-west-1' }}
+        run: |
+          if [ "${{ github.event.inputs.auto_approve }}" = "true" ]; then
+            terraform apply -auto-approve -input=false
+          else
+            terraform apply -input=false
+          fi
+

@@ -7,6 +7,27 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/floorplans/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/panos/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/docs/*"
+  [headers.values]
+    # Docs may change; cache for a day
+    Cache-Control = "public, max-age=86400"
+
 [build.environment]
   NODE_VERSION = "22"
   NETLIFY_USE_NPM = "true"
