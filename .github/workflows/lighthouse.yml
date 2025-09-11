@@ -12,6 +12,6 @@ jobs:
         with:
           node-version: 20
       - run: corepack enable
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install
       - run: pnpm build
       - run: npx lighthouse-ci --config=lighthouse.config.js
