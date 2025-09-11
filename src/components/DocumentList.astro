@@ -1,0 +1,11 @@
+---
+const { docs = [] } = Astro.props;
+---
+<section id="documents" class="py-8">
+  <h2 class="text-2xl font-bold mb-4">Documents</h2>
+  <ul class="list-disc ml-4 space-y-2">
+    {docs.map(doc => (
+      <li><a href={doc.href} class="text-blue-600 underline">{doc.label}</a></li>
+    ))}
+  </ul>
+</section>

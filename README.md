@@ -1,9 +1,19 @@
-# applecottagecreetown.co.uk
+# Apple Cottage Website (Astro)
 
-Static website for Apple Cottage Creetown with 360° virtual tours.
+This repository contains the rebuilt Apple Cottage website using [Astro](https://astro.build) with Tailwind CSS and React islands.
 
-## Documentation
+## Development
 
-- [AWS IAM Setup](AWS-IAM-Setup.md) - Setting up IAM user for media uploads
-- [360 Media Upload](README-360.md) - Preparing and uploading 360° videos
-- [Infrastructure](infra/README.md) - Terraform setup for S3 and CloudFront
+1. Install dependencies with `pnpm install`.
+2. Copy `.env.example` to `.env` and set `PUBLIC_GOOGLE_MAPS_KEY`.
+3. Start a dev server with `pnpm dev`.
+4. Run tests with `pnpm test` and lint with `pnpm lint`.
+5. Create a production build with `pnpm build`.
+
+## Content
+
+Site copy is managed in the `content/` directory as Markdown files. Images and other static assets live in `public/`.
+
+## Deployment
+
+The site is deployed on Netlify. The build command and caching headers are defined in `netlify.toml`.

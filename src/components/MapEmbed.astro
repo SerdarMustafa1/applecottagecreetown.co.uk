@@ -1,0 +1,18 @@
+---
+import site from '../../site.config';
+import location from '../../content/location.md';
+const { coordinates, address } = site;
+const key = import.meta.env.PUBLIC_GOOGLE_MAPS_KEY;
+const mapSrc = key ? `https://maps.googleapis.com/maps/api/staticmap?center=${coordinates.lat},${coordinates.lng}&zoom=14&size=600x300&key=${key}` : null;
+const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+---
+<section id="location" class="py-8">
+  <h2 class="text-2xl font-bold mb-4">{location.frontmatter.title}</h2>
+  {mapSrc && <img src={mapSrc} alt={`Map showing ${address}`} class="mx-auto" />}
+  <p class="mt-2 text-center">
+    <a href={mapsHref} class="text-blue-600 underline">View on Google Maps</a>
+  </p>
+  <div class="prose mx-auto mt-4">
+    <location.Content />
+  </div>
+</section>
