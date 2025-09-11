@@ -8,12 +8,25 @@ export const site = {
     phone: '+44 1234 567890',
     email: 'info@applecottagecreetown.co.uk'
   },
+  hero: {
+    image: '/images/hero.jpg',
+    tagline: 'Character home with gardens near the Solway Firth',
+    ctaLabel: 'Book a Viewing'
+  },
   price: '£500,000',
   bedrooms: 4,
   bathrooms: 2,
   epc: 'B',
   ogImage: '/images/sample-1.svg',
   analyticsId: 'GA_MEASUREMENT_ID',
+  gallery: [
+    { src: '/images/sample-1.svg', alt: 'Front elevation' },
+    { src: '/images/sample-2.svg', alt: 'Lounge' },
+    { src: '/images/sample-3.svg', alt: 'Kitchen' },
+    { src: '/images/sample-4.svg', alt: 'Bedroom' },
+    { src: '/images/sample-5.svg', alt: 'Garden' },
+    { src: '/images/sample-6.svg', alt: 'View toward hills' }
+  ],
   floorplans: [
     { label: 'Ground Floor', src: '/floorplans/ground-floor.svg' },
     { label: 'First Floor', src: '/floorplans/first-floor.svg' },

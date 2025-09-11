@@ -16,6 +16,14 @@ import Panos from '../components/Panos.astro';
 import site from '../../site.config';
 const pageTitle = homeMd?.frontmatter?.title ?? site.title;
 const pageDescription = homeMd?.frontmatter?.description ?? site.description;
+const coreHighlights = [
+  { label: 'Guide Price', value: site.price },
+  { label: 'Bedrooms', value: String(site.bedrooms) },
+  { label: 'Bathrooms', value: String(site.bathrooms) },
+  { label: 'EPC Rating', value: site.epc }
+];
+const extraHighlights = highlightsMd?.frontmatter?.items || [];
+const highlightItems = [...coreHighlights, ...extraHighlights];
 ---
 <BaseLayout title={pageTitle} description={pageDescription}>
   <Hero />
@@ -23,7 +31,7 @@ const pageDescription = homeMd?.frontmatter?.description ?? site.description;
     {homeMd?.Content && <homeMd.Content />}
   </section>
   <Gallery />
-  <HighlightCards items={highlightsMd?.frontmatter?.items || []} />
+  <HighlightCards items={highlightItems} />
   <PropertyDetails />
   <Panos />
   <Floorplans />

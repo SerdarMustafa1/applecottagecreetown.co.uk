@@ -4,17 +4,16 @@ title: Property Details
 
 ## Apple Cottage, Creetown
 
-- 2 bedrooms
-- 1 bathroom
-- Conservatory
-- Kitchen
-- Lounge
-- Private garden
+- 4 bedrooms
+- 2 bathrooms
+- Spacious lounge and dining kitchen
+- Conservatory with garden outlook
+- Private, mature garden with seating areas
 - Off-street parking
 
 ### Features
 
-- Modern kitchen appliances
-- Double glazing
-- Central heating
-- 360° virtual tours available
+- Energy-efficient heating and double glazing (EPC B)
+- Modern fitted kitchen and appliances
+- High-speed broadband available
+- 360° virtual tours and floorplans available below

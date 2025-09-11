@@ -1,8 +1,21 @@
 ---
 import site from '../../site.config';
+const hero = site.hero || {};
 ---
-<section class="text-center py-16 bg-gray-50" id="hero">
-  <h1 class="text-3xl font-bold mb-4">{site.title}</h1>
-  <p class="mb-4">{site.description}</p>
-  <a href="#contact" class="inline-block bg-blue-600 text-white px-6 py-3 rounded">Book a Viewing</a>
+<section id="hero" class="relative">
+  {hero.image ? (
+    <img src={hero.image} alt="Apple Cottage hero" class="w-full h-[45vh] md:h-[60vh] object-cover" />
+  ) : (
+    <div class="w-full h-[40vh] bg-gray-100" />
+  )}
+  <div class="absolute inset-0 bg-black/30" aria-hidden="true"></div>
+  <div class="absolute inset-0 flex items-center justify-center">
+    <div class="text-center text-white px-4">
+      <h1 class="text-3xl md:text-4xl font-bold drop-shadow">{site.title}</h1>
+      <p class="mt-2 text-lg drop-shadow">{hero.tagline || site.description}</p>
+      <a href="#contact" class="mt-6 inline-block bg-blue-600 text-white px-6 py-3 rounded focus:outline-none focus-visible:ring focus-visible:ring-white/80">
+        {hero.ctaLabel || 'Book a Viewing'}
+      </a>
+    </div>
+  </div>
 </section>
