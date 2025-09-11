@@ -71,6 +71,9 @@ export default function ContactFormIsland() {
       >
         Send
       </button>
+      <p className="text-xs text-gray-600">
+        We’ll use your details only to respond to your enquiry about Apple Cottage and won’t share them with third parties.
+      </p>
       {submitted && (
         <div role="status" className="mt-2 text-green-700">Thank you for your message!</div>
       )}

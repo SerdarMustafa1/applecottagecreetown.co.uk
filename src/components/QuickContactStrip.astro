@@ -1,0 +1,27 @@
+---
+import site from '../../site.config';
+const phone = site.contact?.phone || '';
+const email = site.contact?.email || '';
+const portals = site.portals || {};
+function digits(s: string) { return s.replace(/\D/g, ''); }
+const telHref = phone ? `tel:${phone.replace(/\s/g, '')}` : null;
+const waHref = phone ? `https://wa.me/${digits(phone)}?text=${encodeURIComponent('Hello, I am interested in Apple Cottage in Creetown.')}` : null;
+const mailHref = email ? `mailto:${email}?subject=${encodeURIComponent('Apple Cottage viewing')}` : null;
+---
+<nav aria-label="Quick contact" class="w-full bg-white/90 backdrop-blur sticky top-0 z-40 border-b">
+  <div class="mx-auto max-w-7xl flex items-center justify-between gap-2 px-3 py-2 text-sm">
+    <div class="font-medium">Apple Cottage</div>
+    <div class="flex items-center gap-2">
+      {telHref && <a href={telHref} class="px-2 py-1 rounded border hover:bg-gray-50" aria-label={`Call ${phone}`}>Call</a>}
+      {waHref && <a href={waHref} target="_blank" rel="noopener" class="px-2 py-1 rounded border hover:bg-gray-50" aria-label="Chat on WhatsApp">WhatsApp</a>}
+      {mailHref && <a href={mailHref} class="px-2 py-1 rounded border hover:bg-gray-50" aria-label={`Email ${email}`}>Email</a>}
+      {portals?.purplebricks && (
+        <a href={portals.purplebricks} target="_blank" rel="noopener" class="px-2 py-1 rounded border hover:bg-gray-50" aria-label="View on Purplebricks">Purplebricks</a>
+      )}
+      {portals?.s1homes && (
+        <a href={portals.s1homes} target="_blank" rel="noopener" class="px-2 py-1 rounded border hover:bg-gray-50" aria-label="View on s1homes">s1homes</a>
+      )}
+    </div>
+  </div>
+</nav>
+
