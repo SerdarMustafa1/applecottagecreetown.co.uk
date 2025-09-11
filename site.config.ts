@@ -12,7 +12,7 @@ export const site = {
   bedrooms: 4,
   bathrooms: 2,
   epc: 'B',
-  ogImage: '/images/og-default.jpg',
+  ogImage: '/images/sample-1.svg',
   analyticsId: 'GA_MEASUREMENT_ID',
   floorplans: [
     { label: 'Ground Floor', src: '/floorplans/ground-floor.svg' },
