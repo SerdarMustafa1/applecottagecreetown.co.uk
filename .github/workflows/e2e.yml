@@ -13,8 +13,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npx -y pnpm@10.13.1 install --frozen-lockfile
-      - run: npx -y pnpm@10.13.1 build
+      - run: npm install --no-audit --no-fund
+      - run: npm run build
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium webkit
       - name: Serve and run Playwright tests
