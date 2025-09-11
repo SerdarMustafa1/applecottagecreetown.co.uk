@@ -25,7 +25,7 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
 
   return (
     <>
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2" role="list">
+      <div id="gallery-grid" className="gallery grid grid-cols-2 sm:grid-cols-3 gap-2" role="list">
         {images.map((img, i) => (
           <button
             key={i}

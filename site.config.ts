@@ -1,6 +1,7 @@
 export const site = {
   title: 'Apple Cottage',
   description: 'Charming home in Creetown',
+  siteUrl: 'https://applecottagecreetown.co.uk',
   address: 'Apple Cottage, Creetown, Scotland',
   coordinates: { lat: 54.9, lng: -4.4 },
   contact: {
@@ -11,10 +12,11 @@ export const site = {
   bedrooms: 4,
   bathrooms: 2,
   epc: 'B',
+  ogImage: '/images/og-default.jpg',
   analyticsId: 'GA_MEASUREMENT_ID',
   floorplans: [
-    { label: 'Ground Floor', src: '/floorplans/ground-floor.png' },
-    { label: 'First Floor', src: '/floorplans/first-floor.png' }
+    { label: 'Ground Floor', src: '/floorplans/ground-floor.svg' },
+    { label: 'First Floor', src: '/floorplans/first-floor.svg' }
   ],
   docs: [
     { label: 'EPC', href: '/docs/epc.pdf' },

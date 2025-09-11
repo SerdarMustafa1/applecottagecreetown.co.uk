@@ -1,0 +1,16 @@
+---
+import GalleryIsland from './GalleryIsland.tsx';
+---
+<section id="gallery" class="py-8">
+  <h2 class="text-2xl font-semibold mb-4 text-center">Photo Gallery</h2>
+  <div class="max-w-5xl mx-auto">
+    <GalleryIsland client:load images={[
+      '/images/sample-1.svg',
+      '/images/sample-2.svg',
+      '/images/sample-3.svg',
+      '/images/sample-4.svg',
+      '/images/sample-5.svg',
+      '/images/sample-6.svg'
+    ]} />
+  </div>
+</section>

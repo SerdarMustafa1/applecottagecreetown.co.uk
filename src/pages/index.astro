@@ -11,6 +11,7 @@ import FAQ from '../components/FAQ.astro';
 import MapEmbed from '../components/MapEmbed.astro';
 import DocumentList from '../components/DocumentList.astro';
 import Floorplans from '../components/Floorplans.astro';
+import Gallery from '../components/Gallery.astro';
 import site from '../../site.config';
 ---
 <BaseLayout title={home.frontmatter.title} description={home.frontmatter.description}>
@@ -18,6 +19,7 @@ import site from '../../site.config';
   <section class="prose mx-auto p-4">
     <home.Content />
   </section>
+  <Gallery />
   <HighlightCards items={highlights.frontmatter.items} />
   <PropertyDetails />
   <Floorplans />

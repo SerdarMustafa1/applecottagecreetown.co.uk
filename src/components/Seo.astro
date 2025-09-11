@@ -1,5 +1,45 @@
 ---
+import site from '../../site.config';
 const { title, description } = Astro.props;
+const url = Astro.url?.href || site.siteUrl || '';
+const image = site.ogImage || '/images/og-default.jpg';
 ---
 <title>{title}</title>
 <meta name="description" content={description} />
+<link rel="canonical" href={url} />
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={url} />
+<meta property="og:image" content={image} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+<script type="application/ld+json" is:inline>
+  {JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'RealEstateListing',
+    name: site.title,
+    description: site.description,
+    url,
+    offers: {
+      '@type': 'Offer',
+      price: (site.price || '').replace(/[^0-9.]/g, ''),
+      priceCurrency: 'GBP'
+    },
+    item: {
+      '@type': 'Residence',
+      address: site.address,
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: site.coordinates?.lat,
+        longitude: site.coordinates?.lng
+      },
+      floorSize: site.floorplans?.length
+        ? { '@type': 'QuantitativeValue', value: site.floorplans.length }
+        : undefined,
+      energyEfficiencyScale: site.epc || undefined
+    }
+  })}
+</script>

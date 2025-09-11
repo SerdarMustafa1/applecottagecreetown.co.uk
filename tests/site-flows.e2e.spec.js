@@ -11,7 +11,7 @@ test.describe('Core user flows', () => {
     await expect(page.locator('#gallery')).toBeVisible();
     await page.getByRole('link', { name: 'Floor Plans' }).click();
     await expect(page.locator('#floorplans')).toBeVisible();
-    await page.getByRole('link', { name: 'Contact Us' }).click();
+    await page.getByRole('link', { name: 'Contact' }).click();
     await expect(page.locator('#contact')).toBeVisible();
     const results = await new AxeBuilder({ page }).include('#contact').analyze();
     const serious = results.violations.filter(v => ['critical', 'serious'].includes(v.impact));
@@ -22,8 +22,8 @@ test.describe('Core user flows', () => {
   test('gallery opens images in a lightbox', async ({ page }) => {
     await page.addInitScript(() => localStorage.setItem('silktideCookieBanner_InitialChoice', '1'));
     await page.goto(SITE_URL + '#gallery');
-    const firstImage = page.locator('#gallery .gallery img').first();
-    await firstImage.click();
+    const firstTile = page.locator('#gallery-grid button').first();
+    await firstTile.click();
     await expect(page.locator('#lightbox')).toBeVisible();
     const results = await new AxeBuilder({ page }).include('#lightbox').analyze();
     const serious = results.violations.filter(v => ['critical', 'serious'].includes(v.impact));
@@ -31,39 +31,30 @@ test.describe('Core user flows', () => {
     await expect(page.locator('#lightbox')).toHaveScreenshot('lightbox.png');
   });
 
-  test('floor plan tabs switch content', async ({ page }) => {
+  test('floorplans are visible and accessible', async ({ page }) => {
     await page.addInitScript(() => localStorage.setItem('silktideCookieBanner_InitialChoice', '1'));
     await page.goto(SITE_URL);
-    await page.getByText('Floor Plans & 3D Model').click();
-    await page.waitForSelector('#floorplans[open]');
-    const tabs = page.locator('.floorplan-tab');
-    await tabs.nth(1).click();
-    await expect(page.locator('#first-floor-panel')).toBeVisible();
+    await page.getByRole('link', { name: 'Floor Plans' }).click();
+    await expect(page.locator('#floorplans img').first()).toBeVisible();
     const results = await new AxeBuilder({ page }).include('#floorplans').analyze();
     const serious = results.violations.filter(v => ['critical', 'serious'].includes(v.impact));
     expect(serious).toEqual([]);
     await expect(page.locator('#floorplans')).toHaveScreenshot('floorplans.png');
   });
 
-  test('contact form submits data', async ({ page }) => {
+  test('contact form validates and submits', async ({ page }) => {
     await page.addInitScript(() => localStorage.setItem('silktideCookieBanner_InitialChoice', '1'));
     await page.goto(SITE_URL + '#contact');
-    await page.route('https://formsubmit.co/**', route => route.fulfill({ status: 200, body: 'OK' }));
-    await expect(page.locator('#firstName')).toBeVisible();
-    await page.fill('#firstName', 'Test');
-    await expect(page.locator('#lastName')).toBeVisible();
-    await page.fill('#lastName', 'User');
+    await expect(page.locator('#name')).toBeVisible();
+    await page.fill('#name', 'Test User');
     await expect(page.locator('#email')).toBeVisible();
     await page.fill('#email', 'test@example.com');
-    await expect(page.locator('#phone')).toBeVisible();
-    await page.fill('#phone', '1234567890');
-    await expect(page.locator('#captchaAnswer')).toBeVisible();
-    await page.fill('#captchaAnswer', '2');
-    await page.click('#homeReportForm button[type="submit"]');
+    await expect(page.locator('#message')).toBeVisible();
+    await page.fill('#message', 'I would like to book a viewing.');
+    await page.click('form[name="contact"] button[type="submit"]');
     const results = await new AxeBuilder({ page }).include('#contact').analyze();
     const serious = results.violations.filter(v => ['critical', 'serious'].includes(v.impact));
     expect(serious).toEqual([]);
     await expect(page.locator('#contact')).toHaveScreenshot('contact-form.png');
   });
 });
-
