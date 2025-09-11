@@ -16,7 +16,16 @@ export const site = {
   analyticsId: 'GA_MEASUREMENT_ID',
   floorplans: [
     { label: 'Ground Floor', src: '/floorplans/ground-floor.svg' },
-    { label: 'First Floor', src: '/floorplans/first-floor.svg' }
+    { label: 'First Floor', src: '/floorplans/first-floor.svg' },
+    { label: 'Annex Ground', src: '/floorplans/annex-ground.svg' },
+    { label: 'Annex First', src: '/floorplans/annex-first.svg' }
+  ],
+  floorplans3d: [
+    // { label: 'Main 3D Overview', src: '/floorplans/3d-overview.png' }
+  ],
+  panos: [
+    // { label: 'Lounge', src: '/panos/lounge-360.jpg', preview: '/images/lounge-thumb.jpg' },
+    // { label: 'Kitchen', src: '/panos/kitchen-360.jpg' }
   ],
   docs: [
     { label: 'EPC', href: '/docs/epc.pdf' },

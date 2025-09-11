@@ -28,6 +28,18 @@ Site-wide settings:
 Assets:
 - Put images under `public/images/` and floorplans under `public/floorplans/` (keep names stable for CDN caching)
 - Documents (EPC/Home Report) under `public/docs/`
+- 360° panoramas (Insta360 X5 exports) under `public/panos/` as equirectangular JPG/PNG. Configure labels and paths in `site.config.ts` under `panos`.
+
+### Media structure (suggested)
+- `public/images/` — listing photos (JPG/AVIF/WebP variants optional)
+- `public/panos/` — `room-360.jpg` equirectangular (6000×3000 typical)
+- `public/floorplans/` — `ground-floor.svg`, `first-floor.svg`, `annex-ground.svg`, `annex-first.svg`, optionally `3d-*.png`
+- `public/docs/` — `epc.pdf`, `home-report.pdf`
+
+Update `site.config.ts`:
+- `floorplans`: 2D plans (images)
+- `floorplans3d`: optional 3D renders (images/PDFs)
+- `panos`: list of `{ label, src, preview? }`
 
 ## Deployment
 
