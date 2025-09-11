@@ -1,5 +1,5 @@
 [build]
-  command = "pnpm install --no-frozen-lockfile && pnpm build"
+  command = "npx -y pnpm@10.13.1 install --frozen-lockfile && npx -y pnpm@10.13.1 build"
   publish = "dist"
 
 [[headers]]
