@@ -26,8 +26,8 @@ Site-wide settings:
 - `site.config.ts`: address, coordinates, contacts, price, EPC, documents, floorplans, analytics id, og image
 
 Assets:
-- Preferred: upload original media to your S3 bucket and serve via CloudFront (existing CDN). Set `PUBLIC_MEDIA_BASE_URL` in Netlify env to that CloudFront domain. All media paths in `site.config.ts` will be prefixed automatically at build time.
-- Local dev: You can also drop files under `public/` (e.g., `public/images`, `public/floorplans`, `public/panos`, `public/docs`). If `PUBLIC_MEDIA_BASE_URL` is set, the paths will resolve to the CDN in production.
+- Preferred: upload original media to your S3 bucket and serve via CloudFront (existing CDN). Set `MEDIA_BASE_URL` in Netlify env to that CloudFront domain. All media paths in `site.config.ts` will be prefixed automatically at build time.
+- Local dev: You can also drop files under `public/` (e.g., `public/images`, `public/floorplans`, `public/panos`, `public/docs`). If `MEDIA_BASE_URL` is set, the paths will resolve to the CDN in production.
 - 360° panoramas (Insta360 X5 exports) under `public/panos/` as equirectangular JPG/PNG. Configure labels and paths in `site.config.ts` under `panos`.
 
 ### Media structure (suggested)
@@ -44,7 +44,7 @@ Update `site.config.ts`:
 CDN/S3 workflow:
 - Upload media to your existing S3 bucket as before (keys matching the `public/` structure: `images/...`, `floorplans/...`, `panos/...`, `docs/...`).
 - Ensure CloudFront serves the bucket content.
-- In Netlify, set `PUBLIC_MEDIA_BASE_URL` to the CloudFront domain (e.g., `https://d123.cloudfront.net`). The site will render absolute CDN URLs without code changes.
+- In Netlify, set `MEDIA_BASE_URL` to the CloudFront domain (e.g., `https://d123.cloudfront.net`). The site will render absolute CDN URLs without code changes.
 
 ## Deployment
 

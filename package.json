@@ -30,7 +30,7 @@
     "@tailwindcss/typography": "^0.5.10",
     "@testing-library/dom": "^9.3.3",
     "@testing-library/react": "^14.1.2",
-  "@typescript-eslint/parser": "^8.43.0",
+    "@typescript-eslint/parser": "^8.43.0",
     "autoprefixer": "^10.4.14",
     "axe-core": "^4.8.3",
     "eslint": "^9.34.0",
@@ -43,5 +43,6 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^5.0.0",
     "vitest": "^1.6.0"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

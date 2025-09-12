@@ -1,4 +1,4 @@
-const MEDIA_BASE = import.meta.env.PUBLIC_MEDIA_BASE_URL || '';
+const MEDIA_BASE = import.meta.env.MEDIA_BASE_URL || '';
 function media(path: string) {
   if (!path) return path;
   if (/^https?:\/\//i.test(path)) return path;
