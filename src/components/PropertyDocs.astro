@@ -7,21 +7,24 @@ const plotImg = site?.docs?.find?.((d) => /plot/i.test(d.label))?.href || undefi
   <h2 class="text-2xl font-semibold mb-4">Plans & Documents</h2>
   <div class="grid gap-6 md:grid-cols-2">
     {epcImg && (
-      <figure class="border rounded overflow-hidden">
+      <figure class="border rounded overflow-hidden bg-white">
         <a href={epcImg} target="_blank" rel="noopener">
-          <img src={epcImg} alt="EPC energy rating chart" loading="lazy" class="w-full h-auto" />
+          <div class="relative" style="padding-top: 75%">
+            <img src={epcImg} alt="EPC energy rating chart" loading="lazy" class="absolute inset-0 w-full h-full object-contain bg-white" />
+          </div>
         </a>
         <figcaption class="p-2 text-sm text-gray-600">Energy Performance Certificate (EPC)</figcaption>
       </figure>
     )}
     {plotImg && (
-      <figure class="border rounded overflow-hidden">
+      <figure class="border rounded overflow-hidden bg-white">
         <a href={plotImg} target="_blank" rel="noopener">
-          <img src={plotImg} alt="Plot size plan" loading="lazy" class="w-full h-auto" />
+          <div class="relative" style="padding-top: 75%">
+            <img src={plotImg} alt="Plot size plan" loading="lazy" class="absolute inset-0 w-full h-full object-contain bg-white" />
+          </div>
         </a>
         <figcaption class="p-2 text-sm text-gray-600">Plot plan and approximate size</figcaption>
       </figure>
     )}
   </div>
 </section>
-

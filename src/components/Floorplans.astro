@@ -2,9 +2,35 @@
 import FloorplanViewerIsland from './FloorplanViewerIsland.tsx';
 import site from '../../site.config';
 
-const { floorplans = [] } = site;
+const { floorplans = [], floorplans3d = [] } = site;
 ---
-<section id="floorplans" class="p-4 max-w-3xl mx-auto">
+<section id="floorplans" class="p-4 max-w-5xl mx-auto">
   <h2 class="text-2xl font-semibold mb-4">Floor Plans</h2>
-  <FloorplanViewerIsland plans={floorplans} client:load />
+  <div class="grid gap-8 md:grid-cols-2">
+    <div>
+      <h3 class="text-lg font-semibold mb-2">2D Plans</h3>
+      <FloorplanViewerIsland plans={floorplans} client:load />
+    </div>
+
+    {floorplans3d && floorplans3d.length > 0 && (
+      <div>
+        <h3 class="text-lg font-semibold mb-2">3D Overview</h3>
+        <div class="grid grid-cols-1 gap-4">
+          {floorplans3d.map((plan) => (
+            <figure class="border rounded overflow-hidden bg-white" aria-label={`3D plan ${plan.label}`}>
+              <div class="relative" style="padding-top: 75%">
+                <img
+                  src={plan.src}
+                  alt={plan.label || '3D floor plan'}
+                  class="absolute inset-0 w-full h-full object-contain bg-white"
+                  loading="lazy"
+                />
+              </div>
+              {plan.label && <figcaption class="p-2 text-sm text-gray-600">{plan.label}</figcaption>}
+            </figure>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
 </section>
