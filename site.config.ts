@@ -140,7 +140,7 @@ export const site = {
     kitchen: [
       { src: media('/images/interior/interior-room-0DC5EADA.jpeg'), alt: 'Kitchen main view', caption: 'Modern kitchen with ample storage' },
       { src: media('/images/interior/interior-room-32A352BB.jpeg'), alt: 'Kitchen angle 2', caption: 'Kitchen workspace and appliances' },
-      { src: media('/images/interior/interior-detail-09FEBBA1.jpeg'), alt: 'Kitchen detail', caption: 'Quality kitchen fittings' }
+      { src: media('/images/interior/interior-detail-3E745FF3.jpeg'), alt: 'Kitchen detail', caption: 'Quality kitchen fittings' }
     ],
     livingAreas: [
       { src: media('/images/interior/interior-room-3B60CBFF.jpeg'), alt: 'Living area main', caption: 'Spacious main living area' },
@@ -152,7 +152,7 @@ export const site = {
       { src: media('/images/interior/interior-room-6D088E35.jpeg'), alt: 'Bedroom main view', caption: 'Bright and airy bedroom' },
       { src: media('/images/interior/interior-room-800F4A11.jpeg'), alt: 'Bedroom angle 2', caption: 'Bedroom with fitted storage' },
       { src: media('/images/interior/interior-room-AAA96C60.jpeg'), alt: 'Master bedroom', caption: 'Spacious master bedroom' },
-      { src: media('/images/interior/interior-detail-145055FF.jpeg'), alt: 'Bedroom detail', caption: 'Quality bedroom fittings' }
+      { src: media('/images/interior/interior-detail-1B21C73B.jpeg'), alt: 'Bedroom detail', caption: 'Quality bedroom fittings' }
     ],
     bathroom: [
       { src: media('/images/interior/interior-room-B4EF8A08.jpeg'), alt: 'Bathroom main', caption: 'Modern family bathroom' },
