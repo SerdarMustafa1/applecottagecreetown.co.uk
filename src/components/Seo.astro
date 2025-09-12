@@ -16,8 +16,9 @@ const image = site.ogImage || '/images/og-default.jpg';
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={image} />
-<script type="application/ld+json" is:inline>
-  {JSON.stringify({
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'RealEstateListing',
     name: site.title,
@@ -42,4 +43,4 @@ const image = site.ogImage || '/images/og-default.jpg';
       energyEfficiencyScale: site.epc || undefined
     }
   })}
-</script>
+/> 

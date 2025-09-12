@@ -4,7 +4,7 @@ title: Property Details
 
 ## Apple Cottage, Creetown
 
-- 4 bedrooms
+- 3 bedrooms
 - 2 bathrooms
 - Spacious lounge and dining kitchen
 - Conservatory with garden outlook

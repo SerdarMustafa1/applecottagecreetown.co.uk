@@ -75,54 +75,54 @@ import site from '../../site.config';
 </section>
 
 <script>
-  const tours = window.site?.virtual360Tours || [];
-  
-  function openVirtualTour(index) {
+  // Expose functions on window so onclick handlers can find them in prod
+  window.openVirtualTour = function(index) {
+    const tours = (window.siteConfig && window.siteConfig.virtual360Tours) || [];
     const tour = tours[index];
     if (!tour) return;
-    
+
     const modal = document.getElementById('virtual-tour-modal');
     const video = document.getElementById('virtual-tour-video');
     const mp4Source = document.getElementById('virtual-tour-mp4');
     const webmSource = document.getElementById('virtual-tour-webm');
     const title = document.getElementById('virtual-tour-title');
     const description = document.getElementById('virtual-tour-description');
-    
+
     // Set video sources
     mp4Source.src = tour.videoMp4;
     webmSource.src = tour.videoWebm;
     video.poster = tour.poster;
-    
+
     // Set title and description
     title.textContent = tour.label;
     description.textContent = tour.description;
-    
+
     // Load and show modal
     video.load();
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
-  }
-  
-  function closeVirtualTour() {
+  };
+
+  window.closeVirtualTour = function() {
     const modal = document.getElementById('virtual-tour-modal');
     const video = document.getElementById('virtual-tour-video');
-    
+
     video.pause();
     modal.classList.add('hidden');
     document.body.style.overflow = 'auto';
-  }
+  };
   
   // Close on escape key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      closeVirtualTour();
+      window.closeVirtualTour();
     }
   });
   
   // Close on backdrop click
   document.getElementById('virtual-tour-modal')?.addEventListener('click', (e) => {
     if (e.target === e.currentTarget) {
-      closeVirtualTour();
+      window.closeVirtualTour();
     }
   });
   

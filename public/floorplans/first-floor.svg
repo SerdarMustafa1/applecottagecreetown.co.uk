@@ -2,5 +2,5 @@
   <rect width="1000" height="700" fill="#f3f4f6"/>
   <rect x="120" y="160" width="300" height="220" fill="#d1d5db" stroke="#9ca3af"/>
   <rect x="470" y="180" width="380" height="260" fill="#d1d5db" stroke="#9ca3af"/>
-  <text x="50%" y="90%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="28" fill="#374151">First Floor Plan (placeholder)</text>
+  <text x="50%" y="90%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="28" fill="#374151">First Floor Plan</text>
 </svg>

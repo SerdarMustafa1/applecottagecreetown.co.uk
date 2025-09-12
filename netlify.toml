@@ -32,3 +32,5 @@
   NODE_VERSION = "22"
   NETLIFY_USE_NPM = "true"
   NPM_FLAGS = "--no-audit --no-fund"
+  # Ensure prod uses the same media base as local/dev
+  MEDIA_BASE_URL = "https://d1t6lpjdsu4646.cloudfront.net"

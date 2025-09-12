@@ -2,6 +2,8 @@ const MEDIA_BASE = import.meta.env.MEDIA_BASE_URL || '';
 function media(path: string) {
   if (!path) return path;
   if (/^https?:\/\//i.test(path)) return path;
+  // Keep certain assets served locally from Netlify/public
+  if (path.startsWith('/floorplans/') || path.startsWith('/docs/')) return path;
   const base = MEDIA_BASE ? MEDIA_BASE.replace(/\/$/, '') : '';
   const p = path.startsWith('/') ? path.slice(1) : path;
   return base ? `${base}/${p}` : path;

@@ -55,3 +55,16 @@ The site is deployed on Netlify. The build command and caching headers are defin
 
 Redirects & caching:
 - `netlify.toml` adds immutable caching for hashed assets. Add redirects here if you need to preserve old URLs.
+
+### Netlify environment
+- Set `MEDIA_BASE_URL` to your CloudFront domain (e.g. `https://d1t6lpjdsu4646.cloudfront.net`) so production matches local/dev asset paths.
+- Optionally set `PUBLIC_GOOGLE_MAPS_API_KEY` for the static map.
+- Analytics: set `analyticsId` in `site.config.ts` to enable GA, or leave undefined to disable.
+
+### Optional: Build hook and badge
+- Create a Netlify Build Hook in your site settings; store its URL as `NETLIFY_BUILD_HOOK` in `.env.local`.
+- Trigger a manual deploy with the helper script below.
+
+```bash
+bash scripts/trigger-netlify-build.sh
+```
