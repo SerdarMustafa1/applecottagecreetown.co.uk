@@ -17,6 +17,20 @@ assets/videos/interior/.DS_Store
 node_modules/
 package-lock.json
 
+# Ignore heavy public media; use CDN via PUBLIC_MEDIA_BASE_URL
+public/images/**/*.jpg
+public/images/**/*.jpeg
+public/images/**/*.png
+public/images/**/*.webp
+public/images/**/*.avif
+public/panos/**
+public/floorplans/**/*.jpg
+public/floorplans/**/*.jpeg
+public/floorplans/**/*.png
+public/docs/**/*.pdf
+!public/**/*.svg
+!public/**/.gitkeep
+
 assets/images/
 assets/videos/
 
