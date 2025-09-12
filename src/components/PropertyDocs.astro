@@ -1,0 +1,27 @@
+---
+import site from '../../site.config';
+const epcImg = site?.docs?.find?.((d) => /epc/i.test(d.label))?.href || undefined;
+const plotImg = site?.docs?.find?.((d) => /plot/i.test(d.label))?.href || undefined;
+---
+<section id="plans-and-docs" class="py-8">
+  <h2 class="text-2xl font-semibold mb-4">Plans & Documents</h2>
+  <div class="grid gap-6 md:grid-cols-2">
+    {epcImg && (
+      <figure class="border rounded overflow-hidden">
+        <a href={epcImg} target="_blank" rel="noopener">
+          <img src={epcImg} alt="EPC energy rating chart" loading="lazy" class="w-full h-auto" />
+        </a>
+        <figcaption class="p-2 text-sm text-gray-600">Energy Performance Certificate (EPC)</figcaption>
+      </figure>
+    )}
+    {plotImg && (
+      <figure class="border rounded overflow-hidden">
+        <a href={plotImg} target="_blank" rel="noopener">
+          <img src={plotImg} alt="Plot size plan" loading="lazy" class="w-full h-auto" />
+        </a>
+        <figcaption class="p-2 text-sm text-gray-600">Plot plan and approximate size</figcaption>
+      </figure>
+    )}
+  </div>
+</section>
+

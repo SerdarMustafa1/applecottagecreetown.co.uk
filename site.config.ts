@@ -35,7 +35,7 @@ export const site = {
   bedrooms: 3,
   bathrooms: 2,
   epc: 'B',
-  ogImage: media('/images/sample-1.svg'),
+  ogImage: media('/images/new/img_0384-1200.jpg'),
   analyticsId: undefined, // Set to your Google Analytics ID when ready
   gallery: [
     // Current optimized images
@@ -177,7 +177,8 @@ export const site = {
     s1homes: 'https://s1homes.com/property-for-sale/Detached/20250905090829948'
   },
   docs: [
-    { label: 'EPC', href: media('/docs/epc.pdf') },
+    { label: 'EPC', href: media('/images/misc/epc-graph.png') },
+    { label: 'Plot Plan', href: media('/docs/plot.png') },
     { label: 'Home Report', href: media('/docs/home-report.pdf') }
   ]
 };
