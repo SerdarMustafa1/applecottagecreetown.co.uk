@@ -18,7 +18,8 @@ export const site = {
     email: 'info@applecottagecreetown.co.uk'
   },
   hero: {
-    image: media('/images/hero.jpg'),
+    image: media('/images/new/img_0384-1200.jpg'),
+    imageWebp: media('/images/new/img_0384-1200.webp'),
     tagline: 'Energy‑smart three‑bed home with annex, EV charging & landscaped gardens',
     ctaLabel: 'Book a Viewing',
     bookUrl: 'https://tidycal.com/sidmustafa/apple-cottage-viewing'
@@ -30,12 +31,13 @@ export const site = {
   ogImage: media('/images/sample-1.svg'),
   analyticsId: 'GA_MEASUREMENT_ID',
   gallery: [
-    { src: media('/images/sample-1.svg'), alt: 'Front elevation', caption: 'Front elevation' },
-    { src: media('/images/sample-2.svg'), alt: 'Lounge', caption: 'Lounge' },
-    { src: media('/images/sample-3.svg'), alt: 'Kitchen', caption: 'Kitchen' },
-    { src: media('/images/sample-4.svg'), alt: 'Bedroom', caption: 'Bedroom' },
-    { src: media('/images/sample-5.svg'), alt: 'Garden', caption: 'Garden' },
-    { src: media('/images/sample-6.svg'), alt: 'View toward hills', caption: 'View toward hills' }
+    { src: media('/images/new/garden-centre-1200.jpg'), srcWebp: media('/images/new/garden-centre-1200.webp'), alt: 'Garden centre view', caption: 'Garden centre view' },
+    { src: media('/images/new/garden-corner-1200.jpg'), srcWebp: media('/images/new/garden-corner-1200.webp'), alt: 'Garden corner area', caption: 'Garden corner area' },
+    { src: media('/images/new/img_0384-1200.jpg'), srcWebp: media('/images/new/img_0384-1200.webp'), alt: 'Property exterior', caption: 'Property exterior' },
+    { src: media('/images/new/street-cairnsmore-1200.jpg'), srcWebp: media('/images/new/street-cairnsmore-1200.webp'), alt: 'Street view towards Cairnsmore', caption: 'Street view towards Cairnsmore' },
+    { src: media('/images/new/street-left-1200.jpg'), srcWebp: media('/images/new/street-left-1200.webp'), alt: 'Street view from left', caption: 'Street view from left' },
+    { src: media('/images/new/view-front-bedroom-1200.jpg'), srcWebp: media('/images/new/view-front-bedroom-1200.webp'), alt: 'View from front bedroom', caption: 'View from front bedroom' },
+    { src: media('/images/new/view-hallway-1200.jpg'), srcWebp: media('/images/new/view-hallway-1200.webp'), alt: 'View from hallway', caption: 'View from hallway' }
   ],
   floorplans: [
     { label: 'Ground Floor', src: media('/floorplans/ground-floor.svg') },
@@ -47,8 +49,12 @@ export const site = {
     // { label: 'Main 3D Overview', src: media('/floorplans/3d-overview.png') }
   ],
   panos: [
-    // { label: 'Lounge', src: media('/panos/lounge-360.jpg'), preview: media('/images/lounge-thumb.jpg') },
-    // { label: 'Kitchen', src: media('/panos/kitchen-360.jpg') }
+    { label: 'Back Bedroom', src: media('/images/panos/back-bedroom-pano.jpg'), srcWebp: media('/images/panos/back-bedroom-pano.webp'), preview: media('/images/panos/back-bedroom-pano.jpg') },
+    { label: 'Bathroom', src: media('/images/panos/bathroom-pano.jpg'), srcWebp: media('/images/panos/bathroom-pano.webp'), preview: media('/images/panos/bathroom-pano.jpg') },
+    { label: 'Front Bedroom', src: media('/images/panos/front-bedroom-pano.jpg'), srcWebp: media('/images/panos/front-bedroom-pano.webp'), preview: media('/images/panos/front-bedroom-pano.jpg') },
+    { label: 'Hallway', src: media('/images/panos/hallway-pano.jpg'), srcWebp: media('/images/panos/hallway-pano.webp'), preview: media('/images/panos/hallway-pano.jpg') },
+    { label: 'Lounge', src: media('/images/panos/lounge-pano.jpg'), srcWebp: media('/images/panos/lounge-pano.webp'), preview: media('/images/panos/lounge-pano.jpg') },
+    { label: 'Entrance Steps', src: media('/images/panos/steps-pano.jpg'), srcWebp: media('/images/panos/steps-pano.webp'), preview: media('/images/panos/steps-pano.jpg') }
   ],
   portals: {
     purplebricks: 'https://www.purplebricks.co.uk/property-for-sale/3-bedroom-detached-house-newton-stewart-1964511',

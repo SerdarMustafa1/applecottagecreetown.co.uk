@@ -1,10 +1,13 @@
 import React, { useEffect, useRef } from 'react';
-import type { ImageMetadata } from 'astro:assets';
 
 // The lightbox dialog receives the same array of image sources
-// passed to the gallery. Each source can be a string or
-// ImageMetadata object.
-type GalleryItem = { src: string | ImageMetadata; alt?: string; caption?: string };
+// passed to the gallery. Each source can be a string with optional WebP variant.
+type GalleryItem = { 
+  src: string; 
+  srcWebp?: string; 
+  alt?: string; 
+  caption?: string; 
+};
 interface LightboxProps {
   images: GalleryItem[];
   index: number;
@@ -84,12 +87,24 @@ export default function LightboxDialog({
         className="relative max-w-[90%] max-h-[90%]"
         onClick={(e) => e.stopPropagation()}
       >
-        <img
-          src={typeof images[index].src === 'string' ? (images[index].src as string) : (images[index].src as ImageMetadata).src}
-          alt={images[index].alt || `Image ${index + 1}`}
-          className="max-h-[90vh] w-auto"
-          loading="eager"
-        />
+        {images[index].srcWebp ? (
+          <picture>
+            <source srcSet={images[index].srcWebp} type="image/webp" />
+            <img
+              src={images[index].src}
+              alt={images[index].alt || `Image ${index + 1}`}
+              className="max-h-[90vh] w-auto"
+              loading="eager"
+            />
+          </picture>
+        ) : (
+          <img
+            src={images[index].src}
+            alt={images[index].alt || `Image ${index + 1}`}
+            className="max-h-[90vh] w-auto"
+            loading="eager"
+          />
+        )}
         {images[index].caption && (
           <div className="mt-2 text-center text-sm text-white/90">{images[index].caption}</div>
         )}

@@ -1,4 +1,4 @@
-# S3 Hybrid Media Cleanup Report - Fri Sep 12 10:37:05 BST 2025
+# S3 Hybrid Media Cleanup Report - Fri Sep 12 10:38:50 BST 2025
 
 ## Strategy: Progressive Enhancement
 - Keep JPG + WebP for property photos (best of both worlds)

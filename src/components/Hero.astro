@@ -4,7 +4,14 @@ const hero = site.hero || {};
 ---
 <section id="hero" class="relative">
   {hero.image ? (
-    <img src={hero.image} alt="Apple Cottage hero" class="w-full h-[45vh] md:h-[60vh] object-cover" />
+    hero.imageWebp ? (
+      <picture>
+        <source srcset={hero.imageWebp} type="image/webp" />
+        <img src={hero.image} alt="Apple Cottage hero" class="w-full h-[45vh] md:h-[60vh] object-cover" />
+      </picture>
+    ) : (
+      <img src={hero.image} alt="Apple Cottage hero" class="w-full h-[45vh] md:h-[60vh] object-cover" />
+    )
   ) : (
     <div class="w-full h-[40vh] bg-gray-100" />
   )}

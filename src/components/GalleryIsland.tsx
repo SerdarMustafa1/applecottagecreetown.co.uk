@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import type { ImageMetadata } from 'astro:assets';
 import LightboxDialog from './LightboxDialog';
 
 // Accept an array of image sources which may be string paths or
 // ImageMetadata objects returned from Astro's asset pipeline.
-type GalleryItem = { src: string | ImageMetadata; alt?: string; caption?: string };
+type GalleryItem = { 
+  src: string; 
+  srcWebp?: string; // WebP version for progressive enhancement
+  alt?: string; 
+  caption?: string; 
+};
 interface GalleryIslandProps { images: GalleryItem[]; }
 
 export default function GalleryIsland({ images }: GalleryIslandProps) {
@@ -24,7 +28,7 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
     <>
       <div id="gallery-grid" className="gallery grid grid-cols-2 sm:grid-cols-3 gap-2" role="list">
         {images.map((item, i) => {
-          const src = typeof item.src === 'string' ? item.src : (item.src as ImageMetadata).src;
+          const src = item.src;
           const alt = item.alt || `Gallery image ${i + 1}`;
           return (
             <figure key={i} className="flex flex-col" role="listitem">
@@ -33,7 +37,14 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
                 className="focus:outline-none"
                 aria-label={`Open image ${i + 1}`}
               >
-                <img src={src} alt={alt} className="w-full h-full object-cover" loading="lazy" />
+                {item.srcWebp ? (
+                  <picture>
+                    <source srcSet={item.srcWebp} type="image/webp" />
+                    <img src={src} alt={alt} className="w-full h-full object-cover" loading="lazy" />
+                  </picture>
+                ) : (
+                  <img src={src} alt={alt} className="w-full h-full object-cover" loading="lazy" />
+                )}
               </button>
               {item.caption && (
                 <figcaption className="text-xs text-gray-600 mt-1">{item.caption}</figcaption>
