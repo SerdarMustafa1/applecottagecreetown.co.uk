@@ -15,7 +15,8 @@ assets/images/.DS_Store
 assets/videos/.DS_Store
 assets/videos/interior/.DS_Store
 node_modules/
-package-lock.json
+# Allow committing lock file for reproducible installs
+!package-lock.json
 
 # Ignore heavy public media; use CDN via PUBLIC_MEDIA_BASE_URL
 public/images/**/*.jpg
