@@ -32,19 +32,17 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
           const alt = item.alt || `Gallery image ${i + 1}`;
           return (
             <figure key={i} className="flex flex-col" role="listitem">
-              <button
-                onClick={() => openAt(i)}
-                className="focus:outline-none"
-                aria-label={`Open image ${i + 1}`}
-              >
-                {item.srcWebp ? (
-                  <picture>
-                    <source srcSet={item.srcWebp} type="image/webp" />
-                    <img src={src} alt={alt} className="w-full h-full object-cover" loading="lazy" />
-                  </picture>
-                ) : (
-                  <img src={src} alt={alt} className="w-full h-full object-cover" loading="lazy" />
-                )}
+              <button onClick={() => openAt(i)} className="focus:outline-none" aria-label={`Open image ${i + 1}`}>
+                <div className="relative" style={{ paddingTop: '75%' }}>
+                  {item.srcWebp ? (
+                    <picture>
+                      <source srcSet={item.srcWebp} type="image/webp" />
+                      <img src={src} alt={alt} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                    </picture>
+                  ) : (
+                    <img src={src} alt={alt} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                  )}
+                </div>
               </button>
               {item.caption && (
                 <figcaption className="text-xs text-gray-600 mt-1">{item.caption}</figcaption>

@@ -177,7 +177,7 @@ export const site = {
       { src: media('/images/exterior/flat-garden-1-exterior-view-469CFFB4.jpeg'), alt: 'Flat garden area', caption: 'Level garden area perfect for entertaining', feature: 'Entertainment Space' }
     ],
     energyEfficiency: [
-      { src: media('/images/misc/epc-graph.png'), alt: 'EPC Rating B', caption: 'Energy Performance Certificate - Rating B', feature: 'Energy Efficient' }
+      { src: media('/misc/epc.png'), alt: 'EPC Rating B', caption: 'Energy Performance Certificate - Rating B', feature: 'Energy Efficient' }
     ]
   },
   portals: {
@@ -185,7 +185,6 @@ export const site = {
     s1homes: 'https://s1homes.com/property-for-sale/Detached/20250905090829948'
   },
   docs: [
-    { label: 'EPC', href: OVERRIDES.EPC_IMAGE_URL || media('/misc/epc.png') },
     { label: 'Plot Plan', href: OVERRIDES.PLOT_IMAGE_URL || media('/misc/plot.png') },
     { label: 'Home Report', href: media('/docs/home-report.pdf') }
   ]
