@@ -36,11 +36,11 @@ const featureCategories = [
           <div class={`grid grid-cols-1 ${category.gridCols} gap-6`}>
             {category.images.map((image, imageIndex) => (
               <div key={imageIndex} class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                <div class="aspect-w-16 aspect-h-12 overflow-hidden">
+                <div class="aspect-w-16 aspect-h-12 overflow-hidden bg-white">
                   <img 
                     src={image.src} 
                     alt={image.alt}
-                    class="w-full h-64 object-cover"
+                    class="absolute inset-0 w-full h-full object-contain bg-white"
                     loading="lazy"
                   />
                 </div>
