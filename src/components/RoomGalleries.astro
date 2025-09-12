@@ -1,0 +1,70 @@
+---
+import site from '../../site.config';
+import GalleryIsland from './GalleryIsland';
+
+const roomData = [
+  {
+    title: 'Kitchen',
+    description: 'Modern kitchen with quality appliances and ample storage space',
+    images: site.roomGalleries?.kitchen || [],
+    icon: '🍳'
+  },
+  {
+    title: 'Living Areas', 
+    description: 'Spacious and comfortable living spaces perfect for relaxation',
+    images: site.roomGalleries?.livingAreas || [],
+    icon: '🛋️'
+  },
+  {
+    title: 'Bedrooms',
+    description: 'Bright and airy bedrooms with fitted storage solutions', 
+    images: site.roomGalleries?.bedrooms || [],
+    icon: '🛏️'
+  },
+  {
+    title: 'Bathroom',
+    description: 'Modern family bathroom with quality fittings',
+    images: site.roomGalleries?.bathroom || [],
+    icon: '🛁'
+  }
+];
+---
+<section id="room-galleries" class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Room by Room</h2>
+      <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+        Explore every room in detail with our comprehensive photo galleries. Each space has been carefully photographed to showcase the quality and character of Apple Cottage.
+      </p>
+    </div>
+
+    <div class="space-y-16">
+      {roomData.map((room, index) => room.images.length > 0 && (
+        <div key={index} class="room-section">
+          <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+              <span class="text-2xl" role="img" aria-label={room.title}>{room.icon}</span>
+            </div>
+            <h3 class="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">{room.title}</h3>
+            <p class="text-gray-600 max-w-2xl mx-auto">{room.description}</p>
+          </div>
+          
+          <div class="bg-gray-50 rounded-2xl p-6 md:p-8">
+            <GalleryIsland images={room.images} client:load />
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .room-section:not(:last-child) {
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 4rem;
+  }
+  
+  .room-section:last-child {
+    margin-bottom: 0;
+  }
+</style>

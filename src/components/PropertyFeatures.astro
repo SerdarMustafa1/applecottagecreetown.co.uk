@@ -1,0 +1,153 @@
+---
+import site from '../../site.config';
+
+const featureCategories = [
+  {
+    title: 'Property Features',
+    description: 'Unique aspects that make Apple Cottage special',
+    images: site.propertyFeatures?.exterior || [],
+    gridCols: 'md:grid-cols-2 lg:grid-cols-3'
+  },
+  {
+    title: 'Energy Efficiency',
+    description: 'Environmental credentials and energy performance',
+    images: site.propertyFeatures?.energyEfficiency || [],
+    gridCols: 'md:grid-cols-1 lg:grid-cols-2'
+  }
+];
+---
+<section id="property-features" class="py-16 bg-gradient-to-br from-green-50 to-blue-50">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Property Features</h2>
+      <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+        Discover the unique features that make Apple Cottage an exceptional home, from the separate home office to the energy-efficient design.
+      </p>
+    </div>
+
+    <div class="space-y-12">
+      {featureCategories.map((category, categoryIndex) => category.images.length > 0 && (
+        <div key={categoryIndex} class="feature-category">
+          <div class="text-center mb-8">
+            <h3 class="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">{category.title}</h3>
+            <p class="text-gray-600 max-w-2xl mx-auto">{category.description}</p>
+          </div>
+          
+          <div class={`grid grid-cols-1 ${category.gridCols} gap-6`}>
+            {category.images.map((image, imageIndex) => (
+              <div key={imageIndex} class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div class="aspect-w-16 aspect-h-12 overflow-hidden">
+                  <img 
+                    src={image.src} 
+                    alt={image.alt}
+                    class="w-full h-64 object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="p-6">
+                  <div class="flex items-center justify-between mb-3">
+                    <h4 class="text-xl font-semibold text-gray-900">{image.feature}</h4>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      Feature
+                    </span>
+                  </div>
+                  <p class="text-gray-600">{image.caption}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Additional Features List -->
+    <div class="mt-16 bg-white rounded-2xl shadow-lg p-8">
+      <h3 class="text-2xl font-semibold text-gray-900 mb-6 text-center">Additional Property Highlights</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="flex items-center p-4 bg-green-50 rounded-lg">
+          <div class="flex-shrink-0 w-10 h-10 bg-green-200 rounded-full flex items-center justify-center mr-4">
+            <span class="text-green-800 font-semibold">B</span>
+          </div>
+          <div>
+            <h4 class="font-semibold text-gray-900">EPC Rating B</h4>
+            <p class="text-sm text-gray-600">Excellent energy efficiency</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center p-4 bg-blue-50 rounded-lg">
+          <div class="flex-shrink-0 w-10 h-10 bg-blue-200 rounded-full flex items-center justify-center mr-4">
+            <span class="text-blue-800">🏢</span>
+          </div>
+          <div>
+            <h4 class="font-semibold text-gray-900">Separate Annex</h4>
+            <p class="text-sm text-gray-600">Perfect home office space</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center p-4 bg-purple-50 rounded-lg">
+          <div class="flex-shrink-0 w-10 h-10 bg-purple-200 rounded-full flex items-center justify-center mr-4">
+            <span class="text-purple-800">🔋</span>
+          </div>
+          <div>
+            <h4 class="font-semibold text-gray-900">EV Charging</h4>
+            <p class="text-sm text-gray-600">Electric vehicle ready</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center p-4 bg-yellow-50 rounded-lg">
+          <div class="flex-shrink-0 w-10 h-10 bg-yellow-200 rounded-full flex items-center justify-center mr-4">
+            <span class="text-yellow-800">🌿</span>
+          </div>
+          <div>
+            <h4 class="font-semibold text-gray-900">Landscaped Gardens</h4>
+            <p class="text-sm text-gray-600">Beautifully maintained outdoor space</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center p-4 bg-indigo-50 rounded-lg">
+          <div class="flex-shrink-0 w-10 h-10 bg-indigo-200 rounded-full flex items-center justify-center mr-4">
+            <span class="text-indigo-800">🏠</span>
+          </div>
+          <div>
+            <h4 class="font-semibold text-gray-900">3 Bedrooms</h4>
+            <p class="text-sm text-gray-600">Spacious accommodation</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center p-4 bg-red-50 rounded-lg">
+          <div class="flex-shrink-0 w-10 h-10 bg-red-200 rounded-full flex items-center justify-center mr-4">
+            <span class="text-red-800">🛁</span>
+          </div>
+          <div>
+            <h4 class="font-semibold text-gray-900">2 Bathrooms</h4>
+            <p class="text-sm text-gray-600">Modern family facilities</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .feature-category:not(:last-child) {
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 3rem;
+  }
+  
+  .aspect-w-16 {
+    position: relative;
+    width: 100%;
+  }
+  
+  .aspect-h-12 {
+    padding-bottom: 75%; /* 16:12 aspect ratio */
+  }
+  
+  .aspect-w-16 img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>
