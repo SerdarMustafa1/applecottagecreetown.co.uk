@@ -30,8 +30,8 @@ export const site = {
     email: 'info@applecottagecreetown.co.uk'
   },
   hero: {
-    image: media('/images/exterior/exterior-from-landing-2EE3F1E1.jpeg'),
-    imageWebp: media('/images/exterior/exterior-from-landing-2EE3F1E1.jpeg'), // Will convert to WebP later
+    image: 'https://d1t6lpjdsu4646.cloudfront.net/images/interior/interior-room-6D088E35.jpeg',
+    imageWebp: 'https://d1t6lpjdsu4646.cloudfront.net/images/interior/interior-room-6D088E35.jpeg',
     alternativeImages: [
       { src: media('/images/exterior/property-rear-main-DA26379D.jpeg'), alt: 'Property rear garden view' },
       { src: media('/images/interior/interior-main-9A07279B.jpeg'), alt: 'Interior main living area' },
@@ -82,13 +82,11 @@ export const site = {
     { src: media('/images/exterior/garden-lean-to-view-032D67F9.jpeg'), alt: 'Garden lean-to structure', caption: 'Useful garden lean-to storage' }
   ],
   floorplans: [
-    { label: 'Ground Floor', src: OVERRIDES.FLOORPLAN_GROUND_URL || media('/floorplans/ground-floor.svg') },
-    { label: 'First Floor', src: OVERRIDES.FLOORPLAN_FIRST_URL || media('/floorplans/first-floor.svg') },
-    { label: 'Annex Ground', src: OVERRIDES.FLOORPLAN_ANNEX_GROUND_URL || media('/floorplans/annex-ground.svg') },
-    { label: 'Annex First', src: OVERRIDES.FLOORPLAN_ANNEX_FIRST_URL || media('/floorplans/annex-first.svg') }
+    { label: 'House 2D Plan', src: media('/misc/floorplan-house-2d.png') },
+    { label: 'Annex 2D Plan', src: media('/misc/annnex-Floor%20Plan.png') }
   ],
   floorplans3d: [
-    ...(OVERRIDES.FLOORPLAN_3D_URL ? [{ label: '3D Overview', src: OVERRIDES.FLOORPLAN_3D_URL }] : [])
+    { label: '3D Overview', src: OVERRIDES.FLOORPLAN_3D_URL || media('/misc/floorplan-3d.mp4') }
   ],
   panos: [
     { label: 'Back Bedroom', src: media('/images/panos/back-bedroom-pano.jpg'), srcWebp: media('/images/panos/back-bedroom-pano.webp'), preview: media('/images/panos/back-bedroom-pano.jpg') },
@@ -187,8 +185,8 @@ export const site = {
     s1homes: 'https://s1homes.com/property-for-sale/Detached/20250905090829948'
   },
   docs: [
-    { label: 'EPC', href: OVERRIDES.EPC_IMAGE_URL || media('/images/misc/epc-graph.png') },
-    { label: 'Plot Plan', href: OVERRIDES.PLOT_IMAGE_URL || media('/docs/plot.png') },
+    { label: 'EPC', href: OVERRIDES.EPC_IMAGE_URL || media('/misc/epc.png') },
+    { label: 'Plot Plan', href: OVERRIDES.PLOT_IMAGE_URL || media('/misc/plot.png') },
     { label: 'Home Report', href: media('/docs/home-report.pdf') }
   ]
 };
