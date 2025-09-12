@@ -1,4 +1,14 @@
 const MEDIA_BASE = import.meta.env.MEDIA_BASE_URL || '';
+// Optional overrides for floorplan and doc URLs; set absolute CDN URLs if assets live under /misc
+const OVERRIDES = {
+  FLOORPLAN_GROUND_URL: (import.meta as any).env.FLOORPLAN_GROUND_URL as string | undefined,
+  FLOORPLAN_FIRST_URL: (import.meta as any).env.FLOORPLAN_FIRST_URL as string | undefined,
+  FLOORPLAN_ANNEX_GROUND_URL: (import.meta as any).env.FLOORPLAN_ANNEX_GROUND_URL as string | undefined,
+  FLOORPLAN_ANNEX_FIRST_URL: (import.meta as any).env.FLOORPLAN_ANNEX_FIRST_URL as string | undefined,
+  FLOORPLAN_3D_URL: (import.meta as any).env.FLOORPLAN_3D_URL as string | undefined,
+  EPC_IMAGE_URL: (import.meta as any).env.EPC_IMAGE_URL as string | undefined,
+  PLOT_IMAGE_URL: (import.meta as any).env.PLOT_IMAGE_URL as string | undefined,
+};
 function media(path: string) {
   if (!path) return path;
   if (/^https?:\/\//i.test(path)) return path;
@@ -72,13 +82,13 @@ export const site = {
     { src: media('/images/exterior/garden-lean-to-view-032D67F9.jpeg'), alt: 'Garden lean-to structure', caption: 'Useful garden lean-to storage' }
   ],
   floorplans: [
-    { label: 'Ground Floor', src: media('/floorplans/ground-floor.svg') },
-    { label: 'First Floor', src: media('/floorplans/first-floor.svg') },
-    { label: 'Annex Ground', src: media('/floorplans/annex-ground.svg') },
-    { label: 'Annex First', src: media('/floorplans/annex-first.svg') }
+    { label: 'Ground Floor', src: OVERRIDES.FLOORPLAN_GROUND_URL || media('/floorplans/ground-floor.svg') },
+    { label: 'First Floor', src: OVERRIDES.FLOORPLAN_FIRST_URL || media('/floorplans/first-floor.svg') },
+    { label: 'Annex Ground', src: OVERRIDES.FLOORPLAN_ANNEX_GROUND_URL || media('/floorplans/annex-ground.svg') },
+    { label: 'Annex First', src: OVERRIDES.FLOORPLAN_ANNEX_FIRST_URL || media('/floorplans/annex-first.svg') }
   ],
   floorplans3d: [
-    // { label: 'Main 3D Overview', src: media('/floorplans/3d-overview.png') }
+    ...(OVERRIDES.FLOORPLAN_3D_URL ? [{ label: '3D Overview', src: OVERRIDES.FLOORPLAN_3D_URL }] : [])
   ],
   panos: [
     { label: 'Back Bedroom', src: media('/images/panos/back-bedroom-pano.jpg'), srcWebp: media('/images/panos/back-bedroom-pano.webp'), preview: media('/images/panos/back-bedroom-pano.jpg') },
@@ -177,8 +187,8 @@ export const site = {
     s1homes: 'https://s1homes.com/property-for-sale/Detached/20250905090829948'
   },
   docs: [
-    { label: 'EPC', href: media('/images/misc/epc-graph.png') },
-    { label: 'Plot Plan', href: media('/docs/plot.png') },
+    { label: 'EPC', href: OVERRIDES.EPC_IMAGE_URL || media('/images/misc/epc-graph.png') },
+    { label: 'Plot Plan', href: OVERRIDES.PLOT_IMAGE_URL || media('/docs/plot.png') },
     { label: 'Home Report', href: media('/docs/home-report.pdf') }
   ]
 };
