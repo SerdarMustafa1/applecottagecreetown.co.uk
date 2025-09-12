@@ -9,6 +9,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "check:cdn": "node scripts/check_cdn_urls.js",
     "lint": "eslint src tests/unit",
     "test": "vitest run tests/unit"
   },

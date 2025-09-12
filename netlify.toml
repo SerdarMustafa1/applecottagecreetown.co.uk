@@ -1,6 +1,6 @@
 [build]
-  # Prefer deterministic installs with npm ci, but gracefully fall back to npm install
-  command = "if [ -f package-lock.json ]; then npm ci --no-audit --no-fund; else npm install --no-audit --no-fund; fi && npm run build"
+  # Deterministic install when lockfile exists; then verify CDN URLs before build
+  command = "if [ -f package-lock.json ]; then npm ci --no-audit --no-fund; else npm install --no-audit --no-fund; fi && npm run check:cdn && npm run build"
   publish = "dist"
 
 [[headers]]
