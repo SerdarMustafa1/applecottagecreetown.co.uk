@@ -22,4 +22,5 @@ jobs:
           npm cache clean --force
       - run: npm install --no-audit --no-fund
       - run: npm run build
-      - run: npx lighthouse-ci --config=lighthouse.config.js
+      - name: Run Lighthouse CI (LHCI)
+        run: npx -y @lhci/cli@0.13.0 autorun --config=lighthouse.config.js
