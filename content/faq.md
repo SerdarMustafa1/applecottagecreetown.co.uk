@@ -17,4 +17,6 @@ questions:
       a new bathroom suite.
   - question: "Why are you selling after renovating?"
     answer: "We renovated to our taste and budget with no intention of leaving, but a change in family circumstances means we are emigrating."
+  - question: "Do you have planning permission for extension works?"
+    answer: "Yes. Full planning permission has been granted for a two‑storey rear extension. Supporting plans and documents are available on request."
 ---

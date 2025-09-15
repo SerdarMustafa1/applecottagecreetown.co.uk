@@ -20,6 +20,11 @@ title: Property Details
 - Garage/workshop with power and lighting
 - 360° virtual tours and floorplans available below
 
+### Planning Permission
+
+- Full planning permission has been granted for a two‑storey rear extension
+- Supporting plans and documents are available on request
+
 ### Recent Renovation (2025)
 
 - Full interior refresh with new paint and décor throughout

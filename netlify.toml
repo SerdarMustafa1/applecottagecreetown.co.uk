@@ -1,6 +1,9 @@
 [build]
   # Deterministic install when lockfile exists; then verify CDN URLs before build
-  command = "if [ -f package-lock.json ]; then npm ci --no-audit --no-fund; else npm install --no-audit --no-fund; fi && npm run check:cdn && npm run build"
+  # NOTE: Avoid npm ci due to npm optional-deps bug affecting Rollup native binaries on Linux.
+  # See: https://github.com/npm/cli/issues/4828 and Netlify logs "Cannot find module @rollup/rollup-linux-x64-gnu".
+  # Always use npm install here to ensure optional platform binaries are fetched.
+  command = "npm install --no-audit --no-fund && npm run check:cdn && npm run build"
   publish = "dist"
 
 [[headers]]

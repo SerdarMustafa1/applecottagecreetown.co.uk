@@ -37,4 +37,6 @@ items:
     value: ">5 kWh storage, plug‑and‑play expandable; MCS‑installed 2023 and under warranty"
   - label: WCs
     value: "Downstairs cloakroom + annex"
+  - label: Planning
+    value: "Full permission granted for two‑storey rear extension"
 ---
