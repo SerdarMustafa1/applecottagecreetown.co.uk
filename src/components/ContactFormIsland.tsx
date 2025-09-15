@@ -9,8 +9,6 @@ export default function ContactFormIsland() {
   }, []);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    // Prevent navigation in CI/static server so we can assert a11y post-submit
-    e.preventDefault();
     const timeField = (e.currentTarget.querySelector('input[name="timeToComplete"]') as HTMLInputElement | null);
     if (timeField) {
       timeField.value = String(Math.max(0, Math.round((Date.now() - startRef.current) / 1000)));
@@ -19,11 +17,13 @@ export default function ContactFormIsland() {
   }
 
   return (
+    <>
     <form
       name="contact"
       method="POST"
       data-netlify="true"
       netlify-honeypot="bot-field"
+      target="submission_frame"
       className="space-y-4"
       onSubmit={handleSubmit}
     >
@@ -79,6 +79,9 @@ export default function ContactFormIsland() {
       {submitted && (
         <div role="status" className="mt-2 text-green-700">Thank you for your message!</div>
       )}
-    </form>
+  </form>
+  {/* Hidden iframe prevents full page navigation on submit (useful for CI/static servers) */}
+  <iframe name="submission_frame" title="form submission" className="sr-only" aria-hidden="true" />
+  </>
   );
 }
