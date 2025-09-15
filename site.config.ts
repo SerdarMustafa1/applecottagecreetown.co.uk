@@ -54,6 +54,7 @@ export const site = {
     evCharger: 'Ohme Home Pro smart charger on the driveway',
     energySupplier: 'Currently Octopus Energy on an Intelligent tariff with export; linked to the Ohme charger for smart, off‑peak charging'
   },
+  analyticsId: undefined, // Set to GA4 measurement ID when ready
   // Optional Points of Interest for the map (add real coordinates when ready)
   // Example: { title: 'Gem Rock Museum', lat: 54.8963, lng: -4.3752, subtitle: 'Family attraction', meta: '≈2 min drive' }
   pois: [
