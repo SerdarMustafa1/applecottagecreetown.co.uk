@@ -35,7 +35,7 @@ export const site = {
   address: 'Apple Cottage, Creetown, Scotland',
   coordinates: { lat: 54.9, lng: -4.4 },
   bookingUrl: 'https://tidycal.com/sidmustafa/apple-cottage-viewing',
-  price: '💰 Offers Over £275,000',
+  price: '💰 Offers Over £300,000',
   bedrooms: '🛏️ 3 Double Bedrooms',
   bathrooms: '🛁 1 + Downstairs WC',
   epc: '⚡ B - Energy Efficient',
