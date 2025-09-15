@@ -22,9 +22,9 @@ const gaId = site.analyticsId;
       <link rel="manifest" href="/site.webmanifest" />
       {gaId && (
         <>
-          <script src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} defer></script>
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
           <script is:inline>
-            {`window.dataLayer = window.dataLayer || [];\n             function gtag(){dataLayer.push(arguments);}\n             gtag('js', new Date());\n             gtag('config', '${gaId}');`}
+            {`window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', '${gaId}');`}
           </script>
         </>
       )}

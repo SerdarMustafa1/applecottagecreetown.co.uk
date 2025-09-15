@@ -46,7 +46,8 @@ export const site = {
   bathrooms: 2,
   epc: 'B',
   ogImage: media('/images/new/img_0384-1200.jpg'),
-  analyticsId: undefined, // Set to your Google Analytics ID when ready
+  // Google Analytics 4 Measurement ID
+  analyticsId: 'G-LHB9R5TLL1',
   gallery: [
     // Current optimized images
     { src: media('/images/new/garden-centre-1200.jpg'), srcWebp: media('/images/new/garden-centre-1200.webp'), alt: 'Garden centre view', caption: 'Garden centre view' },
