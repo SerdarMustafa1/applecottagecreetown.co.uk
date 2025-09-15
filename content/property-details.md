@@ -5,7 +5,7 @@ title: Property Details
 ## Apple Cottage, Creetown
 
 - 3 bedrooms
-- 2 bathrooms
+- 1 family bathroom plus 2 WCs (cloakroom and annex)
 - Spacious lounge and dining kitchen
 - Conservatory with garden outlook
 - Private, mature garden with seating areas
@@ -14,8 +14,10 @@ title: Property Details
 ### Features
 
 - Energy-efficient heating and double glazing (EPC B)
-- Modern fitted kitchen and appliances
+- Roof‑mounted Solar PV with >5 kWh battery storage (installed 2023 by an MCS‑registered installer), plug‑and‑play expandable, under warranty
+- Modern fitted kitchen and designer appliances, fixtures & fittings.
 - High-speed broadband available
+- Garage/workshop with power and lighting
 - 360° virtual tours and floorplans available below
 
 ### Recent Renovation (2025)

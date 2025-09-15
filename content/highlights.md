@@ -31,6 +31,8 @@ items:
     value: "Landscaped, south‑facing"
   - label: Connectivity
     value: "High‑speed broadband"
+  - label: Garage/Workshop
+    value: "With power and lighting"
   - label: Solar PV + Battery
     value: ">5 kWh storage, plug‑and‑play expandable; MCS‑installed 2023 and under warranty"
   - label: WCs
