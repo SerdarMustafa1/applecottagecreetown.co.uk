@@ -2,14 +2,23 @@
 import site from '../../site.config';
 import GalleryIsland from './GalleryIsland';
 
-// Derive bedroom subgroups (Master, 2, 3) if not explicitly provided
-const allBedrooms = (site.roomGalleries?.bedrooms || []).slice();
+// Prefer explicit bedroom groups if provided in site.config.ts; otherwise derive
+const explicitMaster = (site.roomGalleries as any)?.bedroomMaster || [];
+const explicitBed2 = (site.roomGalleries as any)?.bedroom2 || [];
+const explicitBed3 = (site.roomGalleries as any)?.bedroom3 || [];
+const hasExplicitBedrooms = (explicitMaster.length + explicitBed2.length + explicitBed3.length) > 0;
+
+const allBedrooms = hasExplicitBedrooms ? [] : (site.roomGalleries?.bedrooms || []).slice();
 const isMaster = (img: any) => /master[-\s]?bedroom/i.test(img?.src || '') || /master/i.test(img?.alt || '');
-const masterBedrooms = allBedrooms.filter(isMaster);
-const others = allBedrooms.filter((img) => !isMaster(img));
-const splitIndex = Math.ceil(others.length / 2);
-const bedroom2 = others.slice(0, splitIndex);
-const bedroom3 = others.slice(splitIndex);
+const derivedMaster = hasExplicitBedrooms ? [] : allBedrooms.filter(isMaster);
+const derivedOthers = hasExplicitBedrooms ? [] : allBedrooms.filter((img) => !isMaster(img));
+const splitIndex = hasExplicitBedrooms ? 0 : Math.ceil(derivedOthers.length / 2);
+const derivedBed2 = hasExplicitBedrooms ? [] : derivedOthers.slice(0, splitIndex);
+const derivedBed3 = hasExplicitBedrooms ? [] : derivedOthers.slice(splitIndex);
+
+const masterBedrooms = hasExplicitBedrooms ? explicitMaster : derivedMaster;
+const bedroom2 = hasExplicitBedrooms ? explicitBed2 : derivedBed2;
+const bedroom3 = hasExplicitBedrooms ? explicitBed3 : derivedBed3;
 
 const roomData = [
   {
@@ -52,9 +61,9 @@ const roomData = [
       </p>
     </div>
 
-    <div class="divide-y divide-gray-200 rounded-2xl border border-gray-200 bg-white">
+    <div id="room-galleries-accordion" class="divide-y divide-gray-200 rounded-2xl border border-gray-200 bg-white">
       {roomData.map((room, index) => room.images.length > 0 && (
-        <details class="group room-accordion" key={index}>
+        <details class="group room-accordion" key={index} id={`rg-top-${index}`}>
           <summary class="flex items-center gap-4 w-full cursor-pointer list-none p-4 md:p-6 hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-blue-600/30">
             <div class="inline-flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-blue-100 rounded-full">
               <span class="text-xl md:text-2xl" role="img" aria-label={room.title}>{room.icon}</span>
@@ -70,8 +79,12 @@ const roomData = [
           <div class="px-4 pb-6 md:px-6 md:pb-8">
             {room.title === 'Bedrooms' && room.subrooms ? (
               <div class="divide-y divide-gray-200 rounded-xl border border-gray-200 bg-white">
+                <div class="flex items-center justify-end gap-2 p-3 md:p-4">
+                  <button type="button" class="px-3 py-1.5 rounded border text-sm hover:bg-gray-50" data-action="expand-all-bedrooms">Expand all</button>
+                  <button type="button" class="px-3 py-1.5 rounded border text-sm hover:bg-gray-50" data-action="collapse-all-bedrooms">Collapse all</button>
+                </div>
                 {room.subrooms.map((sr) => sr.images && sr.images.length > 0 && (
-                  <details class="group">
+                  <details class="group rg-bedroom">
                     <summary class="flex items-center gap-3 w-full cursor-pointer list-none p-3 md:p-4 hover:bg-gray-50 focus:outline-none">
                       <div class="inline-flex items-center justify-center w-8 h-8 bg-blue-50 rounded-full">
                         <span class="text-base" role="img" aria-label={sr.title}>{sr.icon}</span>
@@ -108,3 +121,47 @@ const roomData = [
   /* Smooth open/close spacing */
   details[open] > summary { border-bottom: 1px solid #e5e7eb; }
 </style>
+
+<script>
+  // Persist open/closed state for accordion items and add expand/collapse for bedrooms
+  (function(){
+    const KEY = 'roomGalleriesOpenState_v1';
+    const root = document.getElementById('room-galleries-accordion');
+    if (!root) return;
+
+    function saveState(){
+      const state = Array.from(root.querySelectorAll('details'))
+        .map((d, i) => ({ i, id: d.id || '', open: d.open, cls: d.classList.contains('rg-bedroom') ? 'bed' : 'top' }));
+      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {}
+    }
+    function restoreState(){
+      let state = null;
+      try { state = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch(e) {}
+      if (!Array.isArray(state)) return;
+      const details = Array.from(root.querySelectorAll('details'));
+      state.forEach((s, idx) => {
+        const d = details[idx];
+        if (d) d.open = !!s.open;
+      });
+    }
+
+    restoreState();
+    root.addEventListener('toggle', (e) => {
+      if ((e.target as HTMLElement).tagName?.toLowerCase() === 'details') {
+        saveState();
+      }
+    }, true);
+
+    // Bedrooms expand/collapse
+    root.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement)?.closest('button[data-action]') as HTMLButtonElement | null;
+      if (!btn) return;
+      const action = btn.dataset.action;
+      if (action === 'expand-all-bedrooms' || action === 'collapse-all-bedrooms') {
+        const openVal = action === 'expand-all-bedrooms';
+        root.querySelectorAll('details.rg-bedroom').forEach((d) => { (d as HTMLDetailsElement).open = openVal; });
+        saveState();
+      }
+    });
+  })();
+</script>
