@@ -1,4 +1,12 @@
 const MEDIA_BASE = import.meta.env.MEDIA_BASE_URL || '';
+// Optional video env vars for Before/After section
+const B4A = {
+  HLS: (import.meta as any).env.PUBLIC_B4A_HLS as string | undefined,
+  MP4_2160: (import.meta as any).env.PUBLIC_B4A_MP4_2160 as string | undefined,
+  MP4_1080: (import.meta as any).env.PUBLIC_B4A_MP4_1080 as string | undefined,
+  WEBM_1080: (import.meta as any).env.PUBLIC_B4A_WEBM_1080 as string | undefined,
+  POSTER: (import.meta as any).env.PUBLIC_B4A_POSTER as string | undefined,
+};
 // Optional overrides for floorplan and doc URLs; set absolute CDN URLs if assets live under /misc
 const OVERRIDES = {
   FLOORPLAN_GROUND_URL: (import.meta as any).env.FLOORPLAN_GROUND_URL as string | undefined,
@@ -43,7 +51,7 @@ export const site = {
   },
   price: 'Offers over £300,000',
   bedrooms: 3,
-  bathrooms: 2,
+  bathrooms: 1,
   epc: 'B',
   ogImage: media('/images/new/img_0384-1200.jpg'),
   // Google Analytics 4 Measurement ID
@@ -53,11 +61,11 @@ export const site = {
     label: 'Before & After Renovation',
     description: 'See the transformation in up to 4K.',
     // Recommended to host via HLS on CloudFront for adaptive streaming
-    hls: undefined as string | undefined, // e.g. https://cdn.example.com/b4a/master.m3u8
-    mp4_2160: undefined as string | undefined, // e.g. https://cdn.example.com/b4a-2160p.mp4
-    mp4_1080: undefined as string | undefined, // e.g. https://cdn.example.com/b4a-1080p.mp4
-    webm_1080: undefined as string | undefined, // optional VP9/AV1
-    poster: undefined as string | undefined, // optional poster image
+    hls: B4A.HLS, // e.g. https://cdn.example.com/b4a/hls/master.m3u8
+    mp4_2160: B4A.MP4_2160, // e.g. https://cdn.example.com/b4a/b4a-2160p.mp4
+    mp4_1080: B4A.MP4_1080, // e.g. https://cdn.example.com/b4a/b4a-1080p.mp4
+    webm_1080: B4A.WEBM_1080, // optional VP9/AV1
+    poster: B4A.POSTER, // optional poster image
   },
   gallery: [
     // Current optimized images
@@ -196,7 +204,7 @@ export const site = {
   // Property features showcase
   propertyFeatures: {
     exterior: [
-      { src: media('/images/exterior/annex-office-389752AB.jpeg'), alt: 'Annex office', caption: 'Separate annex office - perfect for remote work', feature: 'Home Office' },
+      { src: media('/images/exterior/annex-office-389752AB.jpeg'), alt: 'Annex office', caption: 'Separate annex office - perfect for remote work or a home gym', feature: 'Home Office' },
       { src: media('/images/exterior/garden-lean-to-view-032D67F9.jpeg'), alt: 'Garden storage', caption: 'Useful lean-to for garden storage', feature: 'Storage' },
   { src: media('/images/exterior/garden-view-1.jpg'), alt: 'Flat garden area', caption: 'Level garden area perfect for entertaining', feature: 'Entertainment Space' }
     ],

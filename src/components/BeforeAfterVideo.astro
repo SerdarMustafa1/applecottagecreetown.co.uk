@@ -41,7 +41,7 @@ const hasSource = !!(hls || mp4_2160 || mp4_1080 || webm_1080);
           </div>
         </button>
         <div id="b4a-player-wrap" class="hidden"></div>
-        <p class="mt-3 text-center text-sm text-gray-600">
+        <div class="mt-3 text-center text-sm text-gray-600 flex items-center justify-center gap-4">
           <a
             href={(mp4_1080 || mp4_2160 || webm_1080 || hls) || '#'}
             target="_blank" rel="noopener"
@@ -50,7 +50,17 @@ const hasSource = !!(hls || mp4_2160 || mp4_1080 || webm_1080);
           >
             Open in a new tab
           </a>
-        </p>
+          {mp4_1080 && (
+            <a
+              href={mp4_1080}
+              download
+              class="text-blue-600 hover:underline"
+              aria-label="Download the 1080p MP4 video"
+            >
+              Download 1080p MP4
+            </a>
+          )}
+        </div>
       </div>
     ) : (
       <div class="mx-auto max-w-2xl rounded border p-4 bg-white text-sm text-gray-700">
