@@ -96,21 +96,32 @@ resource "aws_cloudfront_response_headers_policy" "cors_headers" {
 
   cors_config {
     access_control_allow_credentials = false
-    access_control_allow_headers = ["*"]
-    access_control_allow_methods = ["GET", "HEAD"]
-    access_control_allow_origins = ["*"]
-    access_control_expose_headers = ["Content-Length", "Content-Range"]
+    
+    access_control_allow_headers {
+      items = ["*"]
+    }
+    
+    access_control_allow_methods {
+      items = ["GET", "HEAD"]
+    }
+    
+    access_control_allow_origins {
+      items = ["*"]
+    }
+    
+    access_control_expose_headers {
+      items = ["Content-Length", "Content-Range"]
+    }
+    
     origin_override = true
   }
 
   custom_headers_config {
-    items = [
-      {
-        header   = "Timing-Allow-Origin"
-        value    = "*"
-        override = true
-      }
-    ]
+    items {
+      header   = "Timing-Allow-Origin"
+      value    = "*"
+      override = true
+    }
   }
 }
 

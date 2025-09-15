@@ -14,9 +14,9 @@ const gaId = site.analyticsId;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
       <Seo {title} {description} />
-      <script is:inline>
-        {`// Define GA id early on window to avoid ReferenceError from third‑party scripts
-         (function(){ try { window.gaId = ${JSON.stringify(gaId || '')}; } catch(e) {} })();`}
+      <script is:inline define:vars={{ gaId }}>
+        // Define GA id early on window to avoid ReferenceError from third‑party scripts
+        (function(){ try { window.gaId = gaId || ''; } catch(e) {} })();
       </script>
       <link rel="stylesheet" id="silktide-consent-manager-css" href="/cookie-banner/silktide-consent-manager.css" />
       <script src="/cookie-banner/silktide-consent-manager.js" defer></script>
@@ -25,9 +25,9 @@ const gaId = site.analyticsId;
       <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
       <link rel="manifest" href="/site.webmanifest" />
       {gaId && (
-        <script is:inline>
-          {`(function(){
-            var GA_ID = '${gaId}';
+        <script is:inline define:vars={{ gaId }}>
+          (function(){
+            var GA_ID = gaId;
             var KEY = 'silktideCookieBanner_InitialChoice';
             var loaded = false;
             function loadGA(){
@@ -47,7 +47,7 @@ const gaId = site.analyticsId;
               if (choice === '1') { loadGA(); }
             } catch(e) {}
             document.addEventListener('cookie-consent-accepted', loadGA, { once: true });
-          })();`}
+          })();
         </script>
       )}
   </head>

@@ -4,29 +4,6 @@ review legacy site https://68bca0be7774d400082b31d6--gorgeous-torrone-99504e.net
 
 reinstate:
 
-Why We Love This Home
-“The layout has given us true flexibility: we’ve used the hybrid annex as a double office for working from home and a well equipped home gym. The garden extends our living space through the seasons, and the energy‑saving upgrades keep bills sensible without sacrificing comfort.
-
-The position of the plot is very strategic, giving us a lot of privacy as we are the only home facing this direction. The adjoining plots are the backends of their gardens, so we are undisturbed and very quiet all year round.”
-
-reinstate:
-Location & Lifestyle
-Apple Cottage lies on Silver Street in the village of Creetown (DG8 7HU). Nestled between the rugged hills of Cairnsmore of Fleet and the tidal estuary of Wigtown Bay, Creetown offers a peaceful rural setting with a strong community. The local primary school, community centre and village shop are all within easy walking distance, while the A75 provides fast access to Newton Stewart, the Galloway Forest Park and the wider Dumfries & Galloway coastline. Trails, beaches and woodland walks are on your doorstep - making this an ideal base for families, outdoor enthusiasts and those seeking a healthy work-life balance.
-Heritage
-Museum
-Creetown Heritage Museum - volunteer-run collection of local cultural and industrial history (approx.
-1 min drive).
-Gem Rock Museum & Café
-gemstones, crystals and fossils with a family-friendly café (approx. 2 min drive).
-Kirroughtree Visitor Centre & 7stanes
-- biking and forest trails with café and bike shop (approx. 5 min drive).
-AEL LANGOWANO
-HOTE
-Ellangowan Hotel (Wicker Man pub) — friendly local with film memorabilia (in village, ~1-2 min drive).
-Cairnsmore of Fleet NNR — wild granite hill with panoramic views and wildlife (approx. 15 min drive).
-Mossyard Beach — small sandy bay on Fleet Bay, popular for family days and small craft (approx. 15 min drive).
-and any others i missed...
-
 some of the key metrics:
 
 0.13 acres
@@ -113,3 +90,5 @@ Infrared heating panels: zoned, fast‑response room heating; minimal air moveme
 EV charger: Ohme Home Pro smart charger on the driveway (ohme‑ev.com).
 Energy supplier: currently Octopus Energy on an Intelligent tariff with export; linked to the Ohme charger for smart, off‑peak charging and efficient scheduling (about Intelligent Octopus).
 
+
+Google tag: G-LHB9R5TLL1 not found
