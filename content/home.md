@@ -1,10 +1,14 @@
 ---
 title: "Apple Cottage, Creetown"
-description: "Energy‑smart three‑bed home with annex, EV charging & landscaped gardens."
+description: "Recently renovated three‑bed with annex, EV charging & landscaped gardens."
 ---
 
-Welcome to Apple Cottage — a thoughtfully upgraded three‑bedroom home with a versatile annex office, landscaped south‑facing gardens, and private parking. Set in the friendly village of Creetown near the Solway Firth and Galloway Forest Park, the property blends character with modern efficiency.
+Welcome to Apple Cottage — a recently renovated three‑bedroom home with a versatile annex office, landscaped south‑facing gardens, and private parking. Set in the friendly village of Creetown near the Solway Firth and Galloway Forest Park, the property blends character with modern efficiency and true move‑in convenience.
 
+- Fully renovated inside in 2025: fresh paint and décor throughout
+- New luxury carpets and LVT flooring across the home
+- Electrics updated and renewed inside and out for scalability
+- New composite external doors
 - EPC rating B with efficient heating and double glazing
 - Bright lounge, dining kitchen, and conservatory with garden outlook
 - Three comfortable bedrooms and two bathrooms

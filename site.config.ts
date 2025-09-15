@@ -21,7 +21,7 @@ function media(path: string) {
 
 export const site = {
   title: 'Apple Cottage',
-  description: 'Energy‑smart three‑bed home with annex, EV charging & landscaped gardens.',
+  description: 'Recently renovated three‑bed with annex, EV charging & landscaped gardens.',
   siteUrl: 'https://applecottagecreetown.co.uk',
   address: 'Apple Cottage, Creetown, Scotland',
   coordinates: { lat: 54.9, lng: -4.4 },
@@ -37,7 +37,7 @@ export const site = {
       { src: media('/images/interior/interior-main-9A07279B.jpeg'), alt: 'Interior main living area' },
       { src: media('/images/new/img_0384-1200.jpg'), alt: 'Property exterior corner view' }
     ],
-    tagline: 'Energy‑smart three‑bed home with annex, EV charging & landscaped gardens',
+    tagline: 'Recently renovated three‑bed with annex, EV charging & landscaped gardens',
     ctaLabel: 'Book a Viewing',
     bookUrl: 'https://tidycal.com/sidmustafa/apple-cottage-viewing'
   },
