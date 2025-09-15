@@ -55,77 +55,68 @@ const pois = (site as any).pois || [];
 </section>
 
 <!-- Leaflet CSS/JS via CDN (light footprint, no API key) -->
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-  crossorigin=""
-/> 
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"
-/>
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"
-/>
-<script
-  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-  crossorigin=""
-></script>
-<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
 <script is:inline>
   {`(function(){
-    try {
-      var mapEl = document.getElementById('leaflet-map');
-      if (!mapEl) return;
-      var center = [${coordinates.lat}, ${coordinates.lng}];
-      var map = L.map(mapEl).setView(center, 14);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
-      // Cluster group
-      var cluster = L.markerClusterGroup();
-      map.addLayer(cluster);
-      // Property marker
-      var homePopup = ${JSON.stringify(address)};
-      var homeMarker = L.marker(center).bindPopup('<strong>Apple Cottage</strong><br/>' + homePopup);
-      cluster.addLayer(homeMarker);
-      // POIs from config (optional)
-      var pois = ${JSON.stringify(pois || [])};
-      var bounds = L.latLngBounds([center]);
-      var poiMarkers = [];
-      pois.forEach(function(p){
-        if (typeof p.lat === 'number' && typeof p.lng === 'number') {
-          var html = '<strong>' + (p.title || 'POI') + '</strong>' + (p.subtitle ? '<br/>' + p.subtitle : '') + (p.meta ? '<br/>' + p.meta : '');
-          var m = L.marker([p.lat, p.lng]).bindPopup(html);
-          poiMarkers.push(m);
-          cluster.addLayer(m);
-          bounds.extend([p.lat, p.lng]);
-        } else {
-          poiMarkers.push(null);
-        }
+    // Load Leaflet and MarkerCluster in order, then init map
+    function loadScript(src){
+      return new Promise(function(resolve, reject){
+        var s = document.createElement('script');
+        s.src = src; s.async = true; s.onload = resolve; s.onerror = reject; document.head.appendChild(s);
       });
-      if (bounds.isValid()) { map.fitBounds(bounds.pad(0.2)); }
-      // Wire list clicks
-      var list = document.getElementById('poi-list');
-      if (list) {
-        list.addEventListener('click', function(e){
-          var btn = e.target.closest('button[data-poi-index]');
-          if (!btn) return;
-          var idx = parseInt(btn.getAttribute('data-poi-index'), 10);
-          var marker = poiMarkers[idx];
-          if (marker) {
-            var latlng = marker.getLatLng();
-            map.setView(latlng, 15, { animate: true });
-            marker.openPopup();
+    }
+    var center = [${coordinates.lat}, ${coordinates.lng}];
+    var homePopup = ${JSON.stringify(address)};
+    var pois = ${JSON.stringify(pois || [])};
+    (async function(){
+      try {
+        await loadScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js');
+        await loadScript('https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js');
+        var mapEl = document.getElementById('leaflet-map');
+        if (!mapEl || typeof window.L === 'undefined') return;
+        var L = window.L;
+        var map = L.map(mapEl).setView(center, 14);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        var cluster = L.markerClusterGroup();
+        map.addLayer(cluster);
+        var homeMarker = L.marker(center).bindPopup('<strong>Apple Cottage</strong><br/>' + homePopup);
+        cluster.addLayer(homeMarker);
+        var bounds = L.latLngBounds([center]);
+        var poiMarkers = [];
+        pois.forEach(function(p){
+          if (typeof p.lat === 'number' && typeof p.lng === 'number') {
+            var html = '<strong>' + (p.title || 'POI') + '</strong>' + (p.subtitle ? '<br/>' + p.subtitle : '') + (p.meta ? '<br/>' + p.meta : '');
+            var m = L.marker([p.lat, p.lng]).bindPopup(html);
+            poiMarkers.push(m);
+            cluster.addLayer(m);
+            bounds.extend([p.lat, p.lng]);
+          } else {
+            poiMarkers.push(null);
           }
         });
+        if (bounds.isValid()) { map.fitBounds(bounds.pad(0.2)); }
+        var list = document.getElementById('poi-list');
+        if (list) {
+          list.addEventListener('click', function(e){
+            var btn = e.target.closest('button[data-poi-index]');
+            if (!btn) return;
+            var idx = parseInt(btn.getAttribute('data-poi-index'), 10);
+            var marker = poiMarkers[idx];
+            if (marker) {
+              var latlng = marker.getLatLng();
+              map.setView(latlng, 15, { animate: true });
+              marker.openPopup();
+            }
+          }, { passive: true });
+        }
+      } catch(e) {
+        console && console.warn && console.warn('Leaflet map init failed', e);
       }
-    } catch(e) {
-      console && console.warn && console.warn('Leaflet map init failed', e);
-    }
+    })();
   })();`}
   </script>

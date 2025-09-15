@@ -44,3 +44,16 @@
   ROLLUP_DISABLE_NATIVE = "1"
   # Ensure a clean cache in case Netlify reuses previous node_modules
   NPM_CONFIG_PREFER_OFFLINE = "false"
+
+# Proxy CDN through same-origin path to enable CORS for libraries that use XHR (e.g. Pannellum)
+[[redirects]]
+  from = "/proxy-cdn/*"
+  to = "https://d1t6lpjdsu4646.cloudfront.net/:splat"
+  status = 200
+  force = true
+
+[[headers]]
+  for = "/proxy-cdn/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Headers = "*"

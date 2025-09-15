@@ -34,9 +34,19 @@ export default function PanoViewerIsland({ pano, height = 320 }: Props) {
         if (!pannellumLib || !pannellumLib.viewer) {
           throw new Error('Pannellum not available on window');
         }
+        // Rewrite CDN URLs to same-origin proxy to avoid CORS/XHR issues
+        let src = pano.src;
+        try {
+          const u = new URL(pano.src, window.location.href);
+          if (u.host.includes('cloudfront.net')) {
+            src = '/proxy-cdn' + u.pathname;
+          }
+        } catch {
+          src = pano.src;
+        }
         const viewer = pannellumLib.viewer(el, {
           type: 'equirectangular',
-          panorama: pano.src,
+          panorama: src,
           crossOrigin: 'anonymous',
           autoLoad: true,
           compass: false,
@@ -48,7 +58,7 @@ export default function PanoViewerIsland({ pano, height = 320 }: Props) {
         };
         setInited(true);
       } catch (err) {
-        // eslint-disable-next-line no-console
+         
         console.error('Failed to init pannellum', err);
       }
     };
