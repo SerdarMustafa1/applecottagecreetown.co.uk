@@ -48,6 +48,17 @@ export const site = {
   ogImage: media('/images/new/img_0384-1200.jpg'),
   // Google Analytics 4 Measurement ID
   analyticsId: 'G-LHB9R5TLL1',
+  // Optional: before/after renovation video sources (fill in when available)
+  beforeAfterVideo: {
+    label: 'Before & After Renovation',
+    description: 'See the transformation in up to 4K.',
+    // Recommended to host via HLS on CloudFront for adaptive streaming
+    hls: undefined as string | undefined, // e.g. https://cdn.example.com/b4a/master.m3u8
+    mp4_2160: undefined as string | undefined, // e.g. https://cdn.example.com/b4a-2160p.mp4
+    mp4_1080: undefined as string | undefined, // e.g. https://cdn.example.com/b4a-1080p.mp4
+    webm_1080: undefined as string | undefined, // optional VP9/AV1
+    poster: undefined as string | undefined, // optional poster image
+  },
   gallery: [
     // Current optimized images
     { src: media('/images/new/garden-centre-1200.jpg'), srcWebp: media('/images/new/garden-centre-1200.webp'), alt: 'Garden centre view', caption: 'Garden centre view' },

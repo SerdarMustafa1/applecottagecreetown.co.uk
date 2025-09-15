@@ -1,0 +1,108 @@
+---
+import site from '../../site.config';
+const cfg = (site as any).beforeAfterVideo || {};
+const label = cfg.label || 'Before & After Renovation';
+const description = cfg.description || 'See the transformation.';
+const poster = cfg.poster || site.hero?.image;
+const hls = cfg.hls as string | undefined;
+const mp4_2160 = cfg.mp4_2160 as string | undefined;
+const mp4_1080 = cfg.mp4_1080 as string | undefined;
+const webm_1080 = cfg.webm_1080 as string | undefined;
+const hasSource = !!(hls || mp4_2160 || mp4_1080 || webm_1080);
+---
+<section id="before-after" class="py-16 bg-gray-50">
+  <div class="container">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900">{label}</h2>
+      <p class="text-lg text-gray-600 max-w-3xl mx-auto">{description}</p>
+    </div>
+
+    {hasSource ? (
+      <div class="relative mx-auto max-w-5xl">
+        <button
+          id="b4a-launch"
+          class="group relative block w-full overflow-hidden rounded-2xl shadow focus:outline-none focus-visible:ring focus-visible:ring-blue-600/40"
+          style={`background: url('${poster || ''}') center/cover no-repeat; min-height: 220px;`}
+          aria-label="Play before & after video"
+          data-hls={hls || ''}
+          data-mp4-2160={mp4_2160 || ''}
+          data-mp4-1080={mp4_1080 || ''}
+          data-webm-1080={webm_1080 || ''}
+        >
+          <div class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors" aria-hidden="true"></div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="flex flex-col items-center text-white">
+              <svg class="w-16 h-16 mb-3 drop-shadow" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+              <span class="font-semibold">Watch the renovation</span>
+              <span class="text-sm opacity-90">Before → After</span>
+            </div>
+          </div>
+        </button>
+        <div id="b4a-player-wrap" class="hidden"></div>
+      </div>
+    ) : (
+      <div class="mx-auto max-w-2xl rounded border p-4 bg-white text-sm text-gray-700">
+        Video sources not configured. Add URLs in <code>site.config.ts</code> under <code>beforeAfterVideo</code> to enable this section.
+      </div>
+    )}
+  </div>
+</section>
+
+<script>
+  (function(){
+    const btn = document.getElementById('b4a-launch');
+    const wrap = document.getElementById('b4a-player-wrap');
+    if(!btn || !wrap) return;
+    function loadPlayer(){
+      const hls = btn.getAttribute('data-hls') || '';
+      const mp4_2160 = btn.getAttribute('data-mp4-2160') || '';
+      const mp4_1080 = btn.getAttribute('data-mp4-1080') || '';
+      const webm_1080 = btn.getAttribute('data-webm-1080') || '';
+      const poster = `${poster ?? ''}`;
+      const v = document.createElement('video');
+      v.setAttribute('controls','');
+      v.setAttribute('playsinline','');
+      v.setAttribute('preload','metadata');
+      v.setAttribute('class','w-full rounded-2xl shadow');
+      if (poster) v.setAttribute('poster', poster);
+      // Add progressive sources first
+      if (webm_1080) { const s = document.createElement('source'); s.src = webm_1080; s.type = 'video/webm'; v.appendChild(s); }
+      if (mp4_2160) { const s = document.createElement('source'); s.src = mp4_2160; s.type = 'video/mp4'; s.setAttribute('data-res','2160p'); v.appendChild(s); }
+      if (mp4_1080) { const s = document.createElement('source'); s.src = mp4_1080; s.type = 'video/mp4'; s.setAttribute('data-res','1080p'); v.appendChild(s); }
+      wrap.innerHTML = '';
+      wrap.appendChild(v);
+      // If HLS is provided and the browser doesn't support native HLS, optionally load hls.js on demand
+      if (hls) {
+        const canNativeHls = v.canPlayType('application/vnd.apple.mpegURL');
+        if (!canNativeHls) {
+          const script = document.createElement('script');
+          script.src = 'https://cdn.jsdelivr.net/npm/hls.js@latest';
+          script.onload = function(){
+            // @ts-ignore
+            if (window.Hls && window.Hls.isSupported()) {
+              // @ts-ignore
+              const h = new window.Hls();
+              h.loadSource(hls);
+              h.attachMedia(v);
+            }
+          };
+          document.head.appendChild(script);
+        } else {
+          const s = document.createElement('source');
+          s.src = hls; s.type = 'application/vnd.apple.mpegURL';
+          v.appendChild(s);
+        }
+      }
+      // Start playback on user intent
+      setTimeout(() => { try { v.play().catch(()=>{}); } catch(e){} }, 50);
+    }
+    btn.addEventListener('click', function(){
+      btn.classList.add('hidden');
+      wrap.classList.remove('hidden');
+      loadPlayer();
+    });
+  })();
+</script>
+
