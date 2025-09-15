@@ -2,12 +2,7 @@
 import site from '../../site.config';
 
 const featureCategories = [
-  {
-    title: 'Property Features',
-    description: 'Unique aspects that make Apple Cottage special',
-    images: site.propertyFeatures?.exterior || [],
-    gridCols: 'md:grid-cols-2 lg:grid-cols-3'
-  },
+
   {
     title: 'Energy Efficiency',
     description: 'Environmental credentials and energy performance',
@@ -93,6 +88,26 @@ const featureCategories = [
             <p class="text-sm text-gray-600">Electric vehicle ready</p>
           </div>
         </div>
+
+        <div class="flex items-center p-4 bg-slate-50 rounded-lg">
+          <div class="flex-shrink-0 w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center mr-4">
+            <span class="text-slate-800">🛠️</span>
+          </div>
+          <div>
+            <h4 class="font-semibold text-gray-900">Garage / Workshop</h4>
+            <p class="text-sm text-gray-600">With power and lighting</p>
+          </div>
+        </div>
+
+    <div class="flex items-center p-4 bg-amber-50 rounded-lg">
+          <div class="flex-shrink-0 w-10 h-10 bg-amber-200 rounded-full flex items-center justify-center mr-4">
+            <span class="text-amber-800">☀️</span>
+          </div>
+          <div>
+      <h4 class="font-semibold text-gray-900">Solar PV + Battery</h4>
+      <p class="text-sm text-gray-600">>5 kWh storage, plug‑and‑play expandable; MCS 2023, under warranty</p>
+          </div>
+        </div>
         
         <div class="flex items-center p-4 bg-yellow-50 rounded-lg">
           <div class="flex-shrink-0 w-10 h-10 bg-yellow-200 rounded-full flex items-center justify-center mr-4">
@@ -119,8 +134,8 @@ const featureCategories = [
             <span class="text-red-800">🛁</span>
           </div>
           <div>
-            <h4 class="font-semibold text-gray-900">2 Bathrooms</h4>
-            <p class="text-sm text-gray-600">Modern family facilities</p>
+            <h4 class="font-semibold text-gray-900">Family Bathroom + 2 WCs</h4>
+            <p class="text-sm text-gray-600">Main bathroom plus downstairs and annex WCs</p>
           </div>
         </div>
       </div>
