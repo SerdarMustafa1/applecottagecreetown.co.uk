@@ -15,6 +15,13 @@ const hasSource = !!(hls || mp4_2160 || mp4_1080 || webm_1080);
     <div class="text-center mb-8">
       <h2 class="text-3xl md:text-4xl font-bold text-gray-900">{label}</h2>
       <p class="text-lg text-gray-600 max-w-3xl mx-auto">{description}</p>
+      {hls && (
+        <div class="mt-2 flex justify-center">
+          <span class="inline-flex items-center rounded-full bg-green-100 text-green-800 px-2.5 py-0.5 text-xs font-medium">
+            Up to 4K (Adaptive)
+          </span>
+        </div>
+      )}
     </div>
 
     {hasSource ? (
