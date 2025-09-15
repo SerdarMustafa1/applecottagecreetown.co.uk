@@ -37,6 +37,7 @@ export default function PanoViewerIsland({ pano, height = 320 }: Props) {
         const viewer = pannellumLib.viewer(el, {
           type: 'equirectangular',
           panorama: pano.src,
+          crossOrigin: 'anonymous',
           autoLoad: true,
           compass: false,
           showZoomCtrl: true,
