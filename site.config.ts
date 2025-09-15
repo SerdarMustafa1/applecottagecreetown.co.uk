@@ -61,9 +61,9 @@ export const site = {
     { src: media('/images/exterior/exterior-from-landing-2EE3F1E1.jpeg'), alt: 'Property from elevated view', caption: 'Elevated property perspective' },
     { src: media('/images/exterior/property-rear-main-DA26379D.jpeg'), alt: 'Main rear garden view', caption: 'Main rear garden with full property view' },
     { src: media('/images/exterior/property-rear-1-900A7CB2.jpeg'), alt: 'Alternative rear view', caption: 'Rear garden alternative angle' },
-    { src: media('/images/exterior/flat-garden-1-exterior-view-469CFFB4.jpeg'), alt: 'Garden flat area overview', caption: 'Flat garden area - perfect for entertaining' },
-    { src: media('/images/exterior/flat-garden2-exterior-view-7847BC45.jpeg'), alt: 'Garden flat area angle 2', caption: 'Garden space from different perspective' },
-    { src: media('/images/exterior/flat-garden-3-exterior-view-CA14EC65.jpeg'), alt: 'Garden flat area angle 3', caption: 'Expansive garden showing full potential' },
+  { src: media('/images/exterior/garden-view-1.jpg'), alt: 'Garden flat area overview', caption: 'Flat garden area - perfect for entertaining' },
+  { src: media('/images/exterior/garden-view-2.jpg'), alt: 'Garden flat area angle 2', caption: 'Garden space from different perspective' },
+  { src: media('/images/exterior/garden-view-3.jpg'), alt: 'Garden flat area angle 3', caption: 'Expansive garden showing full potential' },
     
     // Panoramic exterior views
     { src: media('/images/exterior/pano-garden-1-exterior-view-2FF85833.jpeg'), alt: 'Garden panoramic view', caption: 'Panoramic garden vista' },
@@ -94,7 +94,8 @@ export const site = {
     { label: 'Front Bedroom', src: media('/images/panos/front-bedroom-pano.jpg'), srcWebp: media('/images/panos/front-bedroom-pano.webp'), preview: media('/images/panos/front-bedroom-pano.jpg') },
     { label: 'Hallway', src: media('/images/panos/hallway-pano.jpg'), srcWebp: media('/images/panos/hallway-pano.webp'), preview: media('/images/panos/hallway-pano.jpg') },
     { label: 'Lounge', src: media('/images/panos/lounge-pano.jpg'), srcWebp: media('/images/panos/lounge-pano.webp'), preview: media('/images/panos/lounge-pano.jpg') },
-    { label: 'Entrance Steps', src: media('/images/panos/steps-pano.jpg'), srcWebp: media('/images/panos/steps-pano.webp'), preview: media('/images/panos/steps-pano.jpg') }
+  { label: 'Entrance Steps', src: media('/images/panos/steps-pano.jpg'), srcWebp: media('/images/panos/steps-pano.webp'), preview: media('/images/panos/steps-pano.jpg') },
+  { label: 'Master Bedroom', src: media('/images/panos/master-bedroom-pano.jpg'), preview: media('/images/panos/master-bedroom-pano.jpg') }
   ],
   
   // 360° Virtual Tours - Interactive room experiences
@@ -140,6 +141,13 @@ export const site = {
       videoWebm: media('/videos/interior/conservatory-360.webm'), 
       poster: media('/images/interior/conservatory-360-poster.jpg'),
       description: 'Bright conservatory with garden access'
+    },
+    { 
+      label: 'Master Bedroom 360°', 
+  videoMp4: media('/videos/interior/360-master-bedroom-1-interior.mp4'), 
+  videoWebm: media('/videos/interior/360-master-bedroom-1-interior.webm'), 
+  poster: media('/images/interior/master-bedroom-360-poster.jpg'),
+      description: 'Spacious master bedroom with wraparound view'
     }
   ],
   
@@ -160,7 +168,11 @@ export const site = {
       { src: media('/images/interior/interior-room-6D088E35.jpeg'), alt: 'Bedroom main view', caption: 'Bright and airy bedroom' },
       { src: media('/images/interior/interior-room-800F4A11.jpeg'), alt: 'Bedroom angle 2', caption: 'Bedroom with fitted storage' },
       { src: media('/images/interior/interior-room-AAA96C60.jpeg'), alt: 'Master bedroom', caption: 'Spacious master bedroom' },
-      { src: media('/images/interior/interior-detail-1B21C73B.jpeg'), alt: 'Bedroom detail', caption: 'Quality bedroom fittings' }
+  { src: media('/images/interior/interior-detail-1B21C73B.jpeg'), alt: 'Bedroom detail', caption: 'Quality bedroom fittings' },
+  // New master bedroom images
+  { src: media('/images/interior/master-bedroom-1.jpg'), alt: 'Master bedroom main', caption: 'Master bedroom main view' },
+  { src: media('/images/interior/master-bedroom-2.jpg'), alt: 'Master bedroom angle 2', caption: 'Master bedroom alternate angle' },
+  { src: media('/images/interior/master-bedroom-3.jpg'), alt: 'Master bedroom angle 3', caption: 'Master bedroom with storage' }
     ],
     bathroom: [
       { src: media('/images/interior/interior-room-B4EF8A08.jpeg'), alt: 'Bathroom main', caption: 'Modern family bathroom' },
@@ -174,7 +186,7 @@ export const site = {
     exterior: [
       { src: media('/images/exterior/annex-office-389752AB.jpeg'), alt: 'Annex office', caption: 'Separate annex office - perfect for remote work', feature: 'Home Office' },
       { src: media('/images/exterior/garden-lean-to-view-032D67F9.jpeg'), alt: 'Garden storage', caption: 'Useful lean-to for garden storage', feature: 'Storage' },
-      { src: media('/images/exterior/flat-garden-1-exterior-view-469CFFB4.jpeg'), alt: 'Flat garden area', caption: 'Level garden area perfect for entertaining', feature: 'Entertainment Space' }
+  { src: media('/images/exterior/garden-view-1.jpg'), alt: 'Flat garden area', caption: 'Level garden area perfect for entertaining', feature: 'Entertainment Space' }
     ],
     energyEfficiency: [
       { src: media('/misc/epc.png'), alt: 'EPC Rating B', caption: 'Energy Performance Certificate - Rating B', feature: 'Energy Efficient' }

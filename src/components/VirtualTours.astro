@@ -61,6 +61,7 @@ import site from '../../site.config';
         poster=""
         preload="metadata"
       >
+        <!-- Sources will be set dynamically; keep tags present -->
         <source id="virtual-tour-mp4" src="" type="video/mp4">
         <source id="virtual-tour-webm" src="" type="video/webm">
         Your browser does not support the video tag.
@@ -89,8 +90,21 @@ import site from '../../site.config';
     const description = document.getElementById('virtual-tour-description');
 
     // Set video sources
-    mp4Source.src = tour.videoMp4;
-    webmSource.src = tour.videoWebm;
+    mp4Source.src = tour.videoMp4 || '';
+    // Adjust MIME type based on extension (support temporary .mov uploads)
+    if (mp4Source.src.endsWith('.mov')) {
+      mp4Source.setAttribute('type', 'video/quicktime');
+    } else {
+      mp4Source.setAttribute('type', 'video/mp4');
+    }
+    if (tour.videoWebm) {
+      webmSource.src = tour.videoWebm;
+      webmSource.removeAttribute('data-disabled');
+      webmSource.removeAttribute('disabled');
+    } else {
+      webmSource.src = '';
+      webmSource.setAttribute('data-disabled', 'true');
+    }
     video.poster = tour.poster;
 
     // Set title and description

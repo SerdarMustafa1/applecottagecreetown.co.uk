@@ -14,14 +14,18 @@ describe('ContactFormIsland', () => {
 
   it('renders form fields and submits', () => {
     render(<ContactFormIsland />);
-    expect(screen.getByPlaceholderText('Name')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Email')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Message')).toBeInTheDocument();
+    const nameInput = screen.getByLabelText(/name/i);
+    const emailInput = screen.getByLabelText(/email/i);
+    const messageInput = screen.getByLabelText(/message/i);
+  expect(nameInput).toBeTruthy();
+  expect(emailInput).toBeTruthy();
+  expect(messageInput).toBeTruthy();
 
-    fireEvent.change(screen.getByPlaceholderText('Name'), { target: { value: 'John' } });
-    fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'john@example.com' } });
-    fireEvent.change(screen.getByPlaceholderText('Message'), { target: { value: 'Hello' } });
-    fireEvent.click(screen.getByText('Send'));
-    expect(screen.getByText('Thank you for your message!')).toBeInTheDocument();
+    fireEvent.change(nameInput, { target: { value: 'John' } });
+    fireEvent.change(emailInput, { target: { value: 'john@example.com' } });
+    fireEvent.change(messageInput, { target: { value: 'Hello' } });
+  const [submitBtn] = screen.getAllByRole('button', { name: /send/i });
+  fireEvent.click(submitBtn);
+  expect(screen.getByText('Thank you for your message!')).toBeTruthy();
   });
 });
