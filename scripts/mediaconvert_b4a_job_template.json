@@ -1,0 +1,142 @@
+{
+  "Settings": {
+    "TimecodeConfig": { "Source": "ZEROBASED" },
+    "OutputGroups": [
+      {
+        "Name": "AppleCottage HLS",
+        "OutputGroupSettings": {
+          "Type": "HLS_GROUP_SETTINGS",
+          "HlsGroupSettings": {
+            "SegmentLength": 6,
+            "Destination": "s3://YOUR_OUTPUT_BUCKET/b4a/hls/",
+            "ManifestDurationFormat": "INTEGER",
+            "MinFinalSegmentLength": 0,
+            "DirectoryStructure": "SINGLE_DIRECTORY",
+            "CodecSpecification": "RFC_6381",
+            "ManifestCompression": "NONE",
+            "OutputSelection": "MANIFESTS_AND_SEGMENTS",
+            "ProgramDateTime": "EXCLUDE",
+            "SegmentControl": "SEGMENTED_FILES",
+            "ClientCache": "ENABLED",
+            "StreamInfResolution": "INCLUDE",
+            "IndexNSegments": 0,
+            "CaptionLanguageSetting": "OMIT",
+            "CaptionLanguageMappings": []
+          }
+        },
+        "Outputs": [
+          {
+            "NameModifier": "_720p",
+            "ContainerSettings": { "Container": "M3U8" },
+            "VideoDescription": {
+              "ScalingBehavior": "DEFAULT",
+              "AfdSignaling": "NONE",
+              "AntiAlias": "ENABLED",
+              "Sharpness": 50,
+              "CodecSettings": {
+                "Codec": "H_264",
+                "H264Settings": {
+                  "Bitrate": 2500000,
+                  "RateControlMode": "QVBR",
+                  "MaxBitrate": 3500000,
+                  "CodecLevel": "AUTO",
+                  "CodecProfile": "MAIN",
+                  "GopSize": 2,
+                  "GopSizeUnits": "SECONDS",
+                  "GopClosedCadence": 1,
+                  "GopBReference": "DISABLED",
+                  "NumberBFramesBetweenReferenceFrames": 2,
+                  "FramerateControl": "INITIALIZE_FROM_SOURCE",
+                  "ParControl": "INITIALIZE_FROM_SOURCE"
+                }
+              },
+              "Height": 720,
+              "Width": 1280
+            },
+            "AudioDescriptions": [
+              {
+                "CodecSettings": {
+                  "Codec": "AAC",
+                  "AacSettings": { "Bitrate": 128000, "CodingMode": "CODING_MODE_2_0", "SampleRate": 48000 }
+                }
+              }
+            ]
+          },
+          {
+            "NameModifier": "_1080p",
+            "ContainerSettings": { "Container": "M3U8" },
+            "VideoDescription": {
+              "CodecSettings": {
+                "Codec": "H_264",
+                "H264Settings": {
+                  "Bitrate": 5000000,
+                  "RateControlMode": "QVBR",
+                  "MaxBitrate": 7000000,
+                  "CodecLevel": "AUTO",
+                  "CodecProfile": "HIGH",
+                  "GopSize": 2,
+                  "GopSizeUnits": "SECONDS",
+                  "GopClosedCadence": 1,
+                  "NumberBFramesBetweenReferenceFrames": 2,
+                  "FramerateControl": "INITIALIZE_FROM_SOURCE",
+                  "ParControl": "INITIALIZE_FROM_SOURCE"
+                }
+              },
+              "Height": 1080,
+              "Width": 1920
+            },
+            "AudioDescriptions": [
+              {
+                "CodecSettings": {
+                  "Codec": "AAC",
+                  "AacSettings": { "Bitrate": 160000, "CodingMode": "CODING_MODE_2_0", "SampleRate": 48000 }
+                }
+              }
+            ]
+          },
+          {
+            "NameModifier": "_2160p",
+            "ContainerSettings": { "Container": "M3U8" },
+            "VideoDescription": {
+              "CodecSettings": {
+                "Codec": "H_264",
+                "H264Settings": {
+                  "Bitrate": 16000000,
+                  "RateControlMode": "QVBR",
+                  "MaxBitrate": 22000000,
+                  "CodecLevel": "AUTO",
+                  "CodecProfile": "HIGH",
+                  "GopSize": 2,
+                  "GopSizeUnits": "SECONDS",
+                  "GopClosedCadence": 1,
+                  "NumberBFramesBetweenReferenceFrames": 2,
+                  "FramerateControl": "INITIALIZE_FROM_SOURCE",
+                  "ParControl": "INITIALIZE_FROM_SOURCE"
+                }
+              },
+              "Height": 2160,
+              "Width": 3840
+            },
+            "AudioDescriptions": [
+              {
+                "CodecSettings": {
+                  "Codec": "AAC",
+                  "AacSettings": { "Bitrate": 192000, "CodingMode": "CODING_MODE_2_0", "SampleRate": 48000 }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "Inputs": [
+      {
+        "FileInput": "s3://YOUR_INPUT_BUCKET/b4a.mov"
+      }
+    ]
+  },
+  "Role": "arn:aws:iam::ACCOUNT_ID:role/MediaConvert_Default_Role",
+  "Queue": "arn:aws:mediaconvert:REGION:ACCOUNT_ID:queues/Default",
+  "UserMetadata": { "Project": "AppleCottage", "Purpose": "BeforeAfter" }
+}
+

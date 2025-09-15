@@ -41,6 +41,16 @@ const hasSource = !!(hls || mp4_2160 || mp4_1080 || webm_1080);
           </div>
         </button>
         <div id="b4a-player-wrap" class="hidden"></div>
+        <p class="mt-3 text-center text-sm text-gray-600">
+          <a
+            href={(mp4_1080 || mp4_2160 || webm_1080 || hls) || '#'}
+            target="_blank" rel="noopener"
+            class="text-blue-600 hover:underline"
+            aria-label="Open the before & after video in a new tab"
+          >
+            Open in a new tab
+          </a>
+        </p>
       </div>
     ) : (
       <div class="mx-auto max-w-2xl rounded border p-4 bg-white text-sm text-gray-700">
@@ -105,4 +115,3 @@ const hasSource = !!(hls || mp4_2160 || mp4_1080 || webm_1080);
     });
   })();
 </script>
-
