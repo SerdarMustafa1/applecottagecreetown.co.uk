@@ -14,6 +14,11 @@ const gaId = site.analyticsId;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
       <Seo {title} {description} />
+      {gaId && (
+        <script is:inline>
+          {`var gaId='${gaId}';`}
+        </script>
+      )}
       <link rel="stylesheet" id="silktide-consent-manager-css" href="/cookie-banner/silktide-consent-manager.css" />
       <script src="/cookie-banner/silktide-consent-manager.js" defer></script>
       <link rel="icon" href="/favicon.svg" type="image/svg+xml" />

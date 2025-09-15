@@ -26,11 +26,15 @@ export default function PanoViewerIsland({ pano, height = 320 }: Props) {
     const init = async () => {
       if (inited) return;
       try {
-        const [{ default: pannellum }, _css] = await Promise.all([
+        await Promise.all([
           import('pannellum/build/pannellum.js'),
           import('pannellum/build/pannellum.css'),
         ]);
-        const viewer = pannellum.viewer(el, {
+        const pannellumLib = (window as any).pannellum;
+        if (!pannellumLib || !pannellumLib.viewer) {
+          throw new Error('Pannellum not available on window');
+        }
+        const viewer = pannellumLib.viewer(el, {
           type: 'equirectangular',
           panorama: pano.src,
           autoLoad: true,
@@ -91,4 +95,3 @@ export default function PanoViewerIsland({ pano, height = 320 }: Props) {
     </div>
   );
 }
-
