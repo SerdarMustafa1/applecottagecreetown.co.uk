@@ -3,9 +3,9 @@ const { items = [] } = Astro.props;
 ---
 <section id="highlights" class="py-8">
   <div class="container">
-    <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
-      {items.map((item) => (
-        <div class="rounded border p-4" aria-label={item.label}>
+    <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-4" id="highlights-grid">
+      {items.map((item, index) => (
+        <div class="highlight-tile rounded border p-4 transition-all duration-500" data-index={index} aria-label={item.label}>
           <h3 class="font-semibold">{item.label}</h3>
           <p>{item.value}</p>
         </div>
@@ -13,3 +13,39 @@ const { items = [] } = Astro.props;
     </div>
   </div>
 </section>
+
+<style>
+  .highlight-tile {
+    transform: scale(1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .highlight-tile.focused {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+    border-color: rgb(59, 130, 246);
+    z-index: 10;
+    position: relative;
+  }
+</style>
+
+<script>
+  const tiles = document.querySelectorAll('.highlight-tile');
+  
+  function cycleFocus() {
+    // Remove focus from all tiles
+    tiles.forEach(tile => tile.classList.remove('focused'));
+    
+    // Pick random tile
+    const randomIndex = Math.floor(Math.random() * tiles.length);
+    if (tiles[randomIndex]) {
+      tiles[randomIndex].classList.add('focused');
+    }
+  }
+  
+  // Start the cycle
+  if (tiles.length > 0) {
+    cycleFocus(); // Focus random tile immediately
+    setInterval(cycleFocus, 3000); // Then cycle every 3 seconds
+  }
+</script>

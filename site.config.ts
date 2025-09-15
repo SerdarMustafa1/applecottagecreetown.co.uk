@@ -35,16 +35,15 @@ export const site = {
   address: 'Apple Cottage, Creetown, Scotland',
   coordinates: { lat: 54.9, lng: -4.4 },
   bookingUrl: 'https://tidycal.com/sidmustafa/apple-cottage-viewing',
-  price: 'Offers Over £275,000',
-  bedrooms: 3,
-  bathrooms: 1,
-  epc: 'B',
+  price: '💰 Offers Over £275,000',
+  bedrooms: '🛏️ 3 Double Bedrooms',
+  bathrooms: '🛁 1 + Downstairs WC',
+  epc: '⚡ B - Energy Efficient',
   plotSize: '0.13 acres (≈ 532 m²)',
   internalArea: '~122 m² main house + ~25 m² annex',
   what3words: '///silk.dynamics.quitter',
   hero: {
-    image: media('/images/new/img_0384-1200.jpg'),
-    imageWebp: media('/images/new/img_0384-1200.webp'),
+    image: media('/images/exterior/exterior-from-landing-2EE3F1E1.jpeg'),
     tagline: 'Recently renovated three‑bed with annex, EV charging & landscaped gardens.'
   },
   distances: {
@@ -71,13 +70,13 @@ export const site = {
   ],
   // Floor plans: exactly two 2D plans (house + annex)
   floorplans: [
-    { label: 'House (2D)', src: OVERRIDES.FLOORPLAN_GROUND_URL || `${DEFAULT_CDN}/misc/floorplan-house-2d.png` },
-    { label: 'Annex (2D)', src: OVERRIDES.FLOORPLAN_ANNEX_GROUND_URL || `${DEFAULT_CDN}/misc/annnex-Floor%20Plan.png` },
+    { label: 'House (2D)', src: OVERRIDES.FLOORPLAN_GROUND_URL || `${DEFAULT_CDN}/floorplans/house-2d.png` },
+    { label: 'Annex (2D)', src: OVERRIDES.FLOORPLAN_ANNEX_GROUND_URL || `${DEFAULT_CDN}/floorplans/annex-floor-plan.png` },
   ],
   // Single 3D overview video
   floorplans3d: OVERRIDES.FLOORPLAN_3D_URL
     ? [{ label: '3D Overview', src: OVERRIDES.FLOORPLAN_3D_URL }]
-    : [{ label: '3D Overview', src: `${DEFAULT_CDN}/misc/floorplan-3d.mp4` }],
+    : [{ label: '3D Overview', src: `${DEFAULT_CDN}/floorplans/house-3d.mp4` }],
   // Optional Before/After video sources (wired to component)
   beforeAfterVideo: {
     hls: B4A.HLS,
@@ -87,14 +86,26 @@ export const site = {
     poster: B4A.POSTER,
   },
   gallery: [
-    // Current optimized images
-    { src: media('/images/new/garden-centre-1200.jpg'), srcWebp: media('/images/new/garden-centre-1200.webp'), alt: 'Garden centre view', caption: 'Garden centre view' },
-    { src: media('/images/new/garden-corner-1200.jpg'), srcWebp: media('/images/new/garden-corner-1200.webp'), alt: 'Garden corner area', caption: 'Garden corner area' },
-    { src: media('/images/new/img_0384-1200.jpg'), srcWebp: media('/images/new/img_0384-1200.webp'), alt: 'Property exterior', caption: 'Property exterior' },
-    { src: media('/images/new/street-cairnsmore-1200.jpg'), srcWebp: media('/images/new/street-cairnsmore-1200.webp'), alt: 'Street view towards Cairnsmore', caption: 'Street view towards Cairnsmore' },
-    { src: media('/images/new/street-left-1200.jpg'), srcWebp: media('/images/new/street-left-1200.webp'), alt: 'Street view from left', caption: 'Street view from left' },
-    { src: media('/images/new/view-front-bedroom-1200.jpg'), srcWebp: media('/images/new/view-front-bedroom-1200.webp'), alt: 'View from front bedroom', caption: 'View from front bedroom' },
-    { src: media('/images/new/view-hallway-1200.jpg'), srcWebp: media('/images/new/view-hallway-1200.webp'), alt: 'View from hallway', caption: 'View from hallway' },
+    // Exterior views
+    { src: media('/images/exterior/garden-centre-1200.jpg'), srcWebp: media('/images/exterior/garden-centre-1200.webp'), alt: 'Garden centre view', caption: 'Garden centre view' },
+    { src: media('/images/exterior/garden-corner-1200.jpg'), srcWebp: media('/images/exterior/garden-corner-1200.webp'), alt: 'Garden corner area', caption: 'Garden corner area' },
+    { src: media('/images/exterior/street-cairnsmore-1200.jpg'), srcWebp: media('/images/exterior/street-cairnsmore-1200.webp'), alt: 'Street view towards Cairnsmore', caption: 'Street view towards Cairnsmore' },
+    { src: media('/images/exterior/street-left-1200.jpg'), srcWebp: media('/images/exterior/street-left-1200.webp'), alt: 'Street view from left', caption: 'Street view from left' },
+    
+    // Interior views
+    { src: media('/images/interior/view-front-bedroom-1200.jpg'), srcWebp: media('/images/interior/view-front-bedroom-1200.webp'), alt: 'View from front bedroom', caption: 'View from front bedroom' },
+    { src: media('/images/interior/view-hallway-1200.jpg'), srcWebp: media('/images/interior/view-hallway-1200.webp'), alt: 'View from hallway', caption: 'View from hallway' },
+    { src: media('/images/interior/kitchen-1.jpg'), alt: 'Kitchen main view', caption: 'Modern fitted kitchen' },
+    { src: media('/images/interior/kitchen-2.jpg'), alt: 'Kitchen angle 2', caption: 'Kitchen workspace and storage' },
+    { src: media('/images/interior/kitchen-4.jpg'), alt: 'Kitchen detail', caption: 'Kitchen appliances and fittings' },
+    { src: media('/images/interior/lounge-3.jpg'), alt: 'Main lounge', caption: 'Comfortable main living room' },
+    { src: media('/images/interior/conservatory-1.jpg'), alt: 'Conservatory', caption: 'Bright conservatory with garden access' },
+    { src: media('/images/interior/bathroom.jpg'), alt: 'Family bathroom', caption: 'Modern family bathroom' },
+    { src: media('/images/interior/bedroom-rear.jpg'), alt: 'Rear bedroom', caption: 'Rear bedroom with garden views' },
+    { src: media('/images/interior/master-bedroom-1.jpg'), alt: 'Master bedroom main', caption: 'Spacious master bedroom' },
+    { src: media('/images/interior/master-bedroom-2.jpg'), alt: 'Master bedroom angle 2', caption: 'Master bedroom with fitted wardrobes' },
+    { src: media('/images/interior/master-bedroom-3.jpg'), alt: 'Master bedroom angle 3', caption: 'Master bedroom storage area' },
+    { src: media('/images/interior/zen-room-1.jpg'), alt: 'Zen room', caption: 'Peaceful zen room space' },
     
     // Dramatic exterior additions
     { src: media('/images/exterior/exterior-from-landing-2EE3F1E1.jpeg'), alt: 'Property from elevated view', caption: 'Elevated property perspective' },
@@ -104,17 +115,15 @@ export const site = {
   { src: media('/images/exterior/garden-view-2.jpg'), alt: 'Garden flat area angle 2', caption: 'Garden space from different perspective' },
   { src: media('/images/exterior/garden-view-3.jpg'), alt: 'Garden flat area angle 3', caption: 'Expansive garden showing full potential' },
     
-  // Panoramic exterior views (point to static pano snapshots available on CDN)
-  { src: media('/images/panos/garden-1-exterior-view.jpg'), alt: 'Garden panoramic view', caption: 'Panoramic garden vista' },
-  { src: media('/images/panos/garden-central-exterior-view.jpg'), alt: 'Central garden panorama', caption: 'Central garden panoramic view' },
-  { src: media('/images/panos/garden-4-exterior-view.jpg'), alt: 'Garden panorama 4', caption: 'Garden panoramic perspective' },
-  { src: media('/images/panos/drive-bottom-exterior-view.jpg'), alt: 'Driveway panoramic view', caption: 'Driveway and approach panorama' },
+  // Exterior panoramic views
+  { src: media('/images/panos/garden-1-exterior-view.jpg'), alt: 'Garden panoramic view', caption: 'Wide garden panorama showing full outdoor space' },
+  { src: media('/images/panos/garden-central-exterior-view.jpg'), alt: 'Central garden panorama', caption: 'Central garden area with mature landscaping' },
+  { src: media('/images/panos/garden-4-exterior-view.jpg'), alt: 'Rear garden panorama', caption: 'Rear garden showing entertaining areas' },
+  { src: media('/images/panos/drive-bottom-exterior-view.jpg'), alt: 'Driveway approach view', caption: 'Property approach and parking area' },
     
     // Premium interior shots
-    { src: media('/images/interior/interior-main-9A07279B.jpeg'), alt: 'Main interior living space', caption: 'Spacious main living area' },
-    { src: media('/images/interior/interior-main-19D500CE.jpeg'), alt: 'Interior main room', caption: 'Bright and airy main room' },
-  { src: media('/images/interior/interior-main-B2036F4E.jpeg'), alt: 'Interior main space', caption: 'Elegant interior main space' },
-  { src: media('/images/interior/interior-main-38453CC3.jpeg'), alt: 'Main interior area', caption: 'Well-appointed main interior' },
+    { src: media('/images/interior/interior-main-9A07279B.jpeg'), alt: 'Interior panoramic view', caption: 'Panoramic interior view' },
+    { src: media('/images/interior/interior-main-19D500CE.jpeg'), alt: 'Street view from interior', caption: 'Street view from front window' },
     
     // Property features
     { src: media('/images/exterior/annex-office-389752AB.jpeg'), alt: 'Annex office space', caption: 'Separate annex office - perfect for working from home' },
@@ -203,10 +212,10 @@ export const site = {
   { src: media('/images/interior/interior-detail-D9D61891.jpeg'), alt: 'Kitchen detail', caption: 'Quality kitchen fittings' }
     ],
     livingAreas: [
-  { src: media('/images/interior/interior-room-3B60CBFF.jpeg'), alt: 'Living area main', caption: 'Spacious main living area' },
-  { src: media('/images/interior/interior-room-4FED9062.jpeg'), alt: 'Living room view', caption: 'Comfortable living space' },
-  { src: media('/images/interior/interior-room-93B1365C.jpeg'), alt: 'Living area perspective', caption: 'Open-plan living area' },
-  { src: media('/images/interior/interior-detail-D9D61891.jpeg'), alt: 'Living area detail', caption: 'Quality interior finishes' }
+  { src: media('/images/interior/interior-room-3B60CBFF.jpeg'), alt: 'Main lounge', caption: 'Comfortable main lounge with fireplace' },
+  { src: media('/images/interior/interior-room-4FED9062.jpeg'), alt: 'Living room angle', caption: 'Living room from entrance' },
+  { src: media('/images/interior/interior-room-93B1365C.jpeg'), alt: 'Conservatory view', caption: 'Bright conservatory space' },
+  { src: media('/images/interior/interior-detail-D9D61891.jpeg'), alt: 'Interior detail', caption: 'Quality interior finishes' }
     ],
     bedrooms: [
   { src: media('/images/interior/interior-room-6D088E35.jpeg'), alt: 'Bedroom main view', caption: 'Bright and airy bedroom' },
@@ -233,7 +242,7 @@ export const site = {
   { src: media('/images/exterior/garden-view-1.jpg'), alt: 'Flat garden area', caption: 'Level garden area perfect for entertaining', feature: 'Entertainment Space' }
     ],
     energyEfficiency: [
-      { src: media('/docs/epc.png'), alt: 'EPC Rating B', caption: 'Energy Performance Certificate - Rating B', feature: 'Energy Efficient' }
+      { src: `${DEFAULT_CDN}/docs/epc.png`, alt: 'EPC Rating B', caption: 'Energy Performance Certificate - Rating B', feature: 'Energy Efficient' }
     ]
   },
   portals: {
@@ -241,9 +250,9 @@ export const site = {
     s1homes: 'https://s1homes.com/property-for-sale/Detached/20250905090829948'
   },
   docs: [
-    { label: 'Plot Plan', href: OVERRIDES.PLOT_IMAGE_URL || media('/docs/plot.png') },
-    { label: 'Home Report', href: media('/docs/home-report.pdf') },
-    { label: 'Planning Permission', href: media('/images/misc/planning-permission.png') }
+    { label: 'Plot Plan', href: OVERRIDES.PLOT_IMAGE_URL || `${DEFAULT_CDN}/docs/plot.png` },
+    { label: 'Home Report', href: `${DEFAULT_CDN}/docs/home-report.pdf` },
+    { label: 'Planning Permission', href: `${DEFAULT_CDN}/docs/planning-permission.png` }
   ]
 };
 

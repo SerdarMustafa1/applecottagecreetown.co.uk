@@ -1,50 +1,44 @@
 ---
-title: Highlights
+title: Property Highlights
 items:
-  - label: Plot Size
-    value: "0.13 acres (≈ 532 m² title plan)"
-  - label: Main House Area
-    value: "~122 m² internal area"
-  - label: Annex Area
-    value: "Plus ~25 m² annex"
-  - label: Renovation
-    value: "Fully renovated in 2025"
-  - label: Condition
-    value: "Turn‑key move‑in ready"
-  - label: Flooring
-    value: "New luxury carpet & LVT"
-  - label: Electrics
-    value: "Updated inside & out"
-  - label: Doors
-    value: "New composite externals"
-  - label: Bedrooms Type
-    value: "Three double bedrooms"
-  - label: Layout
-    value: "Large open‑plan lounge"
-  - label: Kitchen
-    value: "Designer cabinets & appliances"
-  - label: Extension
-    value: "Lightweight relaxation/zen room"
-  - label: Utility
-    value: "Custom utility + WC + pantry"
-  - label: Bathroom
-    value: "New suite installed"
-  - label: Annex Office
-    value: "Separate heated workspace"
-  - label: EV Charging
-    value: "On‑site charging point"
-  - label: Gardens
-    value: "Landscaped, south‑facing"
-  - label: Connectivity
-    value: "High‑speed broadband"
-  - label: Garage/Workshop
-    value: "With power and lighting"
-  - label: Solar PV + Battery
-    value: ">5 kWh storage, plug‑and‑play expandable; MCS‑installed 2023 and under warranty"
-  - label: WCs
-    value: "Downstairs cloakroom + annex"
-  - label: Planning
-    value: "Full permission granted for two‑storey rear extension"
-  - label: Location
-    value: "A75 2min, Kirroughtree 5min, Newton Stewart 10min"
+  # Property Size
+  - label: "🏡 Total Living Space"
+    value: "147m² (122m² house + 25m² annex)"
+    category: "size"
+  - label: "🌿 Plot Size"
+    value: "0.13 acres (532m²)"
+    category: "size"
+    
+  # Condition & Features
+  - label: "✨ Condition"
+    value: "Fully Renovated 2025 - Move-in Ready"
+    category: "condition"
+  - label: "🏠 Interior Features"
+    value: "Luxury flooring, designer kitchen, open-plan living"
+    category: "interior"
+  - label: "🧘 Unique Spaces"
+    value: "Zen room extension + heated annex office"
+    category: "interior"
+    
+  # Modern Amenities
+  - label: "🔋 Green Energy"
+    value: "Solar PV + 5kWh battery + EV charging point"
+    category: "energy"
+  - label: "🌐 Connectivity"
+    value: "High-speed broadband ready"
+    category: "tech"
+  - label: "🔧 Workshop"
+    value: "Garage with power & lighting"
+    category: "storage"
+    
+  # Outdoor & Location
+  - label: "🌻 Gardens"
+    value: "Landscaped south-facing gardens"
+    category: "outdoor"
+  - label: "📍 Prime Location"
+    value: "A75 (2min) • Kirroughtree (5min) • Newton Stewart (10min)"
+    category: "location"
+  - label: "📋 Planning"
+    value: "Permission granted for 2-storey extension"
+    category: "planning"
 ---
