@@ -33,6 +33,11 @@ export const site = {
   siteUrl: 'https://applecottagecreetown.co.uk',
   address: 'Apple Cottage, Creetown, Scotland',
   coordinates: { lat: 54.9, lng: -4.4 },
+  // Optional Points of Interest for the map (add real coordinates when ready)
+  // Example: { title: 'Gem Rock Museum', lat: 54.8963, lng: -4.3752, subtitle: 'Family attraction', meta: '≈2 min drive' }
+  pois: [
+    // Populate with real lat/lng values to display markers on the map
+  ],
   contact: {
     phone: '+44 1234 567890',
     email: 'info@applecottagecreetown.co.uk'
@@ -101,13 +106,26 @@ export const site = {
     { src: media('/images/exterior/annex-office-389752AB.jpeg'), alt: 'Annex office space', caption: 'Separate annex office - perfect for working from home' },
     { src: media('/images/exterior/garden-lean-to-view-032D67F9.jpeg'), alt: 'Garden lean-to structure', caption: 'Useful garden lean-to storage' }
   ],
+  // Location & Lifestyle image grid
+  locationExtras: [
+    { title: 'Creetown Heritage Museum', subtitle: 'Local history', image: media('/images/locations/heritage_museum.jpg'), meta: '≈1 min drive', description: 'Volunteer‑run museum of local cultural and industrial history.' },
+    { title: 'Gem Rock Museum & Café', subtitle: 'Family attraction', image: media('/images/locations/gem_rock.jpg'), meta: '≈2 min drive', description: 'Gemstones, crystals, fossils and a friendly café.' },
+    { title: 'Kirroughtree & 7stanes', subtitle: 'Trails & biking', image: media('/images/locations/kirroughtree.jpg'), meta: '≈5–10 min drive', description: 'Forest trails, mountain biking, visitor centre and bike shop.' },
+    { title: 'Ellangowan Hotel', subtitle: 'Wicker Man pub', image: media('/images/locations/ellangowan.jpg'), meta: 'In village', description: 'Friendly local with film memorabilia.' },
+    { title: 'Cairnsmore of Fleet NNR', subtitle: 'Hill & wildlife', image: media('/images/locations/cairnsmore.jpg'), meta: '≈15 min drive', description: 'Wild granite hill with panoramic views and wildlife.' },
+    { title: 'Mossyard Beach', subtitle: 'Family beach', image: media('/images/locations/mossyard.jpg'), meta: '≈15 min drive', description: 'Small sandy bay on Fleet Bay, great for family days.' },
+    { title: 'The Laird’s Inn', subtitle: 'Castle Cary pub', image: media('/images/locations/the-laird-s-inn.jpg'), meta: '≈7 min drive', description: 'Cosy 16th‑century inn with beams, stone walls and fireplace.' },
+    { title: 'Castle Cary Pools', subtitle: 'Holiday park & pools', image: media('/images/locations/castle-cary-pools.avif'), meta: '≈7 min drive', description: 'Family‑friendly park with seasonal outdoor pools.' },
+  ],
   floorplans: [
-    { label: 'House 2D Plan', src: media('/misc/floorplan-house-2d.png') },
-    { label: 'Annex 2D Plan', src: media('/misc/annnex-Floor%20Plan.png') }
+    { label: 'Ground Floor', src: media('/floorplans/ground-floor.svg') },
+    { label: 'First Floor', src: media('/floorplans/first-floor.svg') },
+    { label: 'Annex Ground Floor', src: media('/floorplans/annex-ground.svg') },
+    { label: 'Annex First Floor', src: media('/floorplans/annex-first.svg') }
   ],
-  floorplans3d: [
-    { label: '3D Overview', src: OVERRIDES.FLOORPLAN_3D_URL || media('/misc/floorplan-3d.mp4') }
-  ],
+  floorplans3d: OVERRIDES.FLOORPLAN_3D_URL
+    ? [{ label: '3D Overview', src: OVERRIDES.FLOORPLAN_3D_URL }]
+    : [],
   panos: [
     { label: 'Back Bedroom', src: media('/images/panos/back-bedroom-pano.jpg'), srcWebp: media('/images/panos/back-bedroom-pano.webp'), preview: media('/images/panos/back-bedroom-pano.jpg') },
     { label: 'Bathroom', src: media('/images/panos/bathroom-pano.jpg'), srcWebp: media('/images/panos/bathroom-pano.webp'), preview: media('/images/panos/bathroom-pano.jpg') },
@@ -209,7 +227,7 @@ export const site = {
   { src: media('/images/exterior/garden-view-1.jpg'), alt: 'Flat garden area', caption: 'Level garden area perfect for entertaining', feature: 'Entertainment Space' }
     ],
     energyEfficiency: [
-      { src: media('/misc/epc.png'), alt: 'EPC Rating B', caption: 'Energy Performance Certificate - Rating B', feature: 'Energy Efficient' }
+      { src: media('/docs/epc.png'), alt: 'EPC Rating B', caption: 'Energy Performance Certificate - Rating B', feature: 'Energy Efficient' }
     ]
   },
   portals: {
@@ -217,7 +235,7 @@ export const site = {
     s1homes: 'https://s1homes.com/property-for-sale/Detached/20250905090829948'
   },
   docs: [
-    { label: 'Plot Plan', href: OVERRIDES.PLOT_IMAGE_URL || media('/misc/plot.png') },
+    { label: 'Plot Plan', href: OVERRIDES.PLOT_IMAGE_URL || media('/docs/plot.png') },
     { label: 'Home Report', href: media('/docs/home-report.pdf') }
   ]
 };

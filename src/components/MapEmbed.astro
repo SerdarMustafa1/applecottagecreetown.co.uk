@@ -3,34 +3,15 @@ import site from '../../site.config';
 import * as locationMd from '../../content/location.md';
 
 const { coordinates, address } = site;
-const GOOGLE_MAPS_API_KEY = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY;
-const mapSrc = GOOGLE_MAPS_API_KEY
-  ? `https://maps.googleapis.com/maps/api/staticmap?center=${coordinates.lat},${coordinates.lng}&zoom=14&size=800x400&scale=2&key=${GOOGLE_MAPS_API_KEY}`
-  : null;
-const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+const pois = (site as any).pois || [];
 ---
 <section id="location" class="py-8">
   <div class="container">
     <h2 class="text-2xl font-bold mb-4">{locationMd?.frontmatter?.title || 'Location & Amenities'}</h2>
     <div class="grid gap-6 md:grid-cols-2">
       <div>
-      {mapSrc ? (
-        <img src={mapSrc} alt={`Map showing ${address}`} class="mx-auto rounded border" width="800" height="400" loading="lazy" />
-      ) : (
-        <div class="w-full h-64 md:h-80 border rounded overflow-hidden">
-          <iframe
-            src="https://www.openstreetmap.org/export/embed.html?bbox=-4.384%2C54.892%2C-4.382%2C54.894&amp;layer=mapnik"
-            style="border: 0; width: 100%; height: 100%;"
-            allowfullscreen
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            title="Apple Cottage Location"
-          ></iframe>
-        </div>
-      )}
-      <p class="mt-2 text-center">
-        <a href={mapsHref} target="_blank" rel="noopener noreferrer" aria-label={`Open ${address} in Google Maps (opens in a new tab)`} class="text-blue-600 underline">View on Google Maps</a>
-      </p>
+        <div id="leaflet-map" class="w-full h-64 md:h-80 border rounded overflow-hidden"></div>
+        <p class="mt-2 text-center text-sm text-gray-600">Drag to move, scroll to zoom. Tap markers for details.</p>
       </div>
       <div class="prose mx-auto md:mx-0">
         {locationMd?.Content && <locationMd.Content />}
@@ -38,3 +19,41 @@ const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURICom
     </div>
   </div>
 </section>
+
+<!-- Leaflet CSS/JS via CDN (light footprint, no API key) -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+  crossorigin=""
+/> 
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin=""
+></script>
+<script is:inline>
+  {`(function(){
+    try {
+      var mapEl = document.getElementById('leaflet-map');
+      if (!mapEl) return;
+      var center = [${coordinates.lat}, ${coordinates.lng}];
+      var map = L.map(mapEl).setView(center, 14);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+      // Property marker
+      var homePopup = ${JSON.stringify(address)};
+      L.marker(center).addTo(map).bindPopup('<strong>Apple Cottage</strong><br/>' + homePopup);
+      // POIs from config (optional)
+      var pois = ${JSON.stringify(pois || [])};
+      pois.filter(function(p){ return typeof p.lat === 'number' && typeof p.lng === 'number'; }).forEach(function(p){
+        var html = '<strong>' + (p.title || 'POI') + '</strong>' + (p.subtitle ? '<br/>' + p.subtitle : '') + (p.meta ? '<br/>' + p.meta : '');
+        L.marker([p.lat, p.lng]).addTo(map).bindPopup(html);
+      });
+    } catch(e) {
+      console && console.warn && console.warn('Leaflet map init failed', e);
+    }
+  })();`}
+  </script>
