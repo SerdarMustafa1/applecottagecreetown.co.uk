@@ -40,3 +40,7 @@
   NPM_FLAGS = "--no-audit --no-fund"
   # Ensure prod uses the same media base as local/dev
   MEDIA_BASE_URL = "https://d1t6lpjdsu4646.cloudfront.net"
+  # Workarounds for Rollup native binary resolution issues on Linux
+  ROLLUP_DISABLE_NATIVE = "1"
+  # Ensure a clean cache in case Netlify reuses previous node_modules
+  NPM_CONFIG_PREFER_OFFLINE = "false"

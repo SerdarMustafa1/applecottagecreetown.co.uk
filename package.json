@@ -12,8 +12,9 @@
     "check:cdn": "node scripts/check_cdn_urls.js",
     "lint": "eslint src tests/unit",
     "test": "vitest run tests/unit",
-    "typecheck": "tsc --noEmit",
-    "prepare": "husky"
+  "typecheck": "tsc --noEmit",
+  "prepare": "husky",
+  "lighthouse": "lhci autorun --config=./lighthouse.config.js"
   },
   "dependencies": {
     "@astrojs/react": "^3.0.0",
@@ -26,6 +27,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+  "@lhci/cli": "^0.14.0",
     "@axe-core/playwright": "^4.8.3",
     "@eslint/js": "^9.34.0",
     "@playwright/test": "^1.46.0",
@@ -51,8 +53,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "git add"
+  "eslint --fix"
     ]
   },
   "optionalDependencies": {
