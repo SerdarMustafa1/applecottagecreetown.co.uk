@@ -17,6 +17,7 @@ const OVERRIDES = {
   FLOORPLAN_3D_URL: (import.meta as any).env.FLOORPLAN_3D_URL as string | undefined,
   EPC_IMAGE_URL: (import.meta as any).env.EPC_IMAGE_URL as string | undefined,
   PLOT_IMAGE_URL: (import.meta as any).env.PLOT_IMAGE_URL as string | undefined,
+  HOME_REPORT_URL: (import.meta as any).env.HOME_REPORT_URL as string | undefined,
 };
 function media(path: string) {
   if (!path) return path;
@@ -250,8 +251,8 @@ export const site = {
     s1homes: 'https://s1homes.com/property-for-sale/Detached/20250905090829948'
   },
   docs: [
-    { label: 'Plot Plan', href: OVERRIDES.PLOT_IMAGE_URL || `${DEFAULT_CDN}/docs/plot.png` },
-    { label: 'Home Report', href: `${DEFAULT_CDN}/docs/home-report.pdf` },
+    { label: 'Plot Plan', href: OVERRIDES.PLOT_IMAGE_URL || media('/docs/plot.png') },
+    { label: 'Home Report', href: OVERRIDES.HOME_REPORT_URL || media('/docs/home-report.pdf') },
     { label: 'Planning Permission', href: `${DEFAULT_CDN}/docs/planning-permission.png` }
   ]
 };
