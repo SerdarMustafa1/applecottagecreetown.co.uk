@@ -4,7 +4,8 @@
   # See: https://github.com/npm/cli/issues/4828 and Netlify logs "Cannot find module @rollup/rollup-linux-x64-gnu".
   # Always use npm install here to ensure optional platform binaries are fetched.
   # Triggered: 2025-09-15
-  command = "npm install --no-audit --no-fund && npm run check:cdn && npm run build"
+  # Also force a clean install to avoid stale cached node_modules from macOS being reused on Linux runners.
+  command = "rm -rf node_modules && npm install --no-audit --no-fund && npm run check:cdn && npm run build"
   publish = "dist"
 
 [[headers]]
