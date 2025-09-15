@@ -1,6 +1,7 @@
 ---
 import site from '../../site.config';
 const plotImg = site?.docs?.find?.((d) => /plot/i.test(d.label))?.href || undefined;
+const homeReport = site?.docs?.find?.((d) => /home\s*report/i.test(d.label || ''));
 ---
 <section id="plans-and-docs" class="py-8">
   <div class="container">
@@ -16,6 +17,38 @@ const plotImg = site?.docs?.find?.((d) => /plot/i.test(d.label))?.href || undefi
         <figcaption class="p-2 text-sm text-gray-600 text-center">Plot plan and approximate size</figcaption>
       </figure>
       )}
+      {homeReport?.href && (
+        <div class="border rounded bg-white p-5 w-full max-w-xl mx-auto">
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Home Report</h3>
+          <p class="text-sm text-gray-600 mb-3">Independent report covering condition, valuation and energy performance.</p>
+          <a
+            id="docs-home-report-link"
+            href={homeReport.href}
+            target="_blank"
+            rel="noopener"
+            class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus-visible:ring"
+            aria-label="Open Home Report (PDF) in a new tab"
+          >
+            View Home Report (PDF)
+          </a>
+        </div>
+      )}
     </div>
   </div>
 </section>
+{homeReport?.href && (
+  <script is:inline>
+    {`(function(){
+      var el = document.getElementById('docs-home-report-link');
+      if (!el) return;
+      el.addEventListener('click', function(){
+        if (window.gtag) {
+          window.gtag('event', 'home_report_open', {
+            event_category: 'engagement',
+            event_label: 'docs',
+          });
+        }
+      });
+    })();`}
+  </script>
+)}
