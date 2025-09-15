@@ -37,6 +37,14 @@ export const site = {
   // Example: { title: 'Gem Rock Museum', lat: 54.8963, lng: -4.3752, subtitle: 'Family attraction', meta: '≈2 min drive' }
   pois: [
     // Populate with real lat/lng values to display markers on the map
+    { title: 'Creetown Heritage Museum', lat: undefined as any, lng: undefined as any, subtitle: 'Local history', meta: '≈1 min drive' },
+    { title: 'The Gem Rock Museum & Café', lat: 54.9029544, lng: -4.3765811, subtitle: 'Family attraction', meta: '≈2 min drive' },
+    { title: 'Kirroughtree Visitor Centre (7stanes)', lat: 54.9542686, lng: -4.4194704, subtitle: 'Trails & biking', meta: '≈5–10 min drive' },
+    { title: 'Ellangowan Hotel (The Wicker Man pub)', lat: undefined as any, lng: undefined as any, subtitle: 'In village', meta: '' },
+    { title: 'Cairnsmore of Fleet NNR', lat: 54.9475428, lng: -4.258444, subtitle: 'Hill & wildlife', meta: '≈15 min drive' },
+    { title: 'Mossyard Beach', lat: 54.8405845, lng: -4.2579869, subtitle: 'Family beach', meta: '≈15 min drive' },
+    { title: 'The Laird’s Inn (Castle Cary)', lat: 54.891254, lng: -4.3791756, subtitle: 'Castle Cary pub', meta: '≈7 min drive' },
+    { title: 'Castle Cary Pools', lat: 54.891254, lng: -4.3791756, subtitle: 'Holiday park & pools', meta: '≈7 min drive' },
   ],
   contact: {
     phone: '+44 1234 567890',
@@ -118,10 +126,30 @@ export const site = {
     { title: 'Castle Cary Pools', subtitle: 'Holiday park & pools', image: media('/images/locations/castle-cary-pools.avif'), meta: '≈7 min drive', description: 'Family‑friendly park with seasonal outdoor pools.' },
   ],
   floorplans: [
-    { label: 'Ground Floor', src: media('/floorplans/ground-floor.svg') },
-    { label: 'First Floor', src: media('/floorplans/first-floor.svg') },
-    { label: 'Annex Ground Floor', src: media('/floorplans/annex-ground.svg') },
-    { label: 'Annex First Floor', src: media('/floorplans/annex-first.svg') }
+    {
+      label: 'Ground Floor',
+      src:
+        OVERRIDES.FLOORPLAN_GROUND_URL ||
+        (MEDIA_BASE ? `${MEDIA_BASE.replace(/\/$/, '')}/misc/floorplan-house-2d.png` : media('/floorplans/ground-floor.svg')),
+    },
+    {
+      label: 'First Floor',
+      src:
+        OVERRIDES.FLOORPLAN_FIRST_URL ||
+        (MEDIA_BASE ? `${MEDIA_BASE.replace(/\/$/, '')}/misc/annnex-Floor%20Plan.png` : media('/floorplans/first-floor.svg')),
+    },
+    {
+      label: 'Annex Ground Floor',
+      src:
+        OVERRIDES.FLOORPLAN_ANNEX_GROUND_URL ||
+        (MEDIA_BASE ? `${MEDIA_BASE.replace(/\/$/, '')}/misc/annex-ground.png` : media('/floorplans/annex-ground.svg')),
+    },
+    {
+      label: 'Annex First Floor',
+      src:
+        OVERRIDES.FLOORPLAN_ANNEX_FIRST_URL ||
+        (MEDIA_BASE ? `${MEDIA_BASE.replace(/\/$/, '')}/misc/annex-first.png` : media('/floorplans/annex-first.svg')),
+    },
   ],
   floorplans3d: OVERRIDES.FLOORPLAN_3D_URL
     ? [{ label: '3D Overview', src: OVERRIDES.FLOORPLAN_3D_URL }]
