@@ -6,13 +6,13 @@ const panos = site.panos || [];
 {panos.length > 0 && (
   <section id="panos" class="py-8">
     <div class="container">
-      <h2 class="text-2xl font-semibold mb-4 text-center">360° Tours</h2>
+      <h2 class="text-2xl font-semibold mb-2 text-center">Interactive 360° Photos</h2>
+      <p class="text-center text-sm text-gray-600 mb-4">Drag to look around; use fullscreen for the best view.</p>
       <div class="max-w-5xl mx-auto grid gap-6 md:grid-cols-2">
         {panos.map((p) => (
           <PanoViewerIsland client:idle pano={p} />
         ))}
       </div>
-      <p class="mt-4 text-center text-sm text-gray-600">Tip: drag to look around. Use fullscreen for a better view.</p>
     </div>
   </section>
 )}
