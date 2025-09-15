@@ -5,13 +5,14 @@ const panos = site.panos || [];
 ---
 {panos.length > 0 && (
   <section id="panos" class="py-8">
-    <h2 class="text-2xl font-semibold mb-4 text-center">360° Tours</h2>
-    <div class="max-w-5xl mx-auto grid gap-6 md:grid-cols-2">
-      {panos.map((p) => (
-        <PanoViewerIsland client:idle pano={p} />
-      ))}
+    <div class="container">
+      <h2 class="text-2xl font-semibold mb-4 text-center">360° Tours</h2>
+      <div class="max-w-5xl mx-auto grid gap-6 md:grid-cols-2">
+        {panos.map((p) => (
+          <PanoViewerIsland client:idle pano={p} />
+        ))}
+      </div>
+      <p class="mt-4 text-center text-sm text-gray-600">Tip: drag to look around. Use fullscreen for a better view.</p>
     </div>
-    <p class="mt-4 text-center text-sm text-gray-600">Tip: drag to look around. Use fullscreen for a better view.</p>
   </section>
 )}
-

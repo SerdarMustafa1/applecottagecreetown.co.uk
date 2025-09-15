@@ -10,9 +10,10 @@ const mapSrc = GOOGLE_MAPS_API_KEY
 const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 ---
 <section id="location" class="py-8">
-  <h2 class="text-2xl font-bold mb-4">{locationMd?.frontmatter?.title || 'Location & Amenities'}</h2>
-  <div class="grid gap-6 md:grid-cols-2">
-    <div>
+  <div class="container">
+    <h2 class="text-2xl font-bold mb-4">{locationMd?.frontmatter?.title || 'Location & Amenities'}</h2>
+    <div class="grid gap-6 md:grid-cols-2">
+      <div>
       {mapSrc ? (
         <img src={mapSrc} alt={`Map showing ${address}`} class="mx-auto rounded border" width="800" height="400" loading="lazy" />
       ) : (
@@ -30,9 +31,10 @@ const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURICom
       <p class="mt-2 text-center">
         <a href={mapsHref} target="_blank" rel="noopener noreferrer" aria-label={`Open ${address} in Google Maps (opens in a new tab)`} class="text-blue-600 underline">View on Google Maps</a>
       </p>
-    </div>
-    <div class="prose mx-auto md:mx-0">
-      {locationMd?.Content && <locationMd.Content />}
+      </div>
+      <div class="prose mx-auto md:mx-0">
+        {locationMd?.Content && <locationMd.Content />}
+      </div>
     </div>
   </div>
 </section>

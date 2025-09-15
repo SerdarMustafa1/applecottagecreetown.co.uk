@@ -3,17 +3,19 @@ import site from '../../site.config';
 const plotImg = site?.docs?.find?.((d) => /plot/i.test(d.label))?.href || undefined;
 ---
 <section id="plans-and-docs" class="py-8">
-  <h2 class="text-2xl font-semibold mb-4">Plans & Documents</h2>
-  <div class="grid gap-6 md:grid-cols-2">
-    {plotImg && (
-      <figure class="border rounded overflow-hidden bg-white">
-        <a href={plotImg} target="_blank" rel="noopener">
-          <div class="relative" style="padding-top: 75%">
-            <img src={plotImg} alt="Plot size plan" loading="lazy" class="absolute inset-0 w-full h-full object-contain bg-white" />
-          </div>
-        </a>
-        <figcaption class="p-2 text-sm text-gray-600">Plot plan and approximate size</figcaption>
-      </figure>
-    )}
+  <div class="container">
+    <h2 class="text-2xl font-semibold mb-4">Plans & Documents</h2>
+    <div class="grid gap-6 md:grid-cols-2">
+      {plotImg && (
+        <figure class="border rounded overflow-hidden bg-white">
+          <a href={plotImg} target="_blank" rel="noopener">
+            <div class="relative" style="padding-top: 75%">
+              <img src={plotImg} alt="Plot size plan" loading="lazy" class="absolute inset-0 w-full h-full object-contain bg-white" />
+            </div>
+          </a>
+          <figcaption class="p-2 text-sm text-gray-600">Plot plan and approximate size</figcaption>
+        </figure>
+      )}
+    </div>
   </div>
 </section>

@@ -6,6 +6,17 @@ export default {
   content: ['./src/**/*.{astro,html,js,jsx,ts,tsx,md,mdx}'],
   theme: {
     extend: {
+      container: {
+        center: true,
+        padding: {
+          DEFAULT: '1rem',
+          sm: '1.25rem',
+          md: '1.5rem',
+          lg: '2rem',
+          xl: '2rem',
+          '2xl': '2rem',
+        },
+      },
       colors: {
         primary: '#1D4ED8', // Example blue
         secondary: '#F59E42', // Example orange

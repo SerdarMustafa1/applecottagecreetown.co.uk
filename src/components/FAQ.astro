@@ -2,13 +2,15 @@
 const { items = [] } = Astro.props;
 ---
 <section id="faq" class="py-8">
-  <h2 class="text-2xl font-bold mb-4">FAQ</h2>
-  <dl class="space-y-4">
-    {items.map((qa) => (
-      <div>
-        <dt class="font-semibold">{qa.question}</dt>
-        <dd class="ml-4">{qa.answer}</dd>
-      </div>
-    ))}
-  </dl>
+  <div class="container">
+    <h2 class="text-2xl font-bold mb-4">FAQ</h2>
+    <dl class="space-y-4">
+      {items.map((qa) => (
+        <div>
+          <dt class="font-semibold">{qa.question}</dt>
+          <dd class="ml-4">{qa.answer}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
 </section>
