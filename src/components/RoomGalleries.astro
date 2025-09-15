@@ -2,6 +2,15 @@
 import site from '../../site.config';
 import GalleryIsland from './GalleryIsland';
 
+// Derive bedroom subgroups (Master, 2, 3) if not explicitly provided
+const allBedrooms = (site.roomGalleries?.bedrooms || []).slice();
+const isMaster = (img: any) => /master[-\s]?bedroom/i.test(img?.src || '') || /master/i.test(img?.alt || '');
+const masterBedrooms = allBedrooms.filter(isMaster);
+const others = allBedrooms.filter((img) => !isMaster(img));
+const splitIndex = Math.ceil(others.length / 2);
+const bedroom2 = others.slice(0, splitIndex);
+const bedroom3 = others.slice(splitIndex);
+
 const roomData = [
   {
     title: 'Kitchen',
@@ -19,7 +28,12 @@ const roomData = [
     title: 'Bedrooms',
     description: 'Bright and airy bedrooms with fitted storage solutions', 
     images: site.roomGalleries?.bedrooms || [],
-    icon: '🛏️'
+    icon: '🛏️',
+    subrooms: [
+      { title: 'Master Bedroom', images: masterBedrooms, icon: '👑' },
+      { title: 'Bedroom 2', images: bedroom2, icon: '2️⃣' },
+      { title: 'Bedroom 3', images: bedroom3, icon: '3️⃣' },
+    ]
   },
   {
     title: 'Bathroom',
@@ -54,9 +68,32 @@ const roomData = [
             </svg>
           </summary>
           <div class="px-4 pb-6 md:px-6 md:pb-8">
-            <div class="bg-gray-50 rounded-2xl p-4 md:p-6">
-              <GalleryIsland images={room.images} client:visible />
-            </div>
+            {room.title === 'Bedrooms' && room.subrooms ? (
+              <div class="divide-y divide-gray-200 rounded-xl border border-gray-200 bg-white">
+                {room.subrooms.map((sr) => sr.images && sr.images.length > 0 && (
+                  <details class="group">
+                    <summary class="flex items-center gap-3 w-full cursor-pointer list-none p-3 md:p-4 hover:bg-gray-50 focus:outline-none">
+                      <div class="inline-flex items-center justify-center w-8 h-8 bg-blue-50 rounded-full">
+                        <span class="text-base" role="img" aria-label={sr.title}>{sr.icon}</span>
+                      </div>
+                      <span class="font-medium text-gray-900">{sr.title}</span>
+                      <svg class="ml-auto h-4 w-4 text-gray-500 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd" />
+                      </svg>
+                    </summary>
+                    <div class="px-3 pb-4 md:px-4 md:pb-6">
+                      <div class="bg-gray-50 rounded-xl p-3 md:p-4">
+                        <GalleryIsland images={sr.images} client:visible />
+                      </div>
+                    </div>
+                  </details>
+                ))}
+              </div>
+            ) : (
+              <div class="bg-gray-50 rounded-2xl p-4 md:p-6">
+                <GalleryIsland images={room.images} client:visible />
+              </div>
+            )}
           </div>
         </details>
       ))}
