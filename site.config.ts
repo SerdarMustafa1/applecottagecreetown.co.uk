@@ -131,26 +131,15 @@ export const site = {
       label: 'Ground Floor',
       src:
         OVERRIDES.FLOORPLAN_GROUND_URL ||
-        (MEDIA_BASE ? `${MEDIA_BASE.replace(/\/$/, '')}/misc/floorplan-house-2d.png` : media('/floorplans/ground-floor.svg')),
+        media('/floorplans/ground-floor.svg'),
     },
     {
       label: 'First Floor',
       src:
         OVERRIDES.FLOORPLAN_FIRST_URL ||
-        (MEDIA_BASE ? `${MEDIA_BASE.replace(/\/$/, '')}/misc/annnex-Floor%20Plan.png` : media('/floorplans/first-floor.svg')),
+        media('/floorplans/first-floor.svg'),
     },
-    {
-      label: 'Annex Ground Floor',
-      src:
-        OVERRIDES.FLOORPLAN_ANNEX_GROUND_URL ||
-        (MEDIA_BASE ? `${MEDIA_BASE.replace(/\/$/, '')}/misc/annex-ground.png` : media('/floorplans/annex-ground.svg')),
-    },
-    {
-      label: 'Annex First Floor',
-      src:
-        OVERRIDES.FLOORPLAN_ANNEX_FIRST_URL ||
-        (MEDIA_BASE ? `${MEDIA_BASE.replace(/\/$/, '')}/misc/annex-first.png` : media('/floorplans/annex-first.svg')),
-    },
+    // Annex floorplans removed per request to declutter
   ],
   floorplans3d: OVERRIDES.FLOORPLAN_3D_URL
     ? [{ label: '3D Overview', src: OVERRIDES.FLOORPLAN_3D_URL }]
