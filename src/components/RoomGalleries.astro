@@ -38,33 +38,36 @@ const roomData = [
       </p>
     </div>
 
-    <div class="space-y-16">
+    <div class="divide-y divide-gray-200 rounded-2xl border border-gray-200 bg-white">
       {roomData.map((room, index) => room.images.length > 0 && (
-        <div key={index} class="room-section">
-          <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
-              <span class="text-2xl" role="img" aria-label={room.title}>{room.icon}</span>
+        <details class="group room-accordion" key={index}>
+          <summary class="flex items-center gap-4 w-full cursor-pointer list-none p-4 md:p-6 hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-blue-600/30">
+            <div class="inline-flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-blue-100 rounded-full">
+              <span class="text-xl md:text-2xl" role="img" aria-label={room.title}>{room.icon}</span>
             </div>
-            <h3 class="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">{room.title}</h3>
-            <p class="text-gray-600 max-w-2xl mx-auto">{room.description}</p>
+            <div class="flex-1">
+              <h3 class="text-xl md:text-2xl font-semibold text-gray-900">{room.title}</h3>
+              <p class="text-gray-600 text-sm md:text-base">{room.description}</p>
+            </div>
+            <svg class="ml-auto h-5 w-5 text-gray-500 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd" />
+            </svg>
+          </summary>
+          <div class="px-4 pb-6 md:px-6 md:pb-8">
+            <div class="bg-gray-50 rounded-2xl p-4 md:p-6">
+              <GalleryIsland images={room.images} client:visible />
+            </div>
           </div>
-          
-          <div class="bg-gray-50 rounded-2xl p-6 md:p-8">
-            <GalleryIsland images={room.images} client:load />
-          </div>
-        </div>
+        </details>
       ))}
     </div>
   </div>
 </section>
 
 <style>
-  .room-section:not(:last-child) {
-    border-bottom: 1px solid #e5e7eb;
-    padding-bottom: 4rem;
-  }
-  
-  .room-section:last-child {
-    margin-bottom: 0;
-  }
+  /* Hide default summary marker */
+  details > summary::-webkit-details-marker { display: none; }
+  details > summary::marker { content: ''; }
+  /* Smooth open/close spacing */
+  details[open] > summary { border-bottom: 1px solid #e5e7eb; }
 </style>
