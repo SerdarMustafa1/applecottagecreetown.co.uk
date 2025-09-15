@@ -34,6 +34,7 @@ export const site = {
   siteUrl: 'https://applecottagecreetown.co.uk',
   address: 'Apple Cottage, Creetown, Scotland',
   coordinates: { lat: 54.9, lng: -4.4 },
+  bookingUrl: 'https://tidycal.com/sidmustafa/apple-cottage-viewing',
   // Optional Points of Interest for the map (add real coordinates when ready)
   // Example: { title: 'Gem Rock Museum', lat: 54.8963, lng: -4.3752, subtitle: 'Family attraction', meta: '≈2 min drive' }
   pois: [

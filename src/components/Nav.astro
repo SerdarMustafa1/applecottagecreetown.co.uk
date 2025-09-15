@@ -1,3 +1,6 @@
+---
+import site from '../../site.config';
+---
 <header class="sticky top-0 z-50 bg-white shadow">
   <div class="mx-auto max-w-7xl flex items-center justify-between p-4">
     <a href="/" class="text-xl font-bold">Apple Cottage</a>
@@ -25,7 +28,7 @@
       <li><a href="#highlights" class="block px-4 py-2 hover:underline">Highlights</a></li>
       <li><a href="#floorplans" class="block px-4 py-2 hover:underline">Floor Plans</a></li>
       <li><a href="#location" class="block px-4 py-2 hover:underline">Location</a></li>
-      <li><a href="#contact" class="block px-4 py-2 hover:underline">Contact</a></li>
+      <li><a href={site.bookingUrl} target="_blank" rel="noopener" class="block px-4 py-2 hover:underline">Book Viewing</a></li>
       <li><a href="#faq" class="block px-4 py-2 hover:underline">FAQ</a></li>
     </ul>
   </div>
