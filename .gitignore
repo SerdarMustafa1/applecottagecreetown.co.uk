@@ -5,6 +5,11 @@ dist/
 
 # macOS
 .DS_Store
+ 
+# Astro/Dev caches and editor files
+.astro/
+.tmp/
+.vscode/
 
 # Local 360 posters/videos if temporarily present under assets
 assets/images/interior/*-360-poster.jpg
