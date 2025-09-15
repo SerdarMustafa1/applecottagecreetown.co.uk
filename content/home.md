@@ -10,9 +10,10 @@ Welcome to Apple Cottage — a recently renovated three‑bedroom home with a ve
 - Electrics updated and renewed inside and out for scalability
 - New composite external doors
 - EPC rating B with efficient heating and double glazing
+- Roof‑mounted Solar PV with over 5 kWh battery storage (installed 2023 by an MCS‑registered installer), plug‑and‑play expandable and under warranty
 - Bright lounge, dining kitchen, and conservatory with garden outlook
-- Three comfortable bedrooms and two bathrooms
-- Separate annex office ideal for remote work or hobbies
+- Three comfortable bedrooms, a family bathroom, and two additional WCs (downstairs and in the annex)
+- Separate annex office ideal for remote work, gym or hobbies
 - EV charging and high‑speed broadband available
 
 Explore the photo galleries, 360° tours, detailed floorplans, and documents below. To arrange a viewing, use the contact form or the quick contact options at the top of the page.

@@ -8,7 +8,7 @@ export default function ContactFormIsland() {
     startRef.current = Date.now();
   }, []);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: React.FormEvent) {
     const timeField = (e.currentTarget.querySelector('input[name="timeToComplete"]') as HTMLInputElement | null);
     if (timeField) {
       timeField.value = String(Math.max(0, Math.round((Date.now() - startRef.current) / 1000)));

@@ -10,7 +10,7 @@ export default [
   importPlugin.flatConfigs.typescript,
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
-    languageOptions: { parser: tsParser },
+  languageOptions: { parser: tsParser },
     plugins: {
       'jsx-a11y': jsxA11y
     }

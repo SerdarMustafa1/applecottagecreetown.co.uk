@@ -85,7 +85,7 @@ Each floor plan can be viewed in two formats:
 ### 5. Room Information
 
 #### Ground Floor Rooms
-- **Kitchen**: Modern fitted kitchen with integrated appliances
+- **Kitchen**: Modern fitted kitchen with integrated designer appliances
 - **Lounge**: Spacious living area with feature fireplace  
 - **Conservatory**: Bright additional living space
 - **Bathroom**: Family bathroom with modern fixtures
