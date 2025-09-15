@@ -3,6 +3,7 @@
   # NOTE: Avoid npm ci due to npm optional-deps bug affecting Rollup native binaries on Linux.
   # See: https://github.com/npm/cli/issues/4828 and Netlify logs "Cannot find module @rollup/rollup-linux-x64-gnu".
   # Always use npm install here to ensure optional platform binaries are fetched.
+  # Triggered: 2025-09-15
   command = "npm install --no-audit --no-fund && npm run check:cdn && npm run build"
   publish = "dist"
 
