@@ -37,10 +37,11 @@ export const site = {
   // Example: { title: 'Gem Rock Museum', lat: 54.8963, lng: -4.3752, subtitle: 'Family attraction', meta: '≈2 min drive' }
   pois: [
     // Populate with real lat/lng values to display markers on the map
-    { title: 'Creetown Heritage Museum', lat: undefined as any, lng: undefined as any, subtitle: 'Local history', meta: '≈1 min drive' },
+    // Both Heritage Museum and Ellangowan are on St John Street; lat/lng marked approximate
+    { title: 'Creetown Heritage Museum', lat: 54.9005368 as any, lng: -4.3791208 as any, subtitle: 'Local history', meta: 'St John Street (approx.)' },
     { title: 'The Gem Rock Museum & Café', lat: 54.9029544, lng: -4.3765811, subtitle: 'Family attraction', meta: '≈2 min drive' },
     { title: 'Kirroughtree Visitor Centre (7stanes)', lat: 54.9542686, lng: -4.4194704, subtitle: 'Trails & biking', meta: '≈5–10 min drive' },
-    { title: 'Ellangowan Hotel (The Wicker Man pub)', lat: undefined as any, lng: undefined as any, subtitle: 'In village', meta: '' },
+    { title: 'Ellangowan Hotel (The Wicker Man pub)', lat: 54.9001368 as any, lng: -4.3791208 as any, subtitle: 'In village', meta: 'St John Street (approx.)' },
     { title: 'Cairnsmore of Fleet NNR', lat: 54.9475428, lng: -4.258444, subtitle: 'Hill & wildlife', meta: '≈15 min drive' },
     { title: 'Mossyard Beach', lat: 54.8405845, lng: -4.2579869, subtitle: 'Family beach', meta: '≈15 min drive' },
     { title: 'The Laird’s Inn (Castle Cary)', lat: 54.891254, lng: -4.3791756, subtitle: 'Castle Cary pub', meta: '≈7 min drive' },
