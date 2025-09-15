@@ -35,6 +35,25 @@ export const site = {
   address: 'Apple Cottage, Creetown, Scotland',
   coordinates: { lat: 54.9, lng: -4.4 },
   bookingUrl: 'https://tidycal.com/sidmustafa/apple-cottage-viewing',
+  price: 'Offers Over £275,000',
+  bedrooms: 3,
+  bathrooms: 1,
+  epc: 'B',
+  plotSize: '0.13 acres (≈ 532 m²)',
+  internalArea: '~122 m² main house + ~25 m² annex',
+  what3words: '///silk.dynamics.quitter',
+  distances: {
+    a75: '2 min',
+    kirroughtree: '5 min', 
+    newtonStewart: '10 min',
+    mossyard: '15 min'
+  },
+  energyFeatures: {
+    hotWater: 'Vaillant aroSTOR 270 ASHP water cylinder for efficient, low‑carbon hot water',
+    heating: 'Infrared heating panels: zoned, fast‑response room heating; minimal air movement and comfortable radiant warmth',
+    evCharger: 'Ohme Home Pro smart charger on the driveway',
+    energySupplier: 'Currently Octopus Energy on an Intelligent tariff with export; linked to the Ohme charger for smart, off‑peak charging'
+  },
   // Optional Points of Interest for the map (add real coordinates when ready)
   // Example: { title: 'Gem Rock Museum', lat: 54.8963, lng: -4.3752, subtitle: 'Family attraction', meta: '≈2 min drive' }
   pois: [

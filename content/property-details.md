@@ -15,10 +15,17 @@ title: Property Details
 
 - Energy-efficient heating and double glazing (EPC B)
 - Roof‑mounted Solar PV with >5 kWh battery storage (installed 2023 by an MCS‑registered installer), plug‑and‑play expandable, under warranty
-- Modern fitted kitchen and designer appliances, fixtures & fittings.
+- Modern fitted kitchen and designer appliances, fixtures & fittings
 - High-speed broadband available
 - Garage/workshop with power and lighting
 - 360° virtual tours and floorplans available below
+
+### Energy & Sustainability
+
+- **Hot Water**: Vaillant aroSTOR 270 ASHP water cylinder for efficient, low‑carbon hot water
+- **Heating**: Infrared heating panels with zoned, fast‑response room heating; minimal air movement and comfortable radiant warmth
+- **EV Charging**: Ohme Home Pro smart charger on the driveway
+- **Energy Supply**: Currently Octopus Energy on an Intelligent tariff with export; linked to the Ohme charger for smart, off‑peak charging
 
 ### Planning Permission
 
