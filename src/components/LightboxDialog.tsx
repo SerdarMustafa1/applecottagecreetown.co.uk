@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useId } from 'react';
 
 // The lightbox dialog receives the same array of image sources
 // passed to the gallery. Each source can be a string with optional WebP variant.
@@ -25,6 +25,7 @@ export default function LightboxDialog({
   onPrev,
   onNext,
 }: LightboxProps) {
+  const titleId = useId();
   const closeRef = useRef<HTMLButtonElement>(null);
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
@@ -84,10 +85,13 @@ export default function LightboxDialog({
       <div
         role="dialog"
         aria-modal="true"
-        aria-label={images[index].caption ? `Image viewer: ${images[index].caption}` : 'Image viewer'}
+        aria-labelledby={titleId}
         className="relative max-w-[90%] max-h-[90%]"
         onClick={(e) => e.stopPropagation()}
       >
+        <h2 id={titleId} className="sr-only">
+          {images[index].caption ? `Image viewer: ${images[index].caption}` : 'Image viewer'}
+        </h2>
         {images[index].srcWebp ? (
           <picture>
             <source srcSet={images[index].srcWebp} type="image/webp" />
