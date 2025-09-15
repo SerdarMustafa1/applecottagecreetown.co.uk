@@ -40,6 +40,33 @@ test.describe('Core user flows', () => {
     await page.goto(SITE_URL);
     await page.getByRole('link', { name: 'Floor Plans' }).click();
     await expect(page.locator('#floorplans img').first()).toBeVisible();
+    // Ensure floorplan images load with 200 response
+    // 2D: exactly two images (house + annex)
+    const srcs = await page.$$eval('#floorplans img', imgs => imgs.map(i => i.getAttribute('src')));
+    expect(srcs.filter(Boolean).length).toBe(2);
+    const MEDIA_BASE_URL = process.env.MEDIA_BASE_URL || '';
+    for (const src of srcs) {
+      if (!src) continue;
+      const resp = await page.request.get(src);
+      expect(resp.status()).toBeLessThan(300);
+      if (MEDIA_BASE_URL) {
+        expect(src.startsWith(MEDIA_BASE_URL)).toBeTruthy();
+        // Ensure we are not serving local placeholders
+        expect(src.startsWith('/floorplans/')).toBeFalsy();
+      }
+    }
+
+    // 3D: exactly one video with a valid source
+    const videoSrcs = await page.$$eval('#floorplans video source', els => els.map(e => e.getAttribute('src')));
+    expect(videoSrcs.filter(Boolean).length).toBe(1);
+    for (const vsrc of videoSrcs) {
+      if (!vsrc) continue;
+      const resp = await page.request.get(vsrc);
+      expect(resp.status()).toBeLessThan(300);
+      if (MEDIA_BASE_URL) {
+        expect(vsrc.startsWith(MEDIA_BASE_URL)).toBeTruthy();
+      }
+    }
     const results = await new AxeBuilder({ page }).include('#floorplans').analyze();
     const serious = results.violations.filter(v => ['critical', 'serious'].includes(v.impact));
     expect(serious).toEqual([]);

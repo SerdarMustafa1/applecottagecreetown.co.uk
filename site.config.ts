@@ -1,4 +1,5 @@
 const MEDIA_BASE = import.meta.env.MEDIA_BASE_URL || '';
+const DEFAULT_CDN = MEDIA_BASE ? MEDIA_BASE.replace(/\/$/, '') : 'https://d1t6lpjdsu4646.cloudfront.net';
 // Optional video env vars for Before/After section
 const B4A = {
   HLS: (import.meta as any).env.PUBLIC_B4A_HLS as string | undefined,
@@ -21,7 +22,7 @@ function media(path: string) {
   if (!path) return path;
   if (/^https?:\/\//i.test(path)) return path;
   // Keep certain assets served locally from Netlify/public
-  if (path.startsWith('/floorplans/') || path.startsWith('/docs/')) return path;
+  if (path.startsWith('/docs/')) return path;
   const base = MEDIA_BASE ? MEDIA_BASE.replace(/\/$/, '') : '';
   const p = path.startsWith('/') ? path.slice(1) : path;
   return base ? `${base}/${p}` : path;
@@ -37,49 +38,27 @@ export const site = {
   // Example: { title: 'Gem Rock Museum', lat: 54.8963, lng: -4.3752, subtitle: 'Family attraction', meta: '≈2 min drive' }
   pois: [
     // Populate with real lat/lng values to display markers on the map
-    // Both Heritage Museum and Ellangowan are on St John Street; lat/lng marked approximate
-    { title: 'Creetown Heritage Museum', lat: 54.9005368 as any, lng: -4.3791208 as any, subtitle: 'Local history', meta: 'St John Street (approx.)' },
-    { title: 'The Gem Rock Museum & Café', lat: 54.9029544, lng: -4.3765811, subtitle: 'Family attraction', meta: '≈2 min drive' },
-    { title: 'Kirroughtree Visitor Centre (7stanes)', lat: 54.9542686, lng: -4.4194704, subtitle: 'Trails & biking', meta: '≈5–10 min drive' },
+  // Both Heritage Museum and Ellangowan are on St John Street; lat/lng marked approximate
     { title: 'Ellangowan Hotel (The Wicker Man pub)', lat: 54.9001368 as any, lng: -4.3791208 as any, subtitle: 'In village', meta: 'St John Street (approx.)' },
     { title: 'Cairnsmore of Fleet NNR', lat: 54.9475428, lng: -4.258444, subtitle: 'Hill & wildlife', meta: '≈15 min drive' },
     { title: 'Mossyard Beach', lat: 54.8405845, lng: -4.2579869, subtitle: 'Family beach', meta: '≈15 min drive' },
-    { title: 'The Laird’s Inn (Castle Cary)', lat: 54.891254, lng: -4.3791756, subtitle: 'Castle Cary pub', meta: '≈7 min drive' },
-    { title: 'Castle Cary Pools', lat: 54.891254, lng: -4.3791756, subtitle: 'Holiday park & pools', meta: '≈7 min drive' },
   ],
-  contact: {
-    phone: '+44 1234 567890',
-    email: 'info@applecottagecreetown.co.uk'
-  },
-  hero: {
-    image: 'https://d1t6lpjdsu4646.cloudfront.net/images/interior/interior-room-6D088E35.jpeg',
-    imageWebp: 'https://d1t6lpjdsu4646.cloudfront.net/images/interior/interior-room-6D088E35.jpeg',
-    alternativeImages: [
-      { src: media('/images/exterior/property-rear-main-DA26379D.jpeg'), alt: 'Property rear garden view' },
-      { src: media('/images/interior/interior-main-9A07279B.jpeg'), alt: 'Interior main living area' },
-      { src: media('/images/new/img_0384-1200.jpg'), alt: 'Property exterior corner view' }
-    ],
-    tagline: 'Recently renovated three‑bed with annex, EV charging & landscaped gardens',
-    ctaLabel: 'Book a Viewing',
-    bookUrl: 'https://tidycal.com/sidmustafa/apple-cottage-viewing'
-  },
-  price: 'Offers over £300,000',
-  bedrooms: 3,
-  bathrooms: 1,
-  epc: 'B',
-  ogImage: media('/images/new/img_0384-1200.jpg'),
-  // Google Analytics 4 Measurement ID
-  analyticsId: 'G-LHB9R5TLL1',
-  // Optional: before/after renovation video sources (fill in when available)
+  // Floor plans: exactly two 2D plans (house + annex)
+  floorplans: [
+    { label: 'House (2D)', src: OVERRIDES.FLOORPLAN_GROUND_URL || `${DEFAULT_CDN}/misc/floorplan-house-2d.png` },
+    { label: 'Annex (2D)', src: OVERRIDES.FLOORPLAN_ANNEX_GROUND_URL || `${DEFAULT_CDN}/misc/annnex-Floor%20Plan.png` },
+  ],
+  // Single 3D overview video
+  floorplans3d: OVERRIDES.FLOORPLAN_3D_URL
+    ? [{ label: '3D Overview', src: OVERRIDES.FLOORPLAN_3D_URL }]
+    : [{ label: '3D Overview', src: `${DEFAULT_CDN}/misc/floorplan-3d.mp4` }],
+  // Optional Before/After video sources (wired to component)
   beforeAfterVideo: {
-    label: 'Before & After Renovation',
-    description: 'See the transformation in up to 4K.',
-    // Recommended to host via HLS on CloudFront for adaptive streaming
-    hls: B4A.HLS, // e.g. https://cdn.example.com/b4a/hls/master.m3u8
-    mp4_2160: B4A.MP4_2160, // e.g. https://cdn.example.com/b4a/b4a-2160p.mp4
-    mp4_1080: B4A.MP4_1080, // e.g. https://cdn.example.com/b4a/b4a-1080p.mp4
-    webm_1080: B4A.WEBM_1080, // optional VP9/AV1
-    poster: B4A.POSTER, // optional poster image
+    hls: B4A.HLS,
+    mp4_2160: B4A.MP4_2160,
+    mp4_1080: B4A.MP4_1080,
+    webm_1080: B4A.WEBM_1080,
+    poster: B4A.POSTER,
   },
   gallery: [
     // Current optimized images
@@ -99,17 +78,17 @@ export const site = {
   { src: media('/images/exterior/garden-view-2.jpg'), alt: 'Garden flat area angle 2', caption: 'Garden space from different perspective' },
   { src: media('/images/exterior/garden-view-3.jpg'), alt: 'Garden flat area angle 3', caption: 'Expansive garden showing full potential' },
     
-    // Panoramic exterior views
-    { src: media('/images/exterior/pano-garden-1-exterior-view-2FF85833.jpeg'), alt: 'Garden panoramic view', caption: 'Panoramic garden vista' },
-    { src: media('/images/exterior/pano-garden-central-exterior-view-1FBEF43C.jpeg'), alt: 'Central garden panorama', caption: 'Central garden panoramic view' },
-    { src: media('/images/exterior/pano-garden-4-exterior-view-55CAB83C.jpeg'), alt: 'Garden panorama 4', caption: 'Garden panoramic perspective' },
-    { src: media('/images/exterior/pano-drive-bottom-exterior-view-0E980DF8.jpeg'), alt: 'Driveway panoramic view', caption: 'Driveway and approach panorama' },
+  // Panoramic exterior views (point to static pano snapshots available on CDN)
+  { src: media('/images/panos/garden-1-exterior-view.jpg'), alt: 'Garden panoramic view', caption: 'Panoramic garden vista' },
+  { src: media('/images/panos/garden-central-exterior-view.jpg'), alt: 'Central garden panorama', caption: 'Central garden panoramic view' },
+  { src: media('/images/panos/garden-4-exterior-view.jpg'), alt: 'Garden panorama 4', caption: 'Garden panoramic perspective' },
+  { src: media('/images/panos/drive-bottom-exterior-view.jpg'), alt: 'Driveway panoramic view', caption: 'Driveway and approach panorama' },
     
     // Premium interior shots
     { src: media('/images/interior/interior-main-9A07279B.jpeg'), alt: 'Main interior living space', caption: 'Spacious main living area' },
     { src: media('/images/interior/interior-main-19D500CE.jpeg'), alt: 'Interior main room', caption: 'Bright and airy main room' },
-    { src: media('/images/interior/interior-main-BAD2D8AD.jpeg'), alt: 'Interior main space', caption: 'Elegant interior main space' },
-    { src: media('/images/interior/interior-main-4D0D375F.jpeg'), alt: 'Main interior area', caption: 'Well-appointed main interior' },
+  { src: media('/images/interior/interior-main-B2036F4E.jpeg'), alt: 'Interior main space', caption: 'Elegant interior main space' },
+  { src: media('/images/interior/interior-main-38453CC3.jpeg'), alt: 'Main interior area', caption: 'Well-appointed main interior' },
     
     // Property features
     { src: media('/images/exterior/annex-office-389752AB.jpeg'), alt: 'Annex office space', caption: 'Separate annex office - perfect for working from home' },
@@ -126,24 +105,7 @@ export const site = {
     { title: 'The Laird’s Inn', subtitle: 'Castle Cary pub', image: media('/images/locations/the-laird-s-inn.jpg'), meta: '≈7 min drive', description: 'Cosy 16th‑century inn with beams, stone walls and fireplace.' },
     { title: 'Castle Cary Pools', subtitle: 'Holiday park & pools', image: media('/images/locations/castle-cary-pools.avif'), meta: '≈7 min drive', description: 'Family‑friendly park with seasonal outdoor pools.' },
   ],
-  floorplans: [
-    {
-      label: 'Ground Floor',
-      src:
-        OVERRIDES.FLOORPLAN_GROUND_URL ||
-        media('/floorplans/ground-floor.svg'),
-    },
-    {
-      label: 'First Floor',
-      src:
-        OVERRIDES.FLOORPLAN_FIRST_URL ||
-        media('/floorplans/first-floor.svg'),
-    },
-    // Annex floorplans removed per request to declutter
-  ],
-  floorplans3d: OVERRIDES.FLOORPLAN_3D_URL
-    ? [{ label: '3D Overview', src: OVERRIDES.FLOORPLAN_3D_URL }]
-    : [],
+  
   panos: [
     { label: 'Back Bedroom', src: media('/images/panos/back-bedroom-pano.jpg'), srcWebp: media('/images/panos/back-bedroom-pano.webp'), preview: media('/images/panos/back-bedroom-pano.jpg') },
     { label: 'Bathroom', src: media('/images/panos/bathroom-pano.jpg'), srcWebp: media('/images/panos/bathroom-pano.webp'), preview: media('/images/panos/bathroom-pano.jpg') },
@@ -212,18 +174,18 @@ export const site = {
     kitchen: [
       { src: media('/images/interior/interior-room-0DC5EADA.jpeg'), alt: 'Kitchen main view', caption: 'Modern kitchen with ample storage' },
       { src: media('/images/interior/interior-room-32A352BB.jpeg'), alt: 'Kitchen angle 2', caption: 'Kitchen workspace and appliances' },
-      { src: media('/images/interior/interior-detail-3E745FF3.jpeg'), alt: 'Kitchen detail', caption: 'Quality kitchen fittings' }
+  { src: media('/images/interior/interior-detail-D9D61891.jpeg'), alt: 'Kitchen detail', caption: 'Quality kitchen fittings' }
     ],
     livingAreas: [
-      { src: media('/images/interior/interior-room-3B60CBFF.jpeg'), alt: 'Living area main', caption: 'Spacious main living area' },
-      { src: media('/images/interior/interior-room-64B4DF3B.jpeg'), alt: 'Living room view', caption: 'Comfortable living space' },
-      { src: media('/images/interior/interior-room-93B1365C.jpeg'), alt: 'Living area perspective', caption: 'Open-plan living area' },
-      { src: media('/images/interior/interior-detail-3E745FF3.jpeg'), alt: 'Living area detail', caption: 'Quality interior finishes' }
+  { src: media('/images/interior/interior-room-3B60CBFF.jpeg'), alt: 'Living area main', caption: 'Spacious main living area' },
+  { src: media('/images/interior/interior-room-4FED9062.jpeg'), alt: 'Living room view', caption: 'Comfortable living space' },
+  { src: media('/images/interior/interior-room-93B1365C.jpeg'), alt: 'Living area perspective', caption: 'Open-plan living area' },
+  { src: media('/images/interior/interior-detail-D9D61891.jpeg'), alt: 'Living area detail', caption: 'Quality interior finishes' }
     ],
     bedrooms: [
-      { src: media('/images/interior/interior-room-6D088E35.jpeg'), alt: 'Bedroom main view', caption: 'Bright and airy bedroom' },
-      { src: media('/images/interior/interior-room-800F4A11.jpeg'), alt: 'Bedroom angle 2', caption: 'Bedroom with fitted storage' },
-      { src: media('/images/interior/interior-room-AAA96C60.jpeg'), alt: 'Master bedroom', caption: 'Spacious master bedroom' },
+  { src: media('/images/interior/interior-room-6D088E35.jpeg'), alt: 'Bedroom main view', caption: 'Bright and airy bedroom' },
+  { src: media('/images/interior/interior-room-800F4A11.jpeg'), alt: 'Bedroom angle 2', caption: 'Bedroom with fitted storage' },
+  { src: media('/images/interior/interior-room-B90E9E42.jpeg'), alt: 'Master bedroom', caption: 'Spacious master bedroom' },
   { src: media('/images/interior/interior-detail-1B21C73B.jpeg'), alt: 'Bedroom detail', caption: 'Quality bedroom fittings' },
   // New master bedroom images
   { src: media('/images/interior/master-bedroom-1.jpg'), alt: 'Master bedroom main', caption: 'Master bedroom main view' },
@@ -231,9 +193,9 @@ export const site = {
   { src: media('/images/interior/master-bedroom-3.jpg'), alt: 'Master bedroom angle 3', caption: 'Master bedroom with storage' }
     ],
     bathroom: [
-      { src: media('/images/interior/interior-room-B4EF8A08.jpeg'), alt: 'Bathroom main', caption: 'Modern family bathroom' },
-      { src: media('/images/interior/interior-room-BFCFCC5A.jpeg'), alt: 'Bathroom view', caption: 'Well-appointed bathroom' },
-      { src: media('/images/interior/interior-detail-1B21C73B.jpeg'), alt: 'Bathroom detail', caption: 'Quality bathroom fittings' }
+  { src: media('/images/interior/interior-room-E330D39C.jpeg'), alt: 'Bathroom main', caption: 'Modern family bathroom' },
+  { src: media('/images/interior/interior-room-E516C44F.jpeg'), alt: 'Bathroom view', caption: 'Well-appointed bathroom' },
+  { src: media('/images/interior/interior-detail-1B21C73B.jpeg'), alt: 'Bathroom detail', caption: 'Quality bathroom fittings' }
     ]
   },
   

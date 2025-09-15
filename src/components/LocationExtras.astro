@@ -1,0 +1,26 @@
+---
+import site from '../../site.config';
+const items = site.locationExtras || [];
+---
+{items && items.length > 0 && (
+  <section id="location-extras" class="py-8">
+    <div class="container">
+      <h3 class="text-xl font-semibold mb-4">Around Apple Cottage</h3>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {items.map((it) => (
+          <article class="rounded border bg-white overflow-hidden shadow-sm">
+            {it.image && (
+              <img src={it.image} alt={it.title} class="w-full h-40 object-cover bg-gray-100" loading="lazy" />
+            )}
+            <div class="p-4">
+              <h4 class="font-semibold">{it.title}</h4>
+              {it.subtitle && <p class="text-sm text-gray-600 mt-0.5">{it.subtitle}</p>}
+              {it.description && <p class="text-sm mt-2 text-gray-700">{it.description}</p>}
+              {it.meta && <p class="text-xs mt-2 text-gray-500">{it.meta}</p>}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+)}

@@ -17,3 +17,9 @@ Welcome to Apple Cottage — a recently renovated three‑bedroom home with a ve
 - EV charging and high‑speed broadband available
 
 Explore the photo galleries, 360° tours, detailed floorplans, and documents below. To arrange a viewing, use the contact form or the quick contact options at the top of the page.
+
+## Why We Love This Home
+
+“The layout has given us true flexibility: we’ve used the hybrid annex as a double office for working from home and a well equipped home gym. The garden extends our living space through the seasons, and the energy‑saving upgrades keep bills sensible without sacrificing comfort.
+
+The position of the plot is very strategic, giving us a lot of privacy as we are the only home facing this direction. The adjoining plots are the backends of their gardens, so we are undisturbed and very quiet all year round.”

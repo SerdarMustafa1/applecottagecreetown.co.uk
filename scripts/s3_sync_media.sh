@@ -16,7 +16,6 @@ sync_dir() {
     aws s3 sync "$src" "s3://${BUCKET}/${dst_prefix}" \
       --region "$AWS_REGION" \
       --exclude "*.svg" --exclude ".gitkeep" \
-      --acl public-read \
       --cache-control "$cache_control"
   else
     echo "(skip: $src does not exist)"
@@ -32,5 +31,5 @@ sync_dir public/panos panos "public, max-age=31536000, immutable"
 # Docs (change more often)
 sync_dir public/docs docs "public, max-age=86400"
 
-echo "Done. Set PUBLIC_MEDIA_BASE_URL to https://<your-cloudfront-domain> in Netlify env."
+echo "Done. Set MEDIA_BASE_URL to https://<your-cloudfront-domain> in Netlify env."
 

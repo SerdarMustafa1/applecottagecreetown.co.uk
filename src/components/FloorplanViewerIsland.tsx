@@ -67,26 +67,6 @@ function ZoomablePlan({ plan }: { plan: Plan }) {
     };
   }, []);
 
-  const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = plan.src;
-    let filename = 'floorplan';
-    try {
-      const url = new URL(plan.src, window.location.href);
-      const pathname = url.pathname;
-      const lastSegment = pathname.split('/').filter(Boolean).pop();
-      if (lastSegment) {
-        filename = lastSegment;
-      }
-    } catch {
-      // fallback to 'floorplan'
-    }
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   return (
     <div className="mb-8">
       <h3 className="mb-2 font-semibold">{plan.label}</h3>
@@ -101,12 +81,6 @@ function ZoomablePlan({ plan }: { plan: Plan }) {
           style={{ transform: `scale(${scale})`, transformOrigin: 'center' }}
         />
       </div>
-      <button
-        onClick={handleDownload}
-        className="mt-2 text-sm text-blue-600 underline"
-      >
-        Download
-      </button>
     </div>
   );
 }

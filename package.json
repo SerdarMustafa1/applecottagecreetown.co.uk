@@ -10,8 +10,10 @@
     "build": "astro build",
     "preview": "astro preview",
     "check:cdn": "node scripts/check_cdn_urls.js",
+  "fix:cdn-images": "bash scripts/repair_cdn_images_from_s3.sh",
     "lint": "eslint src tests/unit",
-    "test": "vitest run tests/unit",
+  "test": "vitest run tests/unit",
+  "test:e2e": "playwright test tests/site-flows.e2e.spec.js",
   "typecheck": "tsc --noEmit",
   "prepare": "husky",
   "lighthouse": "lhci autorun --config=./lighthouse.config.js"

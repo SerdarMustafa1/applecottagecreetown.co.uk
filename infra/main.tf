@@ -68,6 +68,7 @@ resource "aws_cloudfront_distribution" "cdn" {
     target_origin_id       = aws_s3_bucket.media.id
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.cors_headers.id
     forwarded_values {
       query_string = false
       headers      = []
@@ -86,6 +87,30 @@ resource "aws_cloudfront_distribution" "cdn" {
 
   viewer_certificate {
     cloudfront_default_certificate = true
+  }
+}
+
+# Response headers policy to enable CORS for images/videos used by the site
+resource "aws_cloudfront_response_headers_policy" "cors_headers" {
+  name = "${var.bucket_name}-cors-open"
+
+  cors_config {
+    access_control_allow_credentials = false
+    access_control_allow_headers = ["*"]
+    access_control_allow_methods = ["GET", "HEAD"]
+    access_control_allow_origins = ["*"]
+    access_control_expose_headers = ["Content-Length", "Content-Range"]
+    origin_override = true
+  }
+
+  custom_headers_config {
+    items = [
+      {
+        header   = "Timing-Allow-Origin"
+        value    = "*"
+        override = true
+      }
+    ]
   }
 }
 
