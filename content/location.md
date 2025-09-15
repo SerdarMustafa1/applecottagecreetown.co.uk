@@ -4,16 +4,21 @@ title: Location & Lifestyle
 
 Apple Cottage lies on Silver Street in the village of Creetown (DG8 7HU). Nestled between the rugged hills of Cairnsmore of Fleet and the tidal estuary of Wigtown Bay, Creetown offers a peaceful rural setting with a strong community. The local primary school, community centre and village shop are all within easy walking distance, while the A75 provides fast access to Newton Stewart, the Galloway Forest Park and the wider Dumfries & Galloway coastline. Trails, beaches and woodland walks are on your doorstep — making this an ideal base for families, outdoor enthusiasts and those seeking a healthy work‑life balance.
 
-<!-- Local highlights are showcased in the "Around Apple Cottage" grid below to avoid duplication. -->
-Explore highlights in the “Around Apple Cottage” grid below for a quick visual overview of nearby attractions.
-
 ### Travel & Connectivity
 
-- A75: ~2 min
-- Kirroughtree: ~5 min
-- Newton Stewart: ~10 min
-- Mossyard: ~15 min
+- **A75**: ~2 min
+- **Kirroughtree**: ~5 min  
+- **Newton Stewart**: ~10 min
+- **Mossyard**: ~15 min
 
-what3words: ///silk.dynamics.quitter
+**what3words**: [///silk.dynamics.quitter](https://what3words.com/silk.dynamics.quitter)
 
-Use the interactive map below to explore the area.
+### Nearby Points of Interest
+
+- **Ellangowan Hotel (The Wicker Man pub)** — In village, St John Street (approx.)
+- **Cairnsmore of Fleet NNR** — Hill & wildlife, ≈15 min drive
+- **Mossyard Beach** — Family beach, ≈15 min drive
+
+Drag to move, scroll to zoom. Tap markers for details on the interactive map below.
+
+Explore highlights in the "Around Apple Cottage" grid below for a quick visual overview of nearby attractions.

@@ -42,6 +42,11 @@ export const site = {
   plotSize: '0.13 acres (≈ 532 m²)',
   internalArea: '~122 m² main house + ~25 m² annex',
   what3words: '///silk.dynamics.quitter',
+  hero: {
+    image: media('/images/new/img_0384-1200.jpg'),
+    imageWebp: media('/images/new/img_0384-1200.webp'),
+    tagline: 'Recently renovated three‑bed with annex, EV charging & landscaped gardens.'
+  },
   distances: {
     a75: '2 min',
     kirroughtree: '5 min', 
@@ -237,7 +242,8 @@ export const site = {
   },
   docs: [
     { label: 'Plot Plan', href: OVERRIDES.PLOT_IMAGE_URL || media('/docs/plot.png') },
-    { label: 'Home Report', href: media('/docs/home-report.pdf') }
+    { label: 'Home Report', href: media('/docs/home-report.pdf') },
+    { label: 'Planning Permission', href: media('/images/misc/planning-permission.png') }
   ]
 };
 

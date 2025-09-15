@@ -1,6 +1,12 @@
 ---
 title: Highlights
 items:
+  - label: Plot Size
+    value: "0.13 acres (≈ 532 m² title plan)"
+  - label: Main House Area
+    value: "~122 m² internal area"
+  - label: Annex Area
+    value: "Plus ~25 m² annex"
   - label: Renovation
     value: "Fully renovated in 2025"
   - label: Condition
@@ -39,10 +45,6 @@ items:
     value: "Downstairs cloakroom + annex"
   - label: Planning
     value: "Full permission granted for two‑storey rear extension"
-  - label: Plot Size
-    value: "0.13 acres (≈ 532 m²)"
-  - label: Internal Area
-    value: "~122 m² main house + ~25 m² annex"
   - label: Location
     value: "A75 2min, Kirroughtree 5min, Newton Stewart 10min"
 ---

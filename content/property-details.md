@@ -29,8 +29,7 @@ title: Property Details
 
 ### Planning Permission
 
-- Full planning permission has been granted for a two‑storey rear extension
-- Supporting plans and documents are available on request
+Sold with Full Planning Permission & Building Warrant (Dumfries & Galloway ref 22/1073, granted 16 Aug 2023) for alterations and a two‑storey rear extension. Approved drawings and specifications available on request.
 
 ### Recent Renovation (2025)
 
