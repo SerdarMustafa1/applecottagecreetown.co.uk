@@ -21,12 +21,30 @@ const gaId = site.analyticsId;
       <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
       <link rel="manifest" href="/site.webmanifest" />
       {gaId && (
-        <>
-          <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
-          <script is:inline>
-            {`window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', '${gaId}');`}
-          </script>
-        </>
+        <script is:inline>
+          {`(function(){
+            var GA_ID = '${gaId}';
+            var KEY = 'silktideCookieBanner_InitialChoice';
+            var loaded = false;
+            function loadGA(){
+              if(loaded || !GA_ID) return; loaded = true;
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){ dataLayer.push(arguments); }
+              window.gtag = gtag;
+              var s = document.createElement('script');
+              s.async = true;
+              s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+              document.head.appendChild(s);
+              gtag('js', new Date());
+              gtag('config', GA_ID);
+            }
+            try {
+              var choice = localStorage.getItem(KEY);
+              if (choice === '1') { loadGA(); }
+            } catch(e) {}
+            document.addEventListener('cookie-consent-accepted', loadGA, { once: true });
+          })();`}
+        </script>
       )}
   </head>
   <body class="min-h-screen antialiased flex flex-col">
