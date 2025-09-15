@@ -11,7 +11,9 @@
     "preview": "astro preview",
     "check:cdn": "node scripts/check_cdn_urls.js",
     "lint": "eslint src tests/unit",
-    "test": "vitest run tests/unit"
+    "test": "vitest run tests/unit",
+    "typecheck": "tsc --noEmit",
+    "prepare": "husky"
   },
   "dependencies": {
     "@astrojs/react": "^3.0.0",
@@ -43,7 +45,15 @@
     "postcss": "^8.4.31",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.0.0",
-    "vitest": "^1.6.0"
+    "vitest": "^1.6.0",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "git add"
+    ]
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.50.1"
