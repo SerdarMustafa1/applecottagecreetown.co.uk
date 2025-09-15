@@ -84,6 +84,7 @@ export default function LightboxDialog({
       <div
         role="dialog"
         aria-modal="true"
+        aria-label={images[index].caption ? `Image viewer: ${images[index].caption}` : 'Image viewer'}
         className="relative max-w-[90%] max-h-[90%]"
         onClick={(e) => e.stopPropagation()}
       >

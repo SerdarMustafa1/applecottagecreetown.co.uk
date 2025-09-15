@@ -9,6 +9,8 @@ export default function ContactFormIsland() {
   }, []);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    // Prevent navigation in CI/static server so we can assert a11y post-submit
+    e.preventDefault();
     const timeField = (e.currentTarget.querySelector('input[name="timeToComplete"]') as HTMLInputElement | null);
     if (timeField) {
       timeField.value = String(Math.max(0, Math.round((Date.now() - startRef.current) / 1000)));
