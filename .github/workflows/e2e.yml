@@ -15,10 +15,15 @@ jobs:
           node-version: 22
           check-latest: true
       # Work around npm optional deps bug affecting Rollup native binaries on Linux by using npm@11 and npm install
+      # See: https://github.com/npm/cli/issues/4828
       - name: Use npm 11.4.2
         run: |
           npm i -g npm@11.4.2
           npm --version
+      - name: Clean lockfile (workaround optional deps bug)
+        run: |
+          rm -f package-lock.json
+          npm cache clean --force
       - run: npm install --no-audit --no-fund
       - run: npm run build
       - name: Install Playwright browsers

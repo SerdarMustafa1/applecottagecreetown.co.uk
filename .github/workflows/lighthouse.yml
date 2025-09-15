@@ -16,6 +16,10 @@ jobs:
         run: |
           npm i -g npm@11.4.2
           npm --version
+      - name: Clean lockfile (workaround optional deps bug)
+        run: |
+          rm -f package-lock.json
+          npm cache clean --force
       - run: npm install --no-audit --no-fund
       - run: npm run build
       - run: npx lighthouse-ci --config=lighthouse.config.js
