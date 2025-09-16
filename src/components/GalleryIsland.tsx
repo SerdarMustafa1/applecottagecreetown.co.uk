@@ -59,6 +59,35 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
     setVisibleCount(9);
   }, [filter]);
 
+  // Read initial filter from query string (`gallery` or `room`) on mount
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search || '');
+      const q = params.get('gallery') || params.get('room');
+      if (q) {
+        const opt = allFilterOptions.find(o => String(o).toLowerCase() === String(q).toLowerCase());
+        if (opt) setFilter(opt);
+      }
+    } catch {
+      // ignore - URL parsing not critical
+    }
+  }, []);
+
+  // Update the query string when filter changes (pushState)
+  useEffect(() => {
+    try {
+      const url = new URL(window.location.href);
+      if (filter && filter !== 'All') {
+        url.searchParams.set('gallery', String(filter));
+      } else {
+        url.searchParams.delete('gallery');
+      }
+      window.history.replaceState({}, '', url.toString());
+    } catch {
+      // ignore - history.replaceState may fail in some environments
+    }
+  }, [filter]);
+
   const openAt = (i: number) => { setIndex(i); setOpen(true); };
   const close = () => setOpen(false);
   const next = () => setIndex((i) => (i + 1) % filtered.length);
