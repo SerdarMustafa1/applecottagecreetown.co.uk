@@ -32,35 +32,21 @@ export default function Simple360Viewer({ pano, height = 320 }: Props) {
         await (window as any).aframeLoading;
       }
 
-      // Create scene using React-safe approach
-      const scene = document.createElement('a-scene');
-      scene.setAttribute('embedded', '');
-      scene.style.width = '100%';
-      scene.style.height = '100%';
-      scene.setAttribute('vr-mode-ui', 'enabled: false');
-      scene.setAttribute('device-orientation-permission-ui', 'enabled: false');
-
-      const sky = document.createElement('a-sky');
-      sky.setAttribute('src', pano.src);
-      sky.setAttribute('rotation', '0 -90 0');
-
-      const camera = document.createElement('a-camera');
-      camera.setAttribute('look-controls', 'enabled: true');
-      camera.setAttribute('wasd-controls', 'enabled: false');
-
-      scene.appendChild(sky);
-      scene.appendChild(camera);
-      
-      // Clear container and add scene
-      container.innerHTML = '';
-      container.appendChild(scene);
-      
+      // Set loaded first to hide React-managed preview
       setLoaded(true);
+      
+      // Small delay to ensure React has updated
+      setTimeout(() => {
+        container.innerHTML = `
+          <a-scene embedded style="width: 100%; height: 100%;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+            <a-sky src="${pano.src}" rotation="0 -90 0"></a-sky>
+            <a-camera look-controls="enabled: true" wasd-controls="enabled: false"></a-camera>
+          </a-scene>
+        `;
+      }, 50);
     };
 
     loadAFrame().catch(() => setError(true));
-
-    // No cleanup to avoid React DOM conflicts
   }, [pano.src]);
 
   if (error) {
