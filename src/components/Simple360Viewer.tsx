@@ -18,37 +18,38 @@ export default function Simple360Viewer({ pano, height = 320 }: Props) {
     const container = containerRef.current;
     if (!container) return;
 
-    // Load A-Frame if not already loaded
     const loadAFrame = async () => {
+      // Ensure A-Frame is loaded only once globally
       if (!(window as any).AFRAME) {
-        await new Promise((resolve) => {
-          const script = document.createElement('script');
-          script.src = 'https://aframe.io/releases/1.4.0/aframe.min.js';
-          script.onload = resolve;
-          document.head.appendChild(script);
-        });
+        if (!(window as any).aframeLoading) {
+          (window as any).aframeLoading = new Promise((resolve) => {
+            const script = document.createElement('script');
+            script.src = 'https://aframe.io/releases/1.4.0/aframe.min.js';
+            script.onload = () => {
+              (window as any).aframeLoading = null;
+              resolve(true);
+            };
+            document.head.appendChild(script);
+          });
+        }
+        await (window as any).aframeLoading;
       }
 
-      // Create A-Frame scene
-      const scene = document.createElement('a-scene');
-      scene.setAttribute('embedded', '');
-      scene.setAttribute('style', 'width: 100%; height: 100%;');
-      scene.setAttribute('vr-mode-ui', 'enabled: false');
-      scene.setAttribute('device-orientation-permission-ui', 'enabled: false');
+      // Wait for A-Frame to be ready
+      await new Promise(resolve => {
+        if ((window as any).AFRAME) {
+          resolve(true);
+        } else {
+          setTimeout(resolve, 100);
+        }
+      });
 
-      // Create sky element for 360 image
-      const sky = document.createElement('a-sky');
-      sky.setAttribute('src', pano.src);
-      sky.setAttribute('rotation', '0 -90 0');
-
-      // Create camera with controls
-      const camera = document.createElement('a-camera');
-      camera.setAttribute('look-controls', 'enabled: true');
-      camera.setAttribute('wasd-controls', 'enabled: false');
-
-      scene.appendChild(sky);
-      scene.appendChild(camera);
-      container.appendChild(scene);
+      container.innerHTML = `
+        <a-scene embedded style="width: 100%; height: 100%;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+          <a-sky src="${pano.src}" rotation="0 -90 0"></a-sky>
+          <a-camera look-controls="enabled: true" wasd-controls="enabled: false"></a-camera>
+        </a-scene>
+      `;
 
       setLoaded(true);
     };
@@ -56,10 +57,7 @@ export default function Simple360Viewer({ pano, height = 320 }: Props) {
     loadAFrame().catch(() => setError(true));
 
     return () => {
-      // Cleanup
-      while (container.firstChild) {
-        container.removeChild(container.firstChild);
-      }
+      container.innerHTML = '';
     };
   }, [pano.src]);
 
