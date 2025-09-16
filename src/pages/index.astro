@@ -16,7 +16,6 @@ import RoomGalleries from '../components/RoomGalleries.astro';
 import PropertyFeatures from '../components/PropertyFeatures.astro';
 import PropertyDocs from '../components/PropertyDocs.astro';
 import BeforeAfterVideo from '../components/BeforeAfterVideo.astro';
-import LocationExtras from '../components/LocationExtras.astro';
 import site from '../../site.config';
 const pageTitle = homeMd?.frontmatter?.title ?? site.title;
 const pageDescription = homeMd?.frontmatter?.description ?? site.description;
@@ -64,9 +63,6 @@ const highlightItems = [...coreHighlights, ...extraHighlights];
   
   <!-- Location -->
   <MapEmbed />
-  
-  <!-- Location: Nearby & Lifestyle Grid -->
-  <LocationExtras />
   
   <!-- Book a Viewing Section -->
   <section id="contact" class="p-4 max-w-lg mx-auto text-center">
