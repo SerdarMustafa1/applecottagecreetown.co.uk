@@ -66,8 +66,8 @@ const pois = (site as any).pois || [];
     }
 
     try {
-      // Precise coordinates for Apple Cottage, Silver Street, Creetown DG8 7HU
-      const center = [54.89634, -4.37521];
+      // Exact coordinates for Apple Cottage, Silver Street, Creetown DG8 7HU
+      const center = [54.899611, -4.380458];
       const map = window.L.map(mapEl).setView(center, 15);
       
       window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -88,15 +88,15 @@ const pois = (site as any).pois || [];
         .bindPopup('<strong>🏠 Apple Cottage</strong><br/>Silver Street, Creetown DG8 7HU<br/><em>what3words: ///silk.dynamics.quitter</em>');
       homeMarker.addTo(map);
 
-      // Add POI markers with precise coordinates
+      // Add POI markers - please provide exact Google Maps coordinates for accuracy
       const pois = [
-        { title: 'Ellangowan Hotel (The Wicker Man pub)', lat: 54.89601, lng: -4.37491, subtitle: 'In village', meta: 'St John Street' },
-        { title: 'Creetown Heritage Museum', lat: 54.89589, lng: -4.37503, subtitle: 'Local history', meta: 'St John Street' },
-        { title: 'Gem Rock Museum & Café', lat: 54.89652, lng: -4.37568, subtitle: 'Family attraction', meta: '≈2 min walk' },
-        { title: 'Creetown Primary School', lat: 54.89578, lng: -4.37445, subtitle: 'Local school', meta: '≈3 min walk' },
-        { title: 'Cairnsmore of Fleet NNR', lat: 54.94754, lng: -4.25844, subtitle: 'Hill & wildlife', meta: '≈15 min drive' },
-        { title: 'Mossyard Beach', lat: 54.84058, lng: -4.25799, subtitle: 'Family beach', meta: '≈15 min drive' },
-        { title: 'Kirroughtree Forest', lat: 54.87892, lng: -4.32341, subtitle: 'Mountain biking', meta: '≈5 min drive' }
+        { title: 'Ellangowan Hotel (The Wicker Man pub)', lat: 54.8995, lng: -4.3795, subtitle: 'In village', meta: 'St John Street' },
+        { title: 'Creetown Heritage Museum', lat: 54.8993, lng: -4.3798, subtitle: 'Local history', meta: 'St John Street' },
+        { title: 'Gem Rock Museum & Café', lat: 54.8998, lng: -4.3802, subtitle: 'Family attraction', meta: '≈2 min walk' },
+        { title: 'Creetown Primary School', lat: 54.8990, lng: -4.3785, subtitle: 'Local school', meta: '≈3 min walk' },
+        { title: 'Cairnsmore of Fleet NNR', lat: 54.9475, lng: -4.2584, subtitle: 'Hill & wildlife', meta: '≈15 min drive' },
+        { title: 'Mossyard Beach', lat: 54.8406, lng: -4.2580, subtitle: 'Family beach', meta: '≈15 min drive' },
+        { title: 'Kirroughtree Forest', lat: 54.8789, lng: -4.3234, subtitle: 'Mountain biking', meta: '≈5 min drive' }
       ];
 
       const markers = [];
