@@ -58,7 +58,7 @@ const pois = (site as any).pois || [];
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
-<script is:inline define:vars={{ coordinates, address, pois }}>
+<script is:inline>
   (function(){
     // Load Leaflet and MarkerCluster in order, then init map
     function loadScript(src){
@@ -67,9 +67,13 @@ const pois = (site as any).pois || [];
         s.src = src; s.async = true; s.onload = resolve; s.onerror = reject; document.head.appendChild(s);
       });
     }
-    var center = [coordinates.lat, coordinates.lng];
-    var homePopup = address;
-    var poisData = pois || [];
+    var center = [54.9, -4.4];
+    var homePopup = 'Apple Cottage, Creetown, Scotland';
+    var poisData = [
+      { title: 'Ellangowan Hotel (The Wicker Man pub)', lat: 54.9001368, lng: -4.3791208, subtitle: 'In village', meta: 'St John Street (approx.)' },
+      { title: 'Cairnsmore of Fleet NNR', lat: 54.9475428, lng: -4.258444, subtitle: 'Hill & wildlife', meta: '≈15 min drive' },
+      { title: 'Mossyard Beach', lat: 54.8405845, lng: -4.2579869, subtitle: 'Family beach', meta: '≈15 min drive' }
+    ];
     (async function(){
       try {
         await loadScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js');
