@@ -11,15 +11,6 @@ function formatBytes(bytes: number) {
   return `${v.toFixed(i === 0 ? 0 : 1)} ${units[i]}`;
 }
 
-// Exterior images for alternating hero
-const heroImages = [
-  hero.image || 'https://d1t6lpjdsu4646.cloudfront.net/images/exterior/exterior-from-landing-2EE3F1E1.jpeg',
-  'https://d1t6lpjdsu4646.cloudfront.net/images/exterior/property-rear-main-DA26379D.jpeg',
-  'https://d1t6lpjdsu4646.cloudfront.net/images/exterior/garden-centre-1200.jpg',
-  'https://d1t6lpjdsu4646.cloudfront.net/images/exterior/street-cairnsmore-1200.jpg',
-  'https://d1t6lpjdsu4646.cloudfront.net/images/exterior/property-rear-1-900A7CB2.jpeg'
-];
-
 let homeReportSize: string | null = null;
 if (homeReport?.href) {
   try {
@@ -29,20 +20,12 @@ if (homeReport?.href) {
   } catch {}
 }
 ---
-<section id="hero" class="relative overflow-hidden">
-  {heroImages.map((imgSrc, index) => (
-    <div 
-      class={`hero-image absolute inset-0 transition-opacity duration-1000 ${index === 0 ? 'opacity-100' : 'opacity-0'}`}
-      data-index={index}
-    >
-      <img 
-        src={imgSrc} 
-        alt={`Apple Cottage exterior view ${index + 1}`} 
-        class="w-full h-[45vh] md:h-[60vh] object-cover"
-        loading={index === 0 ? 'eager' : 'lazy'}
-      />
-    </div>
-  ))}
+<section id="hero" class="relative">
+  {hero.image ? (
+    <img src={hero.image} alt="Apple Cottage hero" class="w-full h-[45vh] md:h-[60vh] object-cover" />
+  ) : (
+    <div class="w-full h-[40vh] bg-gray-100" />
+  )}
   <div class="absolute inset-0 bg-black/30" aria-hidden="true"></div>
   <div class="absolute inset-0 flex items-center justify-center">
     <div class="text-center text-white px-4">
@@ -93,32 +76,6 @@ if (homeReport?.href) {
     </div>
   </div>
 </section>
-
-<script>
-  // Simple alternating hero images
-  (function() {
-    const heroImages = document.querySelectorAll('.hero-image');
-    if (heroImages.length <= 1) return;
-    
-    let currentIndex = 0;
-    
-    function showNextImage() {
-      // Hide current image
-      heroImages[currentIndex].classList.remove('opacity-100');
-      heroImages[currentIndex].classList.add('opacity-0');
-      
-      // Move to next image
-      currentIndex = (currentIndex + 1) % heroImages.length;
-      
-      // Show next image
-      heroImages[currentIndex].classList.remove('opacity-0');
-      heroImages[currentIndex].classList.add('opacity-100');
-    }
-    
-    // Start alternating after 5 seconds, then every 5 seconds
-    setInterval(showNextImage, 5000);
-  })();
-</script>
 
 {homeReport?.href && (
   <script is:inline>
