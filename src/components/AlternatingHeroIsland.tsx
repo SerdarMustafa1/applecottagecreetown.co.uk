@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 interface HeroImage {
   src: string;
@@ -18,16 +18,33 @@ export default function AlternatingHeroIsland({
   children 
 }: AlternatingHeroIslandProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const preloadImages = useCallback(() => {
+    images.forEach((image) => {
+      const img = new Image();
+      img.src = image.srcWebp || image.src;
+      if (image.srcWebp) {
+        const fallback = new Image();
+        fallback.src = image.src;
+      }
+    });
+    setIsLoaded(true);
+  }, [images]);
 
   useEffect(() => {
-    if (images.length <= 1) return;
+    preloadImages();
+  }, [preloadImages]);
+
+  useEffect(() => {
+    if (images.length <= 1 || !isLoaded) return;
     
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
     }, interval);
 
     return () => clearInterval(timer);
-  }, [images.length, interval]);
+  }, [images.length, interval, isLoaded]);
 
   if (!images.length) {
     return (
@@ -57,6 +74,9 @@ export default function AlternatingHeroIsland({
                 src={image.src} 
                 alt={image.alt} 
                 className="w-full h-[45vh] md:h-[60vh] object-cover"
+                loading={index === 0 ? 'eager' : 'lazy'}
+                decoding="async"
+                fetchPriority={index === 0 ? 'high' : 'low'}
               />
             </picture>
           ) : (
@@ -64,6 +84,9 @@ export default function AlternatingHeroIsland({
               src={image.src} 
               alt={image.alt} 
               className="w-full h-[45vh] md:h-[60vh] object-cover"
+              loading={index === 0 ? 'eager' : 'lazy'}
+              decoding="async"
+              fetchPriority={index === 0 ? 'high' : 'low'}
             />
           )}
         </div>
