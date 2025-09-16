@@ -9,16 +9,6 @@ Apple Cottage lies on Silver Street in the village of Creetown (DG8 7HU). Nestle
 - **A75**: ~2 min
 - **Kirroughtree**: ~5 min  
 - **Newton Stewart**: ~10 min
-- **Mossyard**: ~15 min
+- **Stranraer**: ~45 min
 
 **what3words**: [///silk.dynamics.quitter](https://what3words.com/silk.dynamics.quitter)
-
-### Nearby Points of Interest
-
-- **Ellangowan Hotel (The Wicker Man pub)** — In village, St John Street (approx.)
-- **Cairnsmore of Fleet NNR** — Hill & wildlife, ≈15 min drive
-- **Mossyard Beach** — Family beach, ≈15 min drive
-
-Drag to move, scroll to zoom. Tap markers for details on the interactive map below.
-
-Explore highlights in the "Around Apple Cottage" grid below for a quick visual overview of nearby attractions.

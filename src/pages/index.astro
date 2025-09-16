@@ -35,6 +35,9 @@ const highlightItems = [...coreHighlights, ...extraHighlights];
     {homeMd?.Content && <homeMd.Content />}
   </section>
   
+  <!-- Room by Room Detailed Galleries -->
+  <RoomGalleries />
+  
   <!-- Property Highlights -->
   <HighlightCards items={highlightItems} />
   
@@ -43,9 +46,6 @@ const highlightItems = [...coreHighlights, ...extraHighlights];
   
   <!-- Panoramic Photos - Wide Views -->
   <Panos />
-  
-  <!-- Room by Room Detailed Galleries -->
-  <RoomGalleries />
   
   <!-- Property Details -->
   <PropertyDetails />
