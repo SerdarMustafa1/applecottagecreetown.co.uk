@@ -10,7 +10,6 @@ import PropertyDetails from '../components/PropertyDetails.astro';
 import FAQ from '../components/FAQ.astro';
 import MapEmbed from '../components/MapEmbed.astro';
 import Floorplans from '../components/Floorplans.astro';
-import Gallery from '../components/Gallery.astro';
 import Panos from '../components/Panos.astro';
 import VirtualTours from '../components/VirtualTours.astro';
 import RoomGalleries from '../components/RoomGalleries.astro';
@@ -35,23 +34,17 @@ const highlightItems = [...coreHighlights, ...extraHighlights];
     {homeMd?.Content && <homeMd.Content />}
   </section>
   
-  <!-- Photo Gallery -->
-  <Gallery />
-  
-  <!-- Room by Room Detailed Galleries -->
-  <RoomGalleries />
-  
   <!-- Property Highlights -->
   <HighlightCards items={highlightItems} />
-  
-  <!-- Photo Gallery -->
-  <Gallery />
   
   <!-- Virtual 360° Tours - Interactive Experience -->
   <VirtualTours />
   
   <!-- Panoramic Photos - Wide Views -->
   <Panos />
+  
+  <!-- Room by Room Detailed Galleries -->
+  <RoomGalleries />
   
   <!-- Property Details -->
   <PropertyDetails />

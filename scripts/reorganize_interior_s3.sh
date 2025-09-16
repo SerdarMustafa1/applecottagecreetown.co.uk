@@ -97,8 +97,13 @@ move_files() {
     fi
 }
 
-# Auto-proceed with reorganization
-echo "🚨 Proceeding with S3 reorganization..."
+# Confirm before proceeding
+echo "🚨 This will reorganize files in S3. Continue? (y/N)"
+read -r confirm
+if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
+    echo "❌ Operation cancelled"
+    exit 0
+fi
 
 echo ""
 echo "🚀 Starting file reorganization..."
