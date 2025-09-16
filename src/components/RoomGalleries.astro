@@ -1,6 +1,5 @@
 ---
 import site from '../../site.config';
-import GalleryIsland from './GalleryIsland';
 
 // Helper to pick images from the unified `site.images` by room tag
 const pickByRoom = (roomTag: string) => ((site as any).images || []).filter((i: any) => Array.isArray(i.rooms) ? i.rooms.includes(roomTag) : false);
@@ -89,7 +88,7 @@ const roomData = [
                   <button type="button" class="px-3 py-1.5 rounded border text-sm hover:bg-gray-50" data-action="expand-all-bedrooms">Expand all</button>
                   <button type="button" class="px-3 py-1.5 rounded border text-sm hover:bg-gray-50" data-action="collapse-all-bedrooms">Collapse all</button>
                 </div>
-                {room.subrooms.map((sr) => sr.images && sr.images.length > 0 && (
+                {room.subrooms.map((sr, sidx) => sr.images && sr.images.length > 0 && (
                   <details class="group rg-bedroom">
                     <summary class="flex items-center gap-3 w-full cursor-pointer list-none p-3 md:p-4 hover:bg-gray-50 focus:outline-none">
                       <div class="inline-flex items-center justify-center w-8 h-8 bg-blue-50 rounded-full">
@@ -102,7 +101,17 @@ const roomData = [
                     </summary>
                     <div class="px-3 pb-4 md:px-4 md:pb-6">
                       <div class="bg-gray-50 rounded-xl p-3 md:p-4">
-                        <GalleryIsland images={sr.images} client:visible />
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                          {sr.images.slice(0,4).map((img, idx) => (
+                            <a href={`/#gallery?gallery=bedrooms&index=${idx}`} aria-label={`Open ${sr.title} image ${idx+1} in gallery`} class="block rounded overflow-hidden">
+                              <img src={img.src} alt={img.alt || ''} class="w-full h-24 object-cover rounded" loading="lazy" />
+                            </a>
+                          ))}
+                        </div>
+                        <div class="mt-3 text-sm">
+                          <a class="inline-block text-blue-600 hover:underline" href={`/#gallery?gallery=bedrooms&index=0`}>View in gallery</a>
+                          <span class="ml-3 text-gray-600">{sr.images.length} photos</span>
+                        </div>
                       </div>
                     </div>
                   </details>
@@ -110,7 +119,17 @@ const roomData = [
               </div>
             ) : (
               <div class="bg-gray-50 rounded-2xl p-4 md:p-6">
-                <GalleryIsland images={room.images} client:visible />
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                  {room.images.slice(0,8).map((img, idx) => (
+                    <a href={`/#gallery?gallery=${String(room.title).toLowerCase().replace(/\s+/g,'')}&index=${idx}`} aria-label={`Open ${room.title} image ${idx+1} in gallery`} class="block rounded overflow-hidden">
+                      <img src={img.src} alt={img.alt || ''} class="w-full h-28 object-cover rounded" loading="lazy" />
+                    </a>
+                  ))}
+                </div>
+                <div class="mt-3 text-sm">
+                  <a class="inline-block text-blue-600 hover:underline" href={`/#gallery?gallery=${String(room.title).toLowerCase().replace(/\s+/g,'')}&index=0`}>View in gallery</a>
+                  <span class="ml-3 text-gray-600">{room.images.length} photos</span>
+                </div>
               </div>
             )}
           </div>
