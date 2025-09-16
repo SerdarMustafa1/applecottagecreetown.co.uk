@@ -267,4 +267,9 @@ export const site = {
   ]
 };
 
+// Compute a flattened, deduplicated image list with room tags for the unified gallery.
+import { flattenAndTagImages } from './src/lib/gallery';
+// `flattenAndTagImages` expects the same `site` shape; attach computed images here.
+(site as any).images = flattenAndTagImages(site as any);
+
 export default site;

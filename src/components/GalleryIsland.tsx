@@ -8,6 +8,7 @@ type GalleryItem = {
   srcWebp?: string; // WebP version for progressive enhancement
   alt?: string; 
   caption?: string; 
+  rooms?: string[];
 };
 interface GalleryIslandProps { images: GalleryItem[]; }
 
@@ -17,7 +18,15 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
   const [filter, setFilter] = useState<string>('All');
   const [visibleCount, setVisibleCount] = useState(9);
 
-  // Infer simple categories from path
+  // Build filters from explicit rooms metadata first; fallback to simple categories inferred from path
+  const itemsWithMeta = useMemo(() => images.map(img => ({ ...img, __rooms: Array.isArray((img as any).rooms) ? (img as any).rooms : [] })), [images]);
+
+  const roomTags = useMemo(() => {
+    const r = new Set<string>();
+    itemsWithMeta.forEach(i => (i.__rooms || []).forEach((t: string) => { if (t) r.add(String(t)); }));
+    return Array.from(r).map(s => String(s));
+  }, [itemsWithMeta]);
+
   const categorize = (src: string): string => {
     if (/\/exterior\//i.test(src)) return 'Exterior';
     if (/\/interior\//i.test(src)) return 'Interior';
@@ -26,9 +35,24 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
     return 'Other';
   };
 
-  const itemsWithCat = useMemo(() => images.map(img => ({ ...img, __cat: categorize(img.src) })), [images]);
-  const categories = useMemo(() => ['All', ...Array.from(new Set(itemsWithCat.map(i => i.__cat)))], [itemsWithCat]);
-  const filtered = useMemo(() => filter === 'All' ? itemsWithCat : itemsWithCat.filter(i => i.__cat === filter), [itemsWithCat, filter]);
+  const itemsWithCat = useMemo(() => itemsWithMeta.map((img: any) => ({ ...img, __cat: categorize(img.src) })), [itemsWithMeta]);
+
+  const categories = useMemo(() => ['All', ...Array.from(new Set(itemsWithCat.map((i: any) => i.__cat)))], [itemsWithCat]);
+
+  const allFilterOptions = useMemo(() => {
+    // Prefer explicit room tags (human-friendly) and fall back to categories
+    if (roomTags.length > 0) return ['All', ...roomTags];
+    return categories;
+  }, [roomTags, categories]);
+
+  const filtered = useMemo(() => {
+    if (filter === 'All') return itemsWithCat;
+    // Check room tags first (case-sensitive as provided)
+    const byRoom = itemsWithMeta.filter((i: any) => (i.__rooms || []).includes(filter));
+    if (byRoom.length > 0) return byRoom.map((i: any) => ({ ...i, __cat: categorize(i.src) }));
+    // Fallback to category filter
+    return itemsWithCat.filter((i: any) => i.__cat === filter);
+  }, [filter, itemsWithCat, itemsWithMeta]);
 
   useEffect(() => {
     // Reset visible items on filter change
@@ -45,7 +69,7 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
   return (
     <>
       <div className="mb-3 flex flex-wrap items-center gap-2 justify-center">
-        {categories.map((c) => (
+        {allFilterOptions.map((c) => (
           <button
             key={c}
             className={`px-3 py-1.5 rounded-full text-sm border ${filter === c ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 hover:bg-gray-50'}`}

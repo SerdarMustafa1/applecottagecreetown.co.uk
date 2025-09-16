@@ -1,6 +1,5 @@
 ---
 import site from '../../site.config';
-import AlternatingHeroIsland from './AlternatingHeroIsland';
 const hero = site.hero || {};
 const homeReport = (site.docs || []).find?.((d) => /home\s*report/i.test(d.label || ''));
 
@@ -12,15 +11,6 @@ function formatBytes(bytes: number) {
   return `${v.toFixed(i === 0 ? 0 : 1)} ${units[i]}`;
 }
 
-// Extract exterior images for hero rotation
-const heroImages = [
-  { src: hero.image, alt: 'Apple Cottage exterior view' },
-  { src: 'https://d1t6lpjdsu4646.cloudfront.net/images/exterior/property-rear-main-DA26379D.jpeg', alt: 'Apple Cottage rear garden view' },
-  { src: 'https://d1t6lpjdsu4646.cloudfront.net/images/exterior/garden-centre-1200.jpg', srcWebp: 'https://d1t6lpjdsu4646.cloudfront.net/images/exterior/garden-centre-1200.webp', alt: 'Apple Cottage garden centre view' },
-  { src: 'https://d1t6lpjdsu4646.cloudfront.net/images/exterior/street-cairnsmore-1200.jpg', srcWebp: 'https://d1t6lpjdsu4646.cloudfront.net/images/exterior/street-cairnsmore-1200.webp', alt: 'Apple Cottage street view' },
-  { src: 'https://d1t6lpjdsu4646.cloudfront.net/images/exterior/property-rear-1-900A7CB2.jpeg', alt: 'Apple Cottage alternative rear view' }
-].filter(img => img.src); // Remove any undefined images
-
 let homeReportSize: string | null = null;
 if (homeReport?.href) {
   try {
@@ -31,107 +21,60 @@ if (homeReport?.href) {
 }
 ---
 <section id="hero" class="relative">
-  {heroImages.length > 0 ? (
-    <AlternatingHeroIsland images={heroImages} client:load>
-      <div class="text-center text-white px-4">
-        <h1 class="text-3xl md:text-4xl font-bold drop-shadow">{site.title}</h1>
-        <p class="mt-2 text-lg drop-shadow">{hero.tagline || site.description}</p>
-        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
-          <a href={hero.bookUrl || site.bookingUrl} target="_blank" rel="noopener" class="inline-block bg-blue-600 text-white px-6 py-3 rounded focus:outline-none focus-visible:ring focus-visible:ring-white/80">
-            {hero.ctaLabel || 'Book a Viewing'}
-          </a>
-          {homeReport?.href && (
-            <a
-              id="hero-home-report-link"
-              href={homeReport.href}
-              target="_blank"
-              rel="noopener"
-              class="inline-flex items-center gap-2 bg-white/90 text-gray-900 px-4 py-2 rounded focus:outline-none focus-visible:ring hover:bg-white"
-              aria-label="Open Home Report (PDF) in a new tab"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Zm0 2.5L18.5 9H14Z"/><path d="M8 13h4a2 2 0 0 1 0 4H8Zm2 2.5h2a.5.5 0 0 0 0-1h-2Z"/></svg>
-              <span>Home Report (PDF{homeReportSize ? `, ${homeReportSize}` : ''})</span>
-            </a>
-          )}
-        </div>
-        {(site.portals?.purplebricks || site.portals?.s1homes) && (
-          <div class="mt-3 flex flex-wrap justify-center gap-2" aria-label="External property links">
-            {site.portals?.purplebricks && (
-              <a
-                href={site.portals.purplebricks}
-                target="_blank"
-                rel="noopener"
-                class="px-3 py-1 rounded-full bg-white/90 text-gray-800 hover:bg-white focus:outline-none focus-visible:ring"
-              >
-                View on Purplebricks
-              </a>
-            )}
-            {site.portals?.s1homes && (
-              <a
-                href={site.portals.s1homes}
-                target="_blank"
-                rel="noopener"
-                class="px-3 py-1 rounded-full bg-white/90 text-gray-800 hover:bg-white focus:outline-none focus-visible:ring"
-              >
-                View on s1homes
-              </a>
-            )}
-          </div>
-        )}
-      </div>
-    </AlternatingHeroIsland>
-  ) : (
+  {hero.image ? (
     <img src={hero.image} alt="Apple Cottage hero" class="w-full h-[45vh] md:h-[60vh] object-cover" />
-    <div class="absolute inset-0 bg-black/30" aria-hidden="true"></div>
-    <div class="absolute inset-0 flex items-center justify-center">
-      <div class="text-center text-white px-4">
-        <h1 class="text-3xl md:text-4xl font-bold drop-shadow">{site.title}</h1>
-        <p class="mt-2 text-lg drop-shadow">{hero.tagline || site.description}</p>
-        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
-          <a href={hero.bookUrl || site.bookingUrl} target="_blank" rel="noopener" class="inline-block bg-blue-600 text-white px-6 py-3 rounded focus:outline-none focus-visible:ring focus-visible:ring-white/80">
-            {hero.ctaLabel || 'Book a Viewing'}
+  ) : (
+    <div class="w-full h-[40vh] bg-gray-100" />
+  )}
+  <div class="absolute inset-0 bg-black/30" aria-hidden="true"></div>
+  <div class="absolute inset-0 flex items-center justify-center">
+    <div class="text-center text-white px-4">
+      <h1 class="text-3xl md:text-4xl font-bold drop-shadow">{site.title}</h1>
+      <p class="mt-2 text-lg drop-shadow">{hero.tagline || site.description}</p>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <a href={hero.bookUrl || site.bookingUrl} target="_blank" rel="noopener" class="inline-block bg-blue-600 text-white px-6 py-3 rounded focus:outline-none focus-visible:ring focus-visible:ring-white/80">
+          {hero.ctaLabel || 'Book a Viewing'}
+        </a>
+        {homeReport?.href && (
+          <a
+            id="hero-home-report-link"
+            href={homeReport.href}
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-2 bg-white/90 text-gray-900 px-4 py-2 rounded focus:outline-none focus-visible:ring hover:bg-white"
+            aria-label="Open Home Report (PDF) in a new tab"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Zm0 2.5L18.5 9H14Z"/><path d="M8 13h4a2 2 0 0 1 0 4H8Zm2 2.5h2a.5.5 0 0 0 0-1h-2Z"/></svg>
+            <span>Home Report (PDF{homeReportSize ? `, ${homeReportSize}` : ''})</span>
           </a>
-          {homeReport?.href && (
+        )}
+      </div>
+      {(site.portals?.purplebricks || site.portals?.s1homes) && (
+        <div class="mt-3 flex flex-wrap justify-center gap-2" aria-label="External property links">
+          {site.portals?.purplebricks && (
             <a
-              id="hero-home-report-link"
-              href={homeReport.href}
+              href={site.portals.purplebricks}
               target="_blank"
               rel="noopener"
-              class="inline-flex items-center gap-2 bg-white/90 text-gray-900 px-4 py-2 rounded focus:outline-none focus-visible:ring hover:bg-white"
-              aria-label="Open Home Report (PDF) in a new tab"
+              class="px-3 py-1 rounded-full bg-white/90 text-gray-800 hover:bg-white focus:outline-none focus-visible:ring"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 2H6a2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Zm0 2.5L18.5 9H14Z"/><path d="M8 13h4a2 2 0 0 1 0 4H8Zm2 2.5h2a.5.5 0 0 0 0-1h-2Z"/></svg>
-              <span>Home Report (PDF{homeReportSize ? `, ${homeReportSize}` : ''})</span>
+              View on Purplebricks
+            </a>
+          )}
+          {site.portals?.s1homes && (
+            <a
+              href={site.portals.s1homes}
+              target="_blank"
+              rel="noopener"
+              class="px-3 py-1 rounded-full bg-white/90 text-gray-800 hover:bg-white focus:outline-none focus-visible:ring"
+            >
+              View on s1homes
             </a>
           )}
         </div>
-        {(site.portals?.purplebricks || site.portals?.s1homes) && (
-          <div class="mt-3 flex flex-wrap justify-center gap-2" aria-label="External property links">
-            {site.portals?.purplebricks && (
-              <a
-                href={site.portals.purplebricks}
-                target="_blank"
-                rel="noopener"
-                class="px-3 py-1 rounded-full bg-white/90 text-gray-800 hover:bg-white focus:outline-none focus-visible:ring"
-              >
-                View on Purplebricks
-              </a>
-            )}
-            {site.portals?.s1homes && (
-              <a
-                href={site.portals.s1homes}
-                target="_blank"
-                rel="noopener"
-                class="px-3 py-1 rounded-full bg-white/90 text-gray-800 hover:bg-white focus:outline-none focus-visible:ring"
-              >
-                View on s1homes
-              </a>
-            )}
-          </div>
-        )}
-      </div>
+      )}
     </div>
-  )}
+  </div>
 </section>
 
 {homeReport?.href && (

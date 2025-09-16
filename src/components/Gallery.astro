@@ -6,7 +6,7 @@ import site from '../../site.config';
   <div class="container">
     <h2 class="text-2xl font-semibold mb-4 text-center">Photo Gallery</h2>
     <div class="max-w-5xl mx-auto">
-      <GalleryIsland client:load images={site.gallery || []} />
+  <GalleryIsland client:load images={(site as any).images || []} />
     </div>
   </div>
 </section>

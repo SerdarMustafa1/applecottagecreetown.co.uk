@@ -2,6 +2,9 @@
 import site from '../../site.config';
 import GalleryIsland from './GalleryIsland';
 
+// Helper to pick images from the unified `site.images` by room tag
+const pickByRoom = (roomTag: string) => ((site as any).images || []).filter((i: any) => Array.isArray(i.rooms) ? i.rooms.includes(roomTag) : false);
+
 // Prefer explicit bedroom groups if provided in site.config.ts; otherwise derive
 const explicitMaster = (site.roomGalleries as any)?.bedroomMaster || [];
 const explicitBed2 = (site.roomGalleries as any)?.bedroom2 || [];
@@ -24,30 +27,30 @@ const roomData = [
   {
     title: 'Kitchen',
     description: 'Modern kitchen with quality appliances and ample storage space',
-    images: site.roomGalleries?.kitchen || [],
+    images: pickByRoom('kitchen'),
     icon: '🍳'
   },
   {
     title: 'Living Areas', 
     description: 'Spacious and comfortable living spaces perfect for relaxation',
-    images: site.roomGalleries?.livingAreas || [],
+    images: pickByRoom('livingAreas'),
     icon: '🛋️'
   },
   {
     title: 'Bedrooms',
     description: 'Bright and airy bedrooms with fitted storage solutions', 
-    images: site.roomGalleries?.bedrooms || [],
+    images: pickByRoom('bedrooms'),
     icon: '🛏️',
     subrooms: [
-      { title: 'Master Bedroom', images: masterBedrooms, icon: '👑' },
-      { title: 'Bedroom 2', images: bedroom2, icon: '2️⃣' },
-      { title: 'Bedroom 3', images: bedroom3, icon: '3️⃣' },
+      { title: 'Master Bedroom', images: pickByRoom('bedrooms').filter((i:any) => /master/i.test(i.alt || i.src || '')), icon: '👑' },
+      { title: 'Bedroom 2', images: pickByRoom('bedrooms').slice(0, 2), icon: '2️⃣' },
+      { title: 'Bedroom 3', images: pickByRoom('bedrooms').slice(2, 6), icon: '3️⃣' },
     ]
   },
   {
     title: 'Bathroom',
     description: 'Modern family bathroom with quality fittings',
-    images: site.roomGalleries?.bathroom || [],
+    images: pickByRoom('bathroom'),
     icon: '🛁'
   }
 ];
