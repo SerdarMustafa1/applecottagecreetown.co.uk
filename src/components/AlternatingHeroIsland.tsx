@@ -76,7 +76,7 @@ export default function AlternatingHeroIsland({
                 className="w-full h-[45vh] md:h-[60vh] object-cover"
                 loading={index === 0 ? 'eager' : 'lazy'}
                 decoding="async"
-                fetchPriority={index === 0 ? 'high' : 'low'}
+                {...(index === 0 ? { fetchpriority: 'high' } : { fetchpriority: 'low' })}
               />
             </picture>
           ) : (
@@ -86,7 +86,7 @@ export default function AlternatingHeroIsland({
               className="w-full h-[45vh] md:h-[60vh] object-cover"
               loading={index === 0 ? 'eager' : 'lazy'}
               decoding="async"
-              fetchPriority={index === 0 ? 'high' : 'low'}
+              {...(index === 0 ? { fetchpriority: 'high' } : { fetchpriority: 'low' })}
             />
           )}
         </div>
