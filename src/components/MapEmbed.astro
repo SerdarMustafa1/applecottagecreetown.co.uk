@@ -10,7 +10,7 @@ const pois = (site as any).pois || [];
     <h2 class="text-2xl font-bold mb-4">{locationMd?.frontmatter?.title || 'Location & Amenities'}</h2>
     <div class="grid gap-6 md:grid-cols-2">
       <div>
-        <div id="leaflet-map" class="w-full h-64 md:h-80 border rounded overflow-hidden"></div>
+        <div id="leaflet-map" class="w-full h-64 md:h-80 border rounded overflow-hidden bg-gray-100"></div>
         <p class="mt-2 text-center text-sm text-gray-600">Drag to move, scroll to zoom. Tap markers for details.</p>
         <div class="mt-3 flex justify-center">
           <a
@@ -54,72 +54,87 @@ const pois = (site as any).pois || [];
   </div>
 </section>
 
-<!-- Leaflet CSS/JS via CDN (light footprint, no API key) -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
-<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
-<script is:inline>
-  (function(){
-    // Load Leaflet and MarkerCluster in order, then init map
-    function loadScript(src){
-      return new Promise(function(resolve, reject){
-        var s = document.createElement('script');
-        s.src = src; s.async = true; s.onload = resolve; s.onerror = reject; document.head.appendChild(s);
-      });
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const mapEl = document.getElementById('leaflet-map');
+    if (!mapEl || typeof window.L === 'undefined') {
+      console.warn('Leaflet not loaded or map element not found');
+      return;
     }
-    var center = [54.9, -4.4];
-    var homePopup = 'Apple Cottage, Creetown, Scotland';
-    var poisData = [
-      { title: 'Ellangowan Hotel (The Wicker Man pub)', lat: 54.9001368, lng: -4.3791208, subtitle: 'In village', meta: 'St John Street (approx.)' },
-      { title: 'Cairnsmore of Fleet NNR', lat: 54.9475428, lng: -4.258444, subtitle: 'Hill & wildlife', meta: '≈15 min drive' },
-      { title: 'Mossyard Beach', lat: 54.8405845, lng: -4.2579869, subtitle: 'Family beach', meta: '≈15 min drive' }
-    ];
-    (async function(){
-      try {
-        await loadScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js');
-        await loadScript('https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js');
-        var mapEl = document.getElementById('leaflet-map');
-        if (!mapEl || typeof window.L === 'undefined') return;
-        var L = window.L;
-        var map = L.map(mapEl).setView(center, 14);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 19,
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-        var cluster = L.markerClusterGroup();
-        map.addLayer(cluster);
-        var homeMarker = L.marker(center).bindPopup('<strong>Apple Cottage</strong><br/>' + homePopup);
-        cluster.addLayer(homeMarker);
-        var bounds = L.latLngBounds([center]);
-        var poiMarkers = [];
-        poisData.forEach(function(p){
-          if (typeof p.lat === 'number' && typeof p.lng === 'number') {
-            var html = '<strong>' + (p.title || 'POI') + '</strong>' + (p.subtitle ? '<br/>' + p.subtitle : '') + (p.meta ? '<br/>' + p.meta : '');
-            var m = L.marker([p.lat, p.lng]).bindPopup(html);
-            poiMarkers.push(m);
-            cluster.addLayer(m);
-            bounds.extend([p.lat, p.lng]);
-          } else {
-            poiMarkers.push(null);
+
+    try {
+      // Precise coordinates for Apple Cottage, Silver Street, Creetown DG8 7HU
+      const center = [54.89634, -4.37521];
+      const map = window.L.map(mapEl).setView(center, 15);
+      
+      window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+
+      // Custom home icon
+      const homeIcon = window.L.divIcon({
+        html: '<div style="background: #ef4444; width: 24px; height: 24px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><span style="color: white; font-size: 12px; font-weight: bold;">🏠</span></div>',
+        className: 'custom-home-marker',
+        iconSize: [30, 30],
+        iconAnchor: [15, 15]
+      });
+
+      // Add home marker with custom icon
+      const homeMarker = window.L.marker(center, { icon: homeIcon })
+        .bindPopup('<strong>🏠 Apple Cottage</strong><br/>Silver Street, Creetown DG8 7HU<br/><em>what3words: ///silk.dynamics.quitter</em>');
+      homeMarker.addTo(map);
+
+      // Add POI markers with precise coordinates
+      const pois = [
+        { title: 'Ellangowan Hotel (The Wicker Man pub)', lat: 54.89601, lng: -4.37491, subtitle: 'In village', meta: 'St John Street' },
+        { title: 'Creetown Heritage Museum', lat: 54.89589, lng: -4.37503, subtitle: 'Local history', meta: 'St John Street' },
+        { title: 'Gem Rock Museum & Café', lat: 54.89652, lng: -4.37568, subtitle: 'Family attraction', meta: '≈2 min walk' },
+        { title: 'Creetown Primary School', lat: 54.89578, lng: -4.37445, subtitle: 'Local school', meta: '≈3 min walk' },
+        { title: 'Cairnsmore of Fleet NNR', lat: 54.94754, lng: -4.25844, subtitle: 'Hill & wildlife', meta: '≈15 min drive' },
+        { title: 'Mossyard Beach', lat: 54.84058, lng: -4.25799, subtitle: 'Family beach', meta: '≈15 min drive' },
+        { title: 'Kirroughtree Forest', lat: 54.87892, lng: -4.32341, subtitle: 'Mountain biking', meta: '≈5 min drive' }
+      ];
+
+      const markers = [];
+      pois.forEach((poi, index) => {
+        if (typeof poi.lat === 'number' && typeof poi.lng === 'number') {
+          const popupContent = `<strong>${poi.title}</strong>${poi.subtitle ? '<br/>' + poi.subtitle : ''}${poi.meta ? '<br/>' + poi.meta : ''}`;
+          const marker = window.L.marker([poi.lat, poi.lng]).bindPopup(popupContent);
+          marker.addTo(map);
+          markers.push(marker);
+        } else {
+          markers.push(null);
+        }
+      });
+
+      // Handle POI list clicks
+      const poiList = document.getElementById('poi-list');
+      if (poiList) {
+        poiList.addEventListener('click', function(e) {
+          const btn = e.target.closest('button[data-poi-index]');
+          if (!btn) return;
+          
+          const idx = parseInt(btn.getAttribute('data-poi-index'), 10);
+          const marker = markers[idx];
+          if (marker) {
+            const latlng = marker.getLatLng();
+            map.setView(latlng, 15, { animate: true });
+            marker.openPopup();
           }
         });
-        if (bounds.isValid()) { map.fitBounds(bounds.pad(0.2)); }
-        var list = document.getElementById('poi-list');
-        if (list) {
-          list.addEventListener('click', function(e){
-            var btn = e.target.closest('button[data-poi-index]');
-            if (!btn) return;
-            var idx = parseInt(btn.getAttribute('data-poi-index'), 10);
-            var marker = poiMarkers[idx];
-            if (marker) {
-              var latlng = marker.getLatLng();
-              map.setView(latlng, 15, { animate: true });
-              marker.openPopup();
-            }
-          }, { passive: true });
-        }
-      } catch(e) {
-        console && console.warn && console.warn('Leaflet map init failed', e);
       }
-    })();
-  </script>
+
+      // Fit bounds to show all markers
+      const group = new window.L.featureGroup([homeMarker, ...markers.filter(m => m)]);
+      map.fitBounds(group.getBounds().pad(0.1));
+
+    } catch (error) {
+      console.error('Map initialization failed:', error);
+      mapEl.innerHTML = '<div class="flex items-center justify-center h-full text-gray-500">Map failed to load</div>';
+    }
+  });
+</script>

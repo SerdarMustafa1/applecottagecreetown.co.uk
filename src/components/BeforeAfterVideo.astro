@@ -78,58 +78,69 @@ const hasSource = !!(hls || mp4_2160 || mp4_1080 || webm_1080);
   </div>
 </section>
 
-<script>
+<script is:inline>
   (function(){
-    const btn = document.getElementById('b4a-launch');
-    const wrap = document.getElementById('b4a-player-wrap');
-    if(!btn || !wrap) return;
-    function loadPlayer(){
-      const hls = btn.getAttribute('data-hls') || '';
-      const mp4_2160 = btn.getAttribute('data-mp4-2160') || '';
-      const mp4_1080 = btn.getAttribute('data-mp4-1080') || '';
-      const webm_1080 = btn.getAttribute('data-webm-1080') || '';
-      const posterUrl = btn.getAttribute('data-poster') || '';
-      const v = document.createElement('video');
-      v.setAttribute('controls','');
-      v.setAttribute('playsinline','');
-      v.setAttribute('preload','metadata');
-      v.setAttribute('class','w-full rounded-2xl shadow');
-      if (posterUrl) v.setAttribute('poster', posterUrl);
-      // Add progressive sources first
-      if (webm_1080) { const s = document.createElement('source'); s.src = webm_1080; s.type = 'video/webm'; v.appendChild(s); }
-      if (mp4_2160) { const s = document.createElement('source'); s.src = mp4_2160; s.type = 'video/mp4'; s.setAttribute('data-res','2160p'); v.appendChild(s); }
-      if (mp4_1080) { const s = document.createElement('source'); s.src = mp4_1080; s.type = 'video/mp4'; s.setAttribute('data-res','1080p'); v.appendChild(s); }
-      wrap.innerHTML = '';
-      wrap.appendChild(v);
-      // If HLS is provided and the browser doesn't support native HLS, optionally load hls.js on demand
-      if (hls) {
-        const canNativeHls = v.canPlayType('application/vnd.apple.mpegURL');
-        if (!canNativeHls) {
-          const script = document.createElement('script');
-          script.src = 'https://cdn.jsdelivr.net/npm/hls.js@latest';
-          script.onload = function(){
-            // @ts-ignore
-            if (window.Hls && window.Hls.isSupported()) {
+    function initialize(){
+      const btn = document.getElementById('b4a-launch');
+      const wrap = document.getElementById('b4a-player-wrap');
+      if(!btn || !wrap || btn.dataset.b4aBound === '1') return;
+      btn.dataset.b4aBound = '1';
+      function loadPlayer(){
+        const hls = btn.getAttribute('data-hls') || '';
+        const mp4_2160 = btn.getAttribute('data-mp4-2160') || '';
+        const mp4_1080 = btn.getAttribute('data-mp4-1080') || '';
+        const webm_1080 = btn.getAttribute('data-webm-1080') || '';
+        const posterUrl = btn.getAttribute('data-poster') || '';
+        const v = document.createElement('video');
+        v.setAttribute('controls','');
+        v.setAttribute('playsinline','');
+        v.setAttribute('preload','metadata');
+        v.setAttribute('class','w-full rounded-2xl shadow');
+        if (posterUrl) v.setAttribute('poster', posterUrl);
+        // Add progressive sources first
+        if (webm_1080) { const s = document.createElement('source'); s.src = webm_1080; s.type = 'video/webm'; v.appendChild(s); }
+        if (mp4_2160) { const s = document.createElement('source'); s.src = mp4_2160; s.type = 'video/mp4'; s.setAttribute('data-res','2160p'); v.appendChild(s); }
+        if (mp4_1080) { const s = document.createElement('source'); s.src = mp4_1080; s.type = 'video/mp4'; s.setAttribute('data-res','1080p'); v.appendChild(s); }
+        wrap.innerHTML = '';
+        wrap.appendChild(v);
+        // If HLS is provided and the browser doesn't support native HLS, optionally load hls.js on demand
+        if (hls) {
+          const canNativeHls = v.canPlayType('application/vnd.apple.mpegURL');
+          if (!canNativeHls) {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/hls.js@latest';
+            script.onload = function(){
               // @ts-ignore
-              const h = new window.Hls();
-              h.loadSource(hls);
-              h.attachMedia(v);
-            }
-          };
-          document.head.appendChild(script);
-        } else {
-          const s = document.createElement('source');
-          s.src = hls; s.type = 'application/vnd.apple.mpegURL';
-          v.appendChild(s);
+              if (window.Hls && window.Hls.isSupported()) {
+                // @ts-ignore
+                const h = new window.Hls();
+                h.loadSource(hls);
+                h.attachMedia(v);
+              }
+            };
+            document.head.appendChild(script);
+          } else {
+            const s = document.createElement('source');
+            s.src = hls; s.type = 'application/vnd.apple.mpegURL';
+            v.appendChild(s);
+          }
         }
+        // Start playback on user intent
+        setTimeout(() => { try { v.play().catch(()=>{}); } catch(e){} }, 50);
       }
-      // Start playback on user intent
-      setTimeout(() => { try { v.play().catch(()=>{}); } catch(e){} }, 50);
+      btn.addEventListener('click', function(){
+        btn.classList.add('hidden');
+        wrap.classList.remove('hidden');
+        loadPlayer();
+      }, { once: true });
     }
-    btn.addEventListener('click', function(){
-      btn.classList.add('hidden');
-      wrap.classList.remove('hidden');
-      loadPlayer();
-    });
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initialize, { once: true });
+    } else {
+      initialize();
+    }
+    document.addEventListener('astro:page-load', initialize);
+    document.addEventListener('astro:after-swap', initialize);
   })();
 </script>

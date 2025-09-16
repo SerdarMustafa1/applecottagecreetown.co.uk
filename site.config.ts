@@ -34,7 +34,7 @@ export const site = {
   description: 'Recently renovated three‑bed with annex, EV charging & landscaped gardens.',
   siteUrl: 'https://applecottagecreetown.co.uk',
   address: 'Apple Cottage, Creetown, Scotland',
-  coordinates: { lat: 54.9, lng: -4.4 },
+  coordinates: { lat: 54.89634, lng: -4.37521 },
   bookingUrl: 'https://tidycal.com/sidmustafa/apple-cottage-viewing',
   price: '💰 Offers Over £300,000',
   bedrooms: '🛏️ 3 Double Bedrooms',
