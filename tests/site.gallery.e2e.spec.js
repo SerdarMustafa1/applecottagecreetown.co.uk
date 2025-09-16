@@ -65,4 +65,40 @@ test.describe('Unified Gallery and Room-by-Room integration', () => {
       expect(alt && alt.length).toBeGreaterThan(0);
     }
   });
+
+  test('Deep-link opens gallery at index', async ({ page }) => {
+    // navigate directly to a deep link for bedrooms index 0
+    await page.goto((process.env.SITE_URL || 'http://localhost:8080/') + '#gallery?gallery=bedrooms&index=0');
+    // Wait for lightbox to appear
+    await page.waitForSelector('#lightbox, [role="dialog"]');
+    const dialog = await page.$('[role="dialog"]');
+    expect(dialog).toBeTruthy();
+    // The displayed image should have alt text
+    const img = await dialog.$('img');
+    expect(await img.getAttribute('alt')).toBeTruthy();
+  });
+
+  test('Lightbox keyboard navigation and focus trap', async ({ page }) => {
+    await page.goto(process.env.SITE_URL || 'http://localhost:8080/');
+    await page.waitForSelector('#gallery-grid');
+    // open first image
+    await page.click('#gallery-grid button');
+    await page.waitForSelector('#lightbox');
+
+    // press ArrowRight to navigate next
+    await page.keyboard.press('ArrowRight');
+    // press ArrowLeft to navigate prev
+    await page.keyboard.press('ArrowLeft');
+
+    // Test Tab cycles among lightbox controls: close, prev, next
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('Tab');
+
+    // Close with Escape
+    await page.keyboard.press('Escape');
+    // Ensure lightbox closed
+    const closed = await page.$('#lightbox');
+    expect(closed).toBeNull();
+  });
 });

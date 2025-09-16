@@ -72,34 +72,54 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
     }
   }, [filtered]);
 
-  // Read initial filter from query string (`gallery` or `room`) on mount
+  // Read initial filter and index from query (search or hash) on mount
   useEffect(() => {
     try {
-      const params = new URLSearchParams(window.location.search || '');
+      let search = window.location.search || '';
+      if (!search && window.location.hash && window.location.hash.includes('?')) {
+        search = window.location.hash.slice(window.location.hash.indexOf('?'));
+      }
+      const params = new URLSearchParams(search || '');
       const q = params.get('gallery') || params.get('room');
+      const idx = params.has('index') ? Number(params.get('index')) : null;
       if (q) {
         const opt = allFilterOptions.find(o => String(o).toLowerCase() === String(q).toLowerCase());
         if (opt) setFilter(opt);
       }
+      if (idx !== null && !Number.isNaN(idx)) desiredIndexRef.current = idx;
     } catch {
       // ignore - URL parsing not critical
     }
-  }, []);
+  }, [allFilterOptions]);
 
   // Update the query string when filter changes (pushState)
-  useEffect(() => {
+  const updateUrlParams = (opts: { gallery?: string | null; index?: number | null }) => {
     try {
       const url = new URL(window.location.href);
-      if (filter && filter !== 'All') {
-        url.searchParams.set('gallery', String(filter));
-      } else {
-        url.searchParams.delete('gallery');
+      if (opts.gallery != null) {
+        if (opts.gallery && opts.gallery !== 'All') url.searchParams.set('gallery', String(opts.gallery));
+        else url.searchParams.delete('gallery');
       }
+      if (opts.index != null) {
+        if (opts.index >= 0) url.searchParams.set('index', String(opts.index));
+        else url.searchParams.delete('index');
+      }
+      if (!url.hash) url.hash = '#gallery';
       window.history.replaceState({}, '', url.toString());
     } catch {
-      // ignore - history.replaceState may fail in some environments
+      // ignore - history/URL updates are non-essential
     }
+  };
+
+  useEffect(() => {
+    updateUrlParams({ gallery: filter });
   }, [filter]);
+
+  // Update index param when open or index changes
+  useEffect(() => {
+    if (open) updateUrlParams({ index });
+    else updateUrlParams({ index: null });
+  }, [open, index]);
 
   const openAt = (i: number) => { setIndex(i); setOpen(true); };
   const close = () => setOpen(false);
