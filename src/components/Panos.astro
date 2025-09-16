@@ -1,5 +1,5 @@
 ---
-import PanoViewerIsland from './PanoViewerIsland.tsx';
+import Simple360Viewer from './Simple360Viewer.tsx';
 import site from '../../site.config';
 const panos = site.panos || [];
 ---
@@ -10,7 +10,7 @@ const panos = site.panos || [];
       <p class="text-center text-sm text-gray-600 mb-4">Drag to look around; use fullscreen for the best view.</p>
       <div class="max-w-5xl mx-auto grid gap-6 md:grid-cols-2">
         {panos.map((p) => (
-          <PanoViewerIsland client:idle pano={p} />
+          <Simple360Viewer client:load pano={p} />
         ))}
       </div>
     </div>

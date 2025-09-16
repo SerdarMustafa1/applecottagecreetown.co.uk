@@ -10,18 +10,19 @@
     "build": "astro build",
     "preview": "astro preview",
     "check:cdn": "node scripts/check_cdn_urls.js",
-  "fix:cdn-images": "bash scripts/repair_cdn_images_from_s3.sh",
+    "fix:cdn-images": "bash scripts/repair_cdn_images_from_s3.sh",
     "lint": "eslint src tests/unit",
-  "test": "vitest run tests/unit",
-  "test:e2e": "playwright test tests/site-flows.e2e.spec.js",
-  "typecheck": "tsc --noEmit",
-  "prepare": "husky",
-  "lighthouse": "lhci autorun --config=./lighthouse.config.js"
+    "test": "vitest run tests/unit",
+    "test:e2e": "playwright test tests/site-flows.e2e.spec.js",
+    "typecheck": "tsc --noEmit",
+    "prepare": "husky",
+    "lighthouse": "lhci autorun --config=./lighthouse.config.js"
   },
   "dependencies": {
-    "@astrojs/react": "^3.0.0",
     "@astrojs/netlify": "^6.0.0",
+    "@astrojs/react": "^3.0.0",
     "@astrojs/tailwind": "^6.0.2",
+    "aframe": "^1.7.1",
     "astro": "^5.13.7",
     "lucide-react": "^0.453.0",
     "pannellum": "^2.5.6",
@@ -29,33 +30,34 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-  "@lhci/cli": "^0.14.0",
     "@axe-core/playwright": "^4.8.3",
     "@eslint/js": "^9.34.0",
+    "@lhci/cli": "^0.14.0",
     "@playwright/test": "^1.46.0",
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.10",
     "@testing-library/dom": "^9.3.3",
     "@testing-library/react": "^14.1.2",
+    "@types/aframe": "^1.2.8",
     "@typescript-eslint/parser": "^8.43.0",
     "autoprefixer": "^10.4.14",
     "axe-core": "^4.8.3",
     "eslint": "^9.34.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsx-a11y": "^6.8.0",
+    "husky": "^9.1.6",
     "jsdom": "^26.1.0",
     "lighthouse-ci": "^1.13.1",
+    "lint-staged": "^15.2.10",
     "playwright": "^1.46.0",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.0.0",
-    "vitest": "^1.6.0",
-    "husky": "^9.1.6",
-    "lint-staged": "^15.2.10"
+    "vitest": "^1.6.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-  "eslint --fix"
+      "eslint --fix"
     ]
   },
   "optionalDependencies": {

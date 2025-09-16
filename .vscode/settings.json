@@ -1,4 +1,5 @@
 {
   "aws.region": "eu-west-1",
-  "aws.telemetry": false
+  "aws.telemetry": false,
+  "azureTerraform.checkTerraformCmd": false
 }
