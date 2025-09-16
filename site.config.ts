@@ -109,14 +109,14 @@ export const site = {
     { src: media('/images/interior/kitchen-1.jpg'), alt: 'Kitchen main view', caption: 'Modern fitted kitchen' },
     { src: media('/images/interior/kitchen-2.jpg'), alt: 'Kitchen angle 2', caption: 'Kitchen workspace and storage' },
     { src: media('/images/interior/kitchen-4.jpg'), alt: 'Kitchen detail', caption: 'Kitchen appliances and fittings' },
-    { src: media('/images/interior/lounge-3.jpg'), alt: 'Main lounge', caption: 'Comfortable main living room' },
-    { src: media('/images/interior/conservatory-1.jpg'), alt: 'Conservatory', caption: 'Bright conservatory with garden access' },
+    { src: media('/images/interior/lounge/lounge-main.jpg'), alt: 'Main lounge', caption: 'Comfortable main living room' },
+    { src: media('/images/interior/conservatory/conservatory-main.jpg'), alt: 'Conservatory', caption: 'Bright conservatory with garden access' },
     { src: media('/images/interior/bathroom.jpg'), alt: 'Family bathroom', caption: 'Modern family bathroom' },
     { src: media('/images/interior/bedroom-rear.jpg'), alt: 'Rear bedroom', caption: 'Rear bedroom with garden views' },
     { src: media('/images/interior/master-bedroom-1.jpg'), alt: 'Master bedroom main', caption: 'Spacious master bedroom' },
     { src: media('/images/interior/master-bedroom-2.jpg'), alt: 'Master bedroom angle 2', caption: 'Master bedroom with fitted wardrobes' },
     { src: media('/images/interior/master-bedroom-3.jpg'), alt: 'Master bedroom angle 3', caption: 'Master bedroom storage area' },
-    { src: media('/images/interior/zen-room-1.jpg'), alt: 'Zen room', caption: 'Peaceful zen room space' },
+    { src: media('/images/interior/zen-room/zen-room-main.jpg'), alt: 'Zen room', caption: 'Peaceful zen room space' },
     
     // Dramatic exterior additions
     { src: media('/images/exterior/exterior-from-landing-2EE3F1E1.jpeg'), alt: 'Property from elevated view', caption: 'Elevated property perspective' },
@@ -196,14 +196,14 @@ export const site = {
       label: 'Lounge 360°', 
       videoMp4: media('/videos/interior/lounge-360.mp4'), 
       videoWebm: media('/videos/interior/lounge-360.webm'), 
-      poster: media('/images/interior/lounge-360-poster.jpg'),
+      poster: media('/images/interior/lounge/lounge-360-poster.jpg'),
       description: 'Main living room with fireplace'
     },
     { 
       label: 'Conservatory 360°', 
       videoMp4: media('/videos/interior/conservatory-360.mp4'), 
       videoWebm: media('/videos/interior/conservatory-360.webm'), 
-      poster: media('/images/interior/conservatory-360-poster.jpg'),
+      poster: media('/images/interior/conservatory/conservatory-360-poster.jpg'),
       description: 'Bright conservatory with garden access'
     },
     { 
@@ -219,14 +219,21 @@ export const site = {
   roomGalleries: {
     kitchen: [
       { src: media('/images/interior/interior-room-0DC5EADA.jpeg'), alt: 'Kitchen main view', caption: 'Modern kitchen with ample storage' },
-      { src: media('/images/interior/interior-room-32A352BB.jpeg'), alt: 'Kitchen angle 2', caption: 'Kitchen workspace and appliances' },
+      { src: media('/images/interior/kitchen/kitchen-workspace.jpg'), alt: 'Kitchen angle 2', caption: 'Kitchen workspace and appliances' },
   { src: media('/images/interior/interior-detail-D9D61891.jpeg'), alt: 'Kitchen detail', caption: 'Quality kitchen fittings' }
     ],
     livingAreas: [
-  { src: media('/images/interior/interior-room-3B60CBFF.jpeg'), alt: 'Main lounge', caption: 'Comfortable main lounge with fireplace' },
   { src: media('/images/interior/interior-room-4FED9062.jpeg'), alt: 'Living room angle', caption: 'Living room from entrance' },
-  { src: media('/images/interior/interior-room-93B1365C.jpeg'), alt: 'Conservatory view', caption: 'Bright conservatory space' },
   { src: media('/images/interior/interior-detail-D9D61891.jpeg'), alt: 'Interior detail', caption: 'Quality interior finishes' }
+    ],
+    lounge: [
+  { src: media('/images/interior/lounge/lounge-fireplace.jpg'), alt: 'Main lounge', caption: 'Comfortable main lounge with fireplace' }
+    ],
+    conservatory: [
+  { src: media('/images/interior/conservatory/conservatory-view.jpg'), alt: 'Conservatory view', caption: 'Bright conservatory space' }
+    ],
+    zenRoom: [
+  { src: media('/images/interior/zen-room/zen-room-main.jpg'), alt: 'Zen room', caption: 'Peaceful zen room space' }
     ],
     bedrooms: [
   { src: media('/images/interior/interior-room-6D088E35.jpeg'), alt: 'Bedroom main view', caption: 'Bright and airy bedroom' },
