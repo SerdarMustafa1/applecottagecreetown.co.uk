@@ -17,6 +17,7 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
   const [index, setIndex] = useState(0);
   const [filter, setFilter] = useState<string>('All');
   const [visibleCount, setVisibleCount] = useState(9);
+  const desiredIndexRef = React.useRef<number | null>(null);
 
   // Build filters from explicit rooms metadata first; fallback to simple categories inferred from path
   const itemsWithMeta = useMemo(() => images.map(img => ({ ...img, __rooms: Array.isArray((img as any).rooms) ? (img as any).rooms : [] })), [images]);
@@ -58,6 +59,18 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
     // Reset visible items on filter change
     setVisibleCount(9);
   }, [filter]);
+
+  // When filtered items are ready, if an index was requested via query, open lightbox
+  useEffect(() => {
+    if (desiredIndexRef.current == null) return;
+    const raw = desiredIndexRef.current as number;
+    const idx = Math.max(0, Math.min(raw, filtered.length - 1));
+    if (filtered.length > 0) {
+      setIndex(idx);
+      setOpen(true);
+      desiredIndexRef.current = null;
+    }
+  }, [filtered]);
 
   // Read initial filter from query string (`gallery` or `room`) on mount
   useEffect(() => {
