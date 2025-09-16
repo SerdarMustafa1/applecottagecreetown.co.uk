@@ -3,7 +3,61 @@ import site from '../../site.config';
 import * as locationMd from '../../content/location.md';
 
 const { coordinates, address } = site;
+
+// Merge pois and locationExtras into unified locations with enhanced data
 const pois = (site as any).pois || [];
+const locationExtras = site.locationExtras || [];
+
+// Create unified locations array combining both data sources
+const unifiedLocations = locationExtras.map(extra => {
+  // Find matching POI for coordinates
+  const matchingPoi = pois.find(poi => 
+    poi.title.toLowerCase().includes(extra.title.toLowerCase()) ||
+    extra.title.toLowerCase().includes(poi.title.toLowerCase())
+  );
+  
+  return {
+    ...extra,
+    lat: matchingPoi?.lat,
+    lng: matchingPoi?.lng,
+    hasCoordinates: matchingPoi && Number.isFinite(matchingPoi.lat) && Number.isFinite(matchingPoi.lng)
+  };
+});
+
+// Add any POIs that don't have matching locationExtras
+pois.forEach(poi => {
+  const hasMatch = unifiedLocations.some(loc => 
+    loc.title.toLowerCase().includes(poi.title.toLowerCase()) ||
+    poi.title.toLowerCase().includes(loc.title.toLowerCase())
+  );
+  
+  if (!hasMatch) {
+    unifiedLocations.push({
+      title: poi.title,
+      subtitle: poi.subtitle,
+      meta: poi.meta,
+      description: '',
+      image: null,
+      lat: poi.lat,
+      lng: poi.lng,
+      hasCoordinates: Number.isFinite(poi.lat) && Number.isFinite(poi.lng)
+    });
+  }
+});
+
+// Group locations by category for better organization
+const inVillage = unifiedLocations.filter(loc => 
+  loc.meta?.includes('village') || loc.meta?.includes('1 min') || loc.meta?.includes('2 min')
+);
+const nearbyNature = unifiedLocations.filter(loc => 
+  loc.title.toLowerCase().includes('cairnsmore') || 
+  loc.title.toLowerCase().includes('forest') || 
+  loc.title.toLowerCase().includes('beach') ||
+  loc.title.toLowerCase().includes('kirroughtree')
+);
+const otherAttractions = unifiedLocations.filter(loc => 
+  !inVillage.includes(loc) && !nearbyNature.includes(loc)
+);
 ---
 <section id="location" class="py-8">
   <div class="container">
@@ -32,22 +86,94 @@ const pois = (site as any).pois || [];
           {locationMd?.Content && <locationMd.Content />}
         </div>
         <div class="mt-4">
-          <h3 class="text-lg font-semibold mb-2">Nearby Points of Interest</h3>
-          <ul id="poi-list" class="space-y-2 text-sm">
-            {pois.map((p, i) => (
-              <li>
-                <button
-                  class="w-full text-left p-2 rounded border hover:bg-gray-50 disabled:opacity-60"
-                  data-poi-index={i}
-                  disabled={!Number.isFinite(p.lat) || !Number.isFinite(p.lng)}
-                >
-                  <span class="font-medium">{p.title}</span>
-                  {p.subtitle && <span class="text-gray-600"> — {p.subtitle}</span>}
-                  {p.meta && <div class="text-gray-500">{p.meta}</div>}
-                </button>
-              </li>
-            ))}
-          </ul>
+          <h3 class="text-lg font-semibold mb-4">Nearby Attractions & Amenities</h3>
+          
+          {inVillage.length > 0 && (
+            <div class="mb-6">
+              <h4 class="text-md font-medium text-gray-700 mb-3">🏘️ In Village</h4>
+              <div class="grid gap-4 sm:grid-cols-2">
+                {inVillage.map((loc, i) => (
+                  <article class="rounded border bg-white overflow-hidden shadow-sm">
+                    {loc.image && (
+                      <img src={loc.image} alt={loc.title} class="w-full h-32 object-cover bg-gray-100" loading="lazy" />
+                    )}
+                    <div class="p-3">
+                      <button
+                        class="w-full text-left"
+                        data-poi-title={loc.title}
+                        data-poi-lat={loc.lat}
+                        data-poi-lng={loc.lng}
+                        disabled={!loc.hasCoordinates}
+                      >
+                        <h5 class="font-semibold text-sm">{loc.title}</h5>
+                        {loc.subtitle && <p class="text-xs text-gray-600 mt-0.5">{loc.subtitle}</p>}
+                        {loc.description && <p class="text-xs mt-1 text-gray-700">{loc.description}</p>}
+                        {loc.meta && <p class="text-xs mt-1 text-blue-600 font-medium">{loc.meta}</p>}
+                      </button>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {nearbyNature.length > 0 && (
+            <div class="mb-6">
+              <h4 class="text-md font-medium text-gray-700 mb-3">🌲 Nature & Outdoors</h4>
+              <div class="grid gap-4 sm:grid-cols-2">
+                {nearbyNature.map((loc, i) => (
+                  <article class="rounded border bg-white overflow-hidden shadow-sm">
+                    {loc.image && (
+                      <img src={loc.image} alt={loc.title} class="w-full h-32 object-cover bg-gray-100" loading="lazy" />
+                    )}
+                    <div class="p-3">
+                      <button
+                        class="w-full text-left"
+                        data-poi-title={loc.title}
+                        data-poi-lat={loc.lat}
+                        data-poi-lng={loc.lng}
+                        disabled={!loc.hasCoordinates}
+                      >
+                        <h5 class="font-semibold text-sm">{loc.title}</h5>
+                        {loc.subtitle && <p class="text-xs text-gray-600 mt-0.5">{loc.subtitle}</p>}
+                        {loc.description && <p class="text-xs mt-1 text-gray-700">{loc.description}</p>}
+                        {loc.meta && <p class="text-xs mt-1 text-blue-600 font-medium">{loc.meta}</p>}
+                      </button>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {otherAttractions.length > 0 && (
+            <div class="mb-6">
+              <h4 class="text-md font-medium text-gray-700 mb-3">🎯 Other Attractions</h4>
+              <div class="grid gap-4 sm:grid-cols-2">
+                {otherAttractions.map((loc, i) => (
+                  <article class="rounded border bg-white overflow-hidden shadow-sm">
+                    {loc.image && (
+                      <img src={loc.image} alt={loc.title} class="w-full h-32 object-cover bg-gray-100" loading="lazy" />
+                    )}
+                    <div class="p-3">
+                      <button
+                        class="w-full text-left"
+                        data-poi-title={loc.title}
+                        data-poi-lat={loc.lat}
+                        data-poi-lng={loc.lng}
+                        disabled={!loc.hasCoordinates}
+                      >
+                        <h5 class="font-semibold text-sm">{loc.title}</h5>
+                        {loc.subtitle && <p class="text-xs text-gray-600 mt-0.5">{loc.subtitle}</p>}
+                        {loc.description && <p class="text-xs mt-1 text-gray-700">{loc.description}</p>}
+                        {loc.meta && <p class="text-xs mt-1 text-blue-600 font-medium">{loc.meta}</p>}
+                      </button>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -88,22 +214,30 @@ const pois = (site as any).pois || [];
         .bindPopup('<strong>🏠 Apple Cottage</strong><br/>Silver Street, Creetown DG8 7HU<br/><em>what3words: ///silk.dynamics.quitter</em>');
       homeMarker.addTo(map);
 
-      // Add POI markers - please provide exact Google Maps coordinates for accuracy
-      const pois = [
-        { title: 'Ellangowan Hotel (The Wicker Man pub)', lat: 54.8995, lng: -4.3795, subtitle: 'In village', meta: 'St John Street' },
-        { title: 'Creetown Heritage Museum', lat: 54.8993, lng: -4.3798, subtitle: 'Local history', meta: 'St John Street' },
-        { title: 'Gem Rock Museum & Café', lat: 54.8998, lng: -4.3802, subtitle: 'Family attraction', meta: '≈2 min walk' },
-        { title: 'Creetown Primary School', lat: 54.8990, lng: -4.3785, subtitle: 'Local school', meta: '≈3 min walk' },
-        { title: 'Cairnsmore of Fleet NNR', lat: 54.9475, lng: -4.2584, subtitle: 'Hill & wildlife', meta: '≈15 min drive' },
-        { title: 'Mossyard Beach', lat: 54.8406, lng: -4.2580, subtitle: 'Family beach', meta: '≈15 min drive' },
-        { title: 'Kirroughtree Forest', lat: 54.8789, lng: -4.3234, subtitle: 'Mountain biking', meta: '≈5 min drive' }
+      // Add POI markers from unified locations
+      const locations = [
+        { title: 'Ellangowan Hotel (The Wicker Man pub)', lat: 54.9001368, lng: -4.3791208, subtitle: 'In village', meta: 'St John Street (approx.)' },
+        { title: 'Cairnsmore of Fleet NNR', lat: 54.9475428, lng: -4.258444, subtitle: 'Hill & wildlife', meta: '≈15 min drive' },
+        { title: 'Mossyard Beach', lat: 54.8405845, lng: -4.2579869, subtitle: 'Family beach', meta: '≈15 min drive' },
+        { title: 'Creetown Heritage Museum', lat: 54.8993, lng: -4.3798, subtitle: 'Local history', meta: '≈1 min drive' },
+        { title: 'Gem Rock Museum & Café', lat: 54.8998, lng: -4.3802, subtitle: 'Family attraction', meta: '≈2 min drive' },
+        { title: 'Kirroughtree & 7stanes', lat: 54.8789, lng: -4.3234, subtitle: 'Trails & biking', meta: '≈5–10 min drive' },
+        { title: 'The Laird\'s Inn', lat: 54.9200, lng: -4.3600, subtitle: 'Castle Cary pub', meta: '≈7 min drive' },
+        { title: 'Castle Cary Pools', lat: 54.9180, lng: -4.3580, subtitle: 'Holiday park & pools', meta: '≈7 min drive' }
       ];
 
       const markers = [];
-      pois.forEach((poi, index) => {
+      locations.forEach((poi, index) => {
         if (typeof poi.lat === 'number' && typeof poi.lng === 'number') {
+          const poiIcon = window.L.divIcon({
+            html: '<div style="background: #3b82f6; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>',
+            className: 'custom-poi-marker',
+            iconSize: [24, 24],
+            iconAnchor: [12, 12]
+          });
+          
           const popupContent = `<strong>${poi.title}</strong>${poi.subtitle ? '<br/>' + poi.subtitle : ''}${poi.meta ? '<br/>' + poi.meta : ''}`;
-          const marker = window.L.marker([poi.lat, poi.lng]).bindPopup(popupContent);
+          const marker = window.L.marker([poi.lat, poi.lng], { icon: poiIcon }).bindPopup(popupContent);
           marker.addTo(map);
           markers.push(marker);
         } else {
@@ -111,22 +245,27 @@ const pois = (site as any).pois || [];
         }
       });
 
-      // Handle POI list clicks
-      const poiList = document.getElementById('poi-list');
-      if (poiList) {
-        poiList.addEventListener('click', function(e) {
-          const btn = e.target.closest('button[data-poi-index]');
-          if (!btn) return;
+      // Handle location card clicks
+      const locationButtons = document.querySelectorAll('[data-poi-title]');
+      locationButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          if (button.disabled) return;
           
-          const idx = parseInt(btn.getAttribute('data-poi-index'), 10);
-          const marker = markers[idx];
-          if (marker) {
-            const latlng = marker.getLatLng();
-            map.setView(latlng, 15, { animate: true });
-            marker.openPopup();
+          const title = button.getAttribute('data-poi-title');
+          const lat = parseFloat(button.getAttribute('data-poi-lat'));
+          const lng = parseFloat(button.getAttribute('data-poi-lng'));
+          
+          if (Number.isFinite(lat) && Number.isFinite(lng)) {
+            map.setView([lat, lng], 16, { animate: true });
+            
+            // Find and open the corresponding marker popup
+            const marker = markers.find(m => m && Math.abs(m.getLatLng().lat - lat) < 0.001 && Math.abs(m.getLatLng().lng - lng) < 0.001);
+            if (marker) {
+              marker.openPopup();
+            }
           }
         });
-      }
+      });
 
       // Fit bounds to show all markers
       const group = new window.L.featureGroup([homeMarker, ...markers.filter(m => m)]);
