@@ -15,10 +15,10 @@ function formatBytes(bytes: number) {
 // Extract exterior images for hero rotation
 const heroImages = [
   { src: hero.image, alt: 'Apple Cottage exterior view' },
-  { src: site.gallery.find(img => img.src.includes('property-rear-main'))?.src, alt: 'Apple Cottage rear garden view' },
-  { src: site.gallery.find(img => img.src.includes('garden-centre'))?.src, srcWebp: site.gallery.find(img => img.src.includes('garden-centre'))?.srcWebp, alt: 'Apple Cottage garden centre view' },
-  { src: site.gallery.find(img => img.src.includes('street-cairnsmore'))?.src, srcWebp: site.gallery.find(img => img.src.includes('street-cairnsmore'))?.srcWebp, alt: 'Apple Cottage street view' },
-  { src: site.gallery.find(img => img.src.includes('property-rear-1'))?.src, alt: 'Apple Cottage alternative rear view' }
+  { src: 'https://d1t6lpjdsu4646.cloudfront.net/images/exterior/property-rear-main-DA26379D.jpeg', alt: 'Apple Cottage rear garden view' },
+  { src: 'https://d1t6lpjdsu4646.cloudfront.net/images/exterior/garden-centre-1200.jpg', srcWebp: 'https://d1t6lpjdsu4646.cloudfront.net/images/exterior/garden-centre-1200.webp', alt: 'Apple Cottage garden centre view' },
+  { src: 'https://d1t6lpjdsu4646.cloudfront.net/images/exterior/street-cairnsmore-1200.jpg', srcWebp: 'https://d1t6lpjdsu4646.cloudfront.net/images/exterior/street-cairnsmore-1200.webp', alt: 'Apple Cottage street view' },
+  { src: 'https://d1t6lpjdsu4646.cloudfront.net/images/exterior/property-rear-1-900A7CB2.jpeg', alt: 'Apple Cottage alternative rear view' }
 ].filter(img => img.src); // Remove any undefined images
 
 let homeReportSize: string | null = null;
