@@ -25,22 +25,28 @@ const gaId = site.analyticsId;
       <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
       <link rel="manifest" href="/site.webmanifest" />
       {gaId && (
-        <script is:inline define:vars={{ gaId }}>
+        <script is:inline>
           (function(){
-            var GA_ID = gaId;
+            var GA_ID = 'G-LHB9R5TLL1';
             var KEY = 'silktideCookieBanner_InitialChoice';
             var loaded = false;
             function loadGA(){
-              if(loaded || !GA_ID) return; loaded = true;
+              if(loaded || !GA_ID) return; 
+              loaded = true;
               window.dataLayer = window.dataLayer || [];
               function gtag(){ dataLayer.push(arguments); }
               window.gtag = gtag;
-              var s = document.createElement('script');
-              s.async = true;
-              s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
-              document.head.appendChild(s);
-              gtag('js', new Date());
-              gtag('config', GA_ID);
+              try {
+                var s = document.createElement('script');
+                s.async = true;
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+                s.onerror = function() { console.log('GA blocked by ad blocker'); };
+                document.head.appendChild(s);
+                gtag('js', new Date());
+                gtag('config', GA_ID);
+              } catch(e) {
+                console.log('GA initialization failed:', e);
+              }
             }
             try {
               var choice = localStorage.getItem(KEY);
