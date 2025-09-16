@@ -29,6 +29,14 @@ function media(path: string) {
   return base ? `${base}/${p}` : path;
 }
 
+const DEFAULT_B4A = {
+  hls: media('/videos/b4a/hls/master.m3u8'),
+  mp4_2160: media('/videos/b4a/b4a-2160p.mp4'),
+  mp4_1080: media('/videos/b4a/b4a-1080p.mp4'),
+  webm_1080: media('/videos/b4a/b4a-1080p.webm'),
+  poster: media('/videos/b4a/b4a-poster.jpg'),
+};
+
 export const site = {
   title: 'Apple Cottage',
   description: 'Recently renovated three‑bed with annex, EV charging & landscaped gardens.',
@@ -80,11 +88,13 @@ export const site = {
     : [{ label: '3D Overview', src: `${DEFAULT_CDN}/floorplans/house-3d.mp4` }],
   // Optional Before/After video sources (wired to component)
   beforeAfterVideo: {
-    hls: B4A.HLS,
-    mp4_2160: B4A.MP4_2160,
-    mp4_1080: B4A.MP4_1080,
-    webm_1080: B4A.WEBM_1080,
-    poster: B4A.POSTER,
+    label: 'Before & After Renovation',
+    description: 'See Apple Cottage evolve from shell to showcase.',
+    hls: B4A.HLS || DEFAULT_B4A.hls,
+    mp4_2160: B4A.MP4_2160 || DEFAULT_B4A.mp4_2160,
+    mp4_1080: B4A.MP4_1080 || DEFAULT_B4A.mp4_1080,
+    webm_1080: B4A.WEBM_1080 || DEFAULT_B4A.webm_1080,
+    poster: B4A.POSTER || DEFAULT_B4A.poster,
   },
   gallery: [
     // Exterior views
