@@ -59,6 +59,9 @@ crash.log
 *.tfstate.backup
 crash.log
 test-results/
+# Playwright artifacts produced during E2E runs
+artifacts/
+playwright-report/
 .http-server.pid
 
 # Local Netlify folder
