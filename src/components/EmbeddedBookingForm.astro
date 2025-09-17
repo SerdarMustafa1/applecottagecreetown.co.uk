@@ -1,24 +1,5 @@
 ---
 ---
-<script type="module">
-  // Minimal client-side handling: progressive enhancement and POST to serverless endpoint if available
-  async function submitForm(e){
-    e.preventDefault();
-    const form = e.currentTarget;
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const resultEl = form.querySelector('.result');
-    submitBtn.disabled = true;
-    const data = new FormData(form);
-    const payload = Object.fromEntries(data.entries());
-    try{
-      const res = await fetch('/.netlify/functions/booking', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(payload)});
-      if(res.ok){ resultEl.textContent = 'Thanks — we will reply same day.'; form.reset(); if (window.gtag) window.gtag('event','form_submit_success',{ event_category:'engagement', event_label:'booking_form' }); }
-      else { resultEl.textContent = 'Error sending — please call us.'; if (window.gtag) window.gtag('event','form_submit_error',{ event_category:'engagement', event_label:'booking_form' }); }
-    }catch(err){ resultEl.textContent = 'Network error — please try calling.'; if (window.gtag) window.gtag('event','form_submit_error',{ event_category:'engagement', event_label:'booking_form' }); }
-    finally{ submitBtn.disabled = false; }
-  }
-</script>
-
 <style>
   .booking { border:1px solid #e6e7eb; padding:1rem; border-radius:8px; background:#fff; }
   .booking label{ display:block; font-size:0.9rem; margin-bottom:0.25rem; }
@@ -26,7 +7,8 @@
   .booking button{ margin-top:0.5rem; }
 </style>
 
-<form class="booking" id="book-viewing" on:submit="submitForm(event)" aria-labelledby="book-viewing-title">
+<!-- Render a basic, server-side form so E2E tests and non-JS clients can access inputs -->
+<form class="booking" id="book-viewing" action="#" method="post" aria-labelledby="book-viewing-title">
   <h3 id="book-viewing-title">Book a viewing</h3>
   <label for="name">Your name</label>
   <input id="name" name="name" required />

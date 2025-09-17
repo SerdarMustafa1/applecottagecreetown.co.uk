@@ -53,5 +53,64 @@ export function flattenAndTagImages(site: any): ImageItem[] {
     return it;
   });
 
+  // Deterministic ordering to prefer hero / front elevation images first,
+  // then kitchen, living/lounge, bedrooms, annex, exterior/garden, bathroom, then others.
+  const roomPriority: Record<string, number> = {
+    front: 0,
+    hero: 0,
+    kitchen: 1,
+    livingAreas: 2,
+    lounge: 2,
+    bedrooms: 3,
+    master: 3,
+    annex: 4,
+    exterior: 5,
+    garden: 5,
+    bathroom: 6,
+  };
+
+  function detectFrontLike(src: string, caption?: string) {
+    if (!src) return false;
+    const s = src.toLowerCase();
+    if (/front|elevation|fa[cç]ade|facade|street|approach|hero|main[-_\s]?elev|frontview/.test(s)) return true;
+    if (caption && /front|elevation|hero/.test(String(caption).toLowerCase())) return true;
+    return false;
+  }
+
+  function getPriority(it: ImageItem) {
+    const src = (it.src || '').toLowerCase();
+    const caption = it.caption;
+    if (detectFrontLike(src, caption)) return roomPriority.front;
+    const rooms = (it.rooms || []).map((r) => String(r).toLowerCase());
+    for (const r of rooms) {
+      if (r in roomPriority) return roomPriority[r];
+      // handle common synonyms
+      if (r.includes('kitchen')) return roomPriority.kitchen;
+      if (r.includes('lounge') || r.includes('living') || r.includes('conservatory')) return roomPriority.livingAreas;
+      if (r.includes('bed')) return roomPriority.bedrooms;
+      if (r.includes('annex') || r.includes('studio')) return roomPriority.annex;
+      if (r.includes('garden') || r.includes('exterior') || r.includes('drive')) return roomPriority.exterior;
+      if (r.includes('bath')) return roomPriority.bathroom;
+    }
+    // fallback: check filename tokens
+    if (/kitchen|kitch/.test(src)) return roomPriority.kitchen;
+    if (/lounge|living|conservat/.test(src)) return roomPriority.livingAreas;
+    if (/bedroom|bed-?room|master|bed/.test(src)) return roomPriority.bedrooms;
+    if (/annex|studio/.test(src)) return roomPriority.annex;
+    if (/garden|exterior|outside|drive/.test(src)) return roomPriority.exterior;
+    if (/bathroom|bath/.test(src)) return roomPriority.bathroom;
+
+    return 99; // least priority
+  }
+
+  results.sort((a, b) => {
+    const pa = getPriority(a);
+    const pb = getPriority(b);
+    if (pa !== pb) return pa - pb;
+    // deterministic tie-breaker: shorter src first, then lexicographic
+    if ((a.src || '').length !== (b.src || '').length) return (a.src || '').length - (b.src || '').length;
+    return (a.src || '').localeCompare(b.src || '');
+  });
+
   return results;
 }

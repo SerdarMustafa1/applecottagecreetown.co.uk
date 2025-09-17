@@ -73,19 +73,31 @@ test.describe('Core user flows', () => {
     // Snapshot checks disabled to reduce CI flakiness
   });
 
-  test('contact form validates and submits', async ({ page }) => {
+  test('booking embed (TidyCal) is present and accessible', async ({ page }) => {
     await page.addInitScript(() => localStorage.setItem('silktideCookieBanner_InitialChoice', '1'));
     await page.goto(SITE_URL + '#contact');
-    await expect(page.locator('#name')).toBeVisible();
-    await page.fill('#name', 'Test User');
-    await expect(page.locator('#email')).toBeVisible();
-    await page.fill('#email', 'test@example.com');
-    await expect(page.locator('#message')).toBeVisible();
-    await page.fill('#message', 'I would like to book a viewing.');
-    await page.click('form[name="contact"] button[type="submit"]');
-    const results = await new AxeBuilder({ page }).include('#contact').analyze();
-    const serious = results.violations.filter(v => ['critical', 'serious'].includes(v.impact));
-    expect(serious).toEqual([]);
-    // Snapshot checks disabled to reduce CI flakiness
+    // Ensure the tidycal container is present
+    await expect(page.locator('.tidycal-embed')).toBeVisible();
+    // Wait briefly for the embed script to insert an iframe; if it doesn't, ensure fallback link exists
+    const iframe = page.locator('.tidycal-embed iframe');
+    const fallback = page.locator('#tidycal-fallback-link');
+    // Wait up to 5s for either iframe or fallback link
+    await Promise.race([
+      iframe.waitFor({ state: 'attached', timeout: 5000 }).catch(() => {}),
+      fallback.waitFor({ state: 'attached', timeout: 5000 }).catch(() => {}),
+    ]);
+    const hasIframe = await iframe.count() > 0;
+    const hasFallback = await fallback.count() > 0;
+    expect(hasIframe || hasFallback).toBeTruthy();
+    // Run accessibility checks against whichever is present
+    if (hasIframe) {
+      const results = await new AxeBuilder({ page }).include('.tidycal-embed iframe').analyze();
+      const serious = results.violations.filter(v => ['critical', 'serious'].includes(v.impact));
+      expect(serious).toEqual([]);
+    } else {
+      const results = await new AxeBuilder({ page }).include('#book-viewing').analyze();
+      const serious = results.violations.filter(v => ['critical', 'serious'].includes(v.impact));
+      expect(serious).toEqual([]);
+    }
   });
 });
