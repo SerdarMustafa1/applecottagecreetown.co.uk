@@ -69,9 +69,11 @@ const gaId = site.analyticsId;
       <!-- Trust bar immediately under hero to surface EPC, HR and planning -->
       <TrustBar />
       <slot />
-      <!-- Embedded booking form sits above the footer as an in-page option -->
-      <section id="booking-form-section" style="padding:1.5rem 0">
-        <EmbeddedBookingForm />
+      <!-- Booking embed (TidyCal) sits above the footer as primary booking option -->
+      <section id="book-viewing" style="padding:1.5rem 0">
+        <div class="tidycal-embed" data-path="sidmustafa/apple-cottage-viewing"></div>
+        <script src="https://asset-tidycal.b-cdn.net/js/embed.js" async></script>
+        <p style="margin-top:0.5rem;color:#6b7280">If the booking widget does not load, <a href={site.bookingUrl} target="_blank" rel="noopener">open booking in a new tab</a>.</p>
       </section>
     </main>
     <Footer />

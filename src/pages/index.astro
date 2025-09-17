@@ -8,6 +8,7 @@ import HighlightCards from '../components/HighlightCards.astro';
 import PropertyDetails from '../components/PropertyDetails.astro';
 
 import FAQ from '../components/FAQ.astro';
+import ScotlandProcess from '../components/ScotlandProcess.astro';
 import MapEmbed from '../components/MapEmbed.astro';
 import Floorplans from '../components/Floorplans.astro';
 import Panos from '../components/Panos.astro';
@@ -80,6 +81,7 @@ const highlightItems = [...coreHighlights, ...extraHighlights];
   </section>
   
   <!-- FAQ -->
+  <ScotlandProcess />
   <FAQ items={faqMd?.frontmatter?.questions || []} />
   
 </BaseLayout>

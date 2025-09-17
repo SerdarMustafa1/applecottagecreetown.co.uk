@@ -5,13 +5,17 @@
   async function submitForm(e){
     e.preventDefault();
     const form = e.currentTarget;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const resultEl = form.querySelector('.result');
+    submitBtn.disabled = true;
     const data = new FormData(form);
     const payload = Object.fromEntries(data.entries());
     try{
       const res = await fetch('/.netlify/functions/booking', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(payload)});
-      if(res.ok){ form.querySelector('.result').textContent = 'Thanks — we will reply same day.'; form.reset(); }
-      else { form.querySelector('.result').textContent = 'Error sending — please call us.'; }
-    }catch(err){ form.querySelector('.result').textContent = 'Network error — please try calling.'; }
+      if(res.ok){ resultEl.textContent = 'Thanks — we will reply same day.'; form.reset(); if (window.gtag) window.gtag('event','form_submit_success',{ event_category:'engagement', event_label:'booking_form' }); }
+      else { resultEl.textContent = 'Error sending — please call us.'; if (window.gtag) window.gtag('event','form_submit_error',{ event_category:'engagement', event_label:'booking_form' }); }
+    }catch(err){ resultEl.textContent = 'Network error — please try calling.'; if (window.gtag) window.gtag('event','form_submit_error',{ event_category:'engagement', event_label:'booking_form' }); }
+    finally{ submitBtn.disabled = false; }
   }
 </script>
 
