@@ -1,0 +1,45 @@
+---
+---
+<script type="module">
+  // Minimal client-side handling: progressive enhancement and POST to serverless endpoint if available
+  async function submitForm(e){
+    e.preventDefault();
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const payload = Object.fromEntries(data.entries());
+    try{
+      const res = await fetch('/.netlify/functions/booking', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(payload)});
+      if(res.ok){ form.querySelector('.result').textContent = 'Thanks — we will reply same day.'; form.reset(); }
+      else { form.querySelector('.result').textContent = 'Error sending — please call us.'; }
+    }catch(err){ form.querySelector('.result').textContent = 'Network error — please try calling.'; }
+  }
+</script>
+
+<style>
+  .booking { border:1px solid #e6e7eb; padding:1rem; border-radius:8px; background:#fff; }
+  .booking label{ display:block; font-size:0.9rem; margin-bottom:0.25rem; }
+  .booking input,.booking textarea, .booking select{ width:100%; padding:0.5rem; border-radius:6px; border:1px solid #d1d5db; }
+  .booking button{ margin-top:0.5rem; }
+</style>
+
+<form class="booking" id="book-viewing" on:submit="submitForm(event)" aria-labelledby="book-viewing-title">
+  <h3 id="book-viewing-title">Book a viewing</h3>
+  <label for="name">Your name</label>
+  <input id="name" name="name" required />
+
+  <label for="email">Email</label>
+  <input id="email" name="email" type="email" required />
+
+  <label for="phone">Phone (optional)</label>
+  <input id="phone" name="phone" type="tel" />
+
+  <label for="when">Preferred time</label>
+  <input id="when" name="when" type="datetime-local" />
+
+  <label for="message">Message (optional)</label>
+  <textarea id="message" name="message" rows="3"></textarea>
+
+  <button type="submit" class="btn-primary">Request viewing</button>
+  <div class="result" role="status" aria-live="polite" style="margin-top:0.5rem"></div>
+  <p style="font-size:0.85rem;color:#6b7280;margin-top:0.5rem">Owner-listed. We reply same-day. <a href="/privacy">Privacy & data</a></p>
+</form>

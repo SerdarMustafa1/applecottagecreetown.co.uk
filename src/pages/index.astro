@@ -30,7 +30,9 @@ const extraHighlights = highlightsMd?.frontmatter?.items || [];
 const highlightItems = [...coreHighlights, ...extraHighlights];
 ---
 <BaseLayout title={pageTitle} description={pageDescription}>
-  <Hero />
+  <div slot="hero">
+    <Hero />
+  </div>
   <section id="about" class="prose mx-auto p-4">
     {homeMd?.Content && <homeMd.Content />}
   </section>
@@ -72,7 +74,7 @@ const highlightItems = [...coreHighlights, ...extraHighlights];
   <section id="contact" class="p-4 max-w-lg mx-auto text-center">
     <h2 class="text-2xl font-semibold mb-4">Book a Viewing</h2>
     <p class="text-gray-600 mb-6">Schedule your viewing at a time that works for you.</p>
-    <a href={site.bookingUrl} target="_blank" rel="noopener" class="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus-visible:ring focus-visible:ring-blue-300 transition-colors">
+    <a href="#book-viewing" class="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus-visible:ring focus-visible:ring-blue-300 transition-colors">
       Book a Viewing
     </a>
   </section>

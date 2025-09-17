@@ -1,0 +1,22 @@
+---
+---
+<!-- Minimal sticky CTA bar (desktop + mobile) -->
+<style>
+  .sticky-cta { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border-top: 1px solid #e5e7eb; display:flex; align-items:center; justify-content:space-between; padding:0.5rem 1rem; gap:0.5rem; z-index:1200; }
+  .sticky-cta__left { display:flex; align-items:center; gap:0.5rem; font-weight:600; }
+  .sticky-cta__actions { display:flex; gap:0.5rem; }
+  .btn-primary { background:#0f172a; color:#fff; padding:0.5rem 0.75rem; border-radius:6px; text-decoration:none; }
+  .btn-ghost { background:transparent; border:1px solid #d1d5db; padding:0.45rem 0.6rem; border-radius:6px; text-decoration:none; color:#0f172a; }
+  @media(min-width:900px){ .sticky-cta{ right:auto; left:1rem; bottom:1rem; width:auto; border-radius:10px; box-shadow:0 6px 24px rgba(15,23,42,0.12); } }
+</style>
+
+<div class="sticky-cta" role="region" aria-label="Booking sticky call to action">
+  <div class="sticky-cta__left">
+    <span class="price">Offers Over £300,000</span>
+    <span class="chip">EPC B</span>
+  </div>
+  <div class="sticky-cta__actions">
+    <a href="#book-viewing" class="btn-ghost">Book Viewing</a>
+    <a href="/docs/home-report.pdf" class="btn-primary" download>Download Home Report</a>
+  </div>
+</div>

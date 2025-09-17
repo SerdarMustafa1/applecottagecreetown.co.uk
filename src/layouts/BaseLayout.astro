@@ -3,6 +3,9 @@ import '../styles/globals.css';
 import Seo from '../components/Seo.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import TrustBar from '../components/TrustBar.astro';
+import EmbeddedBookingForm from '../components/EmbeddedBookingForm.astro';
+import StickyCTA from '../components/StickyCTA.astro';
 import site from '../../site.config.ts';
 
 const { title = site.title, description = site.description } = Astro.props;
@@ -24,6 +27,7 @@ const gaId = site.analyticsId;
       <link rel="icon" href="/favicon.ico" />
       <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
       <link rel="manifest" href="/site.webmanifest" />
+  {site.hero?.image && <link rel="preload" as="image" href={site.hero.image} />}
       {gaId && (
         <script is:inline>
           (function(){
@@ -60,8 +64,18 @@ const gaId = site.analyticsId;
   <body class="min-h-screen antialiased flex flex-col">
     <Header />
     <main class="flex-1">
+      <!-- Hero slot: pages can provide a hero section via this named slot -->
+      <slot name="hero" />
+      <!-- Trust bar immediately under hero to surface EPC, HR and planning -->
+      <TrustBar />
       <slot />
+      <!-- Embedded booking form sits above the footer as an in-page option -->
+      <section id="booking-form-section" style="padding:1.5rem 0">
+        <EmbeddedBookingForm />
+      </section>
     </main>
     <Footer />
+    <!-- Sticky CTA persists on screen for quick booking / report download -->
+    <StickyCTA />
   </body>
 </html>

@@ -2,10 +2,11 @@
 import site from '../../site.config';
 const { title, description } = Astro.props;
 const url = Astro.url?.href || site.siteUrl || '';
-const image = site.ogImage || '/images/og-default.jpg';
+const image = site.ogImage || site.hero?.image || '/images/og-default.jpg';
 ---
 <title>{title}</title>
 <meta name="description" content={description} />
+<meta property="og:site_name" content={site.title} />
 <link rel="canonical" href={url} />
 <meta property="og:type" content="website" />
 <meta property="og:title" content={title} />
@@ -20,27 +21,25 @@ const image = site.ogImage || '/images/og-default.jpg';
   type="application/ld+json"
   set:html={JSON.stringify({
     '@context': 'https://schema.org',
-    '@type': 'RealEstateListing',
+    '@type': 'SingleFamilyResidence',
     name: site.title,
     description: site.description,
     url,
-    offers: {
-      '@type': 'Offer',
-      price: (site.price || '').replace(/[^0-9.]/g, ''),
-      priceCurrency: 'GBP'
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'Silver Street',
+      addressLocality: 'Creetown',
+      postalCode: 'DG8 7HU',
+      addressRegion: 'Dumfries and Galloway',
+      addressCountry: 'GB'
     },
-    item: {
-      '@type': 'Residence',
-      address: site.address,
-      geo: {
-        '@type': 'GeoCoordinates',
-        latitude: site.coordinates?.lat,
-        longitude: site.coordinates?.lng
-      },
-      floorSize: site.floorplans?.length
-        ? { '@type': 'QuantitativeValue', value: site.floorplans.length }
-        : undefined,
-      energyEfficiencyScale: site.epc || undefined
-    }
+    numberOfBedrooms: 3,
+    floorSize: { '@type': 'QuantitativeValue', value: 147, unitCode: 'MTK' },
+    amenityFeature: [
+      { '@type':'LocationFeatureSpecification', name: 'Annex with WC', value: 'Yes' },
+      { '@type':'LocationFeatureSpecification', name: 'EV charger', value: 'Yes' },
+      { '@type':'LocationFeatureSpecification', name: 'Solar PV + battery', value: 'Yes' }
+    ],
+    offers: { '@type': 'Offer', price: 300000, priceCurrency: 'GBP' }
   })}
 /> 
