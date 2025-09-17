@@ -22,7 +22,7 @@ if (homeReport?.href) {
 ---
 <section id="hero" class="relative">
   {hero.image ? (
-    <img src={hero.image} alt="Apple Cottage hero" class="w-full h-[45vh] md:h-[60vh] object-cover" />
+    <img src={hero.image} alt="Apple Cottage hero" class="w-full h-[45vh] md:h-[60vh] object-cover" loading="eager" decoding="async" fetchpriority="high" />
   ) : (
     <div class="w-full h-[40vh] bg-gray-100" />
   )}
@@ -32,7 +32,7 @@ if (homeReport?.href) {
       <h1 class="text-3xl md:text-4xl font-bold drop-shadow">{site.title}</h1>
       <p class="mt-2 text-lg drop-shadow">{hero.tagline || site.description}</p>
       <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
-        <a href={hero.bookUrl || site.bookingUrl} target="_blank" rel="noopener" class="inline-block bg-blue-600 text-white px-6 py-3 rounded focus:outline-none focus-visible:ring focus-visible:ring-white/80">
+        <a href="#book-viewing" class="inline-block bg-blue-600 text-white px-6 py-3 rounded focus:outline-none focus-visible:ring focus-visible:ring-white/80" id="hero-cta">
           {hero.ctaLabel || 'Book a Viewing'}
         </a>
         {homeReport?.href && (
@@ -93,3 +93,11 @@ if (homeReport?.href) {
     })();`}
   </script>
 )}
+
+<script is:inline>
+  {`(function(){
+    var cta = document.getElementById('hero-cta');
+    if(!cta) return;
+    cta.addEventListener('click', function(){ try{ if(window.gtag) window.gtag('event','sticky_book_click',{ event_category:'engagement', event_label:'hero_cta' }); }catch(e){} });
+  })();`}
+</script>
