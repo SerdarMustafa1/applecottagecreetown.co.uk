@@ -1,14 +1,134 @@
 ---
 ---
 <style>
-  .trustbar{ display:flex; gap:1rem; align-items:center; padding:0.6rem 0; border-bottom:1px solid #eef2f6; }
-  .trust-item{ display:flex; gap:0.5rem; align-items:center; font-size:0.95rem; }
-  .trust-chip{ background:#f8fafc; padding:0.25rem 0.5rem; border-radius:6px; border:1px solid #e6eef6; font-weight:600; }
+  .trustbar {
+    margin: 0;
+    padding: 1.5rem clamp(1rem, 2vw, 2rem);
+    border-radius: 1.25rem;
+    background: linear-gradient(135deg, #f1f6ff 0%, #ffffff 45%, #f8fbff 100%);
+    border: 1px solid #d9e3f1;
+    box-shadow: 0 12px 30px rgba(15, 40, 81, 0.08);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem 1rem;
+  }
+
+  .trust-heading {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .trust-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    color: #21334d;
+  }
+
+  .trust-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    background: #0f2951;
+    color: #ffffff;
+    box-shadow: 0 6px 18px rgba(15, 41, 81, 0.18);
+    flex-shrink: 0;
+  }
+
+  .trust-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    line-height: 1.35;
+  }
+
+  .trust-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #486084;
+    font-weight: 600;
+  }
+
+  .trust-title {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .trust-description {
+    font-size: 0.9rem;
+    color: #425d80;
+    margin: 0;
+  }
+
+  .trust-link {
+    font-weight: 600;
+    color: #0f2951;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .trust-link:focus,
+  .trust-link:hover {
+    color: #143a77;
+  }
+
+  .trust-link:focus-visible {
+    outline: 3px solid rgba(20, 58, 119, 0.4);
+    outline-offset: 3px;
+  }
 </style>
 
-<div class="trustbar" role="region" aria-label="Property trust information">
-  <div class="trust-item"><span class="trust-chip">EPC B</span></div>
-  <div class="trust-item">Home Report: <a href="/docs/home-report.pdf" download>Valuation £300,000</a></div>
-  <div class="trust-item">Planning: <strong>22/1073</strong></div>
-  <div class="trust-item">147 m² total · Annex 25 m²</div>
-</div>
+<section class="trustbar" aria-labelledby="trustbar-heading">
+  <h2 id="trustbar-heading" class="trust-heading">Property credentials</h2>
+
+  <article class="trust-item">
+    <span class="trust-icon" aria-hidden="true">🏡</span>
+    <div class="trust-copy">
+      <p class="trust-eyebrow">Energy Efficient</p>
+      <p class="trust-title">EPC Rating B</p>
+      <p class="trust-description">Well-insulated with modern glazing to keep running costs down.</p>
+    </div>
+  </article>
+
+  <article class="trust-item">
+    <span class="trust-icon" aria-hidden="true">📄</span>
+    <div class="trust-copy">
+      <p class="trust-eyebrow">Independent Survey</p>
+      <p class="trust-title">Download the Home Report</p>
+      <p class="trust-description">
+        <a class="trust-link" href="/docs/home-report.pdf" download aria-label="Download the full Home Report PDF">
+          Valuation £300,000
+        </a>
+      </p>
+    </div>
+  </article>
+
+  <article class="trust-item">
+    <span class="trust-icon" aria-hidden="true">🗂️</span>
+    <div class="trust-copy">
+      <p class="trust-eyebrow">Planning Assured</p>
+      <p class="trust-title">Consent Ref: 22/1073</p>
+      <p class="trust-description">Fully approved extension plans ready for your architect.</p>
+    </div>
+  </article>
+
+  <article class="trust-item">
+    <span class="trust-icon" aria-hidden="true">📐</span>
+    <div class="trust-copy">
+      <p class="trust-eyebrow">Spacious Living</p>
+      <p class="trust-title">147 m² + 25 m² Annex</p>
+      <p class="trust-description">Versatile layout with dedicated guest or income-ready annex.</p>
+    </div>
+  </article>
+</section>
