@@ -100,6 +100,7 @@ export default function LightboxDialog({
               alt={images[index].alt || `Image ${index + 1}`}
               className="max-h-[90vh] w-auto"
               loading="eager"
+              onLoad={() => { (window as any).__LIGHTBOX_READY = true; }}
             />
           </picture>
         ) : (
@@ -108,6 +109,7 @@ export default function LightboxDialog({
             alt={images[index].alt || `Image ${index + 1}`}
             className="max-h-[90vh] w-auto"
             loading="eager"
+            onLoad={() => { (window as any).__LIGHTBOX_READY = true; }}
           />
         )}
         {images[index].caption && (

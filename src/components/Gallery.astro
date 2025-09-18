@@ -2,11 +2,16 @@
 import GalleryIsland from './GalleryIsland.tsx';
 import site from '../../site.config';
 ---
-<section id="gallery" class="py-8">
-  <div class="container">
-    <h2 class="text-2xl font-semibold mb-4 text-center">Photo Gallery</h2>
-    <div class="max-w-5xl mx-auto">
-  <GalleryIsland client:visible images={(site as any).images || []} />
+<section id="gallery" class="py-12 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Explore Apple Cottage</h2>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        Discover every beautifully renovated room and the stunning gardens. From the modern kitchen to the peaceful outdoor spaces, see why this property is truly special.
+      </p>
+    </div>
+    <div class="max-w-6xl mx-auto">
+      <GalleryIsland client:visible images={(site as any).images || []} />
     </div>
   </div>
 </section>

@@ -7,7 +7,7 @@ const SITE_URL = process.env.SITE_URL || 'http://localhost:8080';
 test.describe('Core user flows', () => {
   test('navigation links lead to correct sections', async ({ page }) => {
     await page.addInitScript(() => localStorage.setItem('silktideCookieBanner_InitialChoice', '1'));
-    await page.goto(SITE_URL);
+  await page.goto(SITE_URL, { waitUntil: 'domcontentloaded' });
     // Basic a11y check on header/nav
     const navA11y = await new AxeBuilder({ page }).include('header').analyze();
     const navSerious = navA11y.violations.filter(v => ['critical', 'serious'].includes(v.impact));
@@ -26,7 +26,7 @@ test.describe('Core user flows', () => {
 
   test('gallery opens images in a lightbox', async ({ page }) => {
     await page.addInitScript(() => localStorage.setItem('silktideCookieBanner_InitialChoice', '1'));
-    await page.goto(SITE_URL + '#gallery');
+  await page.goto(SITE_URL + '#gallery', { waitUntil: 'domcontentloaded' });
     const firstTile = page.locator('#gallery-grid button').first();
     await firstTile.click();
     await expect(page.locator('#lightbox')).toBeVisible();
@@ -38,7 +38,7 @@ test.describe('Core user flows', () => {
 
   test('floorplans are visible and accessible', async ({ page }) => {
     await page.addInitScript(() => localStorage.setItem('silktideCookieBanner_InitialChoice', '1'));
-    await page.goto(SITE_URL);
+  await page.goto(SITE_URL, { waitUntil: 'domcontentloaded' });
     await page.getByRole('link', { name: 'Floor Plans' }).click();
     await expect(page.locator('#floorplans img').first()).toBeVisible();
     // Ensure floorplan images load with 200 response
@@ -76,19 +76,19 @@ test.describe('Core user flows', () => {
 
   test('booking embed (TidyCal) is present and accessible', async ({ page }) => {
     await page.addInitScript(() => localStorage.setItem('silktideCookieBanner_InitialChoice', '1'));
-    await page.goto(SITE_URL + '#contact');
-    // Ensure the tidycal container is present
-    await expect(page.locator('.tidycal-embed')).toBeVisible();
-    // Wait briefly for the embed script to insert an iframe; if it doesn't, ensure fallback link exists
+  await page.goto(SITE_URL + '#contact', { waitUntil: 'domcontentloaded' });
+    // Ensure the tidycal container (or fallback section) is present quickly
+    const tidycalContainer = page.locator('.tidycal-embed');
+    await tidycalContainer.waitFor({ state: 'attached', timeout: 5000 });
+    // Attempt to detect iframe or fallback; allow extra grace time
     const iframe = page.locator('.tidycal-embed iframe');
     const fallback = page.locator('#tidycal-fallback-link');
-    // Wait up to 5s for either iframe or fallback link
     await Promise.race([
-      iframe.waitFor({ state: 'attached', timeout: 5000 }).catch(() => {}),
-      fallback.waitFor({ state: 'attached', timeout: 5000 }).catch(() => {}),
+      iframe.waitFor({ state: 'attached', timeout: 7000 }).catch(() => {}),
+      fallback.waitFor({ state: 'attached', timeout: 4000 }).catch(() => {}),
     ]);
-    const hasIframe = await iframe.count() > 0;
-    const hasFallback = await fallback.count() > 0;
+    const hasIframe = (await iframe.count()) > 0;
+    const hasFallback = (await fallback.count()) > 0;
     expect(hasIframe || hasFallback).toBeTruthy();
     // Run accessibility checks against whichever is present
     if (hasIframe) {

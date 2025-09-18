@@ -6,6 +6,19 @@ export type ImageItem = {
   rooms?: string[];
 };
 
+// Marketing-focused room categories
+export const MARKETING_CATEGORIES = [
+  'Exterior & Gardens',
+  'Kitchen', 
+  'Living Areas',
+  'Bedrooms',
+  'Bathroom',
+  'Annex Office',
+  'Utility & Storage'
+] as const;
+
+export type MarketingCategory = typeof MARKETING_CATEGORIES[number];
+
 export function flattenAndTagImages(site: any): ImageItem[] {
   const gallery: any[] = Array.isArray(site.gallery) ? site.gallery : [];
   const roomGalleries = site.roomGalleries || {};
@@ -34,39 +47,87 @@ export function flattenAndTagImages(site: any): ImageItem[] {
     imgs.forEach((img) => add(img, [room]));
   });
 
-  const inferRoom = (src: string) => {
+  const inferRoom = (src: string, alt?: string, caption?: string) => {
     if (!src) return undefined;
-    if (/kitchen|kitch/i.test(src)) return 'kitchen';
-    if (/master[-_\s]?bedroom|front[-_\s]?bedroom|rear[-_\s]?bedroom|bedroom|bed/i.test(src)) return 'bedrooms';
-    if (/bathroom|bath/i.test(src)) return 'bathroom';
-    if (/exterior|garden|drive|panos|pano|outside/i.test(src)) return 'exterior';
-    if (/interior|lounge|living|conservatory|hallway/i.test(src)) return 'livingAreas';
+    const text = `${src} ${alt || ''} ${caption || ''}`.toLowerCase();
+    
+    // Exterior & Gardens (most appealing first)
+    if (/exterior|garden|drive|pano|outside|street|front|elevation|hero/.test(text)) {
+      return 'Exterior & Gardens';
+    }
+    
+    // Kitchen (high-impact selling point)
+    if (/kitchen|kitch/.test(text)) {
+      return 'Kitchen';
+    }
+    
+    // Living Areas (comfort & lifestyle)
+    if (/lounge|living|conservatory|hallway|zen/.test(text)) {
+      return 'Living Areas';
+    }
+    
+    // Bedrooms (essential for buyers)
+    if (/bedroom|bed|master/.test(text)) {
+      return 'Bedrooms';
+    }
+    
+    // Bathroom
+    if (/bathroom|bath/.test(text)) {
+      return 'Bathroom';
+    }
+    
+    // Annex Office (unique selling point)
+    if (/annex|office/.test(text)) {
+      return 'Annex Office';
+    }
+    
+    // Utility & Storage
+    if (/utility|downstairs.*wc|storage/.test(text)) {
+      return 'Utility & Storage';
+    }
+    
     return undefined;
   };
 
   const results: ImageItem[] = Array.from(bySrc.values()).map((it) => {
     if ((!it.rooms || it.rooms.length === 0) && it.src) {
-      const inferred = inferRoom(it.src.toLowerCase());
+      const inferred = inferRoom(it.src, it.alt, it.caption);
       if (inferred) it.rooms = [inferred];
     }
-    it.rooms = Array.from(new Set((it.rooms || []).map((r) => String(r).trim())));
+    // Normalize room names to marketing-friendly versions
+    it.rooms = Array.from(new Set((it.rooms || []).map((r) => {
+      const room = String(r).trim();
+      // Map legacy room names to new marketing names
+      const roomMap: Record<string, string> = {
+        'exterior': 'Exterior & Gardens',
+        'garden': 'Exterior & Gardens',
+        'kitchen': 'Kitchen',
+        'livingAreas': 'Living Areas',
+        'lounge': 'Living Areas',
+        'conservatory': 'Living Areas',
+        'zenRoom': 'Living Areas',
+        'bedrooms': 'Bedrooms',
+        'bathroom': 'Bathroom',
+        'annex': 'Annex Office',
+        'utility': 'Utility & Storage',
+        'downstairsWc': 'Utility & Storage'
+      };
+      return roomMap[room] || room;
+    })));
     return it;
   });
 
-  // Deterministic ordering to prefer hero / front elevation images first,
-  // then kitchen, living/lounge, bedrooms, annex, exterior/garden, bathroom, then others.
+  // Marketing-focused ordering: most appealing and sellable features first
   const roomPriority: Record<string, number> = {
-    front: 0,
-    hero: 0,
-    kitchen: 1,
-    livingAreas: 2,
-    lounge: 2,
-    bedrooms: 3,
-    master: 3,
-    annex: 4,
-    exterior: 5,
-    garden: 5,
-    bathroom: 6,
+    'hero': 0,
+    'front': 0,
+    'Exterior & Gardens': 1,  // Curb appeal first
+    'Kitchen': 2,             // High-impact selling point
+    'Living Areas': 3,        // Lifestyle and comfort
+    'Bedrooms': 4,           // Essential for buyers
+    'Bathroom': 5,           // Functional necessity
+    'Annex Office': 6,       // Unique selling point
+    'Utility & Storage': 7,  // Practical but less exciting
   };
 
   function detectFrontLike(src: string, caption?: string) {
@@ -80,25 +141,26 @@ export function flattenAndTagImages(site: any): ImageItem[] {
   function getPriority(it: ImageItem) {
     const src = (it.src || '').toLowerCase();
     const caption = it.caption;
+    const alt = it.alt;
+    
+    // Hero/front elevation images get top priority
     if (detectFrontLike(src, caption)) return roomPriority.front;
-    const rooms = (it.rooms || []).map((r) => String(r).toLowerCase());
-    for (const r of rooms) {
-      if (r in roomPriority) return roomPriority[r];
-      // handle common synonyms
-      if (r.includes('kitchen')) return roomPriority.kitchen;
-      if (r.includes('lounge') || r.includes('living') || r.includes('conservatory')) return roomPriority.livingAreas;
-      if (r.includes('bed')) return roomPriority.bedrooms;
-      if (r.includes('annex') || r.includes('studio')) return roomPriority.annex;
-      if (r.includes('garden') || r.includes('exterior') || r.includes('drive')) return roomPriority.exterior;
-      if (r.includes('bath')) return roomPriority.bathroom;
+    
+    // Check room assignments
+    const rooms = (it.rooms || []);
+    for (const room of rooms) {
+      if (room in roomPriority) return roomPriority[room];
     }
-    // fallback: check filename tokens
-    if (/kitchen|kitch/.test(src)) return roomPriority.kitchen;
-    if (/lounge|living|conservat/.test(src)) return roomPriority.livingAreas;
-    if (/bedroom|bed-?room|master|bed/.test(src)) return roomPriority.bedrooms;
-    if (/annex|studio/.test(src)) return roomPriority.annex;
-    if (/garden|exterior|outside|drive/.test(src)) return roomPriority.exterior;
-    if (/bathroom|bath/.test(src)) return roomPriority.bathroom;
+    
+    // Fallback: infer from content
+    const text = `${src} ${alt || ''} ${caption || ''}`.toLowerCase();
+    if (/exterior|garden|drive|outside|street|elevation/.test(text)) return roomPriority['Exterior & Gardens'];
+    if (/kitchen/.test(text)) return roomPriority['Kitchen'];
+    if (/lounge|living|conservatory|hallway|zen/.test(text)) return roomPriority['Living Areas'];
+    if (/bedroom|bed|master/.test(text)) return roomPriority['Bedrooms'];
+    if (/bathroom|bath/.test(text)) return roomPriority['Bathroom'];
+    if (/annex|office/.test(text)) return roomPriority['Annex Office'];
+    if (/utility|storage|wc/.test(text)) return roomPriority['Utility & Storage'];
 
     return 99; // least priority
   }
@@ -107,7 +169,22 @@ export function flattenAndTagImages(site: any): ImageItem[] {
     const pa = getPriority(a);
     const pb = getPriority(b);
     if (pa !== pb) return pa - pb;
-    // deterministic tie-breaker: shorter src first, then lexicographic
+    
+    // Within same category, prioritize by marketing appeal
+    const aText = `${a.src} ${a.alt || ''} ${a.caption || ''}`.toLowerCase();
+    const bText = `${b.src} ${b.alt || ''} ${b.caption || ''}`.toLowerCase();
+    
+    // Hero/main images first
+    const aIsHero = /hero|main|front|elevation/.test(aText);
+    const bIsHero = /hero|main|front|elevation/.test(bText);
+    if (aIsHero !== bIsHero) return aIsHero ? -1 : 1;
+    
+    // Prefer images with better descriptions
+    const aHasGoodCaption = (a.caption?.length || 0) > 10;
+    const bHasGoodCaption = (b.caption?.length || 0) > 10;
+    if (aHasGoodCaption !== bHasGoodCaption) return aHasGoodCaption ? -1 : 1;
+    
+    // Deterministic tie-breaker: shorter src first, then lexicographic
     if ((a.src || '').length !== (b.src || '').length) return (a.src || '').length - (b.src || '').length;
     return (a.src || '').localeCompare(b.src || '');
   });

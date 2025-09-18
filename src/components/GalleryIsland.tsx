@@ -13,69 +13,117 @@ type GalleryItem = {
 };
 interface GalleryIslandProps { images: GalleryItem[]; }
 
-// Room/area icons mapping
+// Room/area icons mapping with marketing-focused labels
 const ROOM_ICONS: Record<string, string> = {
-  'All': '🏠',
-  'kitchen': '🍳',
-  'bedrooms': '🛏️',
-  'bathroom': '🛁',
-  'livingAreas': '🛋️',
-  'lounge': '🛋️',
-  'conservatory': '🪴',
-  'zenRoom': '🧘',
-  'utility': '🧺',
-  'downstairsWc': '🚽',
-  'exterior': '🌿',
-  'garden': '🌻',
-  'annex': '🏢',
+  'All Photos': '🏠',
+  'Exterior & Gardens': '🌿',
+  'Kitchen': '🍳',
+  'Living Areas': '🛋️',
+  'Bedrooms': '🛏️',
+  'Bathroom': '🛁',
+  'Utility & Storage': '🧺',
+  'Annex Office': '🏢',
   'Other': '📷'
 };
+
+// Marketing-focused filter order (most appealing first)
+const MARKETING_ORDER = [
+  'All Photos',
+  'Exterior & Gardens', 
+  'Kitchen',
+  'Living Areas',
+  'Bedrooms',
+  'Bathroom',
+  'Annex Office',
+  'Utility & Storage'
+];
 
 export default function GalleryIsland({ images }: GalleryIslandProps) {
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
-  const [filter, setFilter] = useState<string>('All');
+  const [filter, setFilter] = useState<string>('All Photos');
   const [visibleCount, setVisibleCount] = useState(12);
   const [isLoading, setIsLoading] = useState(false);
   const desiredIndexRef = React.useRef<number | null>(null);
   const observerRef = useRef<HTMLDivElement>(null);
   const loadMoreRef = useRef<IntersectionObserver | null>(null);
 
-  // Build filters from explicit rooms metadata first; fallback to simple categories inferred from path
-  const itemsWithMeta = useMemo(() => images.map(img => ({ ...img, __rooms: Array.isArray((img as any).rooms) ? (img as any).rooms : [] })), [images]);
+  // Expose a simple global flag so E2E tests can reliably wait for hydration
+  useEffect(() => {
+    (window as any).__GALLERY_HYDRATED = true;
+  }, []);
 
-  const roomTags = useMemo(() => {
-    const r = new Set<string>();
-    itemsWithMeta.forEach(i => (i.__rooms || []).forEach((t: string) => { if (t) r.add(String(t)); }));
-    return Array.from(r).map(s => String(s));
-  }, [itemsWithMeta]);
-
-  const categorize = (src: string): string => {
-    if (/\/exterior\//i.test(src)) return 'Exterior';
-    if (/\/interior\//i.test(src)) return 'Interior';
-    if (/\/garden\//i.test(src)) return 'Garden';
-    if (/\/new\//i.test(src)) return 'Featured';
+  // Enhanced categorization with marketing-focused grouping
+  const categorizeImage = (img: GalleryItem): string => {
+    // First check explicit room assignments
+    if (img.rooms && img.rooms.length > 0) {
+      const room = img.rooms[0];
+      if (room === 'Kitchen' || room === 'kitchen') return 'Kitchen';
+      if (room === 'Bedrooms' || room === 'bedrooms') return 'Bedrooms';
+      if (room === 'Bathroom' || room === 'bathroom') return 'Bathroom';
+      if (room === 'Living Areas' || room === 'livingAreas' || room === 'lounge') return 'Living Areas';
+      if (room === 'Exterior & Gardens' || room === 'exterior' || room === 'garden') return 'Exterior & Gardens';
+      if (room === 'Annex Office' || room === 'annex') return 'Annex Office';
+      if (room === 'Utility & Storage' || room === 'utility' || room === 'downstairsWc') return 'Utility & Storage';
+    }
+    
+    // Fallback to text analysis
+    const text = `${img.src} ${img.alt || ''} ${img.caption || ''}`.toLowerCase();
+    
+    // Check specific exclusions first
+    if (/bathroom|bath/.test(text)) {
+      return 'Bathroom';
+    }
+    if (/annex|office/.test(text)) {
+      return 'Annex Office';
+    }
+    if (/utility|downstairs.*wc|storage/.test(text)) {
+      return 'Utility & Storage';
+    }
+    if (/kitchen|kitch/.test(text)) {
+      return 'Kitchen';
+    }
+    if (/bedroom|bed|master/.test(text)) {
+      return 'Bedrooms';
+    }
+    if (/lounge|living|conservatory|hallway|zen/.test(text)) {
+      return 'Living Areas';
+    }
+    
+    // Exterior only for actual exterior/garden images (exclude interior panoramic)
+    if (/exterior|garden|drive|outside|street|front|elevation|hero/.test(text) && !/interior|panoramic.*interior/.test(text)) {
+      return 'Exterior & Gardens';
+    }
+    
+    // Handle panoramic images - if it's a pano but not clearly exterior, categorize by content
+    if (/pano/.test(text)) {
+      if (/garden|exterior|drive|approach|parking/.test(text)) {
+        return 'Exterior & Gardens';
+      }
+      // Interior panoramic goes to Living Areas by default
+      return 'Living Areas';
+    }
+    
     return 'Other';
   };
 
-  const itemsWithCat = useMemo(() => itemsWithMeta.map((img: any) => ({ ...img, __cat: categorize(img.src) })), [itemsWithMeta]);
-
-  const categories = useMemo(() => ['All', ...Array.from(new Set(itemsWithCat.map((i: any) => i.__cat)))], [itemsWithCat]);
+  const itemsWithCategories = useMemo(() => 
+    images.map(img => ({
+      ...img,
+      __category: categorizeImage(img)
+    })), [images]);
 
   const allFilterOptions = useMemo(() => {
-    // Prefer explicit room tags (human-friendly) and fall back to categories
-    if (roomTags.length > 0) return ['All', ...roomTags];
-    return categories;
-  }, [roomTags, categories]);
+    const availableCategories = new Set(itemsWithCategories.map(img => img.__category));
+    return MARKETING_ORDER.filter(category => 
+      category === 'All Photos' || availableCategories.has(category)
+    );
+  }, [itemsWithCategories]);
 
   const filtered = useMemo(() => {
-    if (filter === 'All') return itemsWithCat;
-    // Check room tags first (case-sensitive as provided)
-    const byRoom = itemsWithMeta.filter((i: any) => (i.__rooms || []).includes(filter));
-    if (byRoom.length > 0) return byRoom.map((i: any) => ({ ...i, __cat: categorize(i.src) }));
-    // Fallback to category filter
-    return itemsWithCat.filter((i: any) => i.__cat === filter);
-  }, [filter, itemsWithCat, itemsWithMeta]);
+    if (filter === 'All Photos') return itemsWithCategories;
+    return itemsWithCategories.filter(img => img.__category === filter);
+  }, [filter, itemsWithCategories]);
 
   useEffect(() => {
     // Reset visible items on filter change
@@ -129,7 +177,7 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
     if (desiredIndexRef.current == null) return;
     const raw = desiredIndexRef.current as number;
     const idx = Math.max(0, Math.min(raw, filtered.length - 1));
-    if (filtered.length > 0) {
+    if (filtered.length > 0 && raw >= 0) {
       setIndex(idx);
       setOpen(true);
       desiredIndexRef.current = null;
@@ -147,10 +195,24 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
       const q = params.get('gallery') || params.get('room');
       const idx = params.has('index') ? Number(params.get('index')) : null;
       if (q) {
-        const opt = allFilterOptions.find(o => String(o).toLowerCase() === String(q).toLowerCase());
+        // Handle legacy filter names
+        const legacyMap: Record<string, string> = {
+          'all': 'All Photos',
+          'exterior': 'Exterior & Gardens',
+          'garden': 'Exterior & Gardens',
+          'kitchen': 'Kitchen',
+          'livingareas': 'Living Areas',
+          'lounge': 'Living Areas',
+          'bedrooms': 'Bedrooms',
+          'bathroom': 'Bathroom',
+          'annex': 'Annex Office',
+          'utility': 'Utility & Storage'
+        };
+        const mappedFilter = legacyMap[q.toLowerCase()] || q;
+        const opt = allFilterOptions.find(o => String(o).toLowerCase() === String(mappedFilter).toLowerCase());
         if (opt) setFilter(opt);
       }
-      if (idx !== null && !Number.isNaN(idx)) desiredIndexRef.current = idx;
+      if (idx !== null && !Number.isNaN(idx) && idx >= 0) desiredIndexRef.current = idx;
     } catch {
       // ignore - URL parsing not critical
     }
@@ -161,8 +223,13 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
     try {
       const url = new URL(window.location.href);
       if (opts.gallery != null) {
-        if (opts.gallery && opts.gallery !== 'All') url.searchParams.set('gallery', String(opts.gallery));
-        else url.searchParams.delete('gallery');
+        if (opts.gallery && opts.gallery !== 'All Photos') {
+          // Use URL-friendly version of filter name
+          const urlFriendly = opts.gallery.toLowerCase().replace(/[^a-z0-9]/g, '');
+          url.searchParams.set('gallery', urlFriendly);
+        } else {
+          url.searchParams.delete('gallery');
+        }
       }
       if (opts.index != null) {
         if (opts.index >= 0) url.searchParams.set('index', String(opts.index));
@@ -179,13 +246,25 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
     updateUrlParams({ gallery: filter });
   }, [filter]);
 
+  // Prevent lightbox from opening on filter change
+  useEffect(() => {
+    if (desiredIndexRef.current !== null) {
+      desiredIndexRef.current = null;
+    }
+  }, [filter]);
+
   // Update index param when open or index changes
   useEffect(() => {
     if (open) updateUrlParams({ index });
     else updateUrlParams({ index: null });
   }, [open, index]);
 
-  const openAt = (i: number) => { setIndex(i); setOpen(true); };
+  const openAt = (i: number) => { 
+    if (i >= 0 && i < filtered.length && filtered[i]?.src) {
+      setIndex(i); 
+      setOpen(true); 
+    }
+  };
   const close = () => setOpen(false);
   const next = () => setIndex((i) => (i + 1) % filtered.length);
   const prev = () => setIndex((i) => (i - 1 + filtered.length) % filtered.length);
@@ -200,31 +279,52 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
 
   return (
     <>
-      <div className="mb-4 flex flex-wrap items-center gap-2 justify-center">
-        {allFilterOptions.map((c) => (
+      <div className="mb-6">
+        <div className="flex flex-wrap items-center gap-2 justify-center mb-4">
+          {allFilterOptions.map((category) => (
+            <button
+              key={category}
+              className={`px-4 py-2.5 rounded-full text-sm font-medium border transition-all duration-200 flex items-center gap-2 ${
+                filter === category 
+                  ? 'bg-blue-600 text-white border-blue-600 shadow-lg transform scale-105' 
+                  : 'bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-300 hover:shadow-md'
+              }`}
+              onClick={() => setFilter(category)}
+              aria-pressed={filter === category}
+            >
+              <span className="text-lg">{getFilterIcon(category)}</span>
+              <span>{category}</span>
+            </button>
+          ))}
+        </div>
+        
+        <div className="flex items-center justify-between text-sm text-gray-600">
+          <div className="flex items-center gap-4">
+            <span>{filtered.length} {filtered.length === 1 ? 'photo' : 'photos'}</span>
+            {filter !== 'All Photos' && (
+              <button
+                onClick={() => setFilter('All Photos')}
+                className="text-blue-600 hover:text-blue-800 underline"
+              >
+                View all photos
+              </button>
+            )}
+          </div>
           <button
-            key={c}
-            className={`px-3 py-2 rounded-full text-sm border transition-all duration-200 flex items-center gap-1.5 ${
-              filter === c 
-                ? 'bg-blue-600 text-white border-blue-600 shadow-md' 
-                : 'bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-300'
-            }`}
-            onClick={() => setFilter(c)}
-            aria-pressed={filter === c}
+            className="px-3 py-1.5 rounded border text-sm hover:bg-gray-50 flex items-center gap-1.5 transition-colors"
+            onClick={(e) => { 
+              e.stopPropagation(); 
+              if (filtered.length > 0 && filtered[0]?.src) {
+                setIndex(0); 
+                setOpen(true); 
+              }
+            }}
+            aria-label="Open slideshow"
           >
-            <span className="text-base">{getFilterIcon(c)}</span>
-            <span>{c}</span>
+            <span>🎬</span>
+            <span>Slideshow</span>
           </button>
-        ))}
-        <div className="ml-auto" />
-        <button
-          className="px-3 py-2 rounded border text-sm hover:bg-gray-50 flex items-center gap-1.5"
-          onClick={() => { setIndex(0); setOpen(true); }}
-          aria-label="Open slideshow"
-        >
-          <span>🎬</span>
-          <span>Open slideshow</span>
-        </button>
+        </div>
       </div>
 
       <div id="gallery-grid" className="gallery grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3" role="list">
@@ -242,29 +342,88 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
               <button 
                 onClick={() => openAt(i)} 
                 className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg overflow-hidden" 
-                aria-label={`Open image ${i + 1}`}
+                aria-label={`Open image ${i + 1}: ${alt}`}
               >
-                <div className="relative transition-transform duration-200 group-hover:scale-105" style={{ paddingTop: '75%' }}>
+                <div className="relative bg-gray-100 transition-transform duration-200 group-hover:scale-105" style={{ paddingTop: '75%' }}>
+                  {/* Loading shimmer placeholder */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse" />
+                  
                   {item.srcWebp ? (
                       <picture>
                         {webpSrcSet ? <source srcSet={webpSrcSet} type="image/webp" /> : <source srcSet={item.srcWebp} type="image/webp" />}
                         {srcSet ? (
-                          <img src={src} srcSet={srcSet} sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw" width={widthAttr} height={heightAttr} alt={alt} className="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
+                          <img 
+                            src={src} 
+                            srcSet={srcSet} 
+                            sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw" 
+                            width={widthAttr} 
+                            height={heightAttr} 
+                            alt={alt} 
+                            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300" 
+                            loading="lazy" 
+                            decoding="async"
+                            onLoad={(e) => {
+                              const img = e.target as HTMLImageElement;
+                              const shimmer = img.parentElement?.querySelector('.animate-pulse');
+                              if (shimmer) shimmer.remove();
+                            }}
+                          />
                         ) : (
-                          <img src={src} alt={alt} width={widthAttr} height={heightAttr} className="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
+                          <img 
+                            src={src} 
+                            alt={alt} 
+                            width={widthAttr} 
+                            height={heightAttr} 
+                            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300" 
+                            loading="lazy" 
+                            decoding="async"
+                            onLoad={(e) => {
+                              const img = e.target as HTMLImageElement;
+                              const shimmer = img.parentElement?.querySelector('.animate-pulse');
+                              if (shimmer) shimmer.remove();
+                            }}
+                          />
                         )}
                       </picture>
                     ) : (
                       srcSet ? (
-                        <img src={src} srcSet={srcSet} sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw" alt={alt} width={widthAttr} height={heightAttr} className="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
+                        <img 
+                          src={src} 
+                          srcSet={srcSet} 
+                          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw" 
+                          alt={alt} 
+                          width={widthAttr} 
+                          height={heightAttr} 
+                          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300" 
+                          loading="lazy" 
+                          decoding="async"
+                          onLoad={(e) => {
+                            const img = e.target as HTMLImageElement;
+                            const shimmer = img.parentElement?.querySelector('.animate-pulse');
+                            if (shimmer) shimmer.remove();
+                          }}
+                        />
                       ) : (
-                        <img src={src} alt={alt} width={widthAttr} height={heightAttr} className="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
+                        <img 
+                          src={src} 
+                          alt={alt} 
+                          width={widthAttr} 
+                          height={heightAttr} 
+                          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300" 
+                          loading="lazy" 
+                          decoding="async"
+                          onLoad={(e) => {
+                            const img = e.target as HTMLImageElement;
+                            const shimmer = img.parentElement?.querySelector('.animate-pulse');
+                            if (shimmer) shimmer.remove();
+                          }}
+                        />
                       )
                     )}
                 </div>
               </button>
               {item.caption && (
-                <figcaption className="text-xs text-gray-600 mt-2 px-1">{item.caption}</figcaption>
+                <figcaption className="text-xs text-gray-600 mt-2 px-1 leading-relaxed">{item.caption}</figcaption>
               )}
             </figure>
           );
@@ -289,7 +448,7 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
       )}
 
       <div className="sr-only" aria-live="polite">
-        {`Showing ${Math.min(visibleCount, filtered.length)} of ${filtered.length} images${filter !== 'All' ? ' in ' + filter : ''}.`}
+        {`Showing ${Math.min(visibleCount, filtered.length)} of ${filtered.length} images${filter !== 'All Photos' ? ' in ' + filter : ''}.`}
         {isLoading && ' Loading more images...'}
       </div>
 

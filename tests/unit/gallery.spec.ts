@@ -15,7 +15,7 @@ describe('flattenAndTagImages', () => {
     const srcs = out.map(i => i.src).sort();
     expect(srcs).toEqual(['/images/a.jpg','/images/b.jpg','/images/c.jpg']);
     const a = out.find(i => i.src === '/images/a.jpg')!;
-    expect(a.rooms).toContain('kitchen');
+    expect(a.rooms).toContain('Kitchen');
     // alt should prefer existing alt from first seen (gallery)
     expect(a.alt).toBe('A');
   });
@@ -29,9 +29,9 @@ describe('flattenAndTagImages', () => {
     const k = out.find(i => i.src === '/images/kitchen-1.jpg')!;
     const m = out.find(i => i.src === '/images/master-bedroom-1.jpg')!;
     const e = out.find(i => i.src === '/images/exterior-1.jpg')!;
-    expect(k.rooms).toContain('kitchen');
-    expect(m.rooms).toContain('bedrooms');
-    expect(e.rooms).toContain('exterior');
+    expect(k.rooms).toContain('Kitchen');
+    expect(m.rooms).toContain('Bedrooms');
+    expect(e.rooms).toContain('Exterior & Gardens');
   });
 
   it('handles empty site gracefully', () => {
@@ -49,6 +49,6 @@ describe('flattenAndTagImages', () => {
     const x = out.find(i => i.src === '/images/x.jpg')!;
     expect(x.srcWebp).toBe('/images/x.webp');
     expect(x.alt).toBe('gallery alt');
-    expect(x.rooms).toContain('kitchen');
+    expect(x.rooms).toContain('Kitchen');
   });
 });

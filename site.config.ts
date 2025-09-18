@@ -222,8 +222,8 @@ export const site = {
   videoWebm: media('/videos/interior/master-bedroom-360.webm'), 
   poster: media('/images/interior/bedrooms/master-bedroom/master-bedroom-360-poster.jpg'),
       description: 'Spacious master bedroom with wraparound view'
-    }
-    ,{ 
+    },
+    { 
       label: 'Annex 360°',
       videoMp4: media('/videos/annex/annex-360.mp4'),
       videoWebm: media('/videos/annex/annex-360.webm'),
@@ -262,7 +262,6 @@ export const site = {
       { src: media('/images/interior/bedrooms/master-bedroom/master-bedroom-2.jpg'), alt: 'Master bedroom angle 2', caption: 'Master bedroom alternate angle' },
       { src: media('/images/interior/bedrooms/master-bedroom/master-bedroom-3.jpg'), alt: 'Master bedroom angle 3', caption: 'Master bedroom with storage' },
 
-      { src: media('/images/interior/bedrooms/front-bedroom/view-front-bedroom-1200.jpg'), alt: 'Front bedroom view', caption: 'View from front bedroom' },
       // Front bedroom
       { src: media('/images/interior/bedrooms/front-bedroom/view-front-bedroom-1200.jpg'), alt: 'Front bedroom view', caption: 'Front bedroom with street views' },
       // Rear bedroom
@@ -272,7 +271,7 @@ export const site = {
       { src: media('/images/interior/utility/utility-main.jpg'), alt: 'Utility room main', caption: 'Practical utility room space' },
     ],
     downstairsWc: [
-      { src: media('/images/interior/downstairs-wc/downstairs-wc-detail-b48c6425.jpg'), alt: 'Downstairs WC', caption: 'Convenient downstairs WC and storage with sliding doors' }
+      { src: media('/images/interior/downstairs-wc/downstairs-wc-detail-b48c6425.jpg'), alt: 'Downstairs WC', caption: 'Convenient downstairs WC' }
     ],
     bathroom: [
       { src: media('/images/interior/bathroom/bathroom.jpg'), alt: 'Family bathroom', caption: 'Modern family bathroom' }

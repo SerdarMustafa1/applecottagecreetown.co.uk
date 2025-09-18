@@ -39,8 +39,11 @@
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.10",
     "@testing-library/dom": "^9.3.3",
+    "@testing-library/jest-dom": "^6.1.0",
     "@testing-library/react": "^14.1.2",
     "@types/aframe": "^1.2.8",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
     "@typescript-eslint/parser": "^8.43.0",
     "autoprefixer": "^10.4.14",
     "axe-core": "^4.8.3",
@@ -56,9 +59,6 @@
     "postcss": "^8.4.31",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.0.0",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
-    "@testing-library/jest-dom": "^6.1.0",
     "vitest": "^1.6.0"
   },
   "lint-staged": {
@@ -69,5 +69,6 @@
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.50.1"
   },
-  "packageManager": "npm@11.4.2"
+  "packageManager": "npm@11.4.2",
+  "type": "module"
 }
