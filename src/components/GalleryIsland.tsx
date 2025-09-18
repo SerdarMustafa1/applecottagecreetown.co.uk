@@ -128,6 +128,37 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
 
   const showMore = () => setVisibleCount(c => Math.min(c + 9, filtered.length));
 
+  // Precompute a Set of all srcs to verify variant existence
+  const allSrcs = useMemo(() => new Set(images.map(i => i.src)), [images]);
+
+  // Helper to parse a trailing size token like -1200 before extension
+  const parseSizeToken = (s?: string) => {
+    if (!s) return null;
+    const m = s.match(/-(\d{2,4})(\.(jpe?g|png|webp|avif))$/i);
+    if (!m) return null;
+    return { orig: Number(m[1]), ext: m[2] };
+  };
+
+  // Given an original src, only build a srcset if at least 2 alternative sized
+  // variants (besides the original) actually exist in the provided image list.
+  const buildVerifiedSrcSet = (s?: string) => {
+    if (!s) return undefined;
+    const info = parseSizeToken(s);
+    if (!info) return undefined; // no size token -> skip responsive generation
+    const widths = [480, 768, 1200, 1600];
+    // Derive base by stripping the -<size> token
+    const base = s.replace(/-(\d{2,4})(\.(jpe?g|png|webp|avif))$/i, '');
+    const candidates = widths.map(w => `${base}-${w}${info.ext}`);
+    const existing = candidates.filter(c => allSrcs.has(c));
+    // Require at least the original plus one additional size to justify a srcset
+    if (existing.length < 2) return undefined;
+    return existing.map(c => {
+      const sizeMatch = c.match(/-(\d{2,4})(\.(jpe?g|png|webp|avif))$/i);
+      const w = sizeMatch ? sizeMatch[1] : '0';
+      return `${c} ${w}w`;
+    }).join(', ');
+  };
+
   return (
     <>
       <div className="mb-3 flex flex-wrap items-center gap-2 justify-center">
@@ -154,54 +185,33 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
       <div id="gallery-grid" className="gallery grid grid-cols-2 sm:grid-cols-3 gap-2" role="list">
         {filtered.slice(0, visibleCount).map((item, i) => {
           const src = item.src;
-          const alt = item.alt || `Gallery image ${i + 1}`;
-
-          // Helper: if filename contains a trailing size token like "-1200.jpg",
-          // generate srcset variants by replacing that number with standard widths.
-          const parseSizeToken = (s?: string) => {
-            if (!s) return null;
-            const m = s.match(/-(\d{2,4})(\.(jpe?g|png|webp|avif))$/i);
-            if (!m) return null;
-            return { orig: Number(m[1]), ext: m[2], index: m.index };
-          };
-
-          const buildSrcSet = (s?: string) => {
-            if (!s) return undefined;
-            const info = parseSizeToken(s);
-            if (!info) return undefined;
-            const widths = [480, 768, 1200, 1600];
-            const parts = widths.map((w) => s.replace(/-(\d{2,4})(\.(jpe?g|png|webp|avif))$/i, `-${w}$2`) + ` ${w}w`);
-            return parts.join(', ');
-          };
-
-          const srcSet = buildSrcSet(src);
-          const webpSrcSet = item.srcWebp ? buildSrcSet(item.srcWebp) : undefined;
-
-          // Derive width/height from original token when available (assume 4:3 aspect ratio)
-          const sizeInfo = parseSizeToken(src);
-          const widthAttr = sizeInfo ? sizeInfo.orig : undefined;
-          const heightAttr = sizeInfo ? Math.round(sizeInfo.orig * 0.75) : undefined;
+            const alt = item.alt || `Gallery image ${i + 1}`;
+            const sizeInfo = parseSizeToken(src);
+            const widthAttr = sizeInfo ? sizeInfo.orig : undefined;
+            const heightAttr = sizeInfo ? Math.round(sizeInfo.orig * 0.75) : undefined;
+            const srcSet = buildVerifiedSrcSet(src);
+            const webpSrcSet = item.srcWebp ? buildVerifiedSrcSet(item.srcWebp) : undefined;
 
           return (
             <figure key={item.src} className="flex flex-col" role="listitem">
               <button onClick={() => openAt(i)} className="focus:outline-none" aria-label={`Open image ${i + 1}`}>
                 <div className="relative" style={{ paddingTop: '75%' }}>
                   {item.srcWebp ? (
-                    <picture>
-                      {webpSrcSet ? <source srcSet={webpSrcSet} type="image/webp" /> : <source srcSet={item.srcWebp} type="image/webp" />}
-                      {srcSet ? (
-                        <img src={src} srcSet={srcSet} sizes="(min-width: 640px) 33vw, 50vw" width={widthAttr} height={heightAttr} alt={alt} className="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
+                      <picture>
+                        {webpSrcSet ? <source srcSet={webpSrcSet} type="image/webp" /> : <source srcSet={item.srcWebp} type="image/webp" />}
+                        {srcSet ? (
+                          <img src={src} srcSet={srcSet} sizes="(min-width: 640px) 33vw, 50vw" width={widthAttr} height={heightAttr} alt={alt} className="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
+                        ) : (
+                          <img src={src} alt={alt} width={widthAttr} height={heightAttr} className="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
+                        )}
+                      </picture>
+                    ) : (
+                      srcSet ? (
+                        <img src={src} srcSet={srcSet} sizes="(min-width: 640px) 33vw, 50vw" alt={alt} width={widthAttr} height={heightAttr} className="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
                       ) : (
                         <img src={src} alt={alt} width={widthAttr} height={heightAttr} className="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
-                      )}
-                    </picture>
-                  ) : (
-                    srcSet ? (
-                      <img src={src} srcSet={srcSet} sizes="(min-width: 640px) 33vw, 50vw" alt={alt} width={widthAttr} height={heightAttr} className="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
-                    ) : (
-                      <img src={src} alt={alt} width={widthAttr} height={heightAttr} className="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
-                    )
-                  )}
+                      )
+                    )}
                 </div>
               </button>
               {item.caption && (
