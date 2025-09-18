@@ -19,9 +19,9 @@ test.describe('Unified Gallery and Room-by-Room integration', () => {
       expect(pressed === 'true' || pressed === 'false' || pressed === null).toBeTruthy();
     }
 
-    // Click the first non-All filter if available
+    // Click the first non-All Photos filter if available
     const labels = await Promise.all(filterButtons.map(b => b.innerText()));
-    const nonAllIndex = labels.findIndex(t => t && t.trim() !== 'All');
+    const nonAllIndex = labels.findIndex(t => t && t.trim() !== 'All Photos');
     if (nonAllIndex >= 0) {
       await filterButtons[nonAllIndex].click();
       await page.waitForTimeout(200);
@@ -60,8 +60,8 @@ test.describe('Unified Gallery and Room-by-Room integration', () => {
     const filterButtons = await page.$$('section#gallery button[aria-pressed]');
     expect(filterButtons.length).toBeGreaterThan(0);
     
-    // Check that All button has house emoji
-    const allButton = await page.$('button[aria-pressed]:has-text("All")');
+    // Check that All Photos button has house emoji
+    const allButton = await page.$('button[aria-pressed]:has-text("All Photos")');
     expect(allButton).toBeTruthy();
     const allText = await allButton.innerText();
     expect(allText).toMatch(/🏠/);
@@ -80,21 +80,31 @@ test.describe('Unified Gallery and Room-by-Room integration', () => {
   test('Deep-link opens gallery at index', async ({ page }) => {
     // navigate directly to a deep link for bedrooms index 0
     await page.goto((process.env.SITE_URL || 'http://localhost:8080/') + '#gallery?gallery=bedrooms&index=0');
-    // Wait for lightbox to appear
-    await page.waitForSelector('#lightbox, [role="dialog"]');
-    const dialog = await page.$('[role="dialog"]');
-    expect(dialog).toBeTruthy();
-    // The displayed image should have alt text
-    const img = await dialog.$('img');
-    expect(await img.getAttribute('alt')).toBeTruthy();
+    await page.waitForSelector('#gallery-grid');
+    // Wait up to 15s for lightbox (lazy + Suspense + filtering)
+    await page.waitForSelector('#lightbox', { timeout: 15000 });
+    await page.waitForSelector('#lightbox [role="dialog"] img', { timeout: 15000 });
+    const img = await page.$('#lightbox [role="dialog"] img');
+    expect(img).toBeTruthy();
+    const alt = img && await img.getAttribute('alt');
+    expect(alt && alt.length).toBeGreaterThan(0);
   });
 
   test('Lightbox keyboard navigation and focus trap', async ({ page }) => {
     await page.goto(process.env.SITE_URL || 'http://localhost:8080/');
     await page.waitForSelector('#gallery-grid');
+    
+    // Wait for images to load
+    await page.waitForTimeout(1000);
+    
     // open first image
-    await page.click('#gallery-grid button');
-    await page.waitForSelector('#lightbox');
+    const firstButton = await page.$('#gallery-grid button');
+    expect(firstButton).toBeTruthy();
+    await firstButton.click();
+    
+    // Wait for lightbox + dialog to appear (lazy loaded)
+    await page.waitForSelector('#lightbox', { timeout: 15000 });
+    await page.waitForSelector('#lightbox [role="dialog"]', { timeout: 15000 });
 
     // press ArrowRight to navigate next
     await page.keyboard.press('ArrowRight');
@@ -108,8 +118,7 @@ test.describe('Unified Gallery and Room-by-Room integration', () => {
 
     // Close with Escape
     await page.keyboard.press('Escape');
-    // Ensure lightbox closed
-    const closed = await page.$('#lightbox');
-    expect(closed).toBeNull();
+    // Wait for container to detach
+    await page.waitForSelector('#lightbox', { state: 'detached', timeout: 10000 });
   });
 });
