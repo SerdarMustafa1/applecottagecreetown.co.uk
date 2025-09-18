@@ -10,6 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check:cdn": "node scripts/check_cdn_urls.js",
+    "check:variants": "node scripts/check_image_variants.js",
     "fix:cdn-images": "bash scripts/repair_cdn_images_from_s3.sh",
     "lint": "eslint src tests/unit",
     "test": "vitest run tests/unit",

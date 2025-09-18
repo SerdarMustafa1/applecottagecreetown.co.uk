@@ -65,4 +65,24 @@ describe('GalleryIsland responsive srcset logic', () => {
     // Should fall back to single provided webp path (first visible image variant)
     expect(webpSrcSet).toBe('/images/interior/lounge/lounge-main-480.webp');
   });
+
+  it('never fabricates missing widths in srcset output', () => {
+    // Provide only two variants (480 & 1200) leaving gaps (768 missing)
+    const images = [
+      buildItem('/images/interior/bedroom/bedroom-main-480.jpg'),
+      buildItem('/images/interior/bedroom/bedroom-main-1200.jpg')
+    ];
+    const { container } = render(<GalleryIsland images={images} />);
+    const first = getAllImgElements(container)[0];
+    // Not enough verified variants (needs >=2 besides original -> we have exactly two but one is original + one other?)
+    // In our logic we require original plus at least one additional (>=2 total). Here 480 and 1200 exist; 480 is original.
+    // That satisfies the condition (existing length = 2) -> srcset should include exactly those two, not 768 or 1600.
+    const srcset = first.getAttribute('srcset');
+    if (srcset) {
+      expect(srcset).toContain('480.jpg 480w');
+      expect(srcset).toContain('1200.jpg 1200w');
+      expect(srcset).not.toContain('768.jpg');
+      expect(srcset).not.toContain('1600.jpg');
+    }
+  });
 });

@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import LightboxDialog from './LightboxDialog';
+import { parseSizeToken, buildVerifiedSrcSet } from '../lib/imageVariants';
 
 // Accept an array of image sources which may be string paths or
 // ImageMetadata objects returned from Astro's asset pipeline.
@@ -131,34 +132,6 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
   // Precompute a Set of all srcs to verify variant existence
   const allSrcs = useMemo(() => new Set(images.map(i => i.src)), [images]);
 
-  // Helper to parse a trailing size token like -1200 before extension
-  const parseSizeToken = (s?: string) => {
-    if (!s) return null;
-    const m = s.match(/-(\d{2,4})(\.(jpe?g|png|webp|avif))$/i);
-    if (!m) return null;
-    return { orig: Number(m[1]), ext: m[2] };
-  };
-
-  // Given an original src, only build a srcset if at least 2 alternative sized
-  // variants (besides the original) actually exist in the provided image list.
-  const buildVerifiedSrcSet = (s?: string) => {
-    if (!s) return undefined;
-    const info = parseSizeToken(s);
-    if (!info) return undefined; // no size token -> skip responsive generation
-    const widths = [480, 768, 1200, 1600];
-    // Derive base by stripping the -<size> token
-    const base = s.replace(/-(\d{2,4})(\.(jpe?g|png|webp|avif))$/i, '');
-    const candidates = widths.map(w => `${base}-${w}${info.ext}`);
-    const existing = candidates.filter(c => allSrcs.has(c));
-    // Require at least the original plus one additional size to justify a srcset
-    if (existing.length < 2) return undefined;
-    return existing.map(c => {
-      const sizeMatch = c.match(/-(\d{2,4})(\.(jpe?g|png|webp|avif))$/i);
-      const w = sizeMatch ? sizeMatch[1] : '0';
-      return `${c} ${w}w`;
-    }).join(', ');
-  };
-
   return (
     <>
       <div className="mb-3 flex flex-wrap items-center gap-2 justify-center">
@@ -189,8 +162,8 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
             const sizeInfo = parseSizeToken(src);
             const widthAttr = sizeInfo ? sizeInfo.orig : undefined;
             const heightAttr = sizeInfo ? Math.round(sizeInfo.orig * 0.75) : undefined;
-            const srcSet = buildVerifiedSrcSet(src);
-            const webpSrcSet = item.srcWebp ? buildVerifiedSrcSet(item.srcWebp) : undefined;
+            const srcSet = buildVerifiedSrcSet(src, allSrcs);
+            const webpSrcSet = item.srcWebp ? buildVerifiedSrcSet(item.srcWebp, allSrcs) : undefined;
 
           return (
             <figure key={item.src} className="flex flex-col" role="listitem">
