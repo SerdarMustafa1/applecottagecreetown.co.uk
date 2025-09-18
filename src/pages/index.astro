@@ -13,7 +13,7 @@ import MapEmbed from '../components/MapEmbed.astro';
 import Floorplans from '../components/Floorplans.astro';
 import Panos from '../components/Panos.astro';
 import VirtualTours from '../components/VirtualTours.astro';
-import RoomGalleries from '../components/RoomGalleries.astro';
+import Gallery from '../components/Gallery.astro';
 import PropertyFeatures from '../components/PropertyFeatures.astro';
 import PropertyDocs from '../components/PropertyDocs.astro';
 import BeforeAfterVideo from '../components/BeforeAfterVideo.astro';
@@ -38,8 +38,8 @@ const highlightItems = [...coreHighlights, ...extraHighlights];
     {homeMd?.Content && <homeMd.Content />}
   </section>
   
-  <!-- Room by Room Detailed Galleries -->
-  <RoomGalleries />
+  <!-- Photo Gallery with Filtering -->
+  <Gallery />
   
   <!-- Property Highlights -->
   <HighlightCards items={highlightItems} />
