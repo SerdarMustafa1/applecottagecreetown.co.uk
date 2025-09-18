@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-const https = require('https');
-const fs = require('fs');
+import https from 'https';
+import fs from 'fs';
 const CDN = process.env.MEDIA_BASE_URL || (process.env.CDN || '').replace(/\/$/, '');
 if (!CDN) {
   console.error('Set MEDIA_BASE_URL to your CloudFront URL to check.');

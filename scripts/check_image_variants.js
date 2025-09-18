@@ -10,8 +10,11 @@
  *  - Exit code 1 only if a width >=1200 exists without at least one smaller companion (< orig), to catch likely upload mistakes.
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const FILE = path.join(process.cwd(), 'site.config.ts');
 const WIDTHS = [480, 768, 1200, 1600];
@@ -71,4 +74,4 @@ function main() {
   console.log(`[variants] Completed. ${warnings.length} warning(s), ${errors.length} error(s).`);
 }
 
-if (require.main === module) main();
+main();
