@@ -15,18 +15,27 @@ const gaId = site.analyticsId;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <Seo {title} {description} />
-      <script is:inline define:vars={{ gaId }}>
+    <Seo {title} {description} />
+    <meta name="application-name" content="Apple Cottage, Creetown" />
+    <meta name="theme-color" content="#1f6c84" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Apple Cottage" />
+    <meta name="format-detection" content="telephone=no" />
+    <script is:inline define:vars={{ gaId }}>
         // Define GA id early on window to avoid ReferenceError from third‑party scripts
         (function(){ try { window.gaId = gaId || ''; } catch(e) {} })();
       </script>
       <link rel="stylesheet" id="silktide-consent-manager-css" href="/cookie-banner/silktide-consent-manager.css" />
       <script src="/cookie-banner/silktide-consent-manager.js" defer></script>
-      <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-      <link rel="icon" href="/favicon.ico" />
-      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-      <link rel="manifest" href="/site.webmanifest" />
-  {site.hero?.image && <link rel="preload" as="image" href={site.hero.image} />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="256x256" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="mask-icon" href="/icons/pwa-icon.svg" color="#1f6c84" />
+    <link rel="manifest" href="/site.webmanifest" />
+    {site.hero?.image && <link rel="preload" as="image" href={site.hero.image} />}
       {gaId && (
         <script is:inline>
           (function(){
@@ -130,5 +139,68 @@ const gaId = site.analyticsId;
     <Footer />
     <!-- Sticky CTA persists on screen for quick booking / report download -->
     <StickyCTA />
+    <script is:inline>
+      (() => {
+        if (!('serviceWorker' in navigator)) {
+          return;
+        }
+
+        let hasRefreshed = false;
+        let wasControlled = navigator.serviceWorker.controller !== null;
+
+        const requestSkipWaiting = (registration) => {
+          const waitingWorker = registration?.waiting;
+          if (waitingWorker) {
+            waitingWorker.postMessage({ type: 'SKIP_WAITING' });
+          }
+        };
+
+        const listenForUpdates = (registration) => {
+          if (!registration) {
+            return;
+          }
+          registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            if (!newWorker) {
+              return;
+            }
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                requestSkipWaiting(registration);
+              }
+            });
+          });
+        };
+
+        const register = async () => {
+          try {
+            const registration = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
+            registration.update?.();
+            listenForUpdates(registration);
+            requestSkipWaiting(registration);
+          } catch (error) {
+            console.warn('Service worker registration failed', error);
+          }
+        };
+
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (!wasControlled) {
+            wasControlled = true;
+            return;
+          }
+          if (hasRefreshed) {
+            return;
+          }
+          hasRefreshed = true;
+          window.location.reload();
+        });
+
+        if (document.readyState === 'complete') {
+          register();
+        } else {
+          window.addEventListener('load', register, { once: true });
+        }
+      })();
+    </script>
   </body>
 </html>

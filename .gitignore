@@ -37,6 +37,13 @@ public/docs/**/*.pdf
 !public/**/*.svg
 !public/**/.gitkeep
 
+# Generated PWA icon assets (created via scripts/generate_pwa_assets.mjs)
+public/apple-touch-icon.png
+public/favicon.png
+public/favicon.ico
+public/icons/icon-*.png
+public/icons/maskable-icon-*.png
+
 assets/images/
 assets/videos/
 

@@ -7,17 +7,22 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "predev": "npm run generate:pwa-assets",
     "build": "astro build",
+    "prebuild": "npm run generate:pwa-assets",
     "preview": "astro preview",
+    "generate:pwa-assets": "node scripts/generate_pwa_assets.mjs",
     "check:cdn": "node scripts/check_cdn_urls.js",
     "check:variants": "node scripts/check_image_variants.js",
     "fix:cdn-images": "bash scripts/repair_cdn_images_from_s3.sh",
     "lint": "eslint src tests/unit",
     "test": "vitest run tests/unit",
+    "pretest": "npm run generate:pwa-assets",
     "test:e2e": "playwright test tests/site-flows.e2e.spec.js",
     "test:lighthouse-hero": "playwright test tests/lighthouse-hero.e2e.spec.js",
     "typecheck": "tsc --noEmit",
     "prepare": "husky",
+    "postinstall": "npm run generate:pwa-assets",
     "lighthouse": "lhci autorun --config=./lighthouse.config.js"
   },
   "dependencies": {
@@ -57,9 +62,11 @@
     "playwright": "^1.46.0",
     "playwright-lighthouse": "^4.0.0",
     "postcss": "^8.4.31",
+    "png-to-ico": "^2.1.7",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.0.0",
-    "vitest": "^1.6.0"
+    "vitest": "^1.6.0",
+    "sharp": "^0.33.5"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
