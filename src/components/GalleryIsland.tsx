@@ -1,4 +1,9 @@
 import React, { useMemo, useState, useEffect, useCallback, useRef, Suspense, lazy } from 'react';
+// NOTE: Filter UI intentionally implemented as chip buttons only.
+// Previous experimental dropdown / select-based filter was reverted
+// for better visual scannability, quicker multi-filter exploration by users,
+// and reduced hydration/test flakiness. Avoid reintroducing a <select>
+// unless there is a clear accessibility or space constraint requirement.
 const LightboxDialog = lazy(() => import('./LightboxDialog'));
 import { parseSizeToken, buildVerifiedSrcSet } from '../lib/imageVariants';
 
