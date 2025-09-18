@@ -1,5 +1,5 @@
-import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react';
-import LightboxDialog from './LightboxDialog';
+import React, { useMemo, useState, useEffect, useCallback, useRef, Suspense, lazy } from 'react';
+const LightboxDialog = lazy(() => import('./LightboxDialog'));
 import { parseSizeToken, buildVerifiedSrcSet } from '../lib/imageVariants';
 
 // Accept an array of image sources which may be string paths or
@@ -93,24 +93,34 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
   }, [isLoading, visibleCount, filtered.length]);
 
   useEffect(() => {
-    const observer = observerRef.current;
-    if (!observer) return;
-
-    loadMoreRef.current = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          loadMore();
+    let cancelled = false;
+    (async () => {
+      if (typeof window === 'undefined') return;
+      const target = observerRef.current;
+      if (!target) return;
+      if (!('IntersectionObserver' in window)) {
+        try {
+          const mod = await import('../lib/polyfills/intersectionObserver');
+          if (!cancelled) mod.ensureIntersectionObserver();
+        } catch {
+          // ignore polyfill load errors
         }
-      },
-      { threshold: 0.1 }
-    );
-
-    loadMoreRef.current.observe(observer);
-
-    return () => {
-      if (loadMoreRef.current) {
-        loadMoreRef.current.disconnect();
       }
+      if (cancelled) return;
+      if (!('IntersectionObserver' in window)) return; // still unavailable
+      loadMoreRef.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            loadMore();
+          }
+        },
+        { threshold: 0.1 }
+      );
+      loadMoreRef.current.observe(target);
+    })();
+    return () => {
+      cancelled = true;
+      if (loadMoreRef.current) loadMoreRef.current.disconnect();
     };
   }, [loadMore]);
 
@@ -283,14 +293,18 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
         {isLoading && ' Loading more images...'}
       </div>
 
-      <LightboxDialog
-        images={filtered}
-        index={index}
-        open={open}
-        onClose={close}
-        onPrev={prev}
-        onNext={next}
-      />
+      <Suspense fallback={null}>
+        {open && (
+          <LightboxDialog
+            images={filtered}
+            index={index}
+            open={open}
+            onClose={close}
+            onPrev={prev}
+            onNext={next}
+          />
+        )}
+      </Suspense>
     </>
   );
 }
