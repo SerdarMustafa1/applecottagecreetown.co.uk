@@ -44,6 +44,31 @@ const MARKETING_ORDER = [
 ];
 
 export default function GalleryIsland({ images }: GalleryIslandProps) {
+  // Internal copy so we can apply a runtime fallback if the prop arrives empty
+  const [internalImages, setInternalImages] = useState<GalleryItem[]>(images || []);
+
+  // Fallback: if no images were passed (e.g. build-time flatten failed on a branch), attempt to hydrate
+  // from window.siteConfig (populated globally in index). This restores chip gallery without rebuild.
+  useEffect(() => {
+    if (internalImages.length === 0 && typeof window !== 'undefined') {
+      try {
+        const sc: any = (window as any).siteConfig;
+        if (sc) {
+          let candidates: any[] = Array.isArray(sc.images) ? sc.images : [];
+          if ((!candidates || candidates.length === 0) && sc.gallery) {
+            const roomParts = sc.roomGalleries ? Object.values(sc.roomGalleries).flat() : [];
+            candidates = [...(sc.gallery || []), ...roomParts];
+          }
+          if (candidates && candidates.length > 0) {
+            setInternalImages(candidates);
+            console.warn('[GalleryIsland] Fallback populated images from window.siteConfig (%d items).', candidates.length);
+          }
+        }
+      } catch (e) {
+        console.warn('[GalleryIsland] Fallback image population failed:', e);
+      }
+    }
+  }, [internalImages.length]);
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
   const [filter, setFilter] = useState<string>('All Photos');
@@ -113,7 +138,7 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
   };
 
   const itemsWithCategories = useMemo(() => 
-    images.map(img => ({
+    internalImages.map(img => ({
       ...img,
       __category: categorizeImage(img)
     })), [images]);
@@ -280,7 +305,7 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
   };
 
   // Precompute a Set of all srcs to verify variant existence
-  const allSrcs = useMemo(() => new Set(images.map(i => i.src)), [images]);
+  const allSrcs = useMemo(() => new Set(internalImages.map(i => i.src)), [internalImages]);
 
   return (
     <>

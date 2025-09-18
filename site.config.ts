@@ -164,6 +164,7 @@ export const site = {
     { label: 'Hallway', src: media('/images/panos/hallway-pano.jpg'), srcWebp: media('/images/panos/hallway-pano.webp'), preview: media('/images/panos/hallway-pano.jpg'), alt: '360° panoramic hallway view' },
     { label: 'Lounge', src: media('/images/panos/lounge-pano.jpg'), srcWebp: media('/images/panos/lounge-pano.webp'), preview: media('/images/panos/lounge-pano.jpg'), alt: '360° panoramic lounge view' },
     { label: 'Entrance Steps', src: media('/images/panos/steps-pano.jpg'), srcWebp: media('/images/panos/steps-pano.webp'), preview: media('/images/panos/steps-pano.jpg'), alt: '360° panoramic entrance steps view' },
+    { label: 'Annex', src: media('/images/panos/annex-pano.jpg'), srcWebp: media('/images/panos/annex-pano.webp'), preview: media('/images/panos/annex-pano.jpg'), alt: '360° panoramic annex view' },
     { label: 'Master Bedroom', src: media('/images/panos/master-bedroom-pano.jpg'), preview: media('/images/panos/master-bedroom-pano.jpg'), alt: '360° panoramic master bedroom view' },
     { label: 'Drive Bottom View', src: media('/images/panos/drive-bottom-exterior-view.jpg'), preview: media('/images/panos/drive-bottom-exterior-view.jpg'), alt: '360° panoramic driveway and approach' },
     { label: 'Garden View 1', src: media('/images/panos/garden-1-exterior-view.jpg'), preview: media('/images/panos/garden-1-exterior-view.jpg'), alt: '360° panoramic garden view 1' },

@@ -11,7 +11,8 @@ import site from '../../site.config';
       </p>
     </div>
     <div class="max-w-6xl mx-auto">
-      <GalleryIsland client:visible images={(site as any).images || []} />
+    <!-- Force hydration on page load to avoid rare intersection observer misses that caused the chip bar to appear absent -->
+  <GalleryIsland client:load images={(site as any).images || []} />
     </div>
   </div>
 </section>
