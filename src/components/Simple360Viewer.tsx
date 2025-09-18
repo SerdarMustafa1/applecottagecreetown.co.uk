@@ -4,6 +4,7 @@ interface Props {
   pano: {
     label?: string;
     src: string;
+    srcWebp?: string;
     preview?: string;
   };
   height?: number;
@@ -72,12 +73,17 @@ export default function Simple360Viewer({ pano, height = 320 }: Props) {
         style={{ width: '100%', height }}
       >
         {!loaded && (
-          <img
-            src={pano.preview || pano.src}
-            alt={pano.label || '360 preview'}
-            className="w-full h-full object-cover"
-            loading="lazy"
-          />
+          <picture>
+            {pano.srcWebp && (
+              <source srcSet={pano.srcWebp} type="image/webp" />
+            )}
+            <img
+              src={pano.preview || pano.src}
+              alt={pano.label || '360 preview'}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          </picture>
         )}
       </div>
       <p className="text-xs text-gray-500 mt-1">Drag to look around</p>
