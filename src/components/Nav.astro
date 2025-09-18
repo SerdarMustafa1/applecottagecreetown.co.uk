@@ -6,6 +6,7 @@ import site from '../../site.config';
     <a href="/" class="text-xl font-bold">Apple Cottage</a>
     <button
       id="nav-toggle"
+      type="button"
       class="p-2 border rounded md:hidden"
       aria-expanded="false"
       aria-controls="nav-menu"
@@ -22,7 +23,8 @@ import site from '../../site.config';
     </button>
     <ul
       id="nav-menu"
-      class="flex flex-col gap-2 bg-white md:bg-transparent md:static md:flex md:flex-row md:gap-4 md:border-0"
+      class="hidden flex flex-col gap-2 bg-white md:bg-transparent md:static md:flex md:flex-row md:gap-4 md:border-0"
+      aria-hidden="true"
     >
       <li><a href="#gallery" class="block px-4 py-2 hover:underline">Gallery</a></li>
       <li><a href="#highlights" class="block px-4 py-2 hover:underline">Highlights</a></li>
@@ -37,9 +39,29 @@ import site from '../../site.config';
 <script is:inline>
   const toggle = document.getElementById('nav-toggle');
   const menu = document.getElementById('nav-menu');
-  toggle?.addEventListener('click', () => {
-    const expanded = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', String(!expanded));
-    menu?.classList.toggle('hidden');
-  });
+
+  if (!toggle || !menu) {
+    console.warn('Navigation toggle or menu not found.');
+  } else {
+    const setMenuExpanded = (expanded) => {
+      toggle.setAttribute('aria-expanded', String(expanded));
+      menu.setAttribute('aria-hidden', String(!expanded));
+      menu.classList.toggle('hidden', !expanded);
+    };
+
+    setMenuExpanded(false);
+
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      setMenuExpanded(!expanded);
+    });
+
+    menu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        if (window.matchMedia('(max-width: 767px)').matches) {
+          setMenuExpanded(false);
+        }
+      });
+    });
+  }
 </script>
