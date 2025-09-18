@@ -1,4 +1,4 @@
-const { test, expect } = require('@playwright/test');
+import { test, expect } from '@playwright/test';
 
 test.describe('Unified Gallery and Room-by-Room integration', () => {
   test('Gallery filters, infinite scroll and lightbox work', async ({ page }) => {

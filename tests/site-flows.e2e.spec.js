@@ -1,5 +1,6 @@
-const { test, expect } = require('@playwright/test');
-const AxeBuilder = require('@axe-core/playwright').default;
+import { test, expect } from '@playwright/test';
+import AxeCore from '@axe-core/playwright';
+const AxeBuilder = AxeCore.default || AxeCore;
 
 const SITE_URL = process.env.SITE_URL || 'http://localhost:8080';
 

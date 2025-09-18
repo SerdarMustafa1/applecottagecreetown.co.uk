@@ -1,4 +1,4 @@
-const { defineConfig } = require('@playwright/test');
+import { defineConfig } from '@playwright/test';
 
 const viewports = [
   { width: 393, height: 852 },
@@ -23,7 +23,7 @@ const network = {
   latency: 200,
 };
 
-module.exports = defineConfig({
+export default defineConfig({
   timeout: 30_000,
   testDir: '.',
   reporter: [['list']],
