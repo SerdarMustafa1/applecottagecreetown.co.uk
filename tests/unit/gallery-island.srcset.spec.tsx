@@ -85,4 +85,36 @@ describe('GalleryIsland responsive srcset logic', () => {
       expect(srcset).not.toContain('1600.jpg');
     }
   });
+
+  it('renders filter chips with icons', () => {
+    const images = [
+      buildItem('/images/kitchen/kitchen-1.jpg', { rooms: ['kitchen'] }),
+      buildItem('/images/bedroom/bedroom-1.jpg', { rooms: ['bedrooms'] })
+    ];
+    const { container } = render(<GalleryIsland images={images} />);
+    
+    // Check for filter buttons with icons
+    const filterButtons = container.querySelectorAll('button[aria-pressed]');
+    expect(filterButtons.length).toBeGreaterThan(0);
+    
+    // Check that buttons contain emoji icons
+    const allButton = Array.from(filterButtons).find(btn => btn.textContent?.includes('All'));
+    expect(allButton?.textContent).toMatch(/🏠/);
+  });
+
+  it('shows infinite scroll loading indicator', () => {
+    // Create enough images to trigger infinite scroll
+    const images = Array.from({ length: 20 }, (_, i) => 
+      buildItem(`/images/test-${i}.jpg`, { alt: `Test image ${i}` })
+    );
+    const { container } = render(<GalleryIsland images={images} />);
+    
+    // Should show initial 12 images
+    const imgs = getAllImgElements(container);
+    expect(imgs.length).toBe(12);
+    
+    // Should show scroll indicator
+    const scrollIndicator = container.querySelector('[class*="text-gray-500"]');
+    expect(scrollIndicator?.textContent).toContain('Scroll to load more');
+  });
 });
