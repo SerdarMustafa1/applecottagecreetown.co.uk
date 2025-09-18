@@ -112,12 +112,12 @@ export const site = {
   { src: media('/images/interior/kitchen/kitchen-1.jpg'), alt: 'Kitchen main view', caption: 'Modern fitted kitchen' },
   { src: media('/images/interior/kitchen/kitchen-2.jpg'), alt: 'Kitchen angle 2', caption: 'Kitchen workspace and storage' },
   { src: media('/images/interior/kitchen/kitchen-4.jpg'), alt: 'Kitchen detail', caption: 'Kitchen appliances and fittings' },
-  { src: media('/images/interior/lounge/lounge-main.jpg'), alt: 'Main lounge', caption: 'Comfortable main living room' },
+  { src: media('/images/interior/utility/utility-main.jpg'), alt: 'Utility room main', caption: 'Practical utility room space' },
     { src: media('/images/interior/conservatory/conservatory-main.jpg'), alt: 'Conservatory', caption: 'Bright conservatory with garden access' },
-  { src: media('/images/interior/bathroom/bathroom.jpg'), alt: 'Family bathroom', caption: 'Modern family bathroom' },
+
     { src: media('/images/interior/bedrooms/rear-bedroom/bedroom-rear.jpg'), alt: 'Rear bedroom', caption: 'Rear bedroom with garden views' },
     { src: media('/images/interior/bedrooms/master-bedroom/master-bedroom-1.jpg'), alt: 'Master bedroom main', caption: 'Spacious master bedroom' },
-    { src: media('/images/interior/bedrooms/master-bedroom/master-bedroom-2.jpg'), alt: 'Master bedroom angle 2', caption: 'Master bedroom with fitted wardrobes' },
+    { src: media('/images/interior/bedrooms/master-bedroom/master-bedroom-2.jpg'), alt: 'Master bedroom angle 2', caption: 'Master bedroom' },
     { src: media('/images/interior/bedrooms/master-bedroom/master-bedroom-3.jpg'), alt: 'Master bedroom angle 3', caption: 'Master bedroom storage area' },
     { src: media('/images/interior/zen-room/zen-room-main.jpg'), alt: 'Zen room', caption: 'Peaceful zen room space' },
     
@@ -128,6 +128,10 @@ export const site = {
   { src: media('/images/exterior/garden-view-1.jpg'), alt: 'Garden flat area overview', caption: 'Flat garden area - perfect for entertaining' },
   { src: media('/images/exterior/garden-view-2.jpg'), alt: 'Garden flat area angle 2', caption: 'Garden space from different perspective' },
   { src: media('/images/exterior/garden-view-3.jpg'), alt: 'Garden flat area angle 3', caption: 'Expansive garden showing full potential' },
+
+  // Annex (new media additions)
+  // Still image extracted from annex 360 video (responsive variants optional)
+  { src: media('/images/annex/annex-still-1200.jpg'), alt: 'Annex living space', caption: 'Annex living space', rooms: ['annex'] },
     
   // Exterior panoramic views
   { src: media('/images/panos/garden-1-exterior-view.jpg'), alt: 'Garden panoramic view', caption: 'Wide garden panorama showing full outdoor space' },
@@ -136,11 +140,9 @@ export const site = {
   { src: media('/images/panos/drive-bottom-exterior-view.jpg'), alt: 'Driveway approach view', caption: 'Property approach and parking area' },
     
     // Premium interior shots
-    { src: media('/images/panos/interior-living-panoramic.jpg'), alt: 'Interior panoramic view', caption: 'Panoramic interior view' },
     { src: media('/images/exterior/street-view-19d500ce.jpg'), alt: 'Street view from interior', caption: 'Street view from front window' },
     
     // Property features
-    { src: media('/images/exterior/annex-office-389752AB.jpg'), alt: 'Annex office space', caption: 'Separate annex office - perfect for working from home' },
     { src: media('/images/exterior/garden-lean-to-view-032D67F9.jpeg'), alt: 'Garden lean-to structure', caption: 'Useful garden lean-to storage' }
   ],
   // Location & Lifestyle image grid
@@ -221,6 +223,13 @@ export const site = {
   poster: media('/images/interior/bedrooms/master-bedroom/master-bedroom-360-poster.jpg'),
       description: 'Spacious master bedroom with wraparound view'
     }
+    ,{ 
+      label: 'Annex 360°',
+      videoMp4: media('/videos/annex/annex-360.mp4'),
+      videoWebm: media('/videos/annex/annex-360.webm'),
+      poster: media('/images/annex/annex-360-poster.jpg'),
+      description: 'Self-contained annex living space'
+    }
   ],
   
   // Room-specific photo galleries
@@ -234,7 +243,6 @@ export const site = {
     livingAreas: [
     ],
     lounge: [
-      { src: media('/images/interior/lounge/lounge-main.jpg'), alt: 'Main lounge', caption: 'Comfortable main lounge' },
       { src: media('/images/interior/lounge/lounge-workspace.jpg'), alt: 'Lounge workspace', caption: 'Lounge workspace area' },
       { src: media('/images/interior/lounge/lounge-3.jpg'), alt: 'Lounge angle 3', caption: 'Lounge alternate view' },
       { src: media('/images/interior/lounge/lounge-diner-3b198390.jpg'), alt: 'Lounge diner area', caption: 'Lounge dining area' }
@@ -246,17 +254,17 @@ export const site = {
       { src: media('/images/interior/conservatory/conservatory-entrance.jpg'), alt: 'Conservatory entrance', caption: 'Conservatory entrance view' }
     ],
     zenRoom: [
-      { src: media('/images/interior/zen-room/zen-room-main.jpg'), alt: 'Zen room', caption: 'Peaceful zen room space' },
-      { src: media('/images/interior/zen-room/zen-room-main-B90E9E42.jpg'), alt: 'Zen room main view', caption: 'Tranquil zen room with natural lighting' }
+      { src: media('/images/interior/zen-room/zen-room-main.jpg'), alt: 'Zen room', caption: 'Peaceful zen room space' }
     ],
     bedrooms: [
       // Master bedroom images from organized subfolder
       { src: media('/images/interior/bedrooms/master-bedroom/master-bedroom-1.jpg'), alt: 'Master bedroom main', caption: 'Master bedroom main view' },
       { src: media('/images/interior/bedrooms/master-bedroom/master-bedroom-2.jpg'), alt: 'Master bedroom angle 2', caption: 'Master bedroom alternate angle' },
       { src: media('/images/interior/bedrooms/master-bedroom/master-bedroom-3.jpg'), alt: 'Master bedroom angle 3', caption: 'Master bedroom with storage' },
-      // Front bedroom pano (relocated from kitchen)
-      { src: media('/images/interior/bedrooms/front-bedroom/front-bedroom-pano.jpg'), alt: 'Front bedroom panoramic', caption: 'Front bedroom panoramic view' },
+
       { src: media('/images/interior/bedrooms/front-bedroom/view-front-bedroom-1200.jpg'), alt: 'Front bedroom view', caption: 'View from front bedroom' },
+      // Front bedroom
+      { src: media('/images/interior/bedrooms/front-bedroom/view-front-bedroom-1200.jpg'), alt: 'Front bedroom view', caption: 'Front bedroom with street views' },
       // Rear bedroom
       { src: media('/images/interior/bedrooms/rear-bedroom/bedroom-rear.jpg'), alt: 'Rear bedroom', caption: 'Rear bedroom with garden views' }
     ],
@@ -264,12 +272,15 @@ export const site = {
       { src: media('/images/interior/utility/utility-main.jpg'), alt: 'Utility room main', caption: 'Practical utility room space' },
     ],
     downstairsWc: [
-      { src: media('/images/interior/downstairs-wc/downstairs-wc-detail-b48c6425.jpg'), alt: 'Downstairs WC', caption: 'Convenient downstairs WC' }
+      { src: media('/images/interior/downstairs-wc/downstairs-wc-detail-b48c6425.jpg'), alt: 'Downstairs WC', caption: 'Convenient downstairs WC and storage with sliding doors' }
     ],
     bathroom: [
+      { src: media('/images/interior/bathroom/bathroom.jpg'), alt: 'Family bathroom', caption: 'Modern family bathroom' }
+    ],
+    annex: [
+      { src: media('/images/exterior/annex-office-389752AB.jpg'), alt: 'Annex office space', caption: 'Separate annex office - perfect for working from home' }
     ],
     exterior: [
-      { src: media('/images/exterior/annex-office-389752AB.jpg'), alt: 'Annex office', caption: 'Separate annex office space' },
       { src: media('/images/exterior/exterior-view-93b1365c.jpg'), alt: 'Exterior property view', caption: 'Property exterior perspective' },
       { src: media('/images/exterior/exterior-view-E516C44F.jpg'), alt: 'Exterior kitchen view', caption: 'Property exterior from kitchen side' },
       { src: media('/images/exterior/exterior-main-3b60cbff.jpg'), alt: 'Main exterior view', caption: 'Main property exterior perspective' }
