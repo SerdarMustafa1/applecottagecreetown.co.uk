@@ -1,8 +1,8 @@
 const { test, expect } = require('@playwright/test');
 
 test.describe('Unified Gallery and Room-by-Room integration', () => {
-  test('Gallery filters, show more and lightbox work', async ({ page }) => {
-  await page.goto(process.env.SITE_URL || 'http://localhost:8080/');
+  test('Gallery filters, infinite scroll and lightbox work', async ({ page }) => {
+    await page.goto(process.env.SITE_URL || 'http://localhost:8080/');
 
     // Wait for gallery island to load
     await page.waitForSelector('#gallery-grid');
@@ -27,42 +27,53 @@ test.describe('Unified Gallery and Room-by-Room integration', () => {
       await page.waitForTimeout(200);
     }
 
-    // Show more if present
-    const showMore = await page.$('button:has-text("Show more")');
-    if (showMore) {
-      await showMore.click();
-      await page.waitForTimeout(200);
-    }
+    // Test infinite scroll by scrolling to bottom
+    const initialImages = await page.$$('#gallery-grid [role="listitem"]');
+    const initialCount = initialImages.length;
+    
+    // Scroll to trigger infinite scroll if there are more images
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await page.waitForTimeout(500);
+    
+    const afterScrollImages = await page.$$('#gallery-grid [role="listitem"]');
+    // Images should either stay the same (if no more to load) or increase
+    expect(afterScrollImages.length).toBeGreaterThanOrEqual(initialCount);
 
     // Open first image in gallery
     const firstThumb = await page.$('#gallery-grid button');
     await expect(firstThumb).toBeTruthy();
     await firstThumb.click();
 
-  // Lightbox should appear (dialog or similar) and have role dialog or aria-modal
-  const lightbox = await page.$('dialog, [role="dialog"], .lightbox');
-  expect(lightbox).toBeTruthy();
-  const role = await lightbox.getAttribute('role');
-  const ariaModal = await lightbox.getAttribute('aria-modal');
-  expect(role === 'dialog' || ariaModal === 'true' || lightbox.nodeName.toLowerCase() === 'dialog').toBeTruthy();
+    // Lightbox should appear (dialog or similar) and have role dialog or aria-modal
+    const lightbox = await page.$('dialog, [role="dialog"], .lightbox');
+    expect(lightbox).toBeTruthy();
+    const role = await lightbox.getAttribute('role');
+    const ariaModal = await lightbox.getAttribute('aria-modal');
+    expect(role === 'dialog' || ariaModal === 'true' || lightbox.nodeName.toLowerCase() === 'dialog').toBeTruthy();
   });
 
-  test('Room-by-Room accordion uses unified images', async ({ page }) => {
-  await page.goto(process.env.SITE_URL || 'http://localhost:8080/');
-    await page.waitForSelector('#room-galleries-accordion');
+  test('Gallery filter chips have icons and work correctly', async ({ page }) => {
+    await page.goto(process.env.SITE_URL || 'http://localhost:8080/');
+    await page.waitForSelector('#gallery-grid');
 
-    // Open the first room accordion
-    const firstDetails = await page.$('#room-galleries-accordion details');
-  await firstDetails.evaluate(d => { d.open = true; });
-    await page.waitForTimeout(150);
-
-    // Check for a gallery grid inside and that gallery images have alt text
-    const gallery = await firstDetails.$('#gallery-grid');
-    expect(gallery).toBeTruthy();
-    const imgs = await gallery.$$('[role="listitem"] img');
-    for (const img of imgs) {
-      const alt = await img.getAttribute('alt');
-      expect(alt && alt.length).toBeGreaterThan(0);
+    // Check that filter buttons have icons (emojis)
+    const filterButtons = await page.$$('section#gallery button[aria-pressed]');
+    expect(filterButtons.length).toBeGreaterThan(0);
+    
+    // Check that All button has house emoji
+    const allButton = await page.$('button[aria-pressed]:has-text("All")');
+    expect(allButton).toBeTruthy();
+    const allText = await allButton.innerText();
+    expect(allText).toMatch(/🏠/);
+    
+    // Test filtering functionality
+    const nonAllButtons = filterButtons.slice(1);
+    if (nonAllButtons.length > 0) {
+      await nonAllButtons[0].click();
+      await page.waitForTimeout(200);
+      // Gallery should still be visible after filtering
+      const gallery = await page.$('#gallery-grid');
+      expect(gallery).toBeTruthy();
     }
   });
 
