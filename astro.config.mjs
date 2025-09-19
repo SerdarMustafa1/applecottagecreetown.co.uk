@@ -20,19 +20,24 @@ export default defineConfig({
         clientsClaim: true,
         skipWaiting: true,
         navigateFallbackDenylist: [/^\/api\//],
-        // Exclude HTML from the precache manifest to avoid shipping stale markup.
-        globPatterns: ['**/*.{js,css,ico,png,svg,webp,avif,jpg,jpeg,json,woff2,woff}'],
-        globIgnores: ['**/IMG_20250918_092921_562.jpeg'], // huge asset served on-demand; keep it out of the precache.
+        globPatterns: ['**/*.{js,css,ico,png,svg,json,woff2,woff}'],
+        globIgnores: [
+          '**/IMG_20250918_092921_562.jpeg',
+          '**/*-1600.*',
+          '**/*-1200.*',
+          '**/panos/**',
+          '**/*.jpg',
+          '**/*.jpeg',
+          '**/*.webp',
+          '**/*.avif'
+        ],
+        maximumFileSizeToCacheInBytes: 2 * 1024 * 1024, // 2MB limit
         runtimeCaching: [
           {
-            // Network-first for navigation requests so HTML always comes from the origin first.
+            // Network-first for navigation requests
             urlPattern: ({ request, url }) => {
-              if (request.mode !== 'navigate') {
-                return false;
-              }
-              if (url.pathname.startsWith('/admin') || url.pathname.startsWith('/preview')) {
-                return false;
-              }
+              if (request.mode !== 'navigate') return false;
+              if (url.pathname.startsWith('/admin') || url.pathname.startsWith('/preview')) return false;
               return true;
             },
             handler: 'NetworkFirst',
@@ -40,51 +45,23 @@ export default defineConfig({
               cacheName: 'html-cache',
               networkTimeoutSeconds: 3,
               expiration: {
-                maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 24 // keep a day's worth of pages for quick back/forward nav.
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 6
               }
             }
           },
           {
-            // Cache hashed build assets and same-origin images/fonts with SWR to keep them fresh.
-            urlPattern: ({ request, sameOrigin, url }) => {
-              if (request.method !== 'GET') {
-                return false;
-              }
-              if (request.destination && ['style', 'script', 'font', 'image'].includes(request.destination)) {
-                return sameOrigin;
-              }
-              if (!/^https?:\/\/[^/]+\/assets\//.test(url.href)) {
-                return false;
-              }
-              return url.hostname.endsWith('.cloudfront.net');
+            // Cache only critical assets
+            urlPattern: ({ request, sameOrigin }) => {
+              if (request.method !== 'GET' || !sameOrigin) return false;
+              return ['style', 'script', 'font'].includes(request.destination);
             },
             handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'asset-cache',
               expiration: {
-                maxEntries: 200,
-                maxAgeSeconds: 60 * 60 * 24 * 30
-              }
-            }
-          },
-          {
-            // API reads stay fast but up-to-date with a tight SWR window.
-            urlPattern: ({ request, sameOrigin, url }) => {
-              if (request.method !== 'GET') {
-                return false;
-              }
-              if (sameOrigin && url.pathname.startsWith('/api/')) {
-                return true;
-              }
-              return false;
-            },
-            handler: 'StaleWhileRevalidate',
-            options: {
-              cacheName: 'api-cache',
-              expiration: {
                 maxEntries: 30,
-                maxAgeSeconds: 60
+                maxAgeSeconds: 60 * 60 * 24 * 3
               }
             }
           }
@@ -103,10 +80,12 @@ export default defineConfig({
           target: 'https://d1t6lpjdsu4646.cloudfront.net',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/proxy-cdn/, ''),
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+          configure: (proxy) => {
+            proxy.on('proxyRes', (proxyRes) => {
+              proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+              proxyRes.headers['Access-Control-Allow-Methods'] = 'GET, OPTIONS';
+              proxyRes.headers['Access-Control-Allow-Headers'] = 'Content-Type';
+            });
           }
         }
       }

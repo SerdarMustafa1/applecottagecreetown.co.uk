@@ -57,7 +57,7 @@ function ZoomablePlan({ plan }: { plan: Plan }) {
     };
 
     container.addEventListener('wheel', handleWheel, { passive: false });
-    container.addEventListener('touchstart', handleTouchStart, { passive: false });
+    container.addEventListener('touchstart', handleTouchStart, { passive: true });
     container.addEventListener('touchmove', handleTouchMove, { passive: false });
 
     return () => {
