@@ -15,6 +15,71 @@ const isBrowser = typeof window !== 'undefined';
 
 const storageKey = 'applecottage-a2hs-dismissed';
 
+type AnalyticsPayload = Record<string, unknown>;
+
+const cleanPayload = (payload: AnalyticsPayload = {}): AnalyticsPayload => {
+  return Object.fromEntries(
+    Object.entries(payload).filter(([, value]) => value !== undefined && value !== null && value !== ''),
+  );
+};
+
+type AnalyticsWindow = Window & {
+  gtag?: unknown;
+  dataLayer?: unknown;
+};
+
+const getAnalyticsWindow = (): AnalyticsWindow | undefined => {
+  if (!isBrowser) {
+    return undefined;
+  }
+
+  return window as AnalyticsWindow;
+};
+
+const trackPwaEvent = (eventName: string, payload: AnalyticsPayload = {}): void => {
+  const analyticsWindow = getAnalyticsWindow();
+  if (!analyticsWindow) {
+    return;
+  }
+
+  const basePayload = cleanPayload({
+    event_category: 'pwa',
+    engagement_gallery_views: payload.engagement_gallery_views,
+    engagement_tour_seconds: payload.engagement_tour_seconds,
+    engagement_offline_ready: payload.engagement_offline_ready,
+    trigger_reason: payload.trigger_reason,
+    outcome: payload.outcome,
+    platform: payload.platform,
+  });
+
+  if (typeof analyticsWindow.gtag === 'function') {
+    try {
+      const gtagFunction = analyticsWindow.gtag as CallableFunction;
+      gtagFunction.call(analyticsWindow, 'event', eventName, basePayload);
+    } catch {
+      // Ignore gtag errors — analytics should never block UX.
+    }
+  }
+
+  const dataLayer = Array.isArray(analyticsWindow.dataLayer)
+    ? (analyticsWindow.dataLayer as AnalyticsPayload[])
+    : undefined;
+
+  try {
+    const dataLayerEvent: AnalyticsPayload = cleanPayload({
+      event: eventName,
+      ...basePayload,
+    });
+    if (dataLayer) {
+      dataLayer.push(dataLayerEvent);
+    } else {
+      (analyticsWindow as AnalyticsWindow & { dataLayer: AnalyticsPayload[] }).dataLayer = [dataLayerEvent];
+    }
+  } catch {
+    // Ignore analytics failures (e.g. blocked storage).
+  }
+};
+
 const readDismissedPreference = (): boolean => {
   if (!isBrowser) return false;
   try {
@@ -46,6 +111,12 @@ export const useA2HS = () => {
   const galleryViewsRef = useRef<Set<string>>(new Set());
   const tourSecondsRef = useRef<number>(0);
   const offlineTriggeredRef = useRef<boolean>(false);
+  const galleryThresholdLoggedRef = useRef<boolean>(false);
+  const tourThresholdLoggedRef = useRef<boolean>(false);
+  const offlineLoggedRef = useRef<boolean>(false);
+  const promptVisibleRef = useRef<boolean>(false);
+  const lastReportedReasonRef = useRef<TriggerReason | null>(null);
+  const triggerReasonRef = useRef<TriggerReason | null>(null);
 
   const getTriggerReason = useCallback((): TriggerReason | null => {
     if (!deferredPrompt || dismissed) {
@@ -68,6 +139,16 @@ export const useA2HS = () => {
     if (reason) {
       setTriggerReason(reason);
       setPromptVisible(true);
+      const engagementSnapshot = {
+        engagement_gallery_views: galleryViewsRef.current.size,
+        engagement_tour_seconds: tourSecondsRef.current,
+        engagement_offline_ready: offlineTriggeredRef.current,
+        trigger_reason: reason,
+      };
+      if (!promptVisibleRef.current || lastReportedReasonRef.current !== reason) {
+        trackPwaEvent('a2hs_prompt_ready', engagementSnapshot);
+        lastReportedReasonRef.current = reason;
+      }
     }
   }, [getTriggerReason]);
 
@@ -80,6 +161,7 @@ export const useA2HS = () => {
     const onBeforeInstallPrompt = (event: Event) => {
       event.preventDefault();
       setDeferredPrompt(event as BeforeInstallPromptEvent);
+      trackPwaEvent('a2hs_event_captured');
     };
 
     const onAppInstalled = () => {
@@ -88,6 +170,7 @@ export const useA2HS = () => {
       setTriggerReason(null);
       setDismissed(true);
       persistDismissedPreference(true);
+      trackPwaEvent('a2hs_installed');
     };
 
     window.addEventListener('beforeinstallprompt', onBeforeInstallPrompt as EventListener, { passive: true });
@@ -105,21 +188,61 @@ export const useA2HS = () => {
     }
   }, [deferredPrompt, evaluatePromptVisibility]);
 
+  useEffect(() => {
+    promptVisibleRef.current = isPromptVisible;
+    triggerReasonRef.current = triggerReason;
+    if (isPromptVisible && triggerReason) {
+      trackPwaEvent('a2hs_prompt_shown', {
+        trigger_reason: triggerReason,
+        engagement_gallery_views: galleryViewsRef.current.size,
+        engagement_tour_seconds: tourSecondsRef.current,
+        engagement_offline_ready: offlineTriggeredRef.current,
+      });
+    }
+  }, [isPromptVisible, triggerReason]);
+
   const registerGalleryView = useCallback((id: string) => {
     if (!id) return;
     galleryViewsRef.current.add(id);
     evaluatePromptVisibility();
+    if (!galleryThresholdLoggedRef.current && galleryViewsRef.current.size >= GALLERY_VIEW_THRESHOLD) {
+      galleryThresholdLoggedRef.current = true;
+      trackPwaEvent('a2hs_gallery_threshold_met', {
+        trigger_reason: triggerReasonRef.current,
+        engagement_gallery_views: galleryViewsRef.current.size,
+        engagement_tour_seconds: tourSecondsRef.current,
+        engagement_offline_ready: offlineTriggeredRef.current,
+      });
+    }
   }, [evaluatePromptVisibility]);
 
   const registerTourWatch = useCallback((seconds: number) => {
     if (!Number.isFinite(seconds) || seconds <= 0) return;
     tourSecondsRef.current += seconds;
     evaluatePromptVisibility();
+    if (!tourThresholdLoggedRef.current && tourSecondsRef.current >= TOUR_SECONDS_THRESHOLD) {
+      tourThresholdLoggedRef.current = true;
+      trackPwaEvent('a2hs_tour_threshold_met', {
+        trigger_reason: triggerReasonRef.current,
+        engagement_gallery_views: galleryViewsRef.current.size,
+        engagement_tour_seconds: tourSecondsRef.current,
+        engagement_offline_ready: offlineTriggeredRef.current,
+      });
+    }
   }, [evaluatePromptVisibility]);
 
   const registerOfflineDownload = useCallback(() => {
     offlineTriggeredRef.current = true;
     evaluatePromptVisibility();
+    if (!offlineLoggedRef.current) {
+      offlineLoggedRef.current = true;
+      trackPwaEvent('a2hs_offline_ready', {
+        trigger_reason: triggerReasonRef.current,
+        engagement_gallery_views: galleryViewsRef.current.size,
+        engagement_tour_seconds: tourSecondsRef.current,
+        engagement_offline_ready: offlineTriggeredRef.current,
+      });
+    }
   }, [evaluatePromptVisibility]);
 
   const showPrompt = useCallback(async () => {
@@ -128,9 +251,35 @@ export const useA2HS = () => {
       return;
     }
 
+    trackPwaEvent('a2hs_prompt_launch', {
+      trigger_reason: triggerReasonRef.current,
+      engagement_gallery_views: galleryViewsRef.current.size,
+      engagement_tour_seconds: tourSecondsRef.current,
+      engagement_offline_ready: offlineTriggeredRef.current,
+    });
+
     try {
       await promptEvent.prompt();
-      await promptEvent.userChoice.catch(() => undefined);
+      const choice = await promptEvent.userChoice.catch(() => undefined);
+      if (choice) {
+        trackPwaEvent('a2hs_prompt_resolved', {
+          trigger_reason: triggerReasonRef.current,
+          engagement_gallery_views: galleryViewsRef.current.size,
+          engagement_tour_seconds: tourSecondsRef.current,
+          engagement_offline_ready: offlineTriggeredRef.current,
+          outcome: choice.outcome,
+          platform: choice.platform,
+        });
+        if (choice.outcome === 'accepted') {
+          trackPwaEvent('a2hs_prompt_accepted', {
+            trigger_reason: triggerReasonRef.current,
+            engagement_gallery_views: galleryViewsRef.current.size,
+            engagement_tour_seconds: tourSecondsRef.current,
+            engagement_offline_ready: offlineTriggeredRef.current,
+            platform: choice.platform,
+          });
+        }
+      }
     } finally {
       setDeferredPrompt(null);
       setPromptVisible(false);
@@ -145,6 +294,12 @@ export const useA2HS = () => {
     setTriggerReason(null);
     setDismissed(true);
     persistDismissedPreference(true);
+    trackPwaEvent('a2hs_prompt_dismissed', {
+      trigger_reason: triggerReasonRef.current,
+      engagement_gallery_views: galleryViewsRef.current.size,
+      engagement_tour_seconds: tourSecondsRef.current,
+      engagement_offline_ready: offlineTriggeredRef.current,
+    });
   }, []);
 
   const canInstall = useMemo(() => Boolean(deferredPrompt) && !dismissed, [deferredPrompt, dismissed]);
