@@ -139,68 +139,8 @@ const gaId = site.analyticsId;
     <Footer />
     <!-- Sticky CTA persists on screen for quick booking / report download -->
     <StickyCTA />
-    <script is:inline>
-      (() => {
-        if (!('serviceWorker' in navigator)) {
-          return;
-        }
-
-        let hasRefreshed = false;
-        let wasControlled = navigator.serviceWorker.controller !== null;
-
-        const requestSkipWaiting = (registration) => {
-          const waitingWorker = registration?.waiting;
-          if (waitingWorker) {
-            waitingWorker.postMessage({ type: 'SKIP_WAITING' });
-          }
-        };
-
-        const listenForUpdates = (registration) => {
-          if (!registration) {
-            return;
-          }
-          registration.addEventListener('updatefound', () => {
-            const newWorker = registration.installing;
-            if (!newWorker) {
-              return;
-            }
-            newWorker.addEventListener('statechange', () => {
-              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                requestSkipWaiting(registration);
-              }
-            });
-          });
-        };
-
-        const register = async () => {
-          try {
-            const registration = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
-            registration.update?.();
-            listenForUpdates(registration);
-            requestSkipWaiting(registration);
-          } catch (error) {
-            console.warn('Service worker registration failed', error);
-          }
-        };
-
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-          if (!wasControlled) {
-            wasControlled = true;
-            return;
-          }
-          if (hasRefreshed) {
-            return;
-          }
-          hasRefreshed = true;
-          window.location.reload();
-        });
-
-        if (document.readyState === 'complete') {
-          register();
-        } else {
-          window.addEventListener('load', register, { once: true });
-        }
-      })();
+    <script type="module">
+      import '../pwa.ts';
     </script>
   </body>
 </html>
