@@ -9,13 +9,42 @@
     display: grid;
     gap: 1rem;
     padding: 1rem 1.25rem;
-    background: rgba(248, 250, 252, 0.92);
-    border: 1px solid rgba(148, 163, 184, 0.15);
+    background: rgba(248, 250, 252, 0.8);
+    border: 1px solid rgba(148, 163, 184, 0.12);
     border-radius: 1.25rem;
-    box-shadow: 0 16px 40px -12px rgba(15, 23, 42, 0.25), 0 4px 16px -4px rgba(15, 23, 42, 0.1);
-    backdrop-filter: blur(16px);
+    box-shadow: 0 12px 32px -8px rgba(15, 23, 42, 0.18);
+    backdrop-filter: blur(20px);
     max-width: min(60rem, calc(100% - 2rem));
     margin: 0 auto;
+    transition: all 0.3s ease;
+  }
+  
+  .sticky-cta.minimized {
+    transform: translateY(calc(100% - 2.5rem));
+    overflow: hidden;
+  }
+  
+  .sticky-cta__close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: rgba(148, 163, 184, 0.15);
+    border: none;
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #64748b;
+    transition: all 0.2s ease;
+    z-index: 1;
+  }
+  
+  .sticky-cta__close:hover {
+    background: rgba(148, 163, 184, 0.25);
+    color: #475569;
   }
 
   .sticky-cta__summary {
@@ -170,7 +199,13 @@
   role="complementary"
   aria-labelledby="sticky-cta-heading"
   aria-live="polite"
+  id="sticky-cta"
 >
+  <button class="sticky-cta__close" aria-label="Hide sticky CTA" title="Hide">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+      <path d="M7.5 2.5L2.5 7.5M2.5 2.5L7.5 7.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+    </svg>
+  </button>
   <div class="sticky-cta__summary">
     <p class="sticky-cta__headline" id="sticky-cta-heading">
       Secure your viewing at Apple Cottage today
@@ -329,6 +364,42 @@
     if (whatsappButton) {
       whatsappButton.addEventListener('click', function () {
         sendEvent('whatsapp_click');
+      });
+    }
+    
+    // Hide/minimize functionality
+    var stickyCta = document.getElementById('sticky-cta');
+    var closeButton = stickyCta && stickyCta.querySelector('.sticky-cta__close');
+    
+    if (closeButton && stickyCta) {
+      var isMinimized = false;
+      try {
+        isMinimized = localStorage.getItem('sticky-cta-minimized') === 'true';
+      } catch(e) {}
+      
+      function updateButton(minimized) {
+        if (minimized) {
+          closeButton.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 2v6M2 5h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>';
+          closeButton.setAttribute('aria-label', 'Show sticky CTA');
+          closeButton.setAttribute('title', 'Show');
+          stickyCta.classList.add('minimized');
+        } else {
+          closeButton.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M7.5 2.5L2.5 7.5M2.5 2.5L7.5 7.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>';
+          closeButton.setAttribute('aria-label', 'Hide sticky CTA');
+          closeButton.setAttribute('title', 'Hide');
+          stickyCta.classList.remove('minimized');
+        }
+      }
+      
+      updateButton(isMinimized);
+      
+      closeButton.addEventListener('click', function() {
+        isMinimized = !isMinimized;
+        updateButton(isMinimized);
+        try {
+          localStorage.setItem('sticky-cta-minimized', isMinimized.toString());
+        } catch(e) {}
+        sendEvent(isMinimized ? 'sticky_cta_minimized' : 'sticky_cta_expanded');
       });
     }
   })();
