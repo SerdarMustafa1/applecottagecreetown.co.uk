@@ -36,6 +36,8 @@ const gaId = site.analyticsId;
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="mask-icon" href="/icons/pwa-icon.svg" color="#1f6c84" />
     <link rel="manifest" href="/site.webmanifest" />
+    <link rel="prefetch" href="/offline.html" as="document" importance="low" />
+    <link rel="prefetch" href="/offline.css" as="style" importance="low" />
     {site.hero?.image && <link rel="preload" as="image" href={site.hero.image} />}
       {gaId && (
         <script is:inline>

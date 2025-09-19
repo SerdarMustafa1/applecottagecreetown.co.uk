@@ -3,6 +3,28 @@ import netlify from '@astrojs/netlify';
 import tailwind from '@astrojs/tailwind';
 import react from '@astrojs/react';
 import VitePWA from '@vite-pwa/astro';
+import { createHash } from 'node:crypto';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const currentDir = path.dirname(fileURLToPath(import.meta.url));
+const publicDir = path.resolve(currentDir, 'public');
+
+/** @type {Array<{ url: string, revision: string }>} */
+const offlineEntries = [];
+for (const filename of ['offline.html', 'offline.css']) {
+  const filePath = path.resolve(publicDir, filename);
+  try {
+    const source = fs.readFileSync(filePath);
+    const revision = createHash('sha256').update(source).digest('hex');
+    offlineEntries.push({ url: `/${filename}`, revision });
+  } catch {
+    // File missing in development should not break the build; skip gracefully.
+  }
+}
+
+const offlineFallback = offlineEntries.some((entry) => entry.url === '/offline.html') ? '/offline.html' : undefined;
 
 export default defineConfig({
   site: 'https://applecottagecreetown.co.uk',
@@ -17,8 +39,10 @@ export default defineConfig({
       injectRegister: null, // we manually register the SW from a client-only module.
       manifest: false, // reuse the existing public/site.webmanifest that is already curated.
       workbox: {
+        additionalManifestEntries: offlineEntries,
         clientsClaim: true,
         skipWaiting: true,
+        ...(offlineFallback ? { navigateFallback: offlineFallback } : {}),
         navigateFallbackDenylist: [/^\/api\//],
         // Exclude HTML from the precache manifest to avoid shipping stale markup.
         globPatterns: ['**/*.{js,css,ico,png,svg,webp,avif,jpg,jpeg,json,woff2,woff}'],

@@ -10,6 +10,7 @@ Use this quick runbook each time you deploy to make sure the new service worker 
 3. In the preview, load the page, then refresh. Updated copy should appear without a hard reload.
 4. In DevTools, switch the network tab to **Offline** and reload.
    - Critical UI (shell, cached assets) should load from cache, API requests can fail gracefully.
+   - Navigations should fall back to `/offline.html` with the action links usable while disconnected.
 5. Visit `/api/*` endpoints and ensure only GET calls are cached. Confirm POST/PUT/PATCH/DELETE bypass the service worker.
 6. Re-test after invalidating caches in DevTools (**Clear site data**) to simulate a first-time visitor.
 7. During development, disable the worker with `navigator.serviceWorker.getRegistrations().then(list => list.forEach(r => r.unregister()))` if it interferes, then reload.
