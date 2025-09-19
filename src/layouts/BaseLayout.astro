@@ -142,7 +142,24 @@ const gaId = site.analyticsId;
     <StickyCTA />
     <InstallPromptIsland client:load />
     <script type="module">
-      import '../pwa.ts';
+      import { registerServiceWorkerWithPrompt } from '../pwa.ts';
+
+      if (typeof window !== 'undefined') {
+        try {
+          registerServiceWorkerWithPrompt({
+            onRegistered(registration) {
+              if (import.meta.env.DEV) {
+                window?.console?.info?.('Service worker registered', registration);
+              }
+            },
+            onRegisterError(error) {
+              window?.console?.error?.('Service worker registration failed', error);
+            }
+          });
+        } catch (error) {
+          window?.console?.error?.('Unable to initialise the service worker', error);
+        }
+      }
     </script>
   </body>
 </html>
