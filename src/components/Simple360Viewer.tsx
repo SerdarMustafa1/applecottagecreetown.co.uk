@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 interface Props {
   pano: {
@@ -14,6 +14,21 @@ export default function Simple360Viewer({ pano, height = 320 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const watchIntervalRef = useRef<number | null>(null);
+
+  const dispatchTourWatch = useCallback((seconds: number) => {
+    if (typeof window === 'undefined') return;
+    if (!Number.isFinite(seconds) || seconds <= 0) return;
+    window.dispatchEvent(new CustomEvent('applecottage:tour-watch', {
+      detail: {
+        secondsWatched: seconds,
+        source: 'a-frame',
+        panoSrc: pano.src,
+        label: pano.label,
+      },
+    }));
+  }, [pano.label, pano.src]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -49,6 +64,62 @@ export default function Simple360Viewer({ pano, height = 320 }: Props) {
 
     loadAFrame().catch(() => setError(true));
   }, [pano.src]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      setIsVisible(Boolean(entry?.isIntersecting));
+    }, { threshold: 0.25 });
+
+    observer.observe(container);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return undefined;
+    }
+
+    if (!loaded || !isVisible) {
+      if (watchIntervalRef.current !== null) {
+        window.clearInterval(watchIntervalRef.current);
+        watchIntervalRef.current = null;
+      }
+      return;
+    }
+
+    if (watchIntervalRef.current !== null) {
+      return;
+    }
+
+    let lastMark = Date.now();
+    watchIntervalRef.current = window.setInterval(() => {
+      const now = Date.now();
+      const deltaSeconds = Math.max(0, Math.round((now - lastMark) / 1000));
+      lastMark = now;
+      if (deltaSeconds > 0) {
+        dispatchTourWatch(deltaSeconds);
+      }
+    }, 5000);
+
+    return () => {
+      if (watchIntervalRef.current !== null) {
+        window.clearInterval(watchIntervalRef.current);
+        watchIntervalRef.current = null;
+      }
+    };
+  }, [dispatchTourWatch, isVisible, loaded]);
 
   if (error) {
     return (
