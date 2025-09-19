@@ -73,17 +73,25 @@ export default function Simple360Viewer({ pano, height = 320 }: Props) {
         style={{ width: '100%', height }}
       >
         {!loaded && (
-          <picture>
-            {pano.srcWebp && (
-              <source srcSet={pano.srcWebp} type="image/webp" />
-            )}
-            <img
-              src={pano.preview || pano.src}
-              alt={pano.label || '360 preview'}
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-          </picture>
+          <div className="relative w-full h-full">
+            <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse" />
+            <picture>
+              {pano.srcWebp && (
+                <source srcSet={pano.srcWebp} type="image/webp" />
+              )}
+              <img
+                src={pano.preview || pano.src}
+                alt={pano.label || '360 preview'}
+                className="absolute inset-0 w-full h-full object-cover"
+                loading="lazy"
+                onLoad={(e) => {
+                  const img = e.target as HTMLImageElement;
+                  const shimmer = img.parentElement?.parentElement?.querySelector('.animate-pulse');
+                  if (shimmer) shimmer.remove();
+                }}
+              />
+            </picture>
+          </div>
         )}
       </div>
       <p className="text-xs text-gray-500 mt-1">Drag to look around</p>

@@ -10,7 +10,16 @@ const items = site.locationExtras || [];
         {items.map((it) => (
           <article class="rounded border bg-white overflow-hidden shadow-sm">
             {it.image && (
-              <img src={it.image} alt={it.title} class="w-full h-40 object-cover bg-gray-100" loading="lazy" />
+              <div class="relative w-full h-40">
+                <div class="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse"></div>
+                <img 
+                  src={it.image} 
+                  alt={it.title} 
+                  class="absolute inset-0 w-full h-full object-cover" 
+                  loading="lazy" 
+                  onload="this.previousElementSibling?.remove()"
+                />
+              </div>
             )}
             <div class="p-4">
               <h4 class="font-semibold">{it.title}</h4>

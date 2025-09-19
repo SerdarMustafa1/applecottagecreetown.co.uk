@@ -28,7 +28,14 @@ if (homeReport?.href) {
       <figure class="border rounded overflow-hidden bg-white mx-auto max-w-2xl w-full">
         <a href={plotImg} target="_blank" rel="noopener">
           <div class="relative" style="padding-top: 75%">
-            <img src={plotImg} alt="Plot size plan" loading="lazy" class="absolute inset-0 w-full h-full object-contain bg-white" />
+            <div class="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse"></div>
+            <img 
+              src={plotImg} 
+              alt="Plot size plan" 
+              loading="lazy" 
+              class="absolute inset-0 w-full h-full object-contain bg-white" 
+              onload="this.previousElementSibling?.remove()"
+            />
           </div>
         </a>
         <figcaption class="p-2 text-sm text-gray-600 text-center">Plot plan and approximate size</figcaption>

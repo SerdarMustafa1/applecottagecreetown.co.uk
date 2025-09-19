@@ -14,12 +14,16 @@ import site from '../../site.config';
       {site.virtual360Tours?.map((tour, index) => (
         <div key={index} class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
           <div class="relative group cursor-pointer" onclick={`openVirtualTour(${index})`}>
-            <img 
-              src={tour.poster} 
-              alt={tour.label}
-              class="w-full h-48 object-cover"
-              loading="lazy"
-            />
+            <div class="relative w-full h-48">
+              <div class="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse"></div>
+              <img 
+                src={tour.poster} 
+                alt={tour.label}
+                class="absolute inset-0 w-full h-full object-cover"
+                loading="lazy"
+                onload="this.previousElementSibling?.remove()"
+              />
+            </div>
             <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
               <div class="text-white text-center">
                 <svg class="w-16 h-16 mx-auto mb-2" fill="currentColor" viewBox="0 0 24 24">

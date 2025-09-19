@@ -67,28 +67,41 @@ export default function AlternatingHeroIsland({
             index === currentIndex ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          {image.srcWebp ? (
-            <picture>
-              <source srcSet={image.srcWebp} type="image/webp" />
+          <div className="relative w-full h-[45vh] md:h-[60vh]">
+            <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse" />
+            {image.srcWebp ? (
+              <picture>
+                <source srcSet={image.srcWebp} type="image/webp" />
+                <img 
+                  src={image.src} 
+                  alt={image.alt} 
+                  className="absolute inset-0 w-full h-full object-cover"
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  decoding="async"
+                  {...(index === 0 ? { fetchpriority: 'high' } : { fetchpriority: 'low' })}
+                  onLoad={(e) => {
+                    const img = e.target as HTMLImageElement;
+                    const shimmer = img.parentElement?.querySelector('.animate-pulse');
+                    if (shimmer) shimmer.remove();
+                  }}
+                />
+              </picture>
+            ) : (
               <img 
                 src={image.src} 
                 alt={image.alt} 
-                className="w-full h-[45vh] md:h-[60vh] object-cover"
+                className="absolute inset-0 w-full h-full object-cover"
                 loading={index === 0 ? 'eager' : 'lazy'}
                 decoding="async"
                 {...(index === 0 ? { fetchpriority: 'high' } : { fetchpriority: 'low' })}
+                onLoad={(e) => {
+                  const img = e.target as HTMLImageElement;
+                  const shimmer = img.parentElement?.querySelector('.animate-pulse');
+                  if (shimmer) shimmer.remove();
+                }}
               />
-            </picture>
-          ) : (
-            <img 
-              src={image.src} 
-              alt={image.alt} 
-              className="w-full h-[45vh] md:h-[60vh] object-cover"
-              loading={index === 0 ? 'eager' : 'lazy'}
-              decoding="async"
-              {...(index === 0 ? { fetchpriority: 'high' } : { fetchpriority: 'low' })}
-            />
-          )}
+            )}
+          </div>
         </div>
       ))}
       <div className="absolute inset-0 bg-black/30" aria-hidden="true"></div>

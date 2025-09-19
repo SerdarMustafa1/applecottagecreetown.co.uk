@@ -72,13 +72,19 @@ function ZoomablePlan({ plan }: { plan: Plan }) {
       <h3 className="mb-2 font-semibold">{plan.label}</h3>
       <div
         ref={containerRef}
-        className="overflow-auto border rounded"
+        className="overflow-auto border rounded relative"
       >
+        <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse" />
         <img
           src={plan.src}
           alt={`${plan.label} floor plan`}
-          className="block mx-auto"
+          className="block mx-auto relative z-10"
           style={{ transform: `scale(${scale})`, transformOrigin: 'center' }}
+          onLoad={(e) => {
+            const img = e.target as HTMLImageElement;
+            const shimmer = img.parentElement?.querySelector('.animate-pulse');
+            if (shimmer) shimmer.remove();
+          }}
         />
       </div>
     </div>
