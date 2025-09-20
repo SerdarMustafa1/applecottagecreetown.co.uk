@@ -7,6 +7,9 @@ export default function InstallPromptIsland(): JSX.Element | null {
     canInstall,
     isPromptVisible,
     triggerReason,
+    promptVariant,
+    manualPlatform,
+    manualInstructions,
     showPrompt,
     dismissPrompt,
     registerGalleryView,
@@ -15,6 +18,7 @@ export default function InstallPromptIsland(): JSX.Element | null {
   } = useA2HS();
 
   const installButtonRef = useRef<HTMLButtonElement>(null);
+  const dismissButtonRef = useRef<HTMLButtonElement>(null);
 
   const message = useMemo(() => {
     switch (triggerReason) {
@@ -29,13 +33,29 @@ export default function InstallPromptIsland(): JSX.Element | null {
     }
   }, [triggerReason]);
 
+  const isManualPrompt = promptVariant === 'manual';
+  const title = isManualPrompt ? 'Add Apple Cottage to your home screen' : 'Install Apple Cottage';
+  const manualDescription = useMemo(() => {
+    if (!isManualPrompt) {
+      return null;
+    }
+    if (manualPlatform === 'ios') {
+      return 'Follow these quick steps in Safari to keep Apple Cottage just a tap away.';
+    }
+    return 'Follow these quick steps to save Apple Cottage to your device.';
+  }, [isManualPrompt, manualPlatform]);
+
   useEffect(() => {
     if (!isPromptVisible) return;
     const id = window.setTimeout(() => {
-      installButtonRef.current?.focus();
+      if (isManualPrompt) {
+        dismissButtonRef.current?.focus();
+      } else {
+        installButtonRef.current?.focus();
+      }
     }, 0);
     return () => window.clearTimeout(id);
-  }, [isPromptVisible]);
+  }, [isManualPrompt, isPromptVisible]);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -73,7 +93,11 @@ export default function InstallPromptIsland(): JSX.Element | null {
     };
   }, [registerGalleryView, registerTourWatch, registerOfflineDownload]);
 
-  if (!isSupported || !canInstall || !isPromptVisible) {
+  if (!isSupported || !isPromptVisible) {
+    return null;
+  }
+
+  if (!isManualPrompt && !canInstall) {
     return null;
   }
 
@@ -91,31 +115,47 @@ export default function InstallPromptIsland(): JSX.Element | null {
           </div>
           <div className="flex-1">
             <h2 id="a2hs-title" className="text-lg font-semibold mb-1">
-              Install Apple Cottage
+              {title}
             </h2>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              {message}
-            </p>
+            {isManualPrompt ? (
+              <div className="space-y-3 text-sm text-slate-600 leading-relaxed">
+                <p>{manualDescription}</p>
+                {manualInstructions.length > 0 && (
+                  <ol className="list-decimal list-inside space-y-1" aria-label="Steps to add Apple Cottage to your home screen">
+                    {manualInstructions.map((instruction, index) => (
+                      <li key={`${index}-${instruction}`}>{instruction}</li>
+                    ))}
+                  </ol>
+                )}
+              </div>
+            ) : (
+              <p className="text-sm text-slate-600 leading-relaxed">
+                {message}
+              </p>
+            )}
           </div>
         </div>
         <div className="mt-4 flex flex-wrap gap-2 justify-end">
           <button
             type="button"
+            ref={isManualPrompt ? dismissButtonRef : undefined}
             className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
             onClick={dismissPrompt}
           >
-            Maybe later
+            {isManualPrompt ? 'Got it' : 'Maybe later'}
           </button>
-          <button
-            ref={installButtonRef}
-            type="button"
-            className="rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
-            onClick={() => {
-              void showPrompt();
-            }}
-          >
-            Install now
-          </button>
+          {!isManualPrompt && (
+            <button
+              ref={installButtonRef}
+              type="button"
+              className="rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+              onClick={() => {
+                void showPrompt();
+              }}
+            >
+              Install now
+            </button>
+          )}
         </div>
       </div>
     </div>

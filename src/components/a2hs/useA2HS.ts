@@ -4,6 +4,8 @@ const GALLERY_VIEW_THRESHOLD = 5;
 const TOUR_SECONDS_THRESHOLD = 60;
 
 type TriggerReason = 'gallery' | 'tour' | 'offline';
+type PromptVariant = 'native' | 'manual';
+type ManualPlatform = 'ios';
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms?: string[];
@@ -50,6 +52,8 @@ const trackPwaEvent = (eventName: string, payload: AnalyticsPayload = {}): void 
     trigger_reason: payload.trigger_reason,
     outcome: payload.outcome,
     platform: payload.platform,
+    prompt_variant: payload.prompt_variant,
+    manual_platform: payload.manual_platform,
   });
 
   if (typeof analyticsWindow.gtag === 'function') {
@@ -106,8 +110,33 @@ export const useA2HS = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isPromptVisible, setPromptVisible] = useState(false);
   const [triggerReason, setTriggerReason] = useState<TriggerReason | null>(null);
+  const [promptVariant, setPromptVariant] = useState<PromptVariant | null>(null);
   const [dismissed, setDismissed] = useState<boolean>(() => readDismissedPreference());
-  const [isSupported, setIsSupported] = useState<boolean>(() => isBrowser);
+  const [supportsInstallPrompt, setSupportsInstallPrompt] = useState<boolean>(() => {
+    if (!isBrowser) {
+      return false;
+    }
+    return 'onbeforeinstallprompt' in window || 'BeforeInstallPromptEvent' in window;
+  });
+  const [isStandalone, setIsStandalone] = useState<boolean>(() => {
+    if (!isBrowser) {
+      return false;
+    }
+    if (window.matchMedia?.('(display-mode: standalone)').matches) {
+      return true;
+    }
+    return Boolean((window.navigator as Navigator & { standalone?: boolean }).standalone);
+  });
+  const [isSupported, setIsSupported] = useState<boolean>(() => {
+    if (!isBrowser) {
+      return false;
+    }
+    return (
+      'onbeforeinstallprompt' in window ||
+      'BeforeInstallPromptEvent' in window ||
+      /iphone|ipad|ipod/i.test(window.navigator.userAgent || '')
+    );
+  });
   const galleryViewsRef = useRef<Set<string>>(new Set());
   const tourSecondsRef = useRef<number>(0);
   const offlineTriggeredRef = useRef<boolean>(false);
@@ -117,11 +146,46 @@ export const useA2HS = () => {
   const promptVisibleRef = useRef<boolean>(false);
   const lastReportedReasonRef = useRef<TriggerReason | null>(null);
   const triggerReasonRef = useRef<TriggerReason | null>(null);
+  const promptVariantRef = useRef<PromptVariant | null>(null);
 
-  const getTriggerReason = useCallback((): TriggerReason | null => {
-    if (!deferredPrompt || dismissed) {
+  const isIosDevice = useMemo(() => {
+    if (!isBrowser) {
+      return false;
+    }
+    const userAgent = window.navigator.userAgent || '';
+    return /iphone|ipad|ipod/i.test(userAgent);
+  }, []);
+
+  const manualPlatform = useMemo<ManualPlatform | null>(() => {
+    if (!isBrowser) {
       return null;
     }
+    if (dismissed) {
+      return null;
+    }
+    if (supportsInstallPrompt) {
+      return null;
+    }
+    if (!isIosDevice) {
+      return null;
+    }
+    if (isStandalone) {
+      return null;
+    }
+    return 'ios';
+  }, [dismissed, isIosDevice, isStandalone, supportsInstallPrompt]);
+
+  const getTriggerReason = useCallback((): TriggerReason | null => {
+    if (dismissed) {
+      return null;
+    }
+
+    const hasDeferredPrompt = Boolean(deferredPrompt);
+    const canShowManual = manualPlatform !== null;
+    if (!hasDeferredPrompt && !canShowManual) {
+      return null;
+    }
+
     if (offlineTriggeredRef.current) {
       return 'offline';
     }
@@ -132,25 +196,38 @@ export const useA2HS = () => {
       return 'tour';
     }
     return null;
-  }, [deferredPrompt, dismissed]);
+  }, [deferredPrompt, dismissed, manualPlatform]);
 
   const evaluatePromptVisibility = useCallback(() => {
     const reason = getTriggerReason();
     if (reason) {
       setTriggerReason(reason);
+      const hasDeferredPrompt = Boolean(deferredPrompt);
+      const variant: PromptVariant | null = hasDeferredPrompt ? 'native' : manualPlatform ? 'manual' : null;
+      if (!variant) {
+        return;
+      }
+      setPromptVariant(variant);
       setPromptVisible(true);
       const engagementSnapshot = {
         engagement_gallery_views: galleryViewsRef.current.size,
         engagement_tour_seconds: tourSecondsRef.current,
         engagement_offline_ready: offlineTriggeredRef.current,
         trigger_reason: reason,
+        prompt_variant: variant,
+        manual_platform: manualPlatform,
       };
-      if (!promptVisibleRef.current || lastReportedReasonRef.current !== reason) {
-        trackPwaEvent('a2hs_prompt_ready', engagementSnapshot);
+      if (
+        !promptVisibleRef.current ||
+        lastReportedReasonRef.current !== reason ||
+        promptVariantRef.current !== variant
+      ) {
+        trackPwaEvent(variant === 'native' ? 'a2hs_prompt_ready' : 'a2hs_manual_ready', engagementSnapshot);
         lastReportedReasonRef.current = reason;
+        promptVariantRef.current = variant;
       }
     }
-  }, [getTriggerReason]);
+  }, [deferredPrompt, getTriggerReason, manualPlatform]);
 
   useEffect(() => {
     if (!isBrowser) {
@@ -161,6 +238,8 @@ export const useA2HS = () => {
     const onBeforeInstallPrompt = (event: Event) => {
       event.preventDefault();
       setDeferredPrompt(event as BeforeInstallPromptEvent);
+      setSupportsInstallPrompt(true);
+      setIsSupported(true);
       trackPwaEvent('a2hs_event_captured');
     };
 
@@ -168,8 +247,10 @@ export const useA2HS = () => {
       setDeferredPrompt(null);
       setPromptVisible(false);
       setTriggerReason(null);
+      setPromptVariant(null);
       setDismissed(true);
       persistDismissedPreference(true);
+      setIsStandalone(true);
       trackPwaEvent('a2hs_installed');
     };
 
@@ -186,20 +267,54 @@ export const useA2HS = () => {
     if (deferredPrompt) {
       evaluatePromptVisibility();
     }
-  }, [deferredPrompt, evaluatePromptVisibility]);
+  }, [deferredPrompt, evaluatePromptVisibility, manualPlatform]);
+
+  useEffect(() => {
+    if (!isBrowser) {
+      return;
+    }
+
+    const mediaQuery = window.matchMedia?.('(display-mode: standalone)');
+    const updateStandalone = () => {
+      const matchesMedia = Boolean(mediaQuery?.matches);
+      const navigatorStandalone = Boolean((window.navigator as Navigator & { standalone?: boolean }).standalone);
+      setIsStandalone(matchesMedia || navigatorStandalone);
+    };
+
+    updateStandalone();
+
+    mediaQuery?.addEventListener?.('change', updateStandalone);
+    const onVisibility = () => updateStandalone();
+    window.addEventListener('visibilitychange', onVisibility);
+
+    return () => {
+      mediaQuery?.removeEventListener?.('change', updateStandalone);
+      window.removeEventListener('visibilitychange', onVisibility);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isBrowser) {
+      return;
+    }
+    setIsSupported(supportsInstallPrompt || manualPlatform !== null);
+  }, [manualPlatform, supportsInstallPrompt]);
 
   useEffect(() => {
     promptVisibleRef.current = isPromptVisible;
     triggerReasonRef.current = triggerReason;
-    if (isPromptVisible && triggerReason) {
-      trackPwaEvent('a2hs_prompt_shown', {
+    promptVariantRef.current = promptVariant;
+    if (isPromptVisible && triggerReason && promptVariant) {
+      trackPwaEvent(promptVariant === 'native' ? 'a2hs_prompt_shown' : 'a2hs_manual_shown', {
         trigger_reason: triggerReason,
         engagement_gallery_views: galleryViewsRef.current.size,
         engagement_tour_seconds: tourSecondsRef.current,
         engagement_offline_ready: offlineTriggeredRef.current,
+        prompt_variant: promptVariant,
+        manual_platform: manualPlatform,
       });
     }
-  }, [isPromptVisible, triggerReason]);
+  }, [isPromptVisible, manualPlatform, promptVariant, triggerReason]);
 
   const registerGalleryView = useCallback((id: string) => {
     if (!id) return;
@@ -212,9 +327,11 @@ export const useA2HS = () => {
         engagement_gallery_views: galleryViewsRef.current.size,
         engagement_tour_seconds: tourSecondsRef.current,
         engagement_offline_ready: offlineTriggeredRef.current,
+        prompt_variant: promptVariantRef.current,
+        manual_platform: manualPlatform,
       });
     }
-  }, [evaluatePromptVisibility]);
+  }, [evaluatePromptVisibility, manualPlatform]);
 
   const registerTourWatch = useCallback((seconds: number) => {
     if (!Number.isFinite(seconds) || seconds <= 0) return;
@@ -227,9 +344,11 @@ export const useA2HS = () => {
         engagement_gallery_views: galleryViewsRef.current.size,
         engagement_tour_seconds: tourSecondsRef.current,
         engagement_offline_ready: offlineTriggeredRef.current,
+        prompt_variant: promptVariantRef.current,
+        manual_platform: manualPlatform,
       });
     }
-  }, [evaluatePromptVisibility]);
+  }, [evaluatePromptVisibility, manualPlatform]);
 
   const registerOfflineDownload = useCallback(() => {
     offlineTriggeredRef.current = true;
@@ -241,11 +360,29 @@ export const useA2HS = () => {
         engagement_gallery_views: galleryViewsRef.current.size,
         engagement_tour_seconds: tourSecondsRef.current,
         engagement_offline_ready: offlineTriggeredRef.current,
+        prompt_variant: promptVariantRef.current,
+        manual_platform: manualPlatform,
       });
     }
-  }, [evaluatePromptVisibility]);
+  }, [evaluatePromptVisibility, manualPlatform]);
 
   const showPrompt = useCallback(async () => {
+    if (promptVariantRef.current === 'manual') {
+      trackPwaEvent('a2hs_manual_acknowledged', {
+        trigger_reason: triggerReasonRef.current,
+        engagement_gallery_views: galleryViewsRef.current.size,
+        engagement_tour_seconds: tourSecondsRef.current,
+        engagement_offline_ready: offlineTriggeredRef.current,
+        prompt_variant: promptVariantRef.current,
+        manual_platform: manualPlatform,
+      });
+      setPromptVisible(false);
+      setTriggerReason(null);
+      setPromptVariant(null);
+      setDismissed(true);
+      persistDismissedPreference(true);
+      return;
+    }
     const promptEvent = deferredPrompt;
     if (!promptEvent) {
       return;
@@ -284,31 +421,48 @@ export const useA2HS = () => {
       setDeferredPrompt(null);
       setPromptVisible(false);
       setTriggerReason(null);
+      setPromptVariant(null);
       setDismissed(true);
       persistDismissedPreference(true);
     }
-  }, [deferredPrompt]);
+  }, [deferredPrompt, manualPlatform]);
 
   const dismissPrompt = useCallback(() => {
     setPromptVisible(false);
     setTriggerReason(null);
+    setPromptVariant(null);
     setDismissed(true);
     persistDismissedPreference(true);
-    trackPwaEvent('a2hs_prompt_dismissed', {
+    trackPwaEvent(promptVariantRef.current === 'manual' ? 'a2hs_manual_dismissed' : 'a2hs_prompt_dismissed', {
       trigger_reason: triggerReasonRef.current,
       engagement_gallery_views: galleryViewsRef.current.size,
       engagement_tour_seconds: tourSecondsRef.current,
       engagement_offline_ready: offlineTriggeredRef.current,
+      prompt_variant: promptVariantRef.current,
+      manual_platform: manualPlatform,
     });
-  }, []);
+  }, [manualPlatform]);
 
   const canInstall = useMemo(() => Boolean(deferredPrompt) && !dismissed, [deferredPrompt, dismissed]);
+  const manualInstructions = useMemo(() => {
+    if (manualPlatform === 'ios') {
+      return [
+        'Tap the share button in Safari\'s toolbar.',
+        'Scroll down and choose “Add to Home Screen”.',
+        'Pick a name if prompted, then tap “Add”.',
+      ];
+    }
+    return [];
+  }, [manualPlatform]);
 
   return {
     isSupported,
     canInstall,
-    isPromptVisible: isPromptVisible && canInstall,
+    isPromptVisible: isPromptVisible && (promptVariant !== null),
     triggerReason,
+    promptVariant,
+    manualPlatform,
+    manualInstructions,
     showPrompt,
     dismissPrompt,
     registerGalleryView,
