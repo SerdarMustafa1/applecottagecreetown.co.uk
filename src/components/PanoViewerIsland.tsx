@@ -1,5 +1,5 @@
 /* eslint-env browser */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 type Pano = {
   label?: string;
@@ -12,9 +12,32 @@ interface Props {
   height?: number;
 }
 
+const REPORT_INTERVAL_MS = 5000;
+
 export default function PanoViewerIsland({ pano, height = 320 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [inited, setInited] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const initializedRef = useRef(false);
+  const watchIntervalRef = useRef<number | null>(null);
+
+  const dispatchTourWatch = useCallback((seconds: number) => {
+    if (typeof window === 'undefined') return;
+    if (!Number.isFinite(seconds) || seconds <= 0) return;
+    window.dispatchEvent(new CustomEvent('applecottage:tour-watch', {
+      detail: {
+        secondsWatched: seconds,
+        source: 'pannellum',
+        panoSrc: pano.src,
+        label: pano.label,
+      },
+    }));
+  }, [pano.label, pano.src]);
+
+  useEffect(() => {
+    initializedRef.current = false;
+    setInited(false);
+  }, [pano.src]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -24,7 +47,7 @@ export default function PanoViewerIsland({ pano, height = 320 }: Props) {
     let cleanup: (() => void) | undefined;
 
     const init = async () => {
-      if (inited) return;
+      if (initializedRef.current) return;
       try {
         await Promise.all([
           import('pannellum/build/pannellum.js'),
@@ -57,30 +80,70 @@ export default function PanoViewerIsland({ pano, height = 320 }: Props) {
           try { viewer.destroy && viewer.destroy(); } catch { /* noop */ }
         };
         setInited(true);
+        initializedRef.current = true;
       } catch (err) {
-         
+
         console.error('Failed to init pannellum', err);
       }
     };
 
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      const entry = entries[0];
+      if (!entry) return;
+      setIsVisible(entry.isIntersecting);
+      if (entry.isIntersecting) {
+        void init();
+      }
+    };
+
     if ('IntersectionObserver' in window) {
-      observer = new IntersectionObserver((entries) => {
-        const entry = entries[0];
-        if (entry && entry.isIntersecting) {
-          observer?.disconnect();
-          init();
-        }
-      }, { rootMargin: '200px' });
+      observer = new IntersectionObserver(handleIntersection, { rootMargin: '200px', threshold: 0.2 });
       observer.observe(el);
     } else {
-      init();
+      setIsVisible(true);
+      void init();
     }
 
     return () => {
       observer?.disconnect();
       cleanup?.();
     };
-  }, [pano.src, inited]);
+  }, [pano.src]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return undefined;
+    }
+
+    if (!isVisible || !inited) {
+      if (watchIntervalRef.current !== null) {
+        window.clearInterval(watchIntervalRef.current);
+        watchIntervalRef.current = null;
+      }
+      return;
+    }
+
+    if (watchIntervalRef.current !== null) {
+      return;
+    }
+
+    let lastMark = Date.now();
+    watchIntervalRef.current = window.setInterval(() => {
+      const now = Date.now();
+      const deltaSeconds = Math.max(0, Math.round((now - lastMark) / 1000));
+      lastMark = now;
+      if (deltaSeconds > 0) {
+        dispatchTourWatch(deltaSeconds);
+      }
+    }, REPORT_INTERVAL_MS);
+
+    return () => {
+      if (watchIntervalRef.current !== null) {
+        window.clearInterval(watchIntervalRef.current);
+        watchIntervalRef.current = null;
+      }
+    };
+  }, [dispatchTourWatch, inited, isVisible]);
 
   return (
     <div className="w-full">
