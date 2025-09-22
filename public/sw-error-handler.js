@@ -5,6 +5,122 @@ self.addEventListener('message', (event) => {
   }
 });
 
+// Marketing push campaigns kept in sync with src/lib/pwa/pushCampaigns.ts
+const MARKETING_CAMPAIGNS = [
+  {
+    id: 'booking-reminders',
+    title: 'Viewing confirmed – here\'s what to expect',
+    body: 'Get instant alerts when your preferred viewing slot is confirmed and receive timely reminders so you never miss an appointment.',
+    url: '/#book-viewing',
+    tag: 'booking-updates'
+  },
+  {
+    id: 'insider-guide',
+    title: 'Unlock the Apple Cottage insider guide',
+    body: 'Tap for curated tips on the rooms to explore, hidden garden corners and scenic walks while you plan your visit.',
+    url: '/#highlights',
+    tag: 'insider-guide'
+  },
+  {
+    id: 'arrival-checklist',
+    title: 'Arrival checklist ready for you',
+    body: 'We\'ll nudge you with directions, parking info and Wi-Fi details the day before you travel so arrival is effortless.',
+    url: '/#plan-your-stay',
+    tag: 'arrival-checklist'
+  }
+];
+
+const FALLBACK_NOTIFICATION = {
+  title: 'Apple Cottage updates',
+  body: 'Install the app to receive booking alerts, insider guides and pre-arrival reminders as soon as they drop.',
+  url: '/?source=push-fallback',
+  tag: 'applecottage-default'
+};
+
+const getCampaignById = (id) => MARKETING_CAMPAIGNS.find((campaign) => campaign.id === id);
+
+self.addEventListener('push', (event) => {
+  if (!event) {
+    return;
+  }
+
+  let payload;
+  try {
+    payload = event.data?.json?.();
+  } catch {
+    try {
+      const text = event.data?.text?.();
+      payload = text ? { body: text } : undefined;
+    } catch {
+      payload = undefined;
+    }
+  }
+
+  const campaign = payload?.campaignId ? getCampaignById(payload.campaignId) : undefined;
+  const notificationDetails = campaign ?? {
+    title: payload?.title ?? FALLBACK_NOTIFICATION.title,
+    body: payload?.body ?? FALLBACK_NOTIFICATION.body,
+    url: payload?.url ?? FALLBACK_NOTIFICATION.url,
+    tag: payload?.tag ?? FALLBACK_NOTIFICATION.tag
+  };
+
+  const data = {
+    url: notificationDetails.url,
+    campaignId: campaign?.id ?? payload?.campaignId ?? null,
+    source: payload?.source ?? 'push'
+  };
+
+  const options = {
+    body: notificationDetails.body,
+    tag: notificationDetails.tag,
+    data,
+    icon: '/icons/icon-192.png',
+    badge: '/icons/icon-192.png',
+    vibrate: [200, 100, 200],
+    actions: [
+      {
+        action: 'open',
+        title: 'Open Apple Cottage'
+      }
+    ]
+  };
+
+  event.waitUntil(
+    (async () => {
+      if (!self.registration?.showNotification) {
+        return undefined;
+      }
+      return self.registration.showNotification(notificationDetails.title, options);
+    })()
+  );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const targetUrl = event.notification?.data?.url ?? '/';
+
+  event.waitUntil(
+    (async () => {
+      const allClients = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+      const existingClient = allClients.find((client) => client.url?.includes(self.location.origin));
+
+      if (existingClient?.focus) {
+        await existingClient.focus();
+        if (targetUrl && existingClient.url !== targetUrl && existingClient.navigate) {
+          await existingClient.navigate(targetUrl);
+        }
+        return undefined;
+      }
+
+      if (self.clients.openWindow) {
+        return self.clients.openWindow(targetUrl);
+      }
+
+      return undefined;
+    })()
+  );
+});
+
 // Handle quota exceeded errors
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;

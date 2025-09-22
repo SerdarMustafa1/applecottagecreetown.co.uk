@@ -29,3 +29,22 @@
   <div class="result" role="status" aria-live="polite" style="margin-top:0.5rem"></div>
   <p style="font-size:0.85rem;color:#6b7280;margin-top:0.5rem">Owner-listed. We reply same-day. <a href="/privacy">Privacy & data</a></p>
 </form>
+
+<script is:inline>
+  {`(function(){
+    var form = document.getElementById('book-viewing');
+    if(!form) return;
+    var hasAnnounced = false;
+    function announce(source){
+      if(hasAnnounced) return;
+      hasAnnounced = true;
+      try{
+        window.dispatchEvent(new CustomEvent('applecottage:booking-interest',{ detail:{ source:source }}));
+      }catch(error){
+        console.error('Unable to announce booking intent', error);
+      }
+    }
+    form.addEventListener('focusin', function(){ announce('booking_form'); });
+    form.addEventListener('submit', function(){ announce('booking_form_submission'); });
+  })();`}
+</script>

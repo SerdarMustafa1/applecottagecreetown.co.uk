@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
+import { installValuePropositions } from '../../lib/pwa/pushCampaigns';
 import { useA2HS } from './useA2HS';
 
 export default function InstallPromptIsland(): JSX.Element | null {
@@ -12,6 +13,7 @@ export default function InstallPromptIsland(): JSX.Element | null {
     registerGalleryView,
     registerTourWatch,
     registerOfflineDownload,
+    registerBookingIntent,
   } = useA2HS();
 
   const installButtonRef = useRef<HTMLButtonElement>(null);
@@ -24,6 +26,8 @@ export default function InstallPromptIsland(): JSX.Element | null {
         return 'Enjoying the virtual tour? Install the app for quick, offline-friendly access to every room.';
       case 'offline':
         return 'Offline access unlocked — install the app so the full experience is just a tap away.';
+      case 'booking':
+        return 'Lock in booking updates, reminders and insider property tips directly on your home screen.';
       default:
         return 'Install Apple Cottage on your device for faster access and offline viewing.';
     }
@@ -62,30 +66,40 @@ export default function InstallPromptIsland(): JSX.Element | null {
       registerOfflineDownload();
     };
 
+    const handleBookingIntent = () => {
+      registerBookingIntent();
+    };
+
     window.addEventListener('applecottage:gallery-viewed', handleGalleryViewed as EventListener);
     window.addEventListener('applecottage:tour-watch', handleTourWatch as EventListener);
     window.addEventListener('applecottage:offline-download', handleOfflineDownload);
+    window.addEventListener('applecottage:booking-interest', handleBookingIntent);
 
     return () => {
       window.removeEventListener('applecottage:gallery-viewed', handleGalleryViewed as EventListener);
       window.removeEventListener('applecottage:tour-watch', handleTourWatch as EventListener);
       window.removeEventListener('applecottage:offline-download', handleOfflineDownload);
+      window.removeEventListener('applecottage:booking-interest', handleBookingIntent);
     };
-  }, [registerGalleryView, registerTourWatch, registerOfflineDownload]);
+  }, [registerGalleryView, registerTourWatch, registerOfflineDownload, registerBookingIntent]);
 
   if (!isSupported || !canInstall || !isPromptVisible) {
     return null;
   }
 
+  const listId = 'a2hs-benefits';
+  const descriptionId = 'a2hs-description';
+
   return (
-    <div className="fixed bottom-4 right-4 z-[2147483646] flex flex-col items-end gap-3" aria-live="polite">
-      <div
+    <section className="fixed bottom-4 right-4 z-[2147483646] flex flex-col items-end gap-3" aria-live="polite">
+      <article
         role="dialog"
         aria-modal="false"
         aria-labelledby="a2hs-title"
+        aria-describedby={`${descriptionId} ${listId}`}
         className="max-w-sm rounded-2xl bg-white shadow-2xl border border-slate-200 p-4 sm:p-5 text-slate-900 focus-within:ring-2 focus-within:ring-blue-500"
       >
-        <div className="flex items-start gap-3">
+        <header className="flex items-start gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white" aria-hidden="true">
             📱
           </div>
@@ -93,12 +107,17 @@ export default function InstallPromptIsland(): JSX.Element | null {
             <h2 id="a2hs-title" className="text-lg font-semibold mb-1">
               Install Apple Cottage
             </h2>
-            <p className="text-sm text-slate-600 leading-relaxed">
+            <p id={descriptionId} className="text-sm text-slate-600 leading-relaxed">
               {message}
             </p>
           </div>
-        </div>
-        <div className="mt-4 flex flex-wrap gap-2 justify-end">
+        </header>
+        <ul id={listId} className="mt-3 list-disc pl-5 text-sm text-slate-600 space-y-2">
+          {installValuePropositions.slice(0, 3).map((valueProp) => (
+            <li key={valueProp}>{valueProp}</li>
+          ))}
+        </ul>
+        <footer className="mt-4 flex flex-wrap gap-2 justify-end">
           <button
             type="button"
             className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
@@ -116,8 +135,8 @@ export default function InstallPromptIsland(): JSX.Element | null {
           >
             Install now
           </button>
-        </div>
-      </div>
-    </div>
+        </footer>
+      </article>
+    </section>
   );
 }

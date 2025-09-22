@@ -97,6 +97,15 @@ if (homeReport?.href) {
   {`(function(){
     var cta = document.getElementById('hero-cta');
     if(!cta) return;
-    cta.addEventListener('click', function(){ try{ if(window.gtag) window.gtag('event','sticky_book_click',{ event_category:'engagement', event_label:'hero_cta' }); }catch(e){} });
+    cta.addEventListener('click', function(){
+      try{
+        if(window.gtag){
+          window.gtag('event','sticky_book_click',{ event_category:'engagement', event_label:'hero_cta' });
+        }
+      }catch(e){ console.error('Unable to push hero CTA analytics event', e); }
+      try{
+        window.dispatchEvent(new CustomEvent('applecottage:booking-interest',{ detail:{ source:'hero_cta' }}));
+      }catch(err){ console.error('Unable to announce booking intent', err); }
+    });
   })();`}
 </script>
