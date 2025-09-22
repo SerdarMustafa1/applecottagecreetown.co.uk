@@ -31,24 +31,7 @@ const pois = (site as any).pois || [];
         <div class="prose mx-auto md:mx-0">
           {locationMd?.Content && <locationMd.Content />}
         </div>
-        <div class="mt-4">
-          <h3 class="text-lg font-semibold mb-2">Nearby Points of Interest</h3>
-          <ul id="poi-list" class="space-y-2 text-sm">
-            {pois.map((p, i) => (
-              <li>
-                <button
-                  class="w-full text-left p-2 rounded border hover:bg-gray-50 disabled:opacity-60"
-                  data-poi-index={i}
-                  disabled={!Number.isFinite(p.lat) || !Number.isFinite(p.lng)}
-                >
-                  <span class="font-medium">{p.title}</span>
-                  {p.subtitle && <span class="text-gray-600"> — {p.subtitle}</span>}
-                  {p.meta && <div class="text-gray-500">{p.meta}</div>}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
+      
       </div>
     </div>
   </div>
