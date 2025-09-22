@@ -10,7 +10,7 @@ const B4A = {
 };
 // Optional overrides for doc URLs
 const OVERRIDES = {
-  FLOORPLAN_GROUND_URL: (import.meta as any).env.FLOORPLAN_GROUND_URL as string | undefined,
+  FLOORPLAN_GROUND_URL: 'https://d1t6lpjdsu4646.cloudfront.net/floorplans/FloorPlanAppleCottage.svg',
   FLOORPLAN_FIRST_URL: (import.meta as any).env.FLOORPLAN_FIRST_URL as string | undefined,
   FLOORPLAN_3D_URL: (import.meta as any).env.FLOORPLAN_3D_URL as string | undefined,
   EPC_IMAGE_URL: (import.meta as any).env.EPC_IMAGE_URL as string | undefined,
@@ -22,6 +22,7 @@ function media(path: string) {
   if (/^https?:\/\//i.test(path)) return path;
   // Keep certain assets served locally from Netlify/public
   if (path.startsWith('/docs/')) return path;
+  if (path.startsWith('/floorplans/')) return path;
   const base = MEDIA_BASE ? MEDIA_BASE.replace(/\/$/, '') : '';
   const p = path.startsWith('/') ? path.slice(1) : path;
   return base ? `${base}/${p}` : path;
@@ -38,17 +39,12 @@ const DEFAULT_B4A = {
 const DEFAULT_HOUSE_2D_PLAN = `${DEFAULT_CDN}/floorplans/house-2d.png`;
 const DEFAULT_ANNEX_2D_PLAN = `${DEFAULT_CDN}/floorplans/annex-floor-plan.png`;
 const DEFAULT_HOUSE_3D_PLAN = `${DEFAULT_CDN}/floorplans/house-3d.mp4`;
-const FALLBACK_PLOT_PLAN = `${DEFAULT_CDN}/docs/plot.png`;
 
 const mainFloorplanSrc = OVERRIDES.FLOORPLAN_GROUND_URL || DEFAULT_HOUSE_2D_PLAN;
 const annexFloorplanSrc = OVERRIDES.FLOORPLAN_FIRST_URL || DEFAULT_ANNEX_2D_PLAN;
 
-const rawThirdFloorplanSrc = OVERRIDES.FLOORPLAN_3D_URL || DEFAULT_HOUSE_3D_PLAN;
-const thirdFloorplanSrc = rawThirdFloorplanSrc || FALLBACK_PLOT_PLAN;
-const thirdFloorplanIsVideo = /\.(mp4|webm|mov|m4v)$/i.test(thirdFloorplanSrc);
-const thirdFloorplanLabel = thirdFloorplanIsVideo ? '3D House Plan' : 'Plot Plan';
-const thirdFloorplanPreview = thirdFloorplanIsVideo ? undefined : thirdFloorplanSrc;
-const thirdFloorplanType = thirdFloorplanIsVideo ? 'video' as const : 'image' as const;
+const thirdFloorplanSrc = OVERRIDES.FLOORPLAN_3D_URL || DEFAULT_HOUSE_3D_PLAN;
+const thirdFloorplanLabel = '3D House Plan';
 
 export const site = {
   title: 'Apple Cottage',
@@ -109,8 +105,7 @@ export const site = {
     {
       label: thirdFloorplanLabel,
       src: thirdFloorplanSrc,
-      preview: thirdFloorplanPreview,
-      type: thirdFloorplanType
+      type: 'video'
     }
   ],
   // Additional 3D plans are currently surfaced in the main array for consistency

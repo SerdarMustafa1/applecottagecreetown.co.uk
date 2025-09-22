@@ -7,8 +7,3 @@ Apple Cottage lies on Silver Street in the village of Creetown (DG8 7HU). Nestle
 ### Travel & Connectivity
 
 - **A75**: ~2 min
-- **Kirroughtree**: ~5 min  
-- **Newton Stewart**: ~10 min
-- **Stranraer**: ~45 min
-
-**what3words**: [///silk.dynamics.quitter](https://what3words.com/silk.dynamics.quitter)
