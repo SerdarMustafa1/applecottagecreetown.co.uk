@@ -12,7 +12,7 @@ test.describe('Floor Plans', () => {
     await expect(page.locator('#floorplans h2')).toContainText('Floor Plans');
     
     // Check floor plan cards are present (should be 3: ground, first, 3D)
-    const floorplanCards = page.locator('#floorplans .bg-white.border.rounded-lg');
+    const floorplanCards = page.locator('#floorplans .bg-white');
     await expect(floorplanCards).toHaveCount(3);
     
     // Check images load

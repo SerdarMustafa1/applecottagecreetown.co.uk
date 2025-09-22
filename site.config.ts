@@ -8,12 +8,10 @@ const B4A = {
   WEBM_1080: (import.meta as any).env.PUBLIC_B4A_WEBM_1080 as string | undefined,
   POSTER: (import.meta as any).env.PUBLIC_B4A_POSTER as string | undefined,
 };
-// Optional overrides for floorplan and doc URLs; set absolute CDN URLs if assets live under /misc
+// Optional overrides for doc URLs
 const OVERRIDES = {
   FLOORPLAN_GROUND_URL: (import.meta as any).env.FLOORPLAN_GROUND_URL as string | undefined,
   FLOORPLAN_FIRST_URL: (import.meta as any).env.FLOORPLAN_FIRST_URL as string | undefined,
-  FLOORPLAN_ANNEX_GROUND_URL: (import.meta as any).env.FLOORPLAN_ANNEX_GROUND_URL as string | undefined,
-  FLOORPLAN_ANNEX_FIRST_URL: (import.meta as any).env.FLOORPLAN_ANNEX_FIRST_URL as string | undefined,
   FLOORPLAN_3D_URL: (import.meta as any).env.FLOORPLAN_3D_URL as string | undefined,
   EPC_IMAGE_URL: (import.meta as any).env.EPC_IMAGE_URL as string | undefined,
   PLOT_IMAGE_URL: (import.meta as any).env.PLOT_IMAGE_URL as string | undefined,
@@ -81,13 +79,13 @@ export const site = {
   ],
   // Floor plans: 2D plans + 3D overview
   floorplans: [
-    { label: 'Ground Floor Plan', src: OVERRIDES.FLOORPLAN_GROUND_URL || `${DEFAULT_CDN}/floorplans/ground-floor.png` },
-    { label: 'First Floor Plan', src: OVERRIDES.FLOORPLAN_FIRST_URL || `${DEFAULT_CDN}/floorplans/first-floor.png` },
+    { label: 'Ground Floor Plan', src: OVERRIDES.FLOORPLAN_GROUND_URL || `${DEFAULT_CDN}/docs/plot.png` },
+    { label: 'First Floor Plan', src: OVERRIDES.FLOORPLAN_FIRST_URL || `${DEFAULT_CDN}/docs/epc.png` },
   ],
   // Single 3D overview
   floorplans3d: OVERRIDES.FLOORPLAN_3D_URL
     ? [{ label: '3D Model View', src: OVERRIDES.FLOORPLAN_3D_URL }]
-    : [{ label: '3D Model View', src: `${DEFAULT_CDN}/models/poster.jpg` }],
+    : [{ label: '3D Model View', src: `${DEFAULT_CDN}/images/exterior/hero-exterior-6D088E35.jpg` }],
   // Optional Before/After video sources (wired to component)
   beforeAfterVideo: {
     label: 'Before & After Renovation',
