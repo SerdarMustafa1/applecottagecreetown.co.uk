@@ -77,15 +77,27 @@ export const site = {
     { title: 'Cairnsmore of Fleet NNR', lat: 54.9475428, lng: -4.258444, subtitle: 'Hill & wildlife', meta: '≈15 min drive' },
     { title: 'Mossyard Beach', lat: 54.8405845, lng: -4.2579869, subtitle: 'Family beach', meta: '≈15 min drive' },
   ],
-  // Floor plans: house plan, annex plan, 3d house model
+  // Floor plans: ground floor, first floor, plot plan
   floorplans: [
-    { label: 'House Plan', src: OVERRIDES.FLOORPLAN_GROUND_URL || `${DEFAULT_CDN}/docs/epc.png` },
-    { label: 'Annex Plan', src: OVERRIDES.FLOORPLAN_FIRST_URL || media('/images/exterior/annex-office-389752AB.jpg') },
+    { 
+      label: 'Ground Floor Plan', 
+      src: OVERRIDES.FLOORPLAN_GROUND_URL || `${DEFAULT_CDN}/floorplans/ground-floor.svg`,
+      preview: `${DEFAULT_CDN}/floorplans/ground-floor-thumb.jpg`
+    },
+    { 
+      label: 'First Floor Plan', 
+      src: OVERRIDES.FLOORPLAN_FIRST_URL || `${DEFAULT_CDN}/floorplans/first-floor.svg`,
+      preview: `${DEFAULT_CDN}/floorplans/first-floor-thumb.jpg`
+    },
   ],
-  // 3D house model
+  // Plot plan and 3D models
   floorplans3d: OVERRIDES.FLOORPLAN_3D_URL
-    ? [{ label: '3D House Model', src: OVERRIDES.FLOORPLAN_3D_URL }]
-    : [{ label: '3D House Model', src: `${DEFAULT_CDN}/docs/plot.png` }],
+    ? [{ label: 'Plot Plan', src: OVERRIDES.FLOORPLAN_3D_URL }]
+    : [{ 
+        label: 'Plot Plan', 
+        src: `${DEFAULT_CDN}/docs/plot.png`,
+        preview: `${DEFAULT_CDN}/docs/plot-thumb.jpg`
+      }],
   // Optional Before/After video sources (wired to component)
   beforeAfterVideo: {
     label: 'Before & After Renovation',

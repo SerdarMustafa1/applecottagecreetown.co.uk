@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 interface Plan {
   label: string;
   src: string;
+  preview?: string;
 }
 
 interface Props {
@@ -77,7 +78,7 @@ function ClickableFloorplan({ plan, onClick }: { plan: Plan; onClick: () => void
         )}
         
         <img
-          src={plan.src}
+          src={plan.preview || plan.src}
           alt={`${plan.label} floor plan`}
           className={`w-full h-full object-contain transition-all duration-300 group-hover:scale-105 ${
             isLoaded ? 'opacity-100' : 'opacity-0'
