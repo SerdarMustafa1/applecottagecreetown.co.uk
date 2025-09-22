@@ -299,8 +299,7 @@ export const site = {
     ]
   },
   portals: {
-    purplebricks: 'https://www.purplebricks.co.uk/property-for-sale/3-bedroom-detached-house-newton-stewart-1964511',
-    s1homes: 'https://s1homes.com/property-for-sale/Detached/20250905090829948'
+    williamsonhenry: 'https://www.williamsonandhenry.co.uk/property/'
   },
   docs: [
     { label: 'Plot Plan', href: OVERRIDES.PLOT_IMAGE_URL || media('/docs/plot.png') },

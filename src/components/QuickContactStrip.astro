@@ -15,11 +15,8 @@ const mailHref = email ? `mailto:${email}?subject=${encodeURIComponent('Apple Co
       {telHref && <a href={telHref} class="px-2 py-1 rounded border hover:bg-gray-50" aria-label={`Call ${phone}`}>Call</a>}
       {waHref && <a href={waHref} target="_blank" rel="noopener" class="px-2 py-1 rounded border hover:bg-gray-50" aria-label="Chat on WhatsApp">WhatsApp</a>}
       {mailHref && <a href={mailHref} class="px-2 py-1 rounded border hover:bg-gray-50" aria-label={`Email ${email}`}>Email</a>}
-      {portals?.purplebricks && (
-        <a href={portals.purplebricks} target="_blank" rel="noopener" class="px-2 py-1 rounded border hover:bg-gray-50" aria-label="View on Purplebricks">Purplebricks</a>
-      )}
-      {portals?.s1homes && (
-        <a href={portals.s1homes} target="_blank" rel="noopener" class="px-2 py-1 rounded border hover:bg-gray-50" aria-label="View on s1homes">s1homes</a>
+      {portals?.williamsonhenry && (
+        <a href={portals.williamsonhenry} target="_blank" rel="noopener" class="px-2 py-1 rounded border hover:bg-gray-50" aria-label="View on Williamson & Henry">Williamson & Henry</a>
       )}
     </div>
   </div>
