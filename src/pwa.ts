@@ -8,14 +8,17 @@ type Cleanup = () => void;
 
 const isBrowser = typeof window !== 'undefined';
 
-if (isBrowser) {
-  // Silent auto-update: the plugin will update assets in the background and reload controlled tabs.
-  registerSW({ immediate: true });
-}
+export const registerServiceWorker = (options?: RegisterSWOptions): UpdateFunction | undefined => {
+  if (!isBrowser) {
+    return undefined;
+  }
+
+  return registerSW({ immediate: true, ...options });
+};
 
 /**
  * Prompt-based flow if you prefer to control when the reload happens.
- * Call this instead of the auto-update above to surface a UI prompt.
+ * Call this instead of the auto-update to surface a UI prompt.
  */
 export const registerServiceWorkerWithPrompt = (options?: RegisterSWOptions): UpdateFunction | undefined => {
   if (!isBrowser) {
@@ -24,13 +27,18 @@ export const registerServiceWorkerWithPrompt = (options?: RegisterSWOptions): Up
 
   const { onNeedRefresh: userNeedRefresh, onOfflineReady: userOfflineReady, ...restOptions } = options ?? {};
 
-  let updateSWRef: UpdateFunction;
+  let updateSWRef: UpdateFunction | undefined;
 
   const updateSW = registerSW({
     ...restOptions,
     immediate: false,
     onNeedRefresh() {
-      renderUpdatePrompt(() => (updateSWRef ? updateSWRef(true) : Promise.resolve()));
+      renderUpdatePrompt(async () => {
+        if (!updateSWRef) {
+          return;
+        }
+        await updateSWRef(true);
+      });
       userNeedRefresh?.();
     },
     onOfflineReady() {
@@ -46,12 +54,16 @@ export const registerServiceWorkerWithPrompt = (options?: RegisterSWOptions): Up
 const renderUpdatePrompt = (onConfirm: () => Promise<void>): Cleanup => {
   ensurePromptStyles();
 
-  const root = document.createElement('div');
-  root.className = 'pwa-update-toast';
-  root.setAttribute('role', 'alert');
-  root.setAttribute('aria-live', 'assertive');
+  document.querySelectorAll('.pwa-update-toast').forEach((existing) => existing.remove());
 
-  const heading = document.createElement('p');
+  const root = document.createElement('aside');
+  root.className = 'pwa-update-toast';
+  root.setAttribute('role', 'dialog');
+  root.setAttribute('aria-modal', 'false');
+  root.setAttribute('aria-live', 'assertive');
+  root.tabIndex = -1;
+
+  const heading = document.createElement('h2');
   heading.textContent = 'Update available';
   heading.className = 'pwa-update-toast__title';
   heading.id = 'pwa-update-toast__title';
@@ -59,6 +71,7 @@ const renderUpdatePrompt = (onConfirm: () => Promise<void>): Cleanup => {
   const description = document.createElement('p');
   description.textContent = 'Reload to get the newest fixes and content.';
   description.className = 'pwa-update-toast__description';
+  description.id = 'pwa-update-toast__description';
 
   const buttonRow = document.createElement('div');
   buttonRow.className = 'pwa-update-toast__actions';
@@ -71,7 +84,7 @@ const renderUpdatePrompt = (onConfirm: () => Promise<void>): Cleanup => {
   reloadButton.type = 'button';
   reloadButton.textContent = 'Reload now';
   reloadButton.className = 'pwa-update-toast__reload';
-  reloadButton.setAttribute('aria-describedby', heading.id);
+  reloadButton.setAttribute('aria-describedby', `${heading.id} ${description.id}`);
   reloadButton.addEventListener('click', () => {
     reloadButton.disabled = true;
     void onConfirm().finally(cleanup);
@@ -87,9 +100,14 @@ const renderUpdatePrompt = (onConfirm: () => Promise<void>): Cleanup => {
 
   buttonRow.append(reloadButton, dismissButton);
   root.append(heading, description, buttonRow);
+  root.setAttribute('aria-labelledby', heading.id);
+  root.setAttribute('aria-describedby', description.id);
 
   document.body.append(root);
-  root.focus?.();
+
+  window.setTimeout(() => {
+    root.focus?.();
+  }, 0);
 
   return cleanup;
 };
@@ -97,12 +115,19 @@ const renderUpdatePrompt = (onConfirm: () => Promise<void>): Cleanup => {
 const announceOfflineReady = (): void => {
   ensurePromptStyles();
 
-  const offlineNotice = document.createElement('div');
+  const offlineNotice = document.createElement('aside');
   offlineNotice.setAttribute('role', 'status');
+  offlineNotice.setAttribute('aria-live', 'polite');
   offlineNotice.textContent = 'The site is ready to work offline.';
   offlineNotice.className = 'pwa-offline-toast';
 
   document.body.append(offlineNotice);
+
+  try {
+    window.dispatchEvent(new CustomEvent('applecottage:offline-download'));
+  } catch {
+    // Dispatch may fail in older browsers without CustomEvent support; ignore gracefully.
+  }
 
   window.setTimeout(() => {
     offlineNotice.remove();
@@ -129,9 +154,14 @@ const ensurePromptStyles = (): void => {
       box-shadow: 0 12px 30px rgba(15, 23, 42, 0.35);
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.75rem;
       max-width: 20rem;
       font-family: var(--font-sans, system-ui, sans-serif);
+    }
+
+    .pwa-update-toast:focus {
+      outline: 3px solid var(--color-focus-ring, #facc15);
+      outline-offset: 4px;
     }
 
     .pwa-update-toast__title {
@@ -149,6 +179,7 @@ const ensurePromptStyles = (): void => {
       display: flex;
       gap: 0.5rem;
       flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
     .pwa-update-toast__reload {
@@ -159,6 +190,12 @@ const ensurePromptStyles = (): void => {
       border: none;
       border-radius: 999px;
       cursor: pointer;
+      transition: transform 0.15s ease, background-color 0.15s ease;
+    }
+
+    .pwa-update-toast__reload:hover {
+      background-color: var(--color-accent-strong, #fb923c);
+      transform: translateY(-1px);
     }
 
     .pwa-update-toast__reload:focus-visible,
@@ -174,6 +211,11 @@ const ensurePromptStyles = (): void => {
       border-radius: 999px;
       padding: 0.5rem 1rem;
       cursor: pointer;
+      transition: color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .pwa-update-toast__dismiss:hover {
+      background-color: rgba(255, 255, 255, 0.12);
     }
 
     .pwa-offline-toast {
@@ -182,7 +224,7 @@ const ensurePromptStyles = (): void => {
       inset-block-start: 1rem;
       background-color: var(--color-emerald-400, #34d399);
       color: var(--color-emerald-950, #022c22);
-      padding: 0.5rem 1rem;
+      padding: 0.75rem 1.25rem;
       border-radius: 999px;
       font-size: 0.875rem;
       box-shadow: 0 10px 24px rgba(6, 95, 70, 0.25);
