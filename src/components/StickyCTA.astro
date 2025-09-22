@@ -349,10 +349,23 @@
       }
     }
 
+    function signalBookingInterest(source) {
+      try {
+        window?.dispatchEvent(
+          new CustomEvent('applecottage:booking-interest', {
+            detail: { source }
+          })
+        );
+      } catch (error) {
+        console.error('Unable to announce booking intent', error);
+      }
+    }
+
     var bookButton = document.getElementById('sticky-book');
     if (bookButton) {
       bookButton.addEventListener('click', function () {
         sendEvent('sticky_book_click');
+        signalBookingInterest('sticky_cta');
       });
     }
 

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 const GALLERY_VIEW_THRESHOLD = 5;
 const TOUR_SECONDS_THRESHOLD = 60;
 
-type TriggerReason = 'gallery' | 'tour' | 'offline';
+type TriggerReason = 'gallery' | 'tour' | 'offline' | 'booking';
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms?: string[];
@@ -46,10 +46,14 @@ export const useA2HS = () => {
   const galleryViewsRef = useRef<Set<string>>(new Set());
   const tourSecondsRef = useRef<number>(0);
   const offlineTriggeredRef = useRef<boolean>(false);
+  const bookingIntentRef = useRef<boolean>(false);
 
   const getTriggerReason = useCallback((): TriggerReason | null => {
     if (!deferredPrompt || dismissed) {
       return null;
+    }
+    if (bookingIntentRef.current) {
+      return 'booking';
     }
     if (offlineTriggeredRef.current) {
       return 'offline';
@@ -122,6 +126,11 @@ export const useA2HS = () => {
     evaluatePromptVisibility();
   }, [evaluatePromptVisibility]);
 
+  const registerBookingIntent = useCallback(() => {
+    bookingIntentRef.current = true;
+    evaluatePromptVisibility();
+  }, [evaluatePromptVisibility]);
+
   const showPrompt = useCallback(async () => {
     const promptEvent = deferredPrompt;
     if (!promptEvent) {
@@ -159,6 +168,7 @@ export const useA2HS = () => {
     registerGalleryView,
     registerTourWatch,
     registerOfflineDownload,
+    registerBookingIntent,
   };
 };
 
