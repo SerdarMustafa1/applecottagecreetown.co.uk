@@ -43,7 +43,7 @@ export const site = {
   siteUrl: 'https://applecottagecreetown.co.uk',
   address: 'Apple Cottage, Creetown, Scotland',
   coordinates: { lat: 54.899611, lng: -4.380458 },
-  bookingUrl: 'https://tidycal.com/sidmustafa/apple-cottage-viewing',
+  bookingUrl: 'https://www.williamsonandhenry.co.uk/property/apple-cottage-creetrown/',
   price: '💰 Offers Over £300,000',
   bedrooms: '🛏️ 3 Double Bedrooms',
   bathrooms: '🛁 1 + Downstairs WC',
@@ -299,11 +299,11 @@ export const site = {
     ]
   },
   portals: {
-    williamsonhenry: 'https://www.williamsonandhenry.co.uk/property/'
+    williamsonhenry: 'https://www.williamsonandhenry.co.uk/property/apple-cottage-creetrown/'
   },
   docs: [
     { label: 'Plot Plan', href: OVERRIDES.PLOT_IMAGE_URL || media('/docs/plot.png') },
-    { label: 'Home Report', href: OVERRIDES.HOME_REPORT_URL || media('/docs/home-report.pdf') },
+    { label: 'Home Report', href: OVERRIDES.HOME_REPORT_URL || 'https://www.williamsonandhenry.co.uk/property/apple-cottage-creetrown/' },
     { label: 'Planning Permission', href: `${DEFAULT_CDN}/docs/planning-permission.png` }
   ]
 };

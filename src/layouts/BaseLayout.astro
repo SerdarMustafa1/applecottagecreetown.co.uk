@@ -78,63 +78,13 @@ const gaId = site.analyticsId;
       <!-- Trust bar immediately under hero to surface EPC, HR and planning -->
       <TrustBar />
       <slot />
-      <!-- Booking embed (TidyCal) sits above the footer as primary booking option -->
-      <section id="book-viewing" style="padding:1.5rem 0">
-        <div class="tidycal-embed" data-path="sidmustafa/apple-cottage-viewing"></div>
-        <script src="https://asset-tidycal.b-cdn.net/js/embed.js" async></script>
-        <p style="margin-top:0.5rem;color:#6b7280">If the booking widget does not load, <a href={site.bookingUrl} target="_blank" rel="noopener">open booking in a new tab</a>.</p>
-          <script is:inline>
-            (function(){
-              // Track tidycal embed interactions for analytics (resilient when GA not yet loaded)
-              function sendEvent(action, label){
-                try{
-                  if (window.gtag) {
-                    window.gtag('event', action, { event_label: label || 'tidycal', event_category: 'engagement' });
-                  } else if (window.dataLayer) {
-                    window.dataLayer.push({ event: action, label: label || 'tidycal' });
-                  }
-                } catch(e) { /* ignore */ }
-              }
-
-              // Mark when the tidycal container gains an iframe -> embed ready
-              var tidyContainer = document.querySelector('.tidycal-embed');
-              if (tidyContainer) {
-                // If an iframe is already present, assume loaded
-                var existing = tidyContainer.querySelector('iframe');
-                if (existing) {
-                  sendEvent('tidycal_loaded', location.pathname + location.search);
-                } else {
-                  // Observe for children added (iframe insertion by tidycal script)
-                  try {
-                    var mo = new MutationObserver(function(m){
-                      m.forEach(function(rec){
-                        rec.addedNodes && rec.addedNodes.forEach(function(n){
-                          if (n.nodeName === 'IFRAME' || (n.querySelector && n.querySelector('iframe'))) {
-                            sendEvent('tidycal_loaded', location.pathname + location.search);
-                            mo.disconnect();
-                          }
-                        });
-                      });
-                    });
-                    mo.observe(tidyContainer, { childList: true, subtree: true });
-                  } catch(e) { /* MutationObserver not supported */ }
-                }
-              }
-
-              // Track fallback link clicks
-              var fallback = document.querySelector('#tidycal-fallback-link');
-              if (!fallback) {
-                // add id to existing fallback link
-                var fb = document.querySelector('#book-viewing a[rel~="noopener"]');
-                if (fb) {
-                  fb.id = 'tidycal-fallback-link';
-                  fb.addEventListener('click', function(){ sendEvent('tidycal_fallback_click', fb.href); });
-                }
-              } else {
-                fallback.addEventListener('click', function(){ sendEvent('tidycal_fallback_click', fallback.href); });
-              }
-            })();
-          </script>
+      <!-- Booking redirect to estate agent -->
+      <section id="book-viewing" style="padding:1.5rem 0; text-align:center">
+        <div style="max-width:600px; margin:0 auto; padding:2rem; background:#f8fafc; border-radius:12px; border:1px solid #e2e8f0">
+          <h2 style="margin:0 0 1rem; font-size:1.5rem; font-weight:600; color:#1e293b">Book a Viewing</h2>
+          <p style="margin:0 0 1.5rem; color:#64748b">Contact our estate agent Williamson & Henry to arrange a viewing of Apple Cottage.</p>
+          <a href={site.bookingUrl} target="_blank" rel="noopener" style="display:inline-block; background:#059669; color:white; padding:0.75rem 2rem; border-radius:8px; text-decoration:none; font-weight:600">Book with Williamson & Henry</a>
+        </div>
       </section>
     </main>
     <Footer />
