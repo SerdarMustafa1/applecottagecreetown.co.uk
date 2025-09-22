@@ -41,7 +41,7 @@ export default function FloorplanViewerIsland({ plans }: Props) {
 
   return (
     <>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 items-stretch sm:grid-cols-2 lg:grid-cols-3">
         {plans.map((plan, index) => (
           <ClickableFloorplan
             key={plan.label}
@@ -67,11 +67,13 @@ function ClickableFloorplan({ plan, onClick }: { plan: Plan; onClick: () => void
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <div className="bg-white border rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
-      <div
-        className="relative group cursor-pointer bg-gray-50"
+    <article className="flex h-full flex-col overflow-hidden rounded-lg border bg-white shadow-sm transition-all duration-300 hover:shadow-lg focus-within:shadow-lg">
+      <button
+        type="button"
+        className="relative w-full cursor-pointer bg-gray-50 p-0 group focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
         onClick={onClick}
-        style={{ aspectRatio: '4/3' }}
+        style={{ aspectRatio: '4 / 3' }}
+        aria-label={`View larger ${plan.label}`}
       >
         {!isLoaded && (
           <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse" />
@@ -80,23 +82,24 @@ function ClickableFloorplan({ plan, onClick }: { plan: Plan; onClick: () => void
         <img
           src={plan.preview || plan.src}
           alt={`${plan.label} floor plan`}
-          className={`w-full h-full object-contain transition-all duration-300 group-hover:scale-105 ${
+          className={`h-full w-full object-contain transition-all duration-300 group-hover:scale-105 ${
             isLoaded ? 'opacity-100' : 'opacity-0'
           }`}
           onLoad={() => setIsLoaded(true)}
+          loading="lazy"
         />
         
-        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center">
-          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-center">
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 transition-all duration-300 group-hover:bg-opacity-50 group-focus-visible:bg-opacity-40">
+          <div className="text-center text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
             <div className="text-3xl mb-2">🔍</div>
             <div className="text-sm font-semibold uppercase tracking-wide">Click to enlarge</div>
           </div>
         </div>
+      </button>
+      <div className="flex flex-1 items-center justify-center p-4 text-center">
+        <h3 className="text-lg font-semibold text-gray-900">{plan.label}</h3>
       </div>
-      <div className="p-4">
-        <h3 className="font-semibold text-lg text-gray-900">{plan.label}</h3>
-      </div>
-    </div>
+    </article>
   );
 }
 

@@ -35,6 +35,16 @@ const DEFAULT_B4A = {
   poster: media('/videos/b4a/b4a-poster.jpg'),
 };
 
+const FALLBACK_PLOT_PLAN = `${DEFAULT_CDN}/docs/plot.png`;
+const mainFloorplanSrc = OVERRIDES.FLOORPLAN_GROUND_URL || `${DEFAULT_CDN}/floorplans/house-2d.png`;
+const annexFloorplanSrc = OVERRIDES.FLOORPLAN_FIRST_URL || `${DEFAULT_CDN}/floorplans/annex-floor-plan.png`;
+const thirdFloorplanSrc = OVERRIDES.FLOORPLAN_3D_URL || FALLBACK_PLOT_PLAN;
+const thirdFloorplanPreview =
+  OVERRIDES.FLOORPLAN_3D_URL && !OVERRIDES.FLOORPLAN_3D_URL.toLowerCase().endsWith('.mp4')
+    ? OVERRIDES.FLOORPLAN_3D_URL
+    : FALLBACK_PLOT_PLAN;
+const thirdFloorplanLabel = OVERRIDES.FLOORPLAN_3D_URL ? '3D Floor Plan' : 'Plot Plan';
+
 export const site = {
   title: 'Apple Cottage',
   description: 'Recently renovated three‑bed with annex, EV charging & landscaped gardens.',
@@ -77,27 +87,26 @@ export const site = {
     { title: 'Cairnsmore of Fleet NNR', lat: 54.9475428, lng: -4.258444, subtitle: 'Hill & wildlife', meta: '≈15 min drive' },
     { title: 'Mossyard Beach', lat: 54.8405845, lng: -4.2579869, subtitle: 'Family beach', meta: '≈15 min drive' },
   ],
-  // Floor plans: ground floor, first floor, plot plan
+  // Floor plans: main house, annex, and plot plan
   floorplans: [
-    { 
-      label: 'Ground Floor Plan', 
-      src: OVERRIDES.FLOORPLAN_GROUND_URL || `${DEFAULT_CDN}/floorplans/ground-floor.svg`,
-      preview: `${DEFAULT_CDN}/floorplans/ground-floor-thumb.jpg`
+    {
+      label: 'Main House Floor Plan',
+      src: mainFloorplanSrc,
+      preview: mainFloorplanSrc
     },
-    { 
-      label: 'First Floor Plan', 
-      src: OVERRIDES.FLOORPLAN_FIRST_URL || `${DEFAULT_CDN}/floorplans/first-floor.svg`,
-      preview: `${DEFAULT_CDN}/floorplans/first-floor-thumb.jpg`
+    {
+      label: 'Annex Floor Plan',
+      src: annexFloorplanSrc,
+      preview: annexFloorplanSrc
     },
+    {
+      label: thirdFloorplanLabel,
+      src: thirdFloorplanSrc,
+      preview: thirdFloorplanPreview
+    }
   ],
-  // Plot plan and 3D models
-  floorplans3d: OVERRIDES.FLOORPLAN_3D_URL
-    ? [{ label: 'Plot Plan', src: OVERRIDES.FLOORPLAN_3D_URL }]
-    : [{ 
-        label: 'Plot Plan', 
-        src: `${DEFAULT_CDN}/docs/plot.png`,
-        preview: `${DEFAULT_CDN}/docs/plot-thumb.jpg`
-      }],
+  // Additional 3D plans are currently surfaced in the main array for consistency
+  floorplans3d: [],
   // Optional Before/After video sources (wired to component)
   beforeAfterVideo: {
     label: 'Before & After Renovation',
