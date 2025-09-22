@@ -1,5 +1,6 @@
 /* eslint-env browser */
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import LightboxDialog from './LightboxDialog';
 
 interface Plan {
   label: string;
@@ -11,81 +12,92 @@ interface Props {
 }
 
 export default function FloorplanViewerIsland({ plans }: Props) {
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [currentPlan, setCurrentPlan] = useState<Plan | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const openLightbox = (plan: Plan, index: number) => {
+    setCurrentPlan(plan);
+    setCurrentIndex(index);
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+    setCurrentPlan(null);
+  };
+
+  const goToNext = () => {
+    const nextIndex = (currentIndex + 1) % plans.length;
+    setCurrentIndex(nextIndex);
+    setCurrentPlan(plans[nextIndex]);
+  };
+
+  const goToPrev = () => {
+    const prevIndex = currentIndex === 0 ? plans.length - 1 : currentIndex - 1;
+    setCurrentIndex(prevIndex);
+    setCurrentPlan(plans[prevIndex]);
+  };
+
   return (
-    <div>
-      {plans.map((plan) => (
-        <ZoomablePlan key={plan.label} plan={plan} />
-      ))}
-    </div>
+    <>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {plans.map((plan, index) => (
+          <ClickableFloorplan
+            key={plan.label}
+            plan={plan}
+            onClick={() => openLightbox(plan, index)}
+          />
+        ))}
+      </div>
+      
+      {lightboxOpen && currentPlan && (
+        <LightboxDialog
+          isOpen={lightboxOpen}
+          onClose={closeLightbox}
+          imageSrc={currentPlan.src}
+          imageAlt={`${currentPlan.label} floor plan`}
+          caption={currentPlan.label}
+          onNext={plans.length > 1 ? goToNext : undefined}
+          onPrev={plans.length > 1 ? goToPrev : undefined}
+        />
+      )}
+    </>
   );
 }
 
-function ZoomablePlan({ plan }: { plan: Plan }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const handleWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      const delta = e.deltaY > 0 ? -0.1 : 0.1;
-      setScale((s) => Math.min(Math.max(0.5, s + delta), 4));
-    };
-
-    let initialDistance = 0;
-    const handleTouchStart = (e: TouchEvent) => {
-      if (e.touches.length === 2) {
-        e.preventDefault();
-        const dx = e.touches[0].clientX - e.touches[1].clientX;
-        const dy = e.touches[0].clientY - e.touches[1].clientY;
-        initialDistance = Math.hypot(dx, dy);
-      }
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      if (e.touches.length === 2) {
-        e.preventDefault();
-        const dx = e.touches[0].clientX - e.touches[1].clientX;
-        const dy = e.touches[0].clientY - e.touches[1].clientY;
-        const distance = Math.hypot(dx, dy);
-        const factor = distance / initialDistance;
-        setScale((s) => Math.min(Math.max(0.5, s * factor), 4));
-        initialDistance = distance;
-      }
-    };
-
-    container.addEventListener('wheel', handleWheel, { passive: false });
-    container.addEventListener('touchstart', handleTouchStart, { passive: true });
-    container.addEventListener('touchmove', handleTouchMove, { passive: false });
-
-    return () => {
-      container.removeEventListener('wheel', handleWheel);
-      container.removeEventListener('touchstart', handleTouchStart);
-      container.removeEventListener('touchmove', handleTouchMove);
-    };
-  }, []);
+function ClickableFloorplan({ plan, onClick }: { plan: Plan; onClick: () => void }) {
+  const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <div className="mb-8">
-      <h3 className="mb-2 font-semibold">{plan.label}</h3>
+    <div className="bg-white border rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
       <div
-        ref={containerRef}
-        className="overflow-auto border rounded relative"
+        className="relative group cursor-pointer bg-gray-50"
+        onClick={onClick}
+        style={{ aspectRatio: '4/3' }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse" />
+        {!isLoaded && (
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse" />
+        )}
+        
         <img
           src={plan.src}
           alt={`${plan.label} floor plan`}
-          className="block mx-auto relative z-10"
-          style={{ transform: `scale(${scale})`, transformOrigin: 'center' }}
-          onLoad={(e) => {
-            const img = e.target as HTMLImageElement;
-            const shimmer = img.parentElement?.querySelector('.animate-pulse');
-            if (shimmer) shimmer.remove();
-          }}
+          className={`w-full h-full object-contain transition-all duration-300 group-hover:scale-105 ${
+            isLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+          onLoad={() => setIsLoaded(true)}
         />
+        
+        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center">
+          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-center">
+            <div className="text-3xl mb-2">🔍</div>
+            <div className="text-sm font-semibold uppercase tracking-wide">Click to enlarge</div>
+          </div>
+        </div>
+      </div>
+      <div className="p-4">
+        <h3 className="font-semibold text-lg text-gray-900">{plan.label}</h3>
       </div>
     </div>
   );

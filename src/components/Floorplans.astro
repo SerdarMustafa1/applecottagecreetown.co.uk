@@ -3,43 +3,14 @@ import FloorplanViewerIsland from './FloorplanViewerIsland.tsx';
 import site from '../../site.config';
 
 const { floorplans = [], floorplans3d = [] } = site;
----
-<section id="floorplans" class="p-4 max-w-5xl mx-auto">
-  <h2 class="text-2xl font-semibold mb-4">Floor Plans</h2>
-  <div class="grid gap-8 md:grid-cols-2">
-    <div>
-      <h3 class="text-lg font-semibold mb-2">2D Plans</h3>
-      <FloorplanViewerIsland plans={floorplans} client:load />
-    </div>
 
-    {floorplans3d && floorplans3d.length > 0 && (
-      <div>
-        <h3 class="text-lg font-semibold mb-2">3D Overview</h3>
-        <div class="grid grid-cols-1 gap-4">
-          {floorplans3d.map((plan) => {
-            const isVideo = /\.(mp4|webm)$/i.test(plan.src);
-            return (
-              <figure class="border rounded overflow-hidden bg-white" aria-label={`3D plan ${plan.label}`}>
-                <div class="relative" style="padding-top: 75%">
-                  {isVideo ? (
-                    <video controls class="absolute inset-0 w-full h-full object-contain bg-white" preload="metadata">
-                      <source src={plan.src} type={plan.src.endsWith('.webm') ? 'video/webm' : 'video/mp4'} />
-                    </video>
-                  ) : (
-                    <img
-                      src={plan.src}
-                      alt={plan.label || '3D floor plan'}
-                      class="absolute inset-0 w-full h-full object-contain bg-white"
-                      loading="lazy"
-                    />
-                  )}
-                </div>
-                {plan.label && <figcaption class="p-2 text-sm text-gray-600">{plan.label}</figcaption>}
-              </figure>
-            );
-          })}
-        </div>
-      </div>
-    )}
-  </div>
+// Combine all plans into a single equal-sized grid
+const allPlans = [
+  ...floorplans,
+  ...floorplans3d
+];
+---
+<section id="floorplans" class="p-4 max-w-6xl mx-auto">
+  <h2 class="text-3xl font-bold text-center mb-8">Floor Plans</h2>
+  <FloorplanViewerIsland plans={allPlans} client:load />
 </section>

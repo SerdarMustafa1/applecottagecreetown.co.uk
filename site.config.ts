@@ -79,15 +79,15 @@ export const site = {
     { title: 'Cairnsmore of Fleet NNR', lat: 54.9475428, lng: -4.258444, subtitle: 'Hill & wildlife', meta: '≈15 min drive' },
     { title: 'Mossyard Beach', lat: 54.8405845, lng: -4.2579869, subtitle: 'Family beach', meta: '≈15 min drive' },
   ],
-  // Floor plans: exactly two 2D plans (house + annex)
+  // Floor plans: 2D plans + 3D overview
   floorplans: [
-    { label: 'House (2D)', src: OVERRIDES.FLOORPLAN_GROUND_URL || `${DEFAULT_CDN}/floorplans/house-2d.png` },
-    { label: 'Annex (2D)', src: OVERRIDES.FLOORPLAN_ANNEX_GROUND_URL || `${DEFAULT_CDN}/floorplans/annex-floor-plan.png` },
+    { label: 'Ground Floor Plan', src: OVERRIDES.FLOORPLAN_GROUND_URL || `${DEFAULT_CDN}/floorplans/ground-floor.png` },
+    { label: 'First Floor Plan', src: OVERRIDES.FLOORPLAN_FIRST_URL || `${DEFAULT_CDN}/floorplans/first-floor.png` },
   ],
-  // Single 3D overview video
+  // Single 3D overview
   floorplans3d: OVERRIDES.FLOORPLAN_3D_URL
-    ? [{ label: '3D Overview', src: OVERRIDES.FLOORPLAN_3D_URL }]
-    : [{ label: '3D Overview', src: `${DEFAULT_CDN}/floorplans/house-3d.mp4` }],
+    ? [{ label: '3D Model View', src: OVERRIDES.FLOORPLAN_3D_URL }]
+    : [{ label: '3D Model View', src: `${DEFAULT_CDN}/models/poster.jpg` }],
   // Optional Before/After video sources (wired to component)
   beforeAfterVideo: {
     label: 'Before & After Renovation',
