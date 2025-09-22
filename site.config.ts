@@ -35,15 +35,20 @@ const DEFAULT_B4A = {
   poster: media('/videos/b4a/b4a-poster.jpg'),
 };
 
+const DEFAULT_HOUSE_2D_PLAN = `${DEFAULT_CDN}/floorplans/house-2d.png`;
+const DEFAULT_ANNEX_2D_PLAN = `${DEFAULT_CDN}/floorplans/annex-floor-plan.png`;
+const DEFAULT_HOUSE_3D_PLAN = `${DEFAULT_CDN}/floorplans/house-3d.mp4`;
 const FALLBACK_PLOT_PLAN = `${DEFAULT_CDN}/docs/plot.png`;
-const mainFloorplanSrc = OVERRIDES.FLOORPLAN_GROUND_URL || `${DEFAULT_CDN}/floorplans/house-2d.png`;
-const annexFloorplanSrc = OVERRIDES.FLOORPLAN_FIRST_URL || `${DEFAULT_CDN}/floorplans/annex-floor-plan.png`;
-const thirdFloorplanSrc = OVERRIDES.FLOORPLAN_3D_URL || FALLBACK_PLOT_PLAN;
-const thirdFloorplanPreview =
-  OVERRIDES.FLOORPLAN_3D_URL && !OVERRIDES.FLOORPLAN_3D_URL.toLowerCase().endsWith('.mp4')
-    ? OVERRIDES.FLOORPLAN_3D_URL
-    : FALLBACK_PLOT_PLAN;
-const thirdFloorplanLabel = OVERRIDES.FLOORPLAN_3D_URL ? '3D Floor Plan' : 'Plot Plan';
+
+const mainFloorplanSrc = OVERRIDES.FLOORPLAN_GROUND_URL || DEFAULT_HOUSE_2D_PLAN;
+const annexFloorplanSrc = OVERRIDES.FLOORPLAN_FIRST_URL || DEFAULT_ANNEX_2D_PLAN;
+
+const rawThirdFloorplanSrc = OVERRIDES.FLOORPLAN_3D_URL || DEFAULT_HOUSE_3D_PLAN;
+const thirdFloorplanSrc = rawThirdFloorplanSrc || FALLBACK_PLOT_PLAN;
+const thirdFloorplanIsVideo = /\.(mp4|webm|mov|m4v)$/i.test(thirdFloorplanSrc);
+const thirdFloorplanLabel = thirdFloorplanIsVideo ? '3D House Plan' : 'Plot Plan';
+const thirdFloorplanPreview = thirdFloorplanIsVideo ? undefined : thirdFloorplanSrc;
+const thirdFloorplanType = thirdFloorplanIsVideo ? 'video' as const : 'image' as const;
 
 export const site = {
   title: 'Apple Cottage',
@@ -92,17 +97,20 @@ export const site = {
     {
       label: 'Main House Floor Plan',
       src: mainFloorplanSrc,
-      preview: mainFloorplanSrc
+      preview: mainFloorplanSrc,
+      type: 'image'
     },
     {
       label: 'Annex Floor Plan',
       src: annexFloorplanSrc,
-      preview: annexFloorplanSrc
+      preview: annexFloorplanSrc,
+      type: 'image'
     },
     {
       label: thirdFloorplanLabel,
       src: thirdFloorplanSrc,
-      preview: thirdFloorplanPreview
+      preview: thirdFloorplanPreview,
+      type: thirdFloorplanType
     }
   ],
   // Additional 3D plans are currently surfaced in the main array for consistency
