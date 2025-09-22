@@ -1,6 +1,5 @@
 /* eslint-env browser */
 import React, { useState } from 'react';
-import LightboxDialog from './LightboxDialog';
 
 interface Plan {
   label: string;
@@ -52,12 +51,9 @@ export default function FloorplanViewerIsland({ plans }: Props) {
       </div>
       
       {lightboxOpen && currentPlan && (
-        <LightboxDialog
-          isOpen={lightboxOpen}
+        <SimpleLightbox
+          plan={currentPlan}
           onClose={closeLightbox}
-          imageSrc={currentPlan.src}
-          imageAlt={`${currentPlan.label} floor plan`}
-          caption={currentPlan.label}
           onNext={plans.length > 1 ? goToNext : undefined}
           onPrev={plans.length > 1 ? goToPrev : undefined}
         />
@@ -98,6 +94,65 @@ function ClickableFloorplan({ plan, onClick }: { plan: Plan; onClick: () => void
       </div>
       <div className="p-4">
         <h3 className="font-semibold text-lg text-gray-900">{plan.label}</h3>
+      </div>
+    </div>
+  );
+}
+
+function SimpleLightbox({ 
+  plan, 
+  onClose, 
+  onNext, 
+  onPrev 
+}: { 
+  plan: Plan; 
+  onClose: () => void; 
+  onNext?: () => void; 
+  onPrev?: () => void; 
+}) {
+  return (
+    <div
+      className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50"
+      onClick={onClose}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        className="relative max-w-[90%] max-h-[90%]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <img
+          src={plan.src}
+          alt={`${plan.label} floor plan`}
+          className="max-h-[90vh] w-auto"
+          loading="eager"
+        />
+        <div className="mt-2 text-center text-sm text-white">{plan.label}</div>
+        <button
+          aria-label="Close"
+          className="absolute top-2 right-2 text-white text-2xl hover:text-gray-300"
+          onClick={onClose}
+        >
+          ×
+        </button>
+        {onPrev && (
+          <button
+            aria-label="Previous"
+            className="absolute left-2 top-1/2 -translate-y-1/2 text-white text-2xl hover:text-gray-300"
+            onClick={onPrev}
+          >
+            ‹
+          </button>
+        )}
+        {onNext && (
+          <button
+            aria-label="Next"
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-white text-2xl hover:text-gray-300"
+            onClick={onNext}
+          >
+            ›
+          </button>
+        )}
       </div>
     </div>
   );
