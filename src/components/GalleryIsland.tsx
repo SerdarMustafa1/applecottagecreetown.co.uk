@@ -289,15 +289,29 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
     else updateUrlParams({ index: null });
   }, [open, index]);
 
-  const openAt = (i: number) => { 
+  const openAt = (i: number) => {
     if (i >= 0 && i < filtered.length && filtered[i]?.src) {
-      setIndex(i); 
-      setOpen(true); 
+      setIndex(i);
+      setOpen(true);
     }
   };
   const close = () => setOpen(false);
   const next = () => setIndex((i) => (i + 1) % filtered.length);
   const prev = () => setIndex((i) => (i - 1 + filtered.length) % filtered.length);
+
+  useEffect(() => {
+    if (!open) return;
+    if (typeof window === 'undefined') return;
+    const current = filtered[index];
+    if (!current || !current.src) return;
+    const detail = {
+      src: current.src,
+      alt: current.alt,
+      index,
+      total: filtered.length,
+    };
+    window.dispatchEvent(new CustomEvent('applecottage:gallery-viewed', { detail }));
+  }, [open, index, filtered]);
 
   // Get icon for filter option
   const getFilterIcon = (filterName: string) => {
