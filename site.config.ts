@@ -79,13 +79,13 @@ export const site = {
   ],
   // Floor plans: house plan, annex plan, 3d house model
   floorplans: [
-    { label: 'House Plan', src: OVERRIDES.FLOORPLAN_GROUND_URL || `${DEFAULT_CDN}/docs/epc.png` },
-    { label: 'Annex Plan', src: OVERRIDES.FLOORPLAN_FIRST_URL || `${DEFAULT_CDN}/images/exterior/annex-office-389752AB.jpg` },
+    { label: 'House Plan', src: OVERRIDES.FLOORPLAN_GROUND_URL || media('/docs/epc.png') },
+    { label: 'Annex Plan', src: OVERRIDES.FLOORPLAN_FIRST_URL || media('/images/exterior/annex-office-389752AB.jpg') },
   ],
   // 3D house model
   floorplans3d: OVERRIDES.FLOORPLAN_3D_URL
     ? [{ label: '3D House Model', src: OVERRIDES.FLOORPLAN_3D_URL }]
-    : [{ label: '3D House Model', src: `${DEFAULT_CDN}/images/exterior/hero-exterior-6D088E35.jpg` }],
+    : [{ label: '3D House Model', src: media('/docs/plot.png') }],
   // Optional Before/After video sources (wired to component)
   beforeAfterVideo: {
     label: 'Before & After Renovation',
