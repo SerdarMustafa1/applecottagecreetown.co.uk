@@ -3,8 +3,12 @@
 <!-- Refined sticky CTA bar optimised for mobile + desktop -->
 <style>
   .sticky-cta {
+    --sticky-cta-base-bottom: 1.25rem;
+    --sticky-cta-offset: 0px;
     position: fixed;
-    inset: auto 1rem 1.25rem 1rem;
+    left: 1rem;
+    right: 1rem;
+    bottom: calc(var(--sticky-cta-base-bottom) + var(--sticky-cta-offset));
     z-index: 1200;
     display: grid;
     gap: 1rem;
@@ -20,7 +24,7 @@
   }
   
   .sticky-cta.minimized {
-    transform: translateY(calc(100% - 2.5rem));
+    transform: translateY(calc(100% - 3rem));
     overflow: hidden;
   }
   
@@ -172,8 +176,11 @@
 
   @media (max-width: 37.5rem) {
     .sticky-cta {
+      --sticky-cta-base-bottom: 1rem;
       border-radius: 1rem;
-      inset: auto 0 0 0;
+      left: 0;
+      right: 0;
+      bottom: calc(var(--sticky-cta-base-bottom) + var(--sticky-cta-offset));
       max-width: none;
       margin: 0;
       padding: 1rem;
@@ -201,7 +208,14 @@
   aria-live="polite"
   id="sticky-cta"
 >
-  <button class="sticky-cta__close" aria-label="Hide sticky CTA" title="Hide">
+  <button
+    type="button"
+    class="sticky-cta__close"
+    aria-label="Hide sticky CTA"
+    aria-expanded="true"
+    aria-controls="sticky-cta"
+    title="Hide"
+  >
     <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
       <path d="M7.5 2.5L2.5 7.5M2.5 2.5L7.5 7.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
     </svg>
@@ -386,7 +400,7 @@
     // Hide/minimize functionality
     var stickyCta = document.getElementById('sticky-cta');
     var closeButton = stickyCta && stickyCta.querySelector('.sticky-cta__close');
-    
+
     if (closeButton && stickyCta) {
       var isMinimized = false;
       try {
@@ -398,17 +412,21 @@
           closeButton.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 2v6M2 5h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>';
           closeButton.setAttribute('aria-label', 'Show sticky CTA');
           closeButton.setAttribute('title', 'Show');
+          closeButton.setAttribute('aria-expanded', 'false');
           stickyCta.classList.add('minimized');
+          stickyCta.setAttribute('data-state', 'minimized');
         } else {
           closeButton.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M7.5 2.5L2.5 7.5M2.5 2.5L7.5 7.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>';
           closeButton.setAttribute('aria-label', 'Hide sticky CTA');
           closeButton.setAttribute('title', 'Hide');
+          closeButton.setAttribute('aria-expanded', 'true');
           stickyCta.classList.remove('minimized');
+          stickyCta.setAttribute('data-state', 'expanded');
         }
       }
-      
+
       updateButton(isMinimized);
-      
+
       closeButton.addEventListener('click', function() {
         isMinimized = !isMinimized;
         updateButton(isMinimized);
@@ -417,6 +435,63 @@
         } catch(e) {}
         sendEvent(isMinimized ? 'sticky_cta_minimized' : 'sticky_cta_expanded');
       });
+
+      function getVisibleHeight(element) {
+        if (!element || typeof element.getBoundingClientRect !== 'function') {
+          return 0;
+        }
+
+        var rect = element.getBoundingClientRect();
+        if (rect.width === 0 && rect.height === 0) {
+          return 0;
+        }
+
+        return rect.height;
+      }
+
+      function updateStickyOffset() {
+        if (!stickyCta) {
+          return;
+        }
+
+        var banner = document.getElementById('cookieBanner');
+        var prefs = document.getElementById('cookiePrefsBtn');
+        var bannerHeight = getVisibleHeight(banner);
+        var prefsHeight = getVisibleHeight(prefs);
+        var extra = 0;
+
+        if (bannerHeight > 0) {
+          extra = bannerHeight + 16;
+        }
+
+        if (prefsHeight > 0) {
+          var requiredForPrefs = prefsHeight + 16;
+          if (requiredForPrefs > extra) {
+            extra = requiredForPrefs;
+          }
+        }
+
+        stickyCta.style.setProperty('--sticky-cta-offset', extra ? extra + 'px' : '0px');
+      }
+
+      updateStickyOffset();
+
+      window.addEventListener('resize', updateStickyOffset);
+      document.addEventListener('cookie-consent-accepted', updateStickyOffset);
+      document.addEventListener('cookie-consent-rejected', updateStickyOffset);
+
+      if (typeof MutationObserver !== 'undefined') {
+        var observer = new MutationObserver(function(mutations) {
+          for (var i = 0; i < mutations.length; i += 1) {
+            if (mutations[i].type === 'childList') {
+              updateStickyOffset();
+              break;
+            }
+          }
+        });
+
+        observer.observe(document.body, { childList: true });
+      }
     }
   })();
 </script>
