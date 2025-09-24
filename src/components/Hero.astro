@@ -63,6 +63,7 @@ if (homeReport?.href) {
       {site.portals?.williamsonhenry && (
         <div class="mt-3 flex flex-wrap justify-center gap-2" aria-label="External property links">
           <a
+            id="hero-portal-link"
             href={site.portals.williamsonhenry}
             target="_blank"
             rel="noopener"
@@ -82,11 +83,31 @@ if (homeReport?.href) {
       var el = document.getElementById('hero-home-report-link');
       if (!el) return;
       el.addEventListener('click', function(){
-        if (window.gtag) {
-          window.gtag('event', 'home_report_open', {
-            event_category: 'engagement',
-            event_label: 'hero',
-          });
+        var href = el.getAttribute('href');
+        try {
+          if (window.appleAnalytics && typeof window.appleAnalytics.trackCta === 'function') {
+            window.appleAnalytics.trackCta({
+              name: 'Home Report',
+              location: 'hero',
+              destination: href,
+              type: 'document',
+              variant: 'hero-home-report'
+            });
+          }
+        } catch (ctaError) {
+          console.warn('Hero home report CTA tracking failed', ctaError);
+        }
+        try {
+          if (window.appleAnalytics && typeof window.appleAnalytics.trackDocument === 'function') {
+            window.appleAnalytics.trackDocument({
+              name: 'Home Report',
+              url: href,
+              location: 'hero',
+              format: 'pdf'
+            });
+          }
+        } catch (docError) {
+          console.warn('Hero home report document tracking failed', docError);
         }
       });
     })();`}
@@ -98,14 +119,47 @@ if (homeReport?.href) {
     var cta = document.getElementById('hero-cta');
     if(!cta) return;
     cta.addEventListener('click', function(){
-      try{
-        if(window.gtag){
-          window.gtag('event','sticky_book_click',{ event_category:'engagement', event_label:'hero_cta' });
+      try {
+        if (window.appleAnalytics && typeof window.appleAnalytics.trackCta === 'function') {
+          window.appleAnalytics.trackCta({
+            name: 'Book Viewing',
+            location: 'hero',
+            destination: cta.getAttribute('href'),
+            type: 'internal_anchor',
+            variant: 'hero-primary'
+          });
         }
-      }catch(e){ console.error('Unable to push hero CTA analytics event', e); }
+      } catch (analyticsError) {
+        console.error('Unable to track hero CTA click', analyticsError);
+      }
       try{
         window.dispatchEvent(new CustomEvent('applecottage:booking-interest',{ detail:{ source:'hero_cta' }}));
       }catch(err){ console.error('Unable to announce booking intent', err); }
     });
   })();`}
 </script>
+
+{site.portals?.williamsonhenry && (
+  <script is:inline>
+    {`(function(){
+      var portal = document.getElementById('hero-portal-link');
+      if (!portal) return;
+      portal.addEventListener('click', function(){
+        var href = portal.getAttribute('href');
+        try {
+          if (window.appleAnalytics && typeof window.appleAnalytics.trackCta === 'function') {
+            window.appleAnalytics.trackCta({
+              name: 'View on Williamson & Henry',
+              location: 'hero',
+              destination: href,
+              type: 'external',
+              variant: 'hero-portal'
+            });
+          }
+        } catch (analyticsError) {
+          console.warn('Hero portal CTA tracking failed', analyticsError);
+        }
+      });
+    })();`}
+  </script>
+)}

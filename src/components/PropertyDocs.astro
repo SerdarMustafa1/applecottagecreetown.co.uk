@@ -67,11 +67,31 @@ if (homeReport?.href) {
       var el = document.getElementById('docs-home-report-link');
       if (!el) return;
       el.addEventListener('click', function(){
-        if (window.gtag) {
-          window.gtag('event', 'home_report_open', {
-            event_category: 'engagement',
-            event_label: 'docs',
-          });
+        var href = el.getAttribute('href');
+        try {
+          if (window.appleAnalytics && typeof window.appleAnalytics.trackCta === 'function') {
+            window.appleAnalytics.trackCta({
+              name: 'Home Report',
+              location: 'plans-and-docs',
+              destination: href,
+              type: 'document',
+              variant: 'docs-home-report'
+            });
+          }
+        } catch (ctaError) {
+          console.warn('Docs CTA tracking failed', ctaError);
+        }
+        try {
+          if (window.appleAnalytics && typeof window.appleAnalytics.trackDocument === 'function') {
+            window.appleAnalytics.trackDocument({
+              name: 'Home Report',
+              url: href,
+              location: 'plans-and-docs',
+              format: 'pdf'
+            });
+          }
+        } catch (docError) {
+          console.warn('Docs document tracking failed', docError);
         }
       });
     })();`}

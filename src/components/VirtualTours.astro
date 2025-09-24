@@ -172,6 +172,20 @@ import site from '../../site.config';
     var tourId = tour.id || tour.slug || tour.videoMp4 || tour.videoWebm || tour.label || ('tour-' + index);
     currentTourMeta = { id: String(tourId || ''), label: tour.label || '' };
 
+    try {
+      if (window.appleAnalytics && typeof window.appleAnalytics.trackMedia === 'function') {
+        window.appleAnalytics.trackMedia({
+          mediaType: 'virtual_tour',
+          action: 'open',
+          label: tour.label,
+          identifier: currentTourMeta.id,
+          location: 'virtual-tours',
+        });
+      }
+    } catch (analyticsError) {
+      console.warn('Virtual tour analytics open failed', analyticsError);
+    }
+
     // Load and show modal
     video.load();
     bindTourWatch(video);
@@ -193,11 +207,27 @@ import site from '../../site.config';
 
     detachTourWatchListeners();
     lastReportedSeconds = 0;
+
+    const metaBeforeReset = { ...currentTourMeta };
     currentTourMeta = { id: '', label: '' };
 
     video.pause();
     modal.classList.add('hidden');
     document.body.style.overflow = 'auto';
+
+    try {
+      if (window.appleAnalytics && typeof window.appleAnalytics.trackMedia === 'function') {
+        window.appleAnalytics.trackMedia({
+          mediaType: 'virtual_tour',
+          action: 'close',
+          label: metaBeforeReset.label,
+          identifier: metaBeforeReset.id,
+          location: 'virtual-tours',
+        });
+      }
+    } catch (analyticsError) {
+      console.warn('Virtual tour analytics close failed', analyticsError);
+    }
   };
   
   // Close on escape key

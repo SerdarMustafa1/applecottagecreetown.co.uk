@@ -36,6 +36,174 @@ const gaId = site.analyticsId;
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="mask-icon" href="/icons/pwa-icon.svg" color="#1f6c84" />
     <link rel="manifest" href="/site.webmanifest" />
+    <script is:inline>
+      {(function () {
+        return `(() => {
+          const queueKey = '__appleAnalyticsQueue';
+          const win = window;
+          if (!Array.isArray(win[queueKey])) {
+            win[queueKey] = [];
+          }
+          if (!Array.isArray(win.dataLayer)) {
+            win.dataLayer = [];
+          }
+          const queue = win[queueKey];
+
+          const compact = (obj) => {
+            const result = {};
+            if (!obj || typeof obj !== 'object') return result;
+            Object.keys(obj).forEach((key) => {
+              const value = obj[key];
+              if (value !== undefined && value !== null && value !== '') {
+                result[key] = value;
+              }
+            });
+            return result;
+          };
+
+          const pushToDataLayer = (eventName, params) => {
+            try {
+              win.dataLayer.push(Object.assign({ event: eventName }, params || {}));
+            } catch (error) {
+              console.warn('dataLayer push failed', error);
+            }
+          };
+
+          const sendWithGtag = (eventName, params) => {
+            if (typeof win.gtag === 'function') {
+              try {
+                win.gtag('event', eventName, params || {});
+              } catch (error) {
+                console.error('gtag dispatch failed', error);
+              }
+              return true;
+            }
+            return false;
+          };
+
+          const trackEvent = (eventName, params) => {
+            if (!eventName) return;
+            const payload = compact(params || {});
+            pushToDataLayer(eventName, payload);
+            if (!sendWithGtag(eventName, payload)) {
+              queue.push({ name: eventName, params: payload });
+            }
+          };
+
+          const flushQueue = () => {
+            if (typeof win.gtag !== 'function') return;
+            if (!Array.isArray(queue) || queue.length === 0) return;
+            while (queue.length) {
+              const entry = queue.shift();
+              if (entry && entry.name) {
+                try {
+                  win.gtag('event', entry.name, entry.params || {});
+                } catch (error) {
+                  console.error('Queued analytics flush failed', error);
+                }
+              }
+            }
+          };
+
+          const api = Object.assign({}, win.appleAnalytics || {}, {
+            trackEvent,
+            flushQueue,
+            trackCta(details = {}) {
+              trackEvent('cta_click', compact({
+                cta_name: details.name,
+                cta_location: details.location,
+                destination_url: details.destination,
+                cta_type: details.type,
+                cta_variant: details.variant,
+                cta_format: details.format,
+              }));
+            },
+            trackDocument(details = {}) {
+              trackEvent('document_open', compact({
+                document_name: details.name,
+                document_url: details.url,
+                document_location: details.location,
+                document_format: details.format,
+              }));
+            },
+            trackMedia(details = {}) {
+              trackEvent('media_engagement', compact({
+                media_type: details.mediaType,
+                media_action: details.action,
+                media_label: details.label,
+                media_identifier: details.identifier,
+                media_index: details.index,
+                media_total: details.total,
+                media_filter: details.filter,
+                media_direction: details.direction,
+                media_location: details.location,
+                engagement_seconds: details.seconds,
+              }));
+            },
+            trackNavigation(details = {}) {
+              trackEvent('navigation_click', compact({
+                nav_label: details.label,
+                nav_target: details.target,
+                nav_location: details.location,
+              }));
+            },
+            trackContact(details = {}) {
+              trackEvent('contact_action', compact({
+                contact_method: details.method,
+                contact_location: details.location,
+                contact_destination: details.destination,
+              }));
+            },
+            trackGalleryFilter(details = {}) {
+              trackEvent('gallery_filter', compact({
+                gallery_filter: details.filter,
+                gallery_count: details.total,
+              }));
+            },
+            trackBookingInterest(details = {}) {
+              trackEvent('booking_interest', compact({
+                booking_source: details.source || 'unknown',
+              }));
+            }
+          });
+
+          win.appleAnalytics = api;
+
+          win.addEventListener('applecottage:booking-interest', (event) => {
+            const source = event?.detail?.source || 'unknown';
+            api.trackBookingInterest({ source });
+          }, { passive: true });
+
+          win.addEventListener('applecottage:gallery-viewed', (event) => {
+            const detail = event?.detail || {};
+            api.trackEvent('gallery_view', compact({
+              media_type: 'gallery',
+              image_src: detail.src || detail.id,
+              image_alt: detail.alt,
+              image_index: typeof detail.index === 'number' ? detail.index : undefined,
+              gallery_total: detail.total,
+              gallery_filter: detail.filter,
+            }));
+          }, { passive: true });
+
+          win.addEventListener('applecottage:tour-watch', (event) => {
+            const detail = event?.detail || {};
+            const seconds = Number(detail.secondsWatched ?? detail.seconds ?? detail.delta ?? 0);
+            api.trackEvent('media_engagement', compact({
+              media_type: detail.source === 'video' ? 'virtual_tour' : 'pano',
+              media_action: 'progress',
+              media_label: detail.label,
+              media_identifier: detail.tourId || detail.panoSrc || detail.src,
+              engagement_seconds: seconds > 0 ? seconds : undefined,
+            }));
+          }, { passive: true });
+
+          win.addEventListener('applecottage:offline-download', () => {
+            api.trackEvent('offline_download', { engagement_location: 'pwa' });
+          }, { passive: true });
+        })();`;
+      })()}
+    </script>
     {site.hero?.image && <link rel="preload" as="image" href={site.hero.image} />}
       {gaId && (
         <script is:inline>
@@ -57,6 +225,13 @@ const gaId = site.analyticsId;
                 document.head.appendChild(s);
                 gtag('js', new Date());
                 gtag('config', GA_ID);
+                try {
+                  if (window.appleAnalytics && typeof window.appleAnalytics.flushQueue === 'function') {
+                    window.appleAnalytics.flushQueue();
+                  }
+                } catch (flushError) {
+                  console.warn('Unable to flush queued analytics events', flushError);
+                }
               } catch(e) {
                 console.log('GA initialization failed:', e);
               }
@@ -86,6 +261,44 @@ const gaId = site.analyticsId;
           <a href={site.bookingUrl} target="_blank" rel="noopener" style="display:inline-block; background:#059669; color:white; padding:0.75rem 2rem; border-radius:8px; text-decoration:none; font-weight:600">Book with Williamson & Henry</a>
         </div>
       </section>
+      <script is:inline>
+        {`(function(){
+          var cta = document.querySelector('#book-viewing a[href]');
+          if (!cta) return;
+          cta.addEventListener('click', function(){
+            var href = cta.getAttribute('href');
+            try {
+              if (window.appleAnalytics && typeof window.appleAnalytics.trackCta === 'function') {
+                window.appleAnalytics.trackCta({
+                  name: 'Book Viewing External',
+                  location: 'book-viewing-section',
+                  destination: href,
+                  type: 'external',
+                  variant: 'book-viewing'
+                });
+              }
+            } catch (ctaError) {
+              console.warn('Book viewing CTA tracking failed', ctaError);
+            }
+            try {
+              if (window.appleAnalytics && typeof window.appleAnalytics.trackContact === 'function') {
+                window.appleAnalytics.trackContact({
+                  method: 'external_booking',
+                  location: 'book-viewing-section',
+                  destination: href
+                });
+              }
+            } catch (contactError) {
+              console.warn('Book viewing contact tracking failed', contactError);
+            }
+            try {
+              window.dispatchEvent(new CustomEvent('applecottage:booking-interest', { detail: { source: 'book_viewing_section' } }));
+            } catch (eventError) {
+              console.warn('Unable to dispatch booking interest from section', eventError);
+            }
+          });
+        })();`}
+      </script>
     </main>
     <Footer />
     <!-- Sticky CTA persists on screen for quick booking / report download -->

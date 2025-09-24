@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { installValuePropositions } from '../../lib/pwa/pushCampaigns';
 import { useA2HS } from './useA2HS';
+import { trackEvent } from '../../lib/analytics';
 
 export default function InstallPromptIsland(): JSX.Element | null {
   const {
@@ -17,6 +18,7 @@ export default function InstallPromptIsland(): JSX.Element | null {
   } = useA2HS();
 
   const installButtonRef = useRef<HTMLButtonElement>(null);
+  const hasLoggedPromptRef = useRef(false);
 
   const message = useMemo(() => {
     switch (triggerReason) {
@@ -40,6 +42,15 @@ export default function InstallPromptIsland(): JSX.Element | null {
     }, 0);
     return () => window.clearTimeout(id);
   }, [isPromptVisible]);
+
+  useEffect(() => {
+    if (isPromptVisible && !hasLoggedPromptRef.current) {
+      hasLoggedPromptRef.current = true;
+      trackEvent('a2hs_prompt_shown', {
+        trigger_reason: triggerReason || 'unknown',
+      });
+    }
+  }, [isPromptVisible, triggerReason]);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -121,7 +132,12 @@ export default function InstallPromptIsland(): JSX.Element | null {
           <button
             type="button"
             className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
-            onClick={dismissPrompt}
+            onClick={() => {
+              trackEvent('a2hs_prompt_dismiss', {
+                trigger_reason: triggerReason || 'unknown',
+              });
+              dismissPrompt();
+            }}
           >
             Maybe later
           </button>
@@ -130,6 +146,9 @@ export default function InstallPromptIsland(): JSX.Element | null {
             type="button"
             className="rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
             onClick={() => {
+              trackEvent('a2hs_prompt_accept', {
+                trigger_reason: triggerReason || 'unknown',
+              });
               void showPrompt();
             }}
           >

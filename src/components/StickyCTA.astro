@@ -350,16 +350,47 @@
 
 <script is:inline>
   (function () {
-    function sendEvent(name) {
+    function trackCtaInteraction(name, destination, type, variant) {
       try {
-        if (window?.gtag) {
-          window.gtag('event', name, {
-            event_category: 'engagement',
-            event_label: 'sticky_cta',
+        if (window.appleAnalytics && typeof window.appleAnalytics.trackCta === 'function') {
+          window.appleAnalytics.trackCta({
+            name,
+            location: 'sticky-cta',
+            destination,
+            type,
+            variant,
+          });
+        } else if (window.appleAnalytics && typeof window.appleAnalytics.trackEvent === 'function') {
+          window.appleAnalytics.trackEvent('cta_click', {
+            cta_name: name,
+            cta_location: 'sticky-cta',
+            destination_url: destination,
+            cta_type: type,
+            cta_variant: variant,
           });
         }
       } catch (error) {
-        console.error('Unable to push sticky CTA analytics event', error);
+        console.error('Unable to track sticky CTA interaction', error);
+      }
+    }
+
+    function trackDocumentOpen(name, url, format) {
+      try {
+        if (window.appleAnalytics && typeof window.appleAnalytics.trackDocument === 'function') {
+          window.appleAnalytics.trackDocument({ name, url, location: 'sticky-cta', format });
+        }
+      } catch (error) {
+        console.error('Unable to track document open', error);
+      }
+    }
+
+    function trackContact(method, destination) {
+      try {
+        if (window.appleAnalytics && typeof window.appleAnalytics.trackContact === 'function') {
+          window.appleAnalytics.trackContact({ method, destination, location: 'sticky-cta' });
+        }
+      } catch (error) {
+        console.error('Unable to track contact action', error);
       }
     }
 
@@ -378,7 +409,8 @@
     var bookButton = document.getElementById('sticky-book');
     if (bookButton) {
       bookButton.addEventListener('click', function () {
-        sendEvent('sticky_book_click');
+        trackCtaInteraction('Book Viewing', bookButton.getAttribute('href'), 'external', 'sticky-book');
+        trackContact('external_booking', bookButton.getAttribute('href'));
         signalBookingInterest('sticky_cta');
       });
     }
@@ -386,14 +418,18 @@
     var reportButton = document.getElementById('sticky-hr');
     if (reportButton) {
       reportButton.addEventListener('click', function () {
-        sendEvent('home_report_download');
+        var href = reportButton.getAttribute('href');
+        trackCtaInteraction('Home Report', href, 'document', 'sticky-home-report');
+        trackDocumentOpen('Home Report', href, 'pdf');
       });
     }
 
     var whatsappButton = document.getElementById('sticky-wa');
     if (whatsappButton) {
       whatsappButton.addEventListener('click', function () {
-        sendEvent('whatsapp_click');
+        var href = whatsappButton.getAttribute('href');
+        trackCtaInteraction('WhatsApp Seller', href, 'whatsapp', 'sticky-whatsapp');
+        trackContact('whatsapp', href);
       });
     }
     
@@ -433,7 +469,15 @@
         try {
           localStorage.setItem('sticky-cta-minimized', isMinimized.toString());
         } catch(e) {}
-        sendEvent(isMinimized ? 'sticky_cta_minimized' : 'sticky_cta_expanded');
+        try {
+          if (window.appleAnalytics && typeof window.appleAnalytics.trackEvent === 'function') {
+            window.appleAnalytics.trackEvent('sticky_cta_state', {
+              sticky_cta_state: isMinimized ? 'minimized' : 'expanded'
+            });
+          }
+        } catch (stateError) {
+          console.warn('Unable to track sticky CTA state change', stateError);
+        }
       });
 
       function getVisibleHeight(element) {

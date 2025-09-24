@@ -6,6 +6,7 @@ import React, { useMemo, useState, useEffect, useCallback, useRef, Suspense, laz
 // unless there is a clear accessibility or space constraint requirement.
 const LightboxDialog = lazy(() => import('./LightboxDialog'));
 import { parseSizeToken, buildVerifiedSrcSet } from '../lib/imageVariants';
+import { trackEvent, trackMediaEngagement, trackGalleryFilterChange } from '../lib/analytics';
 
 // Accept an array of image sources which may be string paths or
 // ImageMetadata objects returned from Astro's asset pipeline.
@@ -74,6 +75,7 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
   const [filter, setFilter] = useState<string>('All Photos');
   const [visibleCount, setVisibleCount] = useState(12);
   const [isLoading, setIsLoading] = useState(false);
+  const hasReportedFilter = useRef(false);
   const desiredIndexRef = React.useRef<number | null>(null);
   const observerRef = useRef<HTMLDivElement>(null);
   const loadMoreRef = useRef<IntersectionObserver | null>(null);
@@ -159,6 +161,14 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
     // Reset visible items on filter change
     setVisibleCount(12);
   }, [filter]);
+
+  useEffect(() => {
+    if (!hasReportedFilter.current) {
+      hasReportedFilter.current = true;
+      return;
+    }
+    trackGalleryFilterChange({ filter, total: filtered.length });
+  }, [filter, filtered.length]);
 
   // Infinite scroll implementation
   const loadMore = useCallback(() => {
@@ -295,13 +305,74 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
 
   const openAt = (i: number) => {
     if (i >= 0 && i < filtered.length && filtered[i]?.src) {
+      const item = filtered[i];
+      trackMediaEngagement({
+        mediaType: 'gallery',
+        action: 'open',
+        label: item.alt || item.caption || item.src,
+        identifier: item.src,
+        index: i,
+        total: filtered.length,
+        filter,
+      });
       setIndex(i);
       setOpen(true);
     }
   };
-  const close = () => setOpen(false);
-  const next = () => setIndex((i) => (i + 1) % filtered.length);
-  const prev = () => setIndex((i) => (i - 1 + filtered.length) % filtered.length);
+
+  const close = () => {
+    if (open && filtered[index]) {
+      const item = filtered[index];
+      trackMediaEngagement({
+        mediaType: 'gallery',
+        action: 'close',
+        label: item.alt || item.caption || item.src,
+        identifier: item.src,
+        index,
+        total: filtered.length,
+        filter,
+      });
+    }
+    setOpen(false);
+  };
+
+  const next = () => {
+    if (filtered.length === 0) return;
+    setIndex((current) => {
+      const nextIndex = (current + 1) % filtered.length;
+      const item = filtered[nextIndex];
+      trackMediaEngagement({
+        mediaType: 'gallery',
+        action: 'navigate',
+        direction: 'next',
+        label: item?.alt || item?.caption || item?.src,
+        identifier: item?.src,
+        index: nextIndex,
+        total: filtered.length,
+        filter,
+      });
+      return nextIndex;
+    });
+  };
+
+  const prev = () => {
+    if (filtered.length === 0) return;
+    setIndex((current) => {
+      const prevIndex = (current - 1 + filtered.length) % filtered.length;
+      const item = filtered[prevIndex];
+      trackMediaEngagement({
+        mediaType: 'gallery',
+        action: 'navigate',
+        direction: 'previous',
+        label: item?.alt || item?.caption || item?.src,
+        identifier: item?.src,
+        index: prevIndex,
+        total: filtered.length,
+        filter,
+      });
+      return prevIndex;
+    });
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -313,9 +384,10 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
       alt: current.alt,
       index,
       total: filtered.length,
+      filter,
     };
     window.dispatchEvent(new CustomEvent('applecottage:gallery-viewed', { detail }));
-  }, [open, index, filtered]);
+  }, [open, index, filtered, filter]);
 
   // Get icon for filter option
   const getFilterIcon = (filterName: string) => {
@@ -362,9 +434,12 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
             className="px-3 py-1.5 rounded border text-sm hover:bg-gray-50 flex items-center gap-1.5 transition-colors"
             onClick={(e) => { 
               e.stopPropagation(); 
-              if (filtered.length > 0 && filtered[0]?.src) {
-                setIndex(0); 
-                setOpen(true); 
+              if (filtered.length > 0) {
+                trackEvent('gallery_slideshow_open', {
+                  gallery_filter: filter,
+                  gallery_count: filtered.length,
+                });
+                openAt(0);
               }
             }}
             aria-label="Open slideshow"

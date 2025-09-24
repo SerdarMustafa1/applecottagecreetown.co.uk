@@ -1,5 +1,6 @@
 /* eslint-env browser */
 import React, { useEffect, useState } from 'react';
+import { trackMediaEngagement } from '../lib/analytics';
 
 interface Plan {
   label: string;
@@ -46,24 +47,70 @@ export default function FloorplanViewerIsland({ plans }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const openLightbox = (plan: Plan, index: number) => {
+    trackMediaEngagement({
+      mediaType: 'floorplan',
+      action: 'open',
+      label: plan.label,
+      identifier: plan.src,
+      index,
+      total: plans.length,
+      format: isVideoPlan(plan) ? 'video' : 'image',
+      location: 'floorplans',
+    });
     setCurrentPlan(plan);
     setCurrentIndex(index);
     setLightboxOpen(true);
   };
 
   const closeLightbox = () => {
+    if (currentPlan) {
+      trackMediaEngagement({
+        mediaType: 'floorplan',
+        action: 'close',
+        label: currentPlan.label,
+        identifier: currentPlan.src,
+        index: currentIndex,
+        total: plans.length,
+        format: isVideoPlan(currentPlan) ? 'video' : 'image',
+        location: 'floorplans',
+      });
+    }
     setLightboxOpen(false);
     setCurrentPlan(null);
   };
 
   const goToNext = () => {
     const nextIndex = (currentIndex + 1) % plans.length;
+    const nextPlan = plans[nextIndex];
+    trackMediaEngagement({
+      mediaType: 'floorplan',
+      action: 'navigate',
+      direction: 'next',
+      label: nextPlan?.label,
+      identifier: nextPlan?.src,
+      index: nextIndex,
+      total: plans.length,
+      format: nextPlan ? (isVideoPlan(nextPlan) ? 'video' : 'image') : undefined,
+      location: 'floorplans',
+    });
     setCurrentIndex(nextIndex);
     setCurrentPlan(plans[nextIndex]);
   };
 
   const goToPrev = () => {
     const prevIndex = currentIndex === 0 ? plans.length - 1 : currentIndex - 1;
+    const prevPlan = plans[prevIndex];
+    trackMediaEngagement({
+      mediaType: 'floorplan',
+      action: 'navigate',
+      direction: 'previous',
+      label: prevPlan?.label,
+      identifier: prevPlan?.src,
+      index: prevIndex,
+      total: plans.length,
+      format: prevPlan ? (isVideoPlan(prevPlan) ? 'video' : 'image') : undefined,
+      location: 'floorplans',
+    });
     setCurrentIndex(prevIndex);
     setCurrentPlan(plans[prevIndex]);
   };

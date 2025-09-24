@@ -3,7 +3,7 @@ import site from '../../site.config';
 ---
 <header class="sticky top-0 z-50 bg-white shadow">
   <div class="mx-auto max-w-7xl flex items-center justify-between p-4">
-    <a href="/" class="text-xl font-bold">Apple Cottage</a>
+    <a href="/" id="nav-brand" class="text-xl font-bold">Apple Cottage</a>
     <button
       id="nav-toggle"
       type="button"
@@ -31,7 +31,6 @@ import site from '../../site.config';
       <li><a href="#virtual-tours" class="block px-4 py-2 hover:underline">360° Tours</a></li>
       <li><a href="#floorplans" class="block px-4 py-2 hover:underline">Floor Plans</a></li>
       <li><a href="#location" class="block px-4 py-2 hover:underline">Location</a></li>
-      <li><a href="#book-viewing" class="block px-4 py-2 hover:underline">Book Viewing</a></li>
     </ul>
   </div>
 </header>
@@ -39,6 +38,21 @@ import site from '../../site.config';
 <script is:inline>
   const toggle = document.getElementById('nav-toggle');
   const menu = document.getElementById('nav-menu');
+  const brand = document.getElementById('nav-brand');
+
+  const trackNavClick = (label, target) => {
+    try {
+      if (window.appleAnalytics && typeof window.appleAnalytics.trackNavigation === 'function') {
+        window.appleAnalytics.trackNavigation({ label, target, location: 'header' });
+      }
+    } catch (error) {
+      console.warn('Navigation analytics failed', error);
+    }
+  };
+
+  if (brand) {
+    brand.addEventListener('click', () => trackNavClick('Brand', '/'));
+  }
 
   if (!toggle || !menu) {
     console.warn('Navigation toggle or menu not found.');
@@ -58,6 +72,7 @@ import site from '../../site.config';
 
     menu.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', () => {
+        trackNavClick(link.textContent?.trim() || 'nav-link', link.getAttribute('href') || '#');
         if (window.matchMedia('(max-width: 767px)').matches) {
           setMenuExpanded(false);
         }

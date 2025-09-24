@@ -107,7 +107,7 @@
       <p class="trust-eyebrow">Independent Survey</p>
       <p class="trust-title">Download the Home Report</p>
       <p class="trust-description">
-        <a class="trust-link" href="https://www.williamsonandhenry.co.uk/property/apple-cottage-creetown/" target="_blank" rel="noopener" aria-label="View property details and home report">
+        <a class="trust-link" id="trustbar-home-report" href="https://www.williamsonandhenry.co.uk/property/apple-cottage-creetown/" target="_blank" rel="noopener" aria-label="View property details and home report">
           Valuation £300,000
         </a>
       </p>
@@ -132,3 +132,38 @@
     </div>
   </article>
 </section>
+
+<script is:inline>
+  {`(function(){
+    var link = document.getElementById('trustbar-home-report');
+    if (!link) return;
+    link.addEventListener('click', function(){
+      var href = link.getAttribute('href');
+      try {
+        if (window.appleAnalytics && typeof window.appleAnalytics.trackCta === 'function') {
+          window.appleAnalytics.trackCta({
+            name: 'Home Report Valuation',
+            location: 'trust-bar',
+            destination: href,
+            type: 'document',
+            variant: 'trustbar'
+          });
+        }
+      } catch (ctaError) {
+        console.warn('Trust bar CTA tracking failed', ctaError);
+      }
+      try {
+        if (window.appleAnalytics && typeof window.appleAnalytics.trackDocument === 'function') {
+          window.appleAnalytics.trackDocument({
+            name: 'Home Report',
+            url: href,
+            location: 'trust-bar',
+            format: 'pdf'
+          });
+        }
+      } catch (docError) {
+        console.warn('Trust bar document tracking failed', docError);
+      }
+    });
+  })();`}
+</script>

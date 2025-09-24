@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { trackMediaEngagement } from '../lib/analytics';
 
 interface Props {
   pano: {
@@ -16,6 +17,7 @@ export default function Simple360Viewer({ pano, height = 320 }: Props) {
   const [error, setError] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const watchIntervalRef = useRef<number | null>(null);
+  const trackedOpenRef = useRef(false);
 
   const dispatchTourWatch = useCallback((seconds: number) => {
     if (typeof window === 'undefined') return;
@@ -120,6 +122,19 @@ export default function Simple360Viewer({ pano, height = 320 }: Props) {
       }
     };
   }, [dispatchTourWatch, isVisible, loaded]);
+
+  useEffect(() => {
+    if (trackedOpenRef.current) return;
+    if (!loaded || !isVisible) return;
+    trackedOpenRef.current = true;
+    trackMediaEngagement({
+      mediaType: 'pano',
+      action: 'open',
+      label: pano.label,
+      identifier: pano.src,
+      location: 'panos',
+    });
+  }, [loaded, isVisible, pano.label, pano.src]);
 
   if (error) {
     return (
