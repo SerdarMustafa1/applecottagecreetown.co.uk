@@ -265,7 +265,11 @@ export default function GalleryIsland({ images }: GalleryIslandProps) {
         if (opts.index >= 0) url.searchParams.set('index', String(opts.index));
         else url.searchParams.delete('index');
       }
-      if (!url.hash) url.hash = '#gallery';
+      const shouldAnchorGallery = (
+        (opts.gallery && opts.gallery !== 'All Photos') ||
+        (typeof opts.index === 'number' && opts.index >= 0)
+      );
+      if (shouldAnchorGallery) url.hash = '#gallery';
       window.history.replaceState({}, '', url.toString());
     } catch {
       // ignore - history/URL updates are non-essential

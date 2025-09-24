@@ -16,9 +16,9 @@ test.describe('Core user flows', () => {
     await expect(page.locator('#gallery')).toBeVisible();
     await page.getByRole('link', { name: 'Floor Plans' }).click();
     await expect(page.locator('#floorplans')).toBeVisible();
-    await page.getByRole('link', { name: 'Contact' }).click();
-    await expect(page.locator('#contact')).toBeVisible();
-    const results = await new AxeBuilder({ page }).include('#contact').analyze();
+    await page.getByRole('link', { name: 'Book Viewing' }).click();
+    await expect(page.locator('#book-viewing')).toBeVisible();
+    const results = await new AxeBuilder({ page }).include('#book-viewing').analyze();
     const serious = results.violations.filter(v => ['critical', 'serious'].includes(v.impact));
     expect(serious).toEqual([]);
     // Snapshot checks disabled to reduce CI flakiness
@@ -76,26 +76,22 @@ test.describe('Core user flows', () => {
 
   test('booking embed (TidyCal) is present and accessible', async ({ page }) => {
     await page.addInitScript(() => localStorage.setItem('silktideCookieBanner_InitialChoice', '1'));
-  await page.goto(SITE_URL + '#contact', { waitUntil: 'domcontentloaded' });
-    // Ensure the tidycal container (or fallback section) is present quickly
+  await page.goto(SITE_URL + '#book-viewing', { waitUntil: 'domcontentloaded' });
+    const bookingSection = page.locator('#book-viewing');
+    await expect(bookingSection).toBeVisible();
+
     const tidycalContainer = page.locator('.tidycal-embed');
-    await tidycalContainer.waitFor({ state: 'attached', timeout: 5000 });
-    // Attempt to detect iframe or fallback; allow extra grace time
-    const iframe = page.locator('.tidycal-embed iframe');
-    const fallback = page.locator('#tidycal-fallback-link');
-    await Promise.race([
-      iframe.waitFor({ state: 'attached', timeout: 7000 }).catch(() => {}),
-      fallback.waitFor({ state: 'attached', timeout: 4000 }).catch(() => {}),
-    ]);
-    const hasIframe = (await iframe.count()) > 0;
-    const hasFallback = (await fallback.count()) > 0;
-    expect(hasIframe || hasFallback).toBeTruthy();
-    // Run accessibility checks against whichever is present
-    if (hasIframe) {
+    const hasTidycal = (await tidycalContainer.count()) > 0;
+
+    if (hasTidycal) {
+      const iframe = tidycalContainer.locator('iframe');
+      await iframe.first().waitFor({ state: 'attached', timeout: 7000 }).catch(() => {});
       const results = await new AxeBuilder({ page }).include('.tidycal-embed iframe').analyze();
       const serious = results.violations.filter(v => ['critical', 'serious'].includes(v.impact));
       expect(serious).toEqual([]);
     } else {
+      const externalCta = bookingSection.getByRole('link', { name: 'Book with Williamson & Henry' });
+      await expect(externalCta).toHaveAttribute('href', /williamsonandhenry\.co\.uk/);
       const results = await new AxeBuilder({ page }).include('#book-viewing').analyze();
       const serious = results.violations.filter(v => ['critical', 'serious'].includes(v.impact));
       expect(serious).toEqual([]);

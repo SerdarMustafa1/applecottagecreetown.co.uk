@@ -64,7 +64,7 @@ export const site = {
     image: media('/images/exterior/hero-exterior-6D088E35.jpg'),
     tagline: 'Renovated 3-bed with annex, EPC B, solar + EV — move-in ready in Creetown',
     ctaLabel: 'Book a viewing',
-    bookUrl: '/#contact'
+    bookUrl: '/#book-viewing'
   },
   distances: {
     a75: '2 min',

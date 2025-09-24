@@ -26,7 +26,7 @@
       "name": "Book a viewing",
       "short_name": "Book viewing",
       "description": "Jump straight to the booking form to schedule a viewing.",
-      "url": "/#contact"
+      "url": "/#book-viewing"
     },
     {
       "name": "Explore gallery",

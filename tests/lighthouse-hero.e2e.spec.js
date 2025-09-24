@@ -103,7 +103,7 @@ test.describe('Hero Section Lighthouse Performance', () => {
     expect(['A', 'BUTTON']).toContain(focusedElement);
     
     // Check for proper contrast (buttons should be visible)
-    const ctaButton = await page.$('#hero a[href*="tidycal"]');
+    const ctaButton = await page.$('#hero a[href="#book-viewing"]');
     expect(ctaButton).toBeTruthy();
     
     const buttonStyles = await page.evaluate((btn) => {
