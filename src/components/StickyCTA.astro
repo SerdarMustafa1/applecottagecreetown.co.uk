@@ -1,4 +1,11 @@
 ---
+import site from '../../site.config';
+
+const shareTitle = site.title ?? 'Apple Cottage';
+const shareText = site.description
+  ? `${site.title ?? 'Apple Cottage'} — ${site.description}`
+  : site.title ?? 'Apple Cottage';
+const shareUrl = site.siteUrl ?? 'https://applecottagecreetown.co.uk';
 ---
 <!-- Refined sticky CTA bar optimised for mobile + desktop -->
 <style>
@@ -103,7 +110,7 @@
   .sticky-cta__actions {
     display: grid;
     gap: 0.75rem;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .sticky-cta__button {
@@ -144,6 +151,12 @@
     border: 1px solid rgba(34, 197, 94, 0.3);
   }
 
+  .sticky-cta__button--share {
+    background: rgba(37, 99, 235, 0.12);
+    color: #1d4ed8;
+    border: 1px solid rgba(37, 99, 235, 0.28);
+  }
+
   .sticky-cta__button:hover,
   .sticky-cta__button:focus-visible {
     transform: translateY(-2px);
@@ -168,10 +181,35 @@
     border-color: rgba(34, 197, 94, 0.4);
   }
 
+  .sticky-cta__button--share:hover,
+  .sticky-cta__button--share:focus-visible {
+    background: rgba(37, 99, 235, 0.18);
+    border-color: rgba(37, 99, 235, 0.4);
+    color: #1e3a8a;
+  }
+
+  .sticky-cta__button[disabled] {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+  }
+
   .sticky-cta__icon {
     display: inline-flex;
     width: 1.15rem;
     height: 1.15rem;
+  }
+
+  .sticky-cta__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   @media (max-width: 37.5rem) {
@@ -196,7 +234,7 @@
     }
 
     .sticky-cta__actions {
-      grid-template-columns: repeat(3, minmax(0, auto));
+      grid-template-columns: repeat(2, minmax(10rem, 1fr));
     }
   }
 </style>
@@ -345,7 +383,59 @@
       </span>
       WhatsApp Seller
     </a>
+    <button
+      type="button"
+      class="sticky-cta__button sticky-cta__button--share"
+      id="sticky-share"
+      data-share-title={shareTitle}
+      data-share-text={shareText}
+      data-share-url={shareUrl}
+      aria-label="Share Apple Cottage listing"
+      aria-haspopup="dialog"
+    >
+      <span class="sticky-cta__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M7 7C5.343 7 4 5.657 4 4C4 2.343 5.343 1 7 1C8.657 1 10 2.343 10 4C10 5.657 8.657 7 7 7Z"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M17 14C15.343 14 14 12.657 14 11C14 9.343 15.343 8 17 8C18.657 8 20 9.343 20 11C20 12.657 18.657 14 17 14Z"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M17 23C15.343 23 14 21.657 14 20C14 18.343 15.343 17 17 17C18.657 17 20 18.343 20 20C20 21.657 18.657 23 17 23Z"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M9.72666 5.61245L14.2732 8.38752"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M9.72656 18.3876L14.2731 15.6125"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </span>
+      Share Listing
+    </button>
   </div>
+  <span id="sticky-share-status" class="sticky-cta__status" role="status" aria-live="polite"></span>
 </aside>
 
 <script is:inline>
@@ -432,7 +522,131 @@
         trackContact('whatsapp', href);
       });
     }
-    
+
+    var shareButton = document.getElementById('sticky-share');
+    var shareStatus = document.getElementById('sticky-share-status');
+
+    function updateShareStatus(message) {
+      if (!shareStatus || typeof message !== 'string') {
+        return;
+      }
+
+      shareStatus.textContent = message;
+      shareStatus.setAttribute('data-updated', String(Date.now()));
+    }
+
+    function copyToClipboard(text) {
+      return new Promise(function (resolve, reject) {
+        if (!text) {
+          reject(new Error('No text to copy'));
+          return;
+        }
+
+        if (navigator?.clipboard?.writeText) {
+          navigator.clipboard
+            .writeText(text)
+            .then(resolve)
+            .catch(function (clipboardError) {
+              reject(clipboardError);
+            });
+          return;
+        }
+
+        try {
+          var textarea = document.createElement('textarea');
+          textarea.value = text;
+          textarea.setAttribute('readonly', '');
+          textarea.style.position = 'absolute';
+          textarea.style.left = '-9999px';
+          document.body.appendChild(textarea);
+          var previousSelection = document.getSelection && document.getSelection();
+          var previousRange = previousSelection && previousSelection.rangeCount > 0 ? previousSelection.getRangeAt(0) : null;
+          textarea.select();
+          var successful = document.execCommand('copy');
+          document.body.removeChild(textarea);
+          if (previousSelection && previousRange) {
+            previousSelection.removeAllRanges();
+            previousSelection.addRange(previousRange);
+          }
+
+          if (successful) {
+            resolve(true);
+            return;
+          }
+
+          reject(new Error('execCommand copy unsuccessful'));
+        } catch (error) {
+          reject(error);
+        }
+      });
+    }
+
+    if (shareButton) {
+      shareButton.addEventListener('click', function () {
+        if (!shareButton) {
+          return;
+        }
+
+        var shareTitleValue = shareButton.getAttribute('data-share-title') || document?.title || 'Apple Cottage';
+        var shareTextValue = shareButton.getAttribute('data-share-text') || shareTitleValue;
+        var shareUrlValue = shareButton.getAttribute('data-share-url') || window?.location?.href || 'https://applecottagecreetown.co.uk';
+        var sharePayload = {
+          title: shareTitleValue,
+          text: shareTextValue,
+          url: shareUrlValue
+        };
+
+        var activeElement = document.activeElement;
+        shareButton.disabled = true;
+        shareButton.setAttribute('aria-busy', 'true');
+
+        function finishInteraction() {
+          shareButton.disabled = false;
+          shareButton.removeAttribute('aria-busy');
+          if (activeElement && typeof activeElement.focus === 'function') {
+            activeElement.focus();
+          }
+        }
+
+        function handleSuccessfulShare(method) {
+          trackCtaInteraction('Share Listing', shareUrlValue, method, 'sticky-share');
+        }
+
+        var nativeShareAvailable = typeof navigator !== 'undefined' && typeof navigator.share === 'function';
+
+        function handleClipboardShare() {
+          return copyToClipboard(shareUrlValue)
+            .then(function () {
+              updateShareStatus('Listing link copied to clipboard.');
+              handleSuccessfulShare('clipboard_copy');
+            })
+            .catch(function () {
+              updateShareStatus('Unable to copy the link automatically. Please copy it manually.');
+            });
+        }
+
+        if (nativeShareAvailable) {
+          navigator
+            .share(sharePayload)
+            .then(function () {
+              updateShareStatus('Share dialog opened.');
+              handleSuccessfulShare('native_share');
+            })
+            .catch(function (shareError) {
+              if (shareError && shareError.name === 'AbortError') {
+                updateShareStatus('Share cancelled.');
+                return;
+              }
+
+              return handleClipboardShare();
+            })
+            .finally(finishInteraction);
+        } else {
+          handleClipboardShare().finally(finishInteraction);
+        }
+      });
+    }
+
     // Hide/minimize functionality
     var stickyCta = document.getElementById('sticky-cta');
     var closeButton = stickyCta && stickyCta.querySelector('.sticky-cta__close');
