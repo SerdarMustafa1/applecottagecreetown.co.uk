@@ -1,8 +1,10 @@
 ---
 import site from '../../site.config';
+import { getAvailablePortals } from '../lib/portals';
+
 const phone = site.contact?.phone || '';
 const email = site.contact?.email || '';
-const portals = site.portals || {};
+const portalLinks = getAvailablePortals(site.portals);
 function digits(s: string) { return s.replace(/\D/g, ''); }
 const telHref = phone ? `tel:${phone.replace(/\s/g, '')}` : null;
 const waHref = phone ? `https://wa.me/${digits(phone)}?text=${encodeURIComponent('Hello, I am interested in Apple Cottage in Creetown.')}` : null;
@@ -15,9 +17,17 @@ const mailHref = email ? `mailto:${email}?subject=${encodeURIComponent('Apple Co
       {telHref && <a href={telHref} class="px-2 py-1 rounded border hover:bg-gray-50" aria-label={`Call ${phone}`}>Call</a>}
       {waHref && <a href={waHref} target="_blank" rel="noopener" class="px-2 py-1 rounded border hover:bg-gray-50" aria-label="Chat on WhatsApp">WhatsApp</a>}
       {mailHref && <a href={mailHref} class="px-2 py-1 rounded border hover:bg-gray-50" aria-label={`Email ${email}`}>Email</a>}
-      {portals?.williamsonhenry && (
-        <a href={portals.williamsonhenry} target="_blank" rel="noopener" class="px-2 py-1 rounded border hover:bg-gray-50" aria-label="View on Williamson & Henry">Williamson & Henry</a>
-      )}
+      {portalLinks.map((portal) => (
+        <a
+          href={portal.href}
+          target="_blank"
+          rel="noopener"
+          class="px-2 py-1 rounded border hover:bg-gray-50"
+          aria-label={portal.ariaLabel}
+        >
+          {portal.label}
+        </a>
+      ))}
     </div>
   </div>
 </nav>
