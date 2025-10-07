@@ -1,4 +1,13 @@
 ---
+import site from '../../site.config';
+
+const homeReportDoc = (site.docs || []).find?.((doc) => /home\s*report/i.test(doc.label ?? ''));
+const normalizedHomeReport = typeof homeReportDoc?.href === 'string' ? homeReportDoc.href.trim() : '';
+const homeReportUrl = normalizedHomeReport || (site.portals?.williamsonhenry?.trim?.() ?? '');
+const hasHomeReportLink = homeReportUrl.length > 0;
+const homeReportTarget = hasHomeReportLink && /^https?:/i.test(homeReportUrl) ? '_blank' : undefined;
+const homeReportRel = homeReportTarget ? 'noopener' : undefined;
+const homeReportAria = 'View property details and home report';
 ---
 <style>
   .trustbar {
@@ -107,9 +116,20 @@
       <p class="trust-eyebrow">Independent Survey</p>
       <p class="trust-title">Download the Home Report</p>
       <p class="trust-description">
-        <a class="trust-link" id="trustbar-home-report" href="https://www.williamsonandhenry.co.uk/property/apple-cottage-creetown/" target="_blank" rel="noopener" aria-label="View property details and home report">
-          Valuation £300,000
-        </a>
+        {hasHomeReportLink ? (
+          <a
+            class="trust-link"
+            id="trustbar-home-report"
+            href={homeReportUrl}
+            target={homeReportTarget}
+            rel={homeReportRel}
+            aria-label={homeReportAria}
+          >
+            Valuation £300,000
+          </a>
+        ) : (
+          <span>Valuation £300,000</span>
+        )}
       </p>
     </div>
   </article>

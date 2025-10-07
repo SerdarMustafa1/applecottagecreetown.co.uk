@@ -3,20 +3,20 @@ type AnalyticsEvent = {
   params?: Record<string, unknown>;
 };
 
-declare global {
-  interface Window {
-    appleAnalytics?: {
-      trackEvent: (eventName: string, params?: Record<string, unknown>) => void;
-    };
-    __appleAnalyticsQueue?: AnalyticsEvent[];
-  }
+interface AnalyticsApi {
+  trackEvent: Function;
 }
+
+type AnalyticsWindow = Window & {
+  appleAnalytics?: AnalyticsApi;
+  __appleAnalyticsQueue?: AnalyticsEvent[];
+};
 
 const QUEUE_KEY = '__appleAnalyticsQueue';
 
 const enqueue = (eventName: string, params?: Record<string, unknown>) => {
   if (typeof window === 'undefined') return;
-  const w = window as Window;
+  const w = window as AnalyticsWindow;
   if (!Array.isArray(w[QUEUE_KEY])) {
     w[QUEUE_KEY] = [];
   }
@@ -25,7 +25,7 @@ const enqueue = (eventName: string, params?: Record<string, unknown>) => {
 
 const dispatchThroughGlobal = (eventName: string, params?: Record<string, unknown>) => {
   if (typeof window === 'undefined') return false;
-  const w = window as Window;
+  const w = window as AnalyticsWindow;
   if (w.appleAnalytics?.trackEvent) {
     try {
       w.appleAnalytics.trackEvent(eventName, params);
@@ -156,7 +156,7 @@ export const trackBookingInterest = (details: { source?: string }) => {
 
 export const flushAnalyticsQueue = () => {
   if (typeof window === 'undefined') return;
-  const w = window as Window;
+  const w = window as AnalyticsWindow;
   const queue = w[QUEUE_KEY];
   if (!Array.isArray(queue) || queue.length === 0) return;
   if (!w.appleAnalytics?.trackEvent) return;

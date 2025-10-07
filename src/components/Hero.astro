@@ -1,7 +1,10 @@
 ---
 import site from '../../site.config';
+import { getAvailablePortals } from '../lib/portals';
+
 const hero = site.hero || {};
 const homeReport = (site.docs || []).find?.((d) => /home\s*report/i.test(d.label || ''));
+const heroPortals = getAvailablePortals(site.portals);
 
 function formatBytes(bytes: number) {
   if (!Number.isFinite(bytes) || bytes <= 0) return null;
@@ -60,17 +63,22 @@ if (homeReport?.href) {
           </a>
         )}
       </div>
-      {site.portals?.williamsonhenry && (
+      {heroPortals.length > 0 && (
         <div class="mt-3 flex flex-wrap justify-center gap-2" aria-label="External property links">
-          <a
-            id="hero-portal-link"
-            href={site.portals.williamsonhenry}
-            target="_blank"
-            rel="noopener"
-            class="px-3 py-1 rounded-full bg-white/90 text-gray-800 hover:bg-white focus:outline-none focus-visible:ring"
-          >
-            View on Williamson & Henry
-          </a>
+          {heroPortals.map((portal) => (
+            <a
+              id={`hero-portal-${portal.key}`}
+              href={portal.href}
+              target="_blank"
+              rel="noopener"
+              class="px-3 py-1 rounded-full bg-white/90 text-gray-800 hover:bg-white focus:outline-none focus-visible:ring"
+              aria-label={portal.ariaLabel}
+              data-hero-portal={portal.key}
+              data-portal-name={portal.label}
+            >
+              View on {portal.label}
+            </a>
+          ))}
         </div>
       )}
     </div>
@@ -139,26 +147,30 @@ if (homeReport?.href) {
   })();`}
 </script>
 
-{site.portals?.williamsonhenry && (
+{heroPortals.length > 0 && (
   <script is:inline>
     {`(function(){
-      var portal = document.getElementById('hero-portal-link');
-      if (!portal) return;
-      portal.addEventListener('click', function(){
-        var href = portal.getAttribute('href');
-        try {
-          if (window.appleAnalytics && typeof window.appleAnalytics.trackCta === 'function') {
-            window.appleAnalytics.trackCta({
-              name: 'View on Williamson & Henry',
-              location: 'hero',
-              destination: href,
-              type: 'external',
-              variant: 'hero-portal'
-            });
+      var links = document.querySelectorAll('[data-hero-portal]');
+      if (!links || links.length === 0) return;
+      Array.prototype.forEach.call(links, function(portal){
+        portal.addEventListener('click', function(){
+          var href = portal.getAttribute('href');
+          var label = portal.getAttribute('data-portal-name') || 'External portal';
+          if (!href) return;
+          try {
+            if (window.appleAnalytics && typeof window.appleAnalytics.trackCta === 'function') {
+              window.appleAnalytics.trackCta({
+                name: label,
+                location: 'hero',
+                destination: href,
+                type: 'external',
+                variant: 'hero-portal'
+              });
+            }
+          } catch (analyticsError) {
+            console.warn('Hero portal CTA tracking failed', analyticsError);
           }
-        } catch (analyticsError) {
-          console.warn('Hero portal CTA tracking failed', analyticsError);
-        }
+        });
       });
     })();`}
   </script>

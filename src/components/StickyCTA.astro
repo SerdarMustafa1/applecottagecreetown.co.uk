@@ -6,6 +6,21 @@ const shareText = site.description
   ? `${site.title ?? 'Apple Cottage'} — ${site.description}`
   : site.title ?? 'Apple Cottage';
 const shareUrl = site.siteUrl ?? 'https://applecottagecreetown.co.uk';
+
+const normalizedBooking = typeof site.bookingUrl === 'string' ? site.bookingUrl.trim() : '';
+const fallbackBooking = site.portals?.williamsonhenry?.trim?.() || '#book-viewing';
+const bookingUrl = normalizedBooking.length > 0 ? normalizedBooking : fallbackBooking;
+const isExternalBooking = /^https?:/i.test(bookingUrl);
+const bookingTarget = isExternalBooking ? '_blank' : undefined;
+const bookingRel = isExternalBooking ? 'noopener' : undefined;
+
+const homeReportDoc = (site.docs || []).find?.((doc) => /home\s*report/i.test(doc.label ?? ''));
+const normalizedHomeReport = typeof homeReportDoc?.href === 'string' ? homeReportDoc.href.trim() : '';
+const homeReportUrl = normalizedHomeReport || (site.portals?.williamsonhenry?.trim?.() ?? '');
+const hasHomeReportLink = homeReportUrl.length > 0;
+const homeReportIsExternal = hasHomeReportLink ? /^https?:/i.test(homeReportUrl) : false;
+const homeReportTarget = homeReportIsExternal ? '_blank' : undefined;
+const homeReportRel = homeReportIsExternal ? 'noopener' : undefined;
 ---
 <!-- Refined sticky CTA bar optimised for mobile + desktop -->
 <style>
@@ -276,9 +291,9 @@ const shareUrl = site.siteUrl ?? 'https://applecottagecreetown.co.uk';
   </div>
   <div class="sticky-cta__actions">
     <a
-      href="https://www.williamsonandhenry.co.uk/property/apple-cottage-creetown/"
-      target="_blank"
-      rel="noopener"
+      href={bookingUrl}
+      target={bookingTarget}
+      rel={bookingRel}
       class="sticky-cta__button sticky-cta__button--primary"
       id="sticky-book"
     >
@@ -323,40 +338,42 @@ const shareUrl = site.siteUrl ?? 'https://applecottagecreetown.co.uk';
       </span>
       Book a Viewing
     </a>
-    <a
-      href="https://www.williamsonandhenry.co.uk/property/apple-cottage-creetown/"
-      target="_blank"
-      rel="noopener"
-      class="sticky-cta__button sticky-cta__button--secondary"
-      id="sticky-hr"
-    >
-      <span class="sticky-cta__icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M12 3V17"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M7 12L12 17L17 12"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M5 21H19"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </span>
-      Download Home Report
-    </a>
+    {hasHomeReportLink && (
+      <a
+        href={homeReportUrl}
+        target={homeReportTarget}
+        rel={homeReportRel}
+        class="sticky-cta__button sticky-cta__button--secondary"
+        id="sticky-hr"
+      >
+        <span class="sticky-cta__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 3V17"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M7 12L12 17L17 12"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M5 21H19"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </span>
+        Download Home Report
+      </a>
+    )}
     <a
       href="https://wa.me/447931071401"
       class="sticky-cta__button sticky-cta__button--whatsapp"
@@ -499,8 +516,11 @@ const shareUrl = site.siteUrl ?? 'https://applecottagecreetown.co.uk';
     var bookButton = document.getElementById('sticky-book');
     if (bookButton) {
       bookButton.addEventListener('click', function () {
-        trackCtaInteraction('Book Viewing', bookButton.getAttribute('href'), 'external', 'sticky-book');
-        trackContact('external_booking', bookButton.getAttribute('href'));
+        var href = bookButton.getAttribute('href') || '#book-viewing';
+        var type = href.indexOf('#') === 0 ? 'internal_anchor' : 'external';
+        trackCtaInteraction('Book Viewing', href, type, 'sticky-book');
+        var contactType = type === 'external' ? 'external_booking' : 'internal_booking';
+        trackContact(contactType, href);
         signalBookingInterest('sticky_cta');
       });
     }
@@ -509,6 +529,7 @@ const shareUrl = site.siteUrl ?? 'https://applecottagecreetown.co.uk';
     if (reportButton) {
       reportButton.addEventListener('click', function () {
         var href = reportButton.getAttribute('href');
+        if (!href) return;
         trackCtaInteraction('Home Report', href, 'document', 'sticky-home-report');
         trackDocumentOpen('Home Report', href, 'pdf');
       });
