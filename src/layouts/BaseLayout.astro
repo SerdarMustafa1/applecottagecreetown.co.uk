@@ -81,9 +81,17 @@ const gaId = site.analyticsId;
             return false;
           };
 
+          const getPageContext = () => compact({
+            page_location: win?.location?.href,
+            page_path: win?.location?.pathname,
+            page_title: document?.title,
+            page_referrer: document?.referrer || undefined,
+            page_hostname: win?.location?.hostname,
+          });
+
           const trackEvent = (eventName, params) => {
             if (!eventName) return;
-            const payload = compact(params || {});
+            const payload = compact(Object.assign({}, getPageContext(), params || {}));
             pushToDataLayer(eventName, payload);
             if (!sendWithGtag(eventName, payload)) {
               queue.push({ name: eventName, params: payload });
@@ -169,6 +177,8 @@ const gaId = site.analyticsId;
 
           win.appleAnalytics = api;
 
+          trackEvent('page_view', { engagement_location: 'site' });
+
           win.addEventListener('applecottage:booking-interest', (event) => {
             const source = event?.detail?.source || 'unknown';
             api.trackBookingInterest({ source });
@@ -201,6 +211,85 @@ const gaId = site.analyticsId;
           win.addEventListener('applecottage:offline-download', () => {
             api.trackEvent('offline_download', { engagement_location: 'pwa' });
           }, { passive: true });
+
+          const scrollMilestones = [25, 50, 75, 90];
+          const reachedMilestones = new Set();
+          let scrollTicking = false;
+
+          const handleScrollDepth = () => {
+            if (scrollTicking) return;
+            scrollTicking = true;
+            win.requestAnimationFrame(() => {
+              const doc = document.documentElement;
+              const scrollTop = win.scrollY || doc.scrollTop || 0;
+              const docHeight = doc.scrollHeight || 0;
+              const viewportHeight = win.innerHeight || doc.clientHeight || 0;
+              const maxScroll = Math.max(docHeight - viewportHeight, 1);
+              const percent = Math.min(100, Math.round((scrollTop / maxScroll) * 100));
+
+              scrollMilestones.forEach((milestone) => {
+                if (percent >= milestone && !reachedMilestones.has(milestone)) {
+                  reachedMilestones.add(milestone);
+                  trackEvent('scroll_depth', {
+                    scroll_percent: milestone,
+                    scroll_location: win?.location?.pathname,
+                  });
+                }
+              });
+
+              if (reachedMilestones.size === scrollMilestones.length) {
+                win.removeEventListener('scroll', handleScrollDepth);
+              }
+              scrollTicking = false;
+            });
+          };
+
+          win.addEventListener('scroll', handleScrollDepth, { passive: true });
+
+          const pageStart = Date.now();
+          let timeReported = false;
+
+          const reportTimeOnPage = (reason) => {
+            if (timeReported) return;
+            const seconds = Math.round((Date.now() - pageStart) / 1000);
+            if (seconds <= 0) return;
+            timeReported = true;
+            trackEvent('time_on_page', {
+              engagement_seconds: seconds,
+              engagement_reason: reason,
+            });
+          };
+
+          win.addEventListener('visibilitychange', () => {
+            if (document?.visibilityState === 'hidden') {
+              reportTimeOnPage('visibility_hidden');
+            }
+          });
+
+          win.addEventListener('pagehide', () => {
+            reportTimeOnPage('page_hide');
+          }, { once: true });
+
+          win.addEventListener('click', (event) => {
+            const target = event?.target;
+            const anchor = target?.closest?.('a');
+            if (!anchor || !anchor.href) return;
+            const linkUrl = anchor.href;
+            if (linkUrl.startsWith('mailto:') || linkUrl.startsWith('tel:') || linkUrl.startsWith('sms:')) {
+              return;
+            }
+            const currentHost = win?.location?.host;
+            const linkHost = anchor.host;
+            if (!currentHost || !linkHost || currentHost === linkHost) {
+              return;
+            }
+            const linkText = anchor.textContent?.trim();
+            trackEvent('outbound_click', {
+              link_url: linkUrl,
+              link_host: linkHost,
+              link_text: linkText ? linkText.slice(0, 120) : undefined,
+            });
+          }, { passive: true });
         })();`;
       })()}
     </script>
@@ -224,7 +313,7 @@ const gaId = site.analyticsId;
                 s.onerror = function() { console.log('GA blocked by ad blocker'); };
                 document.head.appendChild(s);
                 gtag('js', new Date());
-                gtag('config', GA_ID);
+                gtag('config', GA_ID, { send_page_view: false });
                 try {
                   if (window.appleAnalytics && typeof window.appleAnalytics.flushQueue === 'function') {
                     window.appleAnalytics.flushQueue();

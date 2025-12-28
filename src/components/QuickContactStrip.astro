@@ -7,7 +7,8 @@ const email = site.contact?.email || '';
 const portalLinks = getAvailablePortals(site.portals);
 function digits(s: string) { return s.replace(/\D/g, ''); }
 const telHref = phone ? `tel:${phone.replace(/\s/g, '')}` : null;
-const waHref = phone ? `https://wa.me/${digits(phone)}?text=${encodeURIComponent('Hello, I am interested in Apple Cottage in Creetown.')}` : null;
+const smsBody = 'Hello, I am interested in Apple Cottage in Creetown.';
+const smsHref = phone ? `sms:${digits(phone)}?body=${encodeURIComponent(smsBody)}` : null;
 const mailHref = email ? `mailto:${email}?subject=${encodeURIComponent('Apple Cottage viewing')}` : null;
 ---
 <nav aria-label="Quick contact" class="w-full bg-white/90 backdrop-blur sticky top-0 z-40 border-b">
@@ -15,7 +16,7 @@ const mailHref = email ? `mailto:${email}?subject=${encodeURIComponent('Apple Co
     <div class="font-medium">Apple Cottage</div>
     <div class="flex items-center gap-2">
       {telHref && <a href={telHref} class="px-2 py-1 rounded border hover:bg-gray-50" aria-label={`Call ${phone}`}>Call</a>}
-      {waHref && <a href={waHref} target="_blank" rel="noopener" class="px-2 py-1 rounded border hover:bg-gray-50" aria-label="Chat on WhatsApp">WhatsApp</a>}
+      {smsHref && <a href={smsHref} class="px-2 py-1 rounded border hover:bg-gray-50" aria-label="Message the seller by SMS">Message Seller</a>}
       {mailHref && <a href={mailHref} class="px-2 py-1 rounded border hover:bg-gray-50" aria-label={`Email ${email}`}>Email</a>}
       {portalLinks.map((portal) => (
         <a
@@ -31,4 +32,3 @@ const mailHref = email ? `mailto:${email}?subject=${encodeURIComponent('Apple Co
     </div>
   </div>
 </nav>
-
