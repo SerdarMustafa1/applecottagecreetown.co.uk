@@ -53,7 +53,7 @@ export const site = {
   address: 'Apple Cottage, Creetown, Scotland',
   coordinates: { lat: 54.899611, lng: -4.380458 },
   bookingUrl: 'https://www.williamsonandhenry.co.uk/property/apple-cottage-silver-street-creetown/',
-  price: '💰 Offers Over £300,000',
+  price: '💰 New Guide Price £275,000 — recently reduced',
   bedrooms: '🛏️ 3 Double Bedrooms',
   bathrooms: '🛁 1 + Downstairs WC',
   epc: '⚡ B - Energy Efficient',

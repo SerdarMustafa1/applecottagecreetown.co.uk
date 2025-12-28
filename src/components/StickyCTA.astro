@@ -88,16 +88,16 @@ const homeReportRel = homeReportIsExternal ? 'noopener' : undefined;
   .sticky-cta__meta {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem;
+    align-items: stretch;
+    gap: 0.75rem;
   }
 
   .sticky-cta__price,
   .sticky-cta__chip {
     display: inline-flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.35rem;
-    padding: 0.35rem 0.65rem;
+    padding: 0.6rem 0.75rem;
     border-radius: 999px;
     font-size: 0.85rem;
     font-weight: 600;
@@ -105,12 +105,36 @@ const homeReportRel = homeReportIsExternal ? 'noopener' : undefined;
   }
 
   .sticky-cta__price {
-    background: rgba(5, 150, 105, 0.1);
-    color: #047857;
+    flex-direction: column;
+    align-items: flex-start;
+    background: linear-gradient(120deg, #0ea5e9 0%, #0f766e 40%, #16a34a 100%);
+    color: #ecfdf3;
     font-weight: 700;
+    box-shadow: 0 8px 20px -8px rgba(14, 165, 233, 0.4);
+    min-width: min(18rem, 100%);
+    border: 1px solid rgba(236, 253, 243, 0.28);
+  }
+
+  .sticky-cta__price-label {
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    opacity: 0.92;
+  }
+
+  .sticky-cta__price-figure {
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    line-height: 1.2;
+  }
+
+  .sticky-cta__price-note {
+    font-size: 0.85rem;
+    color: #e2f3eb;
+    margin-top: 0.1rem;
   }
 
   .sticky-cta__chip {
+    align-items: center;
     background: rgba(34, 197, 94, 0.15);
     color: #166534;
   }
@@ -275,18 +299,24 @@ const homeReportRel = homeReportIsExternal ? 'noopener' : undefined;
   </button>
   <div class="sticky-cta__summary">
     <p class="sticky-cta__headline" id="sticky-cta-heading">
-      Secure your viewing at Apple Cottage today
+      See the new guide price at Apple Cottage today
     </p>
     <div class="sticky-cta__meta">
-      <span class="sticky-cta__price" aria-label="Offers over three hundred thousand pounds">
-        Offers Over £300,000
+      <span
+        class="sticky-cta__price"
+        aria-label="Guide price two hundred seventy-five thousand pounds, recently reduced"
+      >
+        <span class="sticky-cta__price-label">New guide price</span>
+        <span class="sticky-cta__price-figure">£275,000</span>
+        <span class="sticky-cta__price-note">Reduced to welcome more viewings</span>
       </span>
       <span class="sticky-cta__chip" aria-label="Energy performance certificate rating B">
         EPC B
       </span>
     </div>
     <p class="sticky-cta__supporting">
-      Fresh to market — schedule a tour, download the home report or message the owner instantly.
+      Just reduced to a £275,000 guide price — schedule a tour, download the home report or message the
+      owner instantly while diary space is open.
     </p>
   </div>
   <div class="sticky-cta__actions">
