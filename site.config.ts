@@ -52,7 +52,7 @@ export const site = {
   siteUrl: 'https://applecottagecreetown.co.uk',
   address: 'Apple Cottage, Creetown, Scotland',
   coordinates: { lat: 54.899611, lng: -4.380458 },
-  bookingUrl: 'https://www.williamsonandhenry.co.uk/property/apple-cottage-silver-street-creetown/',
+  bookingUrl: 'https://tidycal.com/sidmustafa/apple-cottage-viewing',
   price: '💰 New Guide Price £275,000 — recently reduced',
   bedrooms: '🛏️ 3 Double Bedrooms',
   bathrooms: '🛁 1 + Downstairs WC',
@@ -64,7 +64,7 @@ export const site = {
     image: media('/images/exterior/hero-exterior-6D088E35.jpg'),
     tagline: 'Renovated 3-bed with annex, EPC B, solar + EV — move-in ready in Creetown',
     ctaLabel: 'Book a viewing',
-    bookUrl: '/#book-viewing'
+    bookUrl: 'https://tidycal.com/sidmustafa/apple-cottage-viewing'
   },
   distances: {
     a75: '2 min',
@@ -321,13 +321,12 @@ export const site = {
     ]
   },
   portals: {
-    williamsonhenry: 'https://www.williamsonandhenry.co.uk/property/apple-cottage-silver-street-creetown/',
     rightmove: 'https://www.rightmove.co.uk/properties/167887832',
     zoopla: 'https://www.zoopla.co.uk/for-sale/details/71499152/'
   },
   docs: [
     { label: 'Plot Plan', href: OVERRIDES.PLOT_IMAGE_URL || media('/docs/plot.png') },
-    { label: 'Home Report', href: OVERRIDES.HOME_REPORT_URL || 'https://www.williamsonandhenry.co.uk/property/apple-cottage-silver-street-creetown/' },
+    { label: 'Home Report', href: OVERRIDES.HOME_REPORT_URL || media('/docs/home-report.pdf') },
     { label: 'Planning Permission', href: `${DEFAULT_CDN}/docs/planning-permission.png` }
   ]
 };

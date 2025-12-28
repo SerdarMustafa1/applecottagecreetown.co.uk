@@ -8,7 +8,7 @@ const shareText = site.description
 const shareUrl = site.siteUrl ?? 'https://applecottagecreetown.co.uk';
 
 const normalizedBooking = typeof site.bookingUrl === 'string' ? site.bookingUrl.trim() : '';
-const fallbackBooking = site.portals?.williamsonhenry?.trim?.() || '#book-viewing';
+const fallbackBooking = '#book-viewing';
 const bookingUrl = normalizedBooking.length > 0 ? normalizedBooking : fallbackBooking;
 const isExternalBooking = /^https?:/i.test(bookingUrl);
 const bookingTarget = isExternalBooking ? '_blank' : undefined;
@@ -16,7 +16,7 @@ const bookingRel = isExternalBooking ? 'noopener' : undefined;
 
 const homeReportDoc = (site.docs || []).find?.((doc) => /home\s*report/i.test(doc.label ?? ''));
 const normalizedHomeReport = typeof homeReportDoc?.href === 'string' ? homeReportDoc.href.trim() : '';
-const homeReportUrl = normalizedHomeReport || (site.portals?.williamsonhenry?.trim?.() ?? '');
+const homeReportUrl = normalizedHomeReport || '';
 const hasHomeReportLink = homeReportUrl.length > 0;
 const homeReportIsExternal = hasHomeReportLink ? /^https?:/i.test(homeReportUrl) : false;
 const homeReportTarget = homeReportIsExternal ? '_blank' : undefined;

@@ -1,4 +1,4 @@
-export type PortalKey = 'williamsonhenry' | 'rightmove' | 'zoopla';
+export type PortalKey = 'rightmove' | 'zoopla';
 
 export interface PortalDefinition {
   key: PortalKey;
@@ -11,11 +11,6 @@ export interface PortalEntry extends PortalDefinition {
 }
 
 const portalDefinitions: PortalDefinition[] = [
-  {
-    key: 'williamsonhenry',
-    label: 'Williamson & Henry',
-    ariaLabel: 'View on Williamson & Henry'
-  },
   {
     key: 'rightmove',
     label: 'Rightmove',
