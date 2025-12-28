@@ -14,6 +14,10 @@ const isExternalBooking = /^https?:/i.test(bookingUrl);
 const bookingTarget = isExternalBooking ? '_blank' : undefined;
 const bookingRel = isExternalBooking ? 'noopener' : undefined;
 
+const sellerPhone = (site.contact?.phone ?? '447931071401').replace(/\D/g, '');
+const smsMessage = 'Hello, I am interested in Apple Cottage in Creetown.';
+const smsHref = sellerPhone ? `sms:${sellerPhone}?body=${encodeURIComponent(smsMessage)}` : '#';
+
 const homeReportDoc = (site.docs || []).find?.((doc) => /home\s*report/i.test(doc.label ?? ''));
 const normalizedHomeReport = typeof homeReportDoc?.href === 'string' ? homeReportDoc.href.trim() : '';
 const homeReportUrl = normalizedHomeReport || '';
@@ -184,10 +188,10 @@ const homeReportRel = homeReportIsExternal ? 'noopener' : undefined;
     border: 1px solid rgba(148, 163, 184, 0.25);
   }
 
-  .sticky-cta__button--whatsapp {
-    background: rgba(34, 197, 94, 0.1);
-    color: #166534;
-    border: 1px solid rgba(34, 197, 94, 0.3);
+  .sticky-cta__button--message {
+    background: rgba(59, 130, 246, 0.12);
+    color: #1d4ed8;
+    border: 1px solid rgba(59, 130, 246, 0.3);
   }
 
   .sticky-cta__button--share {
@@ -214,10 +218,10 @@ const homeReportRel = homeReportIsExternal ? 'noopener' : undefined;
     color: #1f2937;
   }
 
-  .sticky-cta__button--whatsapp:hover,
-  .sticky-cta__button--whatsapp:focus-visible {
-    background: rgba(34, 197, 94, 0.15);
-    border-color: rgba(34, 197, 94, 0.4);
+  .sticky-cta__button--message:hover,
+  .sticky-cta__button--message:focus-visible {
+    background: rgba(59, 130, 246, 0.18);
+    border-color: rgba(59, 130, 246, 0.4);
   }
 
   .sticky-cta__button--share:hover,
@@ -405,30 +409,29 @@ const homeReportRel = homeReportIsExternal ? 'noopener' : undefined;
       </a>
     )}
     <a
-      href="https://wa.me/447931071401"
-      class="sticky-cta__button sticky-cta__button--whatsapp"
-      aria-label="Open WhatsApp chat with the Apple Cottage owner"
-      id="sticky-wa"
+      href={smsHref}
+      class="sticky-cta__button sticky-cta__button--message"
+      aria-label="Send an SMS to the Apple Cottage owner"
+      id="sticky-sms"
     >
       <span class="sticky-cta__icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
-            d="M3 20L4.2 16.2C3.4 14.9 3 13.5 3 12C3 7.6 6.6 4 11 4C15.4 4 19 7.6 19 12C19 16.4 15.4 20 11 20C9.6 20 8.2 19.6 7 18.9L3 20Z"
+            d="M8 19L4 20L5 16C3.7 14.6 3 12.8 3 11C3 6.6 7 3 12 3C17 3 21 6.6 21 11C21 15.4 17 19 12 19H8Z"
             stroke="currentColor"
             stroke-width="1.5"
             stroke-linecap="round"
             stroke-linejoin="round"
           />
           <path
-            d="M9.5 9.5C9.5 9.5 9 8 8.5 8C8 8 7 8.2 7 9.8C7 11.4 8.4 13.1 8.6 13.4C8.8 13.7 9.9 15.3 11.6 16C12.6 16.4 13.2 16.4 13.6 16.3C14 16.2 15 15.7 15.1 15.2C15.2 14.7 15.2 14.2 14.9 14C14.6 13.8 13.6 13.3 13.3 13.2C13 13.1 12.7 13.2 12.5 13.5C12.2 13.9 11.8 14.4 11.6 14.3C11.4 14.2 10.5 13.8 9.9 13.2C9.3 12.6 9 11.7 8.9 11.5C8.8 11.3 9.1 11.1 9.3 10.8C9.5 10.5 9.6 10.3 9.7 10.1C9.8 9.9 9.7 9.7 9.6 9.6C9.4 9.4 9.5 9.5 9.5 9.5Z"
+            d="M8 11H8.01M12 11H12.01M16 11H16.01"
             stroke="currentColor"
             stroke-width="1.5"
             stroke-linecap="round"
-            stroke-linejoin="round"
           />
         </svg>
       </span>
-      WhatsApp Seller
+      Message Seller
     </a>
     <button
       type="button"
@@ -565,12 +568,12 @@ const homeReportRel = homeReportIsExternal ? 'noopener' : undefined;
       });
     }
 
-    var whatsappButton = document.getElementById('sticky-wa');
-    if (whatsappButton) {
-      whatsappButton.addEventListener('click', function () {
-        var href = whatsappButton.getAttribute('href');
-        trackCtaInteraction('WhatsApp Seller', href, 'whatsapp', 'sticky-whatsapp');
-        trackContact('whatsapp', href);
+    var smsButton = document.getElementById('sticky-sms');
+    if (smsButton) {
+      smsButton.addEventListener('click', function () {
+        var href = smsButton.getAttribute('href');
+        trackCtaInteraction('Message Seller', href, 'sms', 'sticky-sms');
+        trackContact('sms', href);
       });
     }
 
