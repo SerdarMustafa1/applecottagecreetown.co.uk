@@ -3,7 +3,7 @@ import site from '../../site.config';
 
 const homeReportDoc = (site.docs || []).find?.((doc) => /home\s*report/i.test(doc.label ?? ''));
 const normalizedHomeReport = typeof homeReportDoc?.href === 'string' ? homeReportDoc.href.trim() : '';
-const homeReportUrl = normalizedHomeReport || (site.portals?.williamsonhenry?.trim?.() ?? '');
+const homeReportUrl = normalizedHomeReport || '';
 const hasHomeReportLink = homeReportUrl.length > 0;
 const homeReportTarget = hasHomeReportLink && /^https?:/i.test(homeReportUrl) ? '_blank' : undefined;
 const homeReportRel = homeReportTarget ? 'noopener' : undefined;

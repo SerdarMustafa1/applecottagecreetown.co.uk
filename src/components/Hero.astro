@@ -5,6 +5,13 @@ import { getAvailablePortals } from '../lib/portals';
 const hero = site.hero || {};
 const homeReport = (site.docs || []).find?.((d) => /home\s*report/i.test(d.label || ''));
 const heroPortals = getAvailablePortals(site.portals);
+const heroBookingUrl =
+  (typeof hero.bookUrl === 'string' ? hero.bookUrl.trim() : '') ||
+  (typeof site.bookingUrl === 'string' ? site.bookingUrl.trim() : '') ||
+  '#book-viewing';
+const heroBookingIsExternal = /^https?:/i.test(heroBookingUrl);
+const heroBookingTarget = heroBookingIsExternal ? '_blank' : undefined;
+const heroBookingRel = heroBookingIsExternal ? 'noopener' : undefined;
 
 function formatBytes(bytes: number) {
   if (!Number.isFinite(bytes) || bytes <= 0) return null;
@@ -46,7 +53,13 @@ if (homeReport?.href) {
       <h1 class="text-3xl md:text-4xl font-bold drop-shadow">{site.title}</h1>
       <p class="mt-2 text-lg drop-shadow">{hero.tagline || site.description}</p>
       <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
-        <a href="#book-viewing" class="inline-block bg-blue-600 text-white px-6 py-3 rounded focus:outline-none focus-visible:ring focus-visible:ring-white/80" id="hero-cta">
+        <a
+          href={heroBookingUrl}
+          target={heroBookingTarget}
+          rel={heroBookingRel}
+          class="inline-block bg-blue-600 text-white px-6 py-3 rounded focus:outline-none focus-visible:ring focus-visible:ring-white/80"
+          id="hero-cta"
+        >
           {hero.ctaLabel || 'Book a Viewing'}
         </a>
         {homeReport?.href && (
@@ -55,11 +68,11 @@ if (homeReport?.href) {
             href={homeReport.href}
             target="_blank"
             rel="noopener"
-            class="inline-flex items-center gap-2 bg-white/90 text-gray-900 px-4 py-2 rounded focus:outline-none focus-visible:ring hover:bg-white"
+            class="inline-flex items-center justify-center gap-2 bg-white/90 text-gray-900 px-5 py-3 rounded focus:outline-none focus-visible:ring hover:bg-white"
             aria-label="Open Home Report (PDF) in a new tab"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Zm0 2.5L18.5 9H14Z"/><path d="M8 13h4a2 2 0 0 1 0 4H8Zm2 2.5h2a.5.5 0 0 0 0-1h-2Z"/></svg>
-            <span>Home Report (PDF{homeReportSize ? `, ${homeReportSize}` : ''})</span>
+            <span class="leading-none">Home Report (PDF{homeReportSize ? `, ${homeReportSize}` : ''})</span>
           </a>
         )}
       </div>
@@ -127,13 +140,15 @@ if (homeReport?.href) {
     var cta = document.getElementById('hero-cta');
     if(!cta) return;
     cta.addEventListener('click', function(){
+      var href = cta.getAttribute('href') || '';
+      var type = /^https?:/i.test(href) ? 'external' : 'internal_anchor';
       try {
         if (window.appleAnalytics && typeof window.appleAnalytics.trackCta === 'function') {
           window.appleAnalytics.trackCta({
             name: 'Book Viewing',
             location: 'hero',
-            destination: cta.getAttribute('href'),
-            type: 'internal_anchor',
+            destination: href,
+            type: type,
             variant: 'hero-primary'
           });
         }
