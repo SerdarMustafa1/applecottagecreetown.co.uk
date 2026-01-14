@@ -101,14 +101,15 @@ const homeReportRel = homeReportIsExternal ? 'noopener' : undefined;
     display: inline-flex;
     align-items: flex-start;
     gap: 0.35rem;
-    padding: 0.6rem 0.75rem;
-    border-radius: 999px;
+    padding: 0.6rem 0.9rem;
+    border-radius: 0.95rem;
     font-size: 0.85rem;
     font-weight: 600;
     letter-spacing: 0.01em;
   }
 
   .sticky-cta__price {
+    position: relative;
     flex-direction: column;
     align-items: flex-start;
     background: linear-gradient(120deg, #0ea5e9 0%, #0f766e 40%, #16a34a 100%);
@@ -117,6 +118,43 @@ const homeReportRel = homeReportIsExternal ? 'noopener' : undefined;
     box-shadow: 0 8px 20px -8px rgba(14, 165, 233, 0.4);
     min-width: min(18rem, 100%);
     border: 1px solid rgba(236, 253, 243, 0.28);
+    border-radius: 1.1rem;
+    padding: 0.75rem 1.1rem;
+    line-height: 1.2;
+    overflow: visible;
+  }
+
+  .sticky-cta__price::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: inherit;
+    padding: 2px;
+    background: conic-gradient(
+      from 0deg,
+      rgba(56, 189, 248, 0),
+      rgba(56, 189, 248, 0.85),
+      rgba(45, 212, 191, 0.75),
+      rgba(34, 197, 94, 0.65),
+      rgba(56, 189, 248, 0)
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.5));
+    opacity: 0.9;
+    animation: sticky-cta-laser 4s linear infinite;
+    pointer-events: none;
+  }
+
+  .sticky-cta__price::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: inherit;
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    opacity: 0.6;
+    pointer-events: none;
   }
 
   .sticky-cta__price-label {
@@ -128,13 +166,29 @@ const homeReportRel = homeReportIsExternal ? 'noopener' : undefined;
 
   .sticky-cta__price-figure {
     font-size: clamp(1.05rem, 2vw, 1.25rem);
-    line-height: 1.2;
+    line-height: 1.25;
   }
 
   .sticky-cta__price-note {
     font-size: 0.85rem;
     color: #e2f3eb;
     margin-top: 0.1rem;
+  }
+
+  @keyframes sticky-cta-laser {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sticky-cta__price::before {
+      animation: none;
+    }
   }
 
   .sticky-cta__chip {
